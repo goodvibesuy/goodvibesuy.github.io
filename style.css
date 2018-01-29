@@ -103,6 +103,18 @@
 	height: 150px;
 	margin: 10px;
 }
+
+.boxs-productos .productos-image2 {
+	float: left;
+	margin-right:10px;
+	margin-left: 10px;
+}
+
+.boxs-productos .productos-image2 img{
+	width: 80px;	
+	margin: 10px;
+}
+
 .boxs-productos .productos-info{
 	margin-top: 10px;
 }
