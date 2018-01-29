@@ -1,0 +1,157 @@
+<html>
+	<head>
+	<!-- Required meta tags -->
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+		<!-- Bootstrap CSS -->
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+		<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+		<title>GoodVibes prototype - Home</title>
+		
+		<link rel="stylesheet" href="style.css" crossorigin="anonymous">
+	</head>
+	<body>
+		<div class="slide-img">
+			<a href="index.html"><img src="images/app/good-vibes-logo.jpg"></a>
+		</div>
+		<nav class="navbar navbar-expand-lg navbar-light bg-light">
+			<a class="navbar-brand" href="#">Productos</a>
+			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+			<div class="collapse navbar-collapse" id="navbarNav">
+				<ul class="navbar-nav">
+					<li class="nav-item">
+						<a class="nav-link" href="index.html">Home <span class="sr-only">(current)</span></a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="locales.html">Locales</a>
+					</li>
+					<li class="nav-item active">
+						<a class="nav-link" href="productos.html">Productos</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link disabled" href="#">Reportes</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link disabled" href="#">Mapas</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link disabled" href="#">Configuraciones</a>
+					</li>
+				</ul>
+			</div>
+		</nav>	
+		
+		<div style="color:red; display: block">TODO: poner filtro de fechas</div>
+		<div class="filters flex d-flex justify-content-around content-center content-between ">
+			<div> Ordenar por:</div>
+			<div class="dropdown">
+				<button class="btn btn-info btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+					Mayor ventas
+				</button>
+				<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+					<a class="dropdown-item" href="#">Menor ventas</a>
+					<a class="dropdown-item" href="#">Mayor devolución vencidos</a>
+					<a class="dropdown-item" href="#">Menor devolución vencidos</a>
+				</div>
+			</div>
+		</div>
+		<div class="flex flex-wrap d-flex justify-content-around content-center content-between boxs-container">
+			<div class="boxs-productos border">
+				<div class="productos-image">
+					<img src="images/productos/citra-trip.png">
+				</div>
+				<div class="productos-info">
+					<div class="productos-title">
+						<label>Citra Trip</label>
+					</div>
+					<div class="productos-info-content">
+						<label>Entregados: 1560</label>
+						<label>Vencidos: 160 ( 10% ) </label>
+						<label>Precio venta: $ 70</label>
+						<label>Costo producción: $ 25 ( 35% ) </label>
+						<label>Ganancia: $ 55</label>
+					</div>
+				</div>
+			</div>
+			
+			<div class="boxs-productos border">
+				<div class="productos-image">
+					<img src="images/productos/green-life.png">
+				</div>
+				<div class="productos-info">
+					<div class="productos-title">
+						<label>Green Life</label>
+					</div>
+					<div class="productos-info-content">
+						<label>Entregados: 1360</label>
+						<label>Vencidos: 110 ( 12% ) </label>
+						<label>Precio venta: $ 80</label>
+						<label>Costo producción: $ 30 ( 37% ) </label>
+						<label>Ganancia: $ 50</label>
+					</div>
+				</div>
+			</div>
+			
+			<div class="boxs-productos border">
+				<div class="productos-image">
+					<img src="images/productos/paradise-dream.png">
+				</div>
+				<div class="productos-info">
+					<div class="productos-title">
+						<label>Paradise Dream</label>
+					</div>
+					<div class="productos-info-content">
+						<label>Entregados: 1060</label>
+						<label>Vencidos: 160 ( 6.6% ) </label>
+						<label>Precio venta: $ 65</label>
+						<label>Costo producción: $ 25 ( 38% ) </label>
+						<label>Ganancia: $ 40</label>
+					</div>
+				</div>
+			</div>
+			
+			<div class="boxs-productos border">
+				<div class="productos-image">
+					<img src="images/productos/sun-kiss.png">
+				</div>
+				<div class="productos-info">
+					<div class="productos-title">
+						<label>Sun Kiss</label>
+					</div>
+					<div class="productos-info-content">
+						<label>Entregados: 860</label>
+						<label>Vencidos: 90 ( 10% ) </label>
+						<label>Precio venta: $ 80</label>
+						<label>Costo producción: $ 35 ( 44% ) </label>
+						<label>Ganancia: $ 45</label>
+					</div>
+				</div>
+			</div>
+			
+			<div class="boxs-productos border">
+				<div class="productos-image">
+					<img src="images/productos/yellow-rolling.png">
+				</div>
+				<div class="productos-info">
+					<div class="productos-title">
+						<label>Yellow Rolling</label>
+					</div>
+					<div class="productos-info-content">
+						<label>Entregados: 1560</label>
+						<label>Vencidos: 160 ( 10% ) </label>
+						<label>Precio venta: $ 70</label>
+						<label>Costo producción: $ 25 ( 28% ) </label>
+						<label>Ganancia: $ 55</label>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>

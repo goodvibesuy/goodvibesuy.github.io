@@ -1,0 +1,12 @@
+{  
+  "name": "Mindfulness",  
+  "short_name": "Mindfulness",  
+  "icons": [{  
+        "src": "archivos/silvio.png",  
+        "sizes": "192x192",
+        "type": "image/png"
+      }],  
+  "start_url": "/",  
+  "display": "standalone",
+  "gcm_sender_id": "653317226796"
+}
