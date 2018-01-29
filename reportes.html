@@ -11,28 +11,32 @@
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 
-		<title>GoodVibes prototype - Home</title>
-		
+		<title>GoodVibes prototype - Home</title>		
 		<link rel="stylesheet" href="style.css" crossorigin="anonymous">
-
-
-
 		<style>
 			#chartdiv {
 				width	: 100%;
 				height	: 500px;
-			}								
-			</style>
+			}
+			#chartdiv2 {
+				width	: 100%;
+				height	: 500px;
+			}
+		</style>
 			
-			<!-- Resources -->
-			<script src="https://www.amcharts.com/lib/3/amcharts.js"></script>
-			<script src="https://www.amcharts.com/lib/3/serial.js"></script>
-			<script src="https://www.amcharts.com/lib/3/plugins/export/export.min.js"></script>
-			<link rel="stylesheet" href="https://www.amcharts.com/lib/3/plugins/export/export.css" type="text/css" media="all" />
-			<script src="https://www.amcharts.com/lib/3/themes/light.js"></script>
-			
-			<!-- Chart code -->
-			<script>
+		<!-- Resources -->
+		<script src="https://www.amcharts.com/lib/3/amcharts.js"></script>
+		<script src="https://www.amcharts.com/lib/3/serial.js"></script>
+		<script src="https://www.amcharts.com/lib/3/plugins/export/export.min.js"></script>
+		<link rel="stylesheet" href="https://www.amcharts.com/lib/3/plugins/export/export.css" type="text/css" media="all" />
+		<script src="https://www.amcharts.com/lib/3/themes/light.js"></script>
+
+		<script src="https://www.amcharts.com/lib/3/pie.js"></script>
+		<script src="https://www.amcharts.com/lib/3/plugins/animate/animate.min.js"></script>
+
+		
+		<!-- Chart code -->
+		<script>				
 			var chart = AmCharts.makeChart("chartdiv",
 			{
 				"type": "serial",
@@ -94,6 +98,103 @@
 					"enabled": true
 				 }
 			});
+
+/*************************************/
+/*************************************/
+
+/**
+ * Define data for each year
+ */
+ var chartData2 = {  
+  "1997": [
+    { "sector": "Green Life", "size": 6.1 },    
+    { "sector": "Citra Trip", "size": 20.9 },
+    { "sector": "Paradise Dream", "size": 1.8 },
+    { "sector": "Yellow Rolling", "size": 4.2 }],
+  "1998": [
+    { "sector": "Green Life", "size": 6.2 },    
+    { "sector": "Citra Trip", "size": 21.4 },
+    { "sector": "Paradise Dream", "size": 1.9 },
+    { "sector": "Yellow Rolling", "size": 4.2 } ],
+  "1999": [
+    { "sector": "Green Life", "size": 5.7 },    
+    { "sector": "Citra Trip", "size": 20 },
+    { "sector": "Paradise Dream", "size": 1.8 },
+    { "sector": "Yellow Rolling", "size": 4.4 } ]
+};
+
+var texto = {
+	"1997": "Febrero",
+  "1998": "Marzo",
+  "1999": "Abril"
+}
+
+/**
+ * Create the chart
+ */
+//var currentYear = 1997;
+var currentYear = 1997;
+var chart2 = AmCharts.makeChart( "chartdiv2", {
+  "type": "pie",
+  "theme": "light",
+  "labelText": "[[percents]]%",
+  "dataProvider": [],
+  "valueField": "size",
+  "titleField": "sector",
+  "startDuration": 0,
+  "innerRadius": 60,
+  "legend":{
+   	"position":"bottom"
+  },
+  "titles": [{
+    "text": "Venta de productos"
+  }],
+  "allLabels": [{
+    "y": "50%",
+    "align": "center",
+    "size": 20,
+    "bold": true,
+    "text": "1995",
+    "color": "#555"
+  },
+  {
+    "y": "55%",
+    "align": "center",
+    "size": 20,
+    "bold": true,
+    "text": "2018",
+    "color": "#555"
+  }],
+  "listeners": [ {
+    "event": "init",
+    "method": function( e ) {
+      var chart = e.chart;
+      function getCurrentData() {
+        var data = chartData2[currentYear];
+        currentYear++;
+        if (currentYear > 1999)
+          currentYear = 1997;
+        return data;
+      }
+
+      function loop() {
+        //chart.allLabels[0].text = currentYear;
+        chart.allLabels[0].text = texto[currentYear];
+        var data = getCurrentData();
+        chart.animateData( data, {
+          duration: 1000,
+          complete: function() {
+            setTimeout( loop, 2000 );
+          }
+        } );
+      }
+      loop();	  
+    }
+  } ],
+   "export": {
+   "enabled": true
+  }
+});
 			</script>
 
 
@@ -103,5 +204,7 @@
 			<a href="index.html"><img src="images/app/good-vibes-logo.jpg"></a>
 		</div>
 		<div id="chartdiv"></div>
+		<br/>
+		<div id="chartdiv2"></div>
 	</body>
 </html>
