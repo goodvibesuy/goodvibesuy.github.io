@@ -15,7 +15,15 @@
 var CACHE_NAME = 'my-site-cache-v3';
 var urlsToCache = [
   '/',
-  '/main.js'
+  '/main.js',
+  'css/style.css',
+  'css/font-awesome.min.css',
+  'css/bootstrap.min.css',
+  'images/app/good-vibes-logo.jpg',
+  'images/app/selling_points.png',
+  'images/app/products.gif',
+  'images/app/mapa.png',
+  'fonts/fontawesome-webfont.woff2'
 ];
 
 self.addEventListener('install', function(event) {
