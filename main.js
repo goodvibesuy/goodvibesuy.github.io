@@ -34,13 +34,16 @@ document.getElementById('guru').addEventListener('click', function() {
 */
 // Register Service Worker
 
-if('serviceWorker' in navigator) {
+if('serviceWorker' in navigator && 'PushManager' in window) {
+  alert('Push messaging is supported');
   navigator.serviceWorker.register('service-worker.js').then(function(registration) {
     // Registration was successful
   }).catch(function(err) {
     // registration failed :(
     console.log('ServiceWorker registration failed: ', err);
   });
+}else{
+  alert('Push messaging is not supported');
 }
 
 // Setup Push notifications
