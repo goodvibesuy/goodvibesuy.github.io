@@ -17,34 +17,25 @@
 	 crossorigin="anonymous"></script>
 
 	<title>GoodVibes prototype - Home</title>
-
 	<!-- IPHONE -->
 	<meta name="apple-mobile-web-app-capable" content="yes">
 	<link rel="apple-touch-icon" href="images/icons/guru.png">
 	<!-- IPHONE -->
 	<link rel="manifest" href="manifest.json">
-
 	<script src="main.js"></script>
-
 	<link rel="stylesheet" href="css/style.css" crossorigin="anonymous">
-
+	<script src="js/angular.min.js"></script>
+	<script src="js/pointsOfSale.js"></script>
 	<!-- dev start -->
-	<meta http-equiv="cache-control" content="max-age=0" />
-	<meta http-equiv="cache-control" content="no-cache" />
-	<meta http-equiv="expires" content="0" />
-	<meta http-equiv="expires" content="Tue, 01 Jan 1980 1:00:00 GMT" />
-	<meta http-equiv="pragma" content="no-cache" />
 	<!-- dev end -->
 </head>
 
-<body>
+<body ng-app="googApp" ng-controller="pointOfSailController">
 	<div class="slide-img cabezal">
 		<a href="index.html">
 			<img src="images/app/good-vibes-logo.jpg">
 		</a>
 	</div>
-
-
 	<div class="card" style="margin:15px;">
 		<div class="card-header">
 			<b>Agregar punto de venta</b>
@@ -52,83 +43,62 @@
 		<div class="card-body">
 			<div class="form-group">
 				<span class="input-group-addon">Nombre:</span>
-				<input type="text" class="form-control" id="nombre">
+				<input type="text" class="form-control" ng-model="name" id="name">
 			</div>
 			<div class="form-group">
 				<span class="input-group-addon">Dirección:</span>
-				<input type="text" class="form-control" id="direccion">
+				<input type="text" class="form-control" ng-model="address" id="address">
 			</div>
 			<div class="form-group">
 				<span class="input-group-addon">Telefono:</span>
-				<input type="text" class="form-control" id="tel">
+				<input type="text" class="form-control" ng-model="tel" id="tel">
 			</div>
+			<!--
 			<div class="form-group">
 				<label for="exampleFormControlFile1">Logo del punto de venta</label>
 				<input type="file" class="form-control-file" id="exampleFormControlFile1">
 			</div>
-			<button type="button" class="btn btn-primary">Agregar punto de venta</button>
+		-->
+			<button type="button" ng-click="newPointOfSale()" class="btn btn-primary">Agregar punto de venta</button>
 		</div>
 	</div>
 
-
-	<!--
-			<div class="input-group" ng-repeat="predictor in predictoresBoletin" style="width: 300px;float:left;margin-right: 5px;">
-				<select style="float: left" ng-model="predictoresBoletin[$index]"
-						class="form-control" ng-options="item as item.nombre for item in predictores track by item.id"></select>    
-				<span class="input-group-btn">
-					<button class="btn btn-danger" ng-click="sacarPredictor($index)" type="button">x</button>
-				</span>                                
-			</div>                            
-			<button ng-click="agregarPredictor()" class="btn btn-primary">Agregar Predictor</button>                            
-		-->
+	<div class="card" style="margin:15px;">
+		<div class="card-header">
+			<b>Editar punto de venta</b>
+		</div>
+		<div class="card-body">
+			<div class="form-group">
+				<span class="input-group-addon">Nombre:</span>
+				<input type="text" class="form-control" ng-model="nameUpdate" id="name">
+			</div>
+			<div class="form-group">
+				<span class="input-group-addon">Dirección:</span>
+				<input type="text" class="form-control" ng-model="addressUpdate" id="address">
+			</div>
+			<div class="form-group">
+				<span class="input-group-addon">Telefono:</span>
+				<input type="text" class="form-control" ng-model="telUpdate" id="tel">
+			</div>
+			<button type="button" ng-click="editPointOfSale()" class="btn btn-primary">Agregar punto de venta</button>
+		</div>
 	</div>
 
-
-
-
 	<div class="flex flex-wrap d-flex justify-content-around content-center content-between boxs-container">
-		<div class="boxs-lista border" onclick="window.location='detalle-local.html'">
+		<div class="boxs-lista border" ng-repeat="p in puntosDeVenta">
 			<div class="lista-image">
-				<img src="images/locales/porto-vanilla.png">
+				<img src="images/locales/{{p.image}}">
 			</div>
 			<div class="lista-info">
 				<div class="lista-title">
-					<label>Porto Vanila</label>
+					<label>{{p.name}}</label>
 				</div>
 				<div class="lista-info-content">
 					<label>Productos entregados: 1560</label>
 					<label>Productos pagos: 1560</label>
 				</div>
-			</div>
-		</div>
-
-		<div class="boxs-lista border">
-			<div class="lista-image">
-				<img src="images/locales/las-gaviotas.png">
-			</div>
-			<div class="lista-info">
-				<div class="lista-title">
-					<label>Las Gaviotas</label>
-				</div>
-				<div class="lista-info-content">
-					<label>Productos entregados: 1260</label>
-					<label>Productos pagos: 1060</label>
-				</div>
-			</div>
-		</div>
-
-		<div class="boxs-lista border">
-			<div class="lista-image">
-				<img src="images/locales/el-viejo-y-el-mar.jpg">
-			</div>
-			<div class="lista-info">
-				<div class="lista-title">
-					<label>El Viejo y El Mar</label>
-				</div>
-				<div class="lista-info-content">
-					<label>Productos entregados: 860</label>
-					<label>Productos pagos: 760</label>
-				</div>
+				<a href="javascript:;" ng-click="delete(p.id)">x</a>
+				<a href="javascript:;" ng-click="update(p.id,p.name,p.address,p.tel)">update</a>
 			</div>
 		</div>
 	</div>
