@@ -16,7 +16,7 @@ con.connect(function (err) {
 
 
 router.get('/', function (req, res, next) {
-  con.query("SELECT * FROM pointofsale", function (err, result) {
+  con.query("SELECT * FROM input", function (err, result) {
     if (err) throw err;
     console.log("Result: ", result);
     res.send({ result: 1, message: "OK", data: result });
@@ -25,8 +25,8 @@ router.get('/', function (req, res, next) {
 
 router.post('/', function (req, res, next) {  
   con.query(
-    "INSERT INTO pointofsale  (name, address, tel) VALUES(?,?,?)",
-    [req.body.name, req.body.address, req.body.tel],
+    "INSERT INTO input  (name, unity) VALUES(?,?)",
+    [req.body.name, req.body.unity],
     function (err, resultClient) {
       if (err) {
         if (err.code === "ER_DUP_ENTRY") {
@@ -41,8 +41,8 @@ router.post('/', function (req, res, next) {
 
 router.put('/', function (req, res, next) {  
   con.query(
-    "UPDATE pointofsale  SET name = ?, address = ?, tel = ? WHERE id = ?",
-    [req.body.name, req.body.address, req.body.tel, req.body.id],
+    "UPDATE input  SET name = ?, unity = ? WHERE id = ?",
+    [req.body.name, req.body.unity, req.body.id],
     function (err, resultClient) {
       if (err) {
         if (err.code === "ER_DUP_ENTRY") {
@@ -55,9 +55,9 @@ router.put('/', function (req, res, next) {
   );
 });
 
-router.delete('/', function (req, res, next) {  
+router.delete('/', function (req, res, next) {
   con.query(
-    "DELETE FROM pointofsale WHERE id = ? ",
+    "DELETE FROM input WHERE id = ? ",
     [req.body.id],
     function (err, resultClient) {
       if (err) {
