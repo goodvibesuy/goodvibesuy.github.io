@@ -1,0 +1,343 @@
+.jobuser-email {
+  display: none; }
+
+#mp_cart_form,
+#mp_shipping_form,
+#mp_payment_form {
+  max-width: 640px;
+  margin: 2rem auto 0; }
+  #mp_cart_form table,
+  #mp_shipping_form table,
+  #mp_payment_form table {
+    width: 100%;
+    margin: 2rem 0; }
+    #mp_cart_form table thead th,
+    #mp_shipping_form table thead th,
+    #mp_payment_form table thead th {
+      text-align: center;
+      padding: 1rem 0;
+      background-color: #eee; }
+    #mp_cart_form table tbody tr,
+    #mp_shipping_form table tbody tr,
+    #mp_payment_form table tbody tr {
+      border-bottom: 1px dotted #dddddd;
+      margin: 2px 0; }
+    #mp_cart_form table tfoot .mp_cart_subtotal_lbl,
+    #mp_shipping_form table tfoot .mp_cart_subtotal_lbl,
+    #mp_payment_form table tfoot .mp_cart_subtotal_lbl {
+      text-align: right;
+      padding-right: 10px; }
+    #mp_cart_form table td,
+    #mp_shipping_form table td,
+    #mp_payment_form table td {
+      padding: 10px; }
+      #mp_cart_form table td.mp_cart_col_price, #mp_cart_form table td.mp_cart_col_total,
+      #mp_shipping_form table td.mp_cart_col_price,
+      #mp_shipping_form table td.mp_cart_col_total,
+      #mp_payment_form table td.mp_cart_col_price,
+      #mp_payment_form table td.mp_cart_col_total {
+        text-align: right; }
+    #mp_cart_form table .mp_cart_col_thumb,
+    #mp_shipping_form table .mp_cart_col_thumb,
+    #mp_payment_form table .mp_cart_col_thumb {
+      width: 10%; }
+
+.mp_cart_contents {
+  width: 100%;
+  margin: 2rem 0;
+  max-width: 640px;
+  margin: 2rem auto 0; }
+  .mp_cart_contents thead th {
+    text-align: center;
+    padding: 1rem 0;
+    background-color: #eee; }
+  .mp_cart_contents tbody tr {
+    border-bottom: 1px dotted #dddddd;
+    margin: 2px 0; }
+  .mp_cart_contents tfoot .mp_cart_subtotal_lbl {
+    text-align: right;
+    padding-right: 10px; }
+  .mp_cart_contents td {
+    padding: 10px; }
+    .mp_cart_contents td.mp_cart_col_price, .mp_cart_contents td.mp_cart_col_total {
+      text-align: right; }
+  .mp_cart_contents .mp_cart_col_thumb {
+    width: 10%; }
+  .mp_cart_contents .mp_cart_subtotal_lbl {
+    text-align: right; }
+
+.post-content .mp_cart_direct_checkout {
+  text-align: right;
+  overflow: hidden;
+  display: block;
+  max-width: 640px;
+  margin: 0 auto;
+  text-align: center; }
+
+.mp_cart_breadcrumbs {
+  margin: 0 0 3rem; }
+  .mp_cart_breadcrumbs .sep {
+    padding: 10px; }
+  .mp_cart_breadcrumbs .current {
+    font-weight: bold; }
+
+.mp_cart_payment_methods tbody td {
+  text-align: center; }
+.mp_cart_payment_methods tbody label {
+  margin-right: 60px;
+  line-height: 2em; }
+  .mp_cart_payment_methods tbody label img {
+    margin: 0 10px 0 5px; }
+
+.course-featured-media {
+  margin-bottom: 20px; }
+  .course-featured-media img {
+    border-radius: 2px; }
+
+.featured-course-link {
+  text-align: center; }
+
+h3.featured-course-title {
+  font-size: 1.4em !important; }
+
+@media (min-width: 768px) {
+  #menu-main-menu li.mobile {
+    display: none; } }
+@media (min-width: 768px) {
+  body.single-course .wp-video > br {
+    display: none; } }
+body.single-course .post-content .course-media-preview-box, body.single-course .post-content .course-structure-box {
+  float: right; }
+body.single-course .post-content .enroll-box-left {
+  width: 100%;
+  margin-top: -20px; }
+@media (min-width: 768px) {
+  body.single-course .post-content > p {
+    width: 48%;
+    margin-right: 4%; } }
+
+@media (min-width: 768px) {
+  body.post-type-archive-course .wp-video > br {
+    display: none; } }
+body.post-type-archive-course .course-thumbnail figure {
+  margin: 0; }
+body.post-type-archive-course .quick-course-info .course-cost strong {
+  font-weight: 700; }
+body.post-type-archive-course .quick-course-info .course-cost:before {
+  display: none; }
+
+.course-structure-block h2, .course-structure-block h3 {
+  margin-top: 0; }
+
+.front-single-module .video_player .wp-video {
+  min-height: 145px; }
+
+.post-type-notifications .notification-title {
+  font-size: 26px;
+  line-height: 34px; }
+
+button.apply-button,
+input#order-id-submit,
+input[name='update_cart_submit'],
+form[name="loginform"] #wp-submit,
+.mp_cart_direct_checkout a,
+.mp_cart_direct_checkout_link,
+.mp_cart_direct_checkout input,
+#modules_form input[type="submit"].apply-button-enrolled.submit-elements-data-button,
+#student-settings [name='student-settings-submit'],
+.featured-course-link button {
+  font-family: 'Roboto', Arial, Helvetica, sans-serif;
+  letter-spacing: 0.5px;
+  font-weight: 300;
+  display: inline-block;
+  padding: 11px 23px;
+  line-height: 16px;
+  font-size: 13px;
+  border-radius: 2px;
+  border-width: 0px;
+  color: #ffffff;
+  border-color: #ffffff;
+  background: #2da2cb;
+  text-transform: uppercase;
+  outline: none; }
+  button.apply-button:hover, button.apply-button:focus, button.apply-button:active,
+  input#order-id-submit:hover,
+  input#order-id-submit:focus,
+  input#order-id-submit:active,
+  input[name='update_cart_submit']:hover,
+  input[name='update_cart_submit']:focus,
+  input[name='update_cart_submit']:active,
+  form[name="loginform"] #wp-submit:hover,
+  form[name="loginform"] #wp-submit:focus,
+  form[name="loginform"] #wp-submit:active,
+  .mp_cart_direct_checkout a:hover,
+  .mp_cart_direct_checkout a:focus,
+  .mp_cart_direct_checkout a:active,
+  .mp_cart_direct_checkout_link:hover,
+  .mp_cart_direct_checkout_link:focus,
+  .mp_cart_direct_checkout_link:active,
+  .mp_cart_direct_checkout input:hover,
+  .mp_cart_direct_checkout input:focus,
+  .mp_cart_direct_checkout input:active,
+  #modules_form input[type="submit"].apply-button-enrolled.submit-elements-data-button:hover,
+  #modules_form input[type="submit"].apply-button-enrolled.submit-elements-data-button:focus,
+  #modules_form input[type="submit"].apply-button-enrolled.submit-elements-data-button:active,
+  #student-settings [name='student-settings-submit']:hover,
+  #student-settings [name='student-settings-submit']:focus,
+  #student-settings [name='student-settings-submit']:active,
+  .featured-course-link button:hover,
+  .featured-course-link button:focus,
+  .featured-course-link button:active {
+    border-width: 0px;
+    border-color: #787878;
+    color: #787878;
+    background: #d6d6d6;
+    cursor: pointer; }
+
+input[name='update_cart_submit'] {
+  display: inline-block;
+  padding: 11px 23px;
+  line-height: 13px;
+  font-size: 10px;
+  color: gray;
+  border: 1px solid #dddddd;
+  background: white;
+  text-transform: uppercase; }
+  input[name='update_cart_submit']:hover, input[name='update_cart_submit']:focus, input[name='update_cart_submit']:active {
+    border-width: 1px;
+    border-color: gray;
+    color: #787878;
+    background: #d6d6d6;
+    cursor: pointer; }
+
+.single-course .apply-box .apply-button {
+  float: left; }
+.single-course h2.entry-title, .single-course .post-slideshow {
+  display: none; }
+.single-course .course_structure_unit_label:last-child {
+  border-bottom: none; }
+
+.front-single-module .wp-video {
+  margin: 0 auto; }
+  .front-single-module .wp-video .mejs-overlay.mejs-layer.mejs-overlay-play {
+    position: absolute; }
+
+.course-archive-box article {
+  margin: 20px 0;
+  overflow: hidden; }
+  .course-archive-box article .quick-course-info .course-lang {
+    margin-left: 0;
+    margin-right: 20px; }
+  .course-archive-box article .quick-course-info .course-lang, .course-archive-box article .quick-course-info .course-cost * {
+    font-size: 15px; }
+
+.virtual_page input[type="text"], .virtual_page input[type="password"] {
+  border: 1px solid #d2d2d2;
+  font-size: 13px;
+  color: #747474;
+  padding: 8px 15px;
+  margin-right: 1%;
+  width: 100%;
+  box-sizing: border-box; }
+.virtual_page form[name="loginform"] {
+  max-width: 320px;
+  margin: 0 auto; }
+  .virtual_page form[name="loginform"] label {
+    width: 100%; }
+
+.post-type-notifications .post-content,
+.post-type-unit .post-content,
+.post-type-course .post-content {
+  padding: 0 15px; }
+  .post-type-notifications .post-content .submenu-main-container,
+  .post-type-unit .post-content .submenu-main-container,
+  .post-type-course .post-content .submenu-main-container {
+    background-color: #eee;
+    border-radius: 3px;
+    margin: 0 -15px 2rem; }
+    .post-type-notifications .post-content .submenu-main-container #submenu-main,
+    .post-type-unit .post-content .submenu-main-container #submenu-main,
+    .post-type-course .post-content .submenu-main-container #submenu-main {
+      margin: 0;
+      padding: 15px;
+      overflow: hidden; }
+      .post-type-notifications .post-content .submenu-main-container #submenu-main a,
+      .post-type-unit .post-content .submenu-main-container #submenu-main a,
+      .post-type-course .post-content .submenu-main-container #submenu-main a {
+        color: #3b4251;
+        padding: 5px; }
+
+.units-archive-list {
+  padding-left: 0; }
+  .units-archive-list > li {
+    padding: 1em 10px;
+    border-top: 1px solid #ebebeb; }
+  .units-archive-list .unit-archive-single .unit-archive-single-module-status {
+    display: none; }
+  .units-archive-list .unit-archive-single .unit-archive-single-title {
+    width: 65%;
+    display: inline-block; }
+
+.video_holder figure {
+  margin: 0 auto; }
+  .video_holder figure .mejs-inner, .video_holder figure .mejs-layers {
+    height: 100%; }
+
+#modules_form input[type="submit"].apply-button-enrolled.submit-elements-data-button {
+  float: none;
+  display: block;
+  margin: 25px auto; }
+#modules_form .text_input_module {
+  margin-bottom: 20px; }
+  #modules_form .text_input_module h2 {
+    color: #666666;
+    margin-top: 1em;
+    font-size: 15px;
+    line-height: 1.2;
+    margin-bottom: 0.5em; }
+#modules_form .section_break_module {
+  border: 0px;
+  border-top: 1px dotted #ccc; }
+#modules_form #save_student_progress {
+  display: none;
+  font-size: 10px; }
+#modules_form .module_textarea_input input[type='text'] {
+  border: none;
+  border-bottom: 1px solid #ddd;
+  padding: 5px;
+  color: #666666; }
+#modules_form .file_holder a {
+  color: #2da2cb; }
+  #modules_form .file_holder a::before {
+    color: #2da2cb;
+    margin-right: 5px;
+    font-family: 'FontAwesome';
+    content: "\f0ed"; }
+
+.course-action-links {
+  margin: 1em 0;
+  float: right;
+  display: inline-block; }
+
+.course_structure_page_li, .course_structure_unit_label {
+  padding: 1em 0 !important;
+  border-bottom: 0; }
+  .course_structure_page_li.single_column, .course_structure_unit_label.single_column {
+    padding: 1em 0 !important; }
+    .course_structure_page_li.single_column > p, .course_structure_unit_label.single_column > p {
+      display: none; }
+    .course_structure_page_li.single_column a:hover, .course_structure_unit_label.single_column a:hover {
+      background-color: transparent; }
+    .course_structure_page_li.single_column .tree-page-left, .course_structure_page_li.single_column .tree-unit-left, .course_structure_unit_label.single_column .tree-page-left, .course_structure_unit_label.single_column .tree-unit-left {
+      width: 70%; }
+    .course_structure_page_li.single_column .tree-page-right, .course_structure_page_li.single_column .tree-unit-right, .course_structure_unit_label.single_column .tree-page-right, .course_structure_unit_label.single_column .tree-unit-right {
+      width: 29%; }
+    .course_structure_page_li.single_column .tree-unit-left, .course_structure_unit_label.single_column .tree-unit-left {
+      white-space: normal; }
+    .course_structure_page_li.single_column a, .course_structure_unit_label.single_column a {
+      padding: 0; }
+
+.course-cost {
+  font-size: larger; }
+
+/*# sourceMappingURL=custom-silvioraij.css.map */
