@@ -10,6 +10,8 @@ var users = require('./routes/users');
 var pointOfSail = require('./routes/pointOfSail');
 var unity = require('./routes/unity');
 var inputs = require('./routes/inputs');
+var products = require('./routes/products');
+var viewings = require('./routes/viewings');
 
 var app = express();
 
@@ -34,6 +36,10 @@ app.use('/users', users);
 app.use('/pointOfSail', pointOfSail);
 app.use('/unity', unity);
 app.use('/inputs', inputs);
+app.use('/products', products);
+app.use('/viewings', viewings);
+
+
 
 
 // catch 404 and forward to error handler
