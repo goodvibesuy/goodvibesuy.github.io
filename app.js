@@ -12,6 +12,7 @@ var unity = require('./routes/unity');
 var inputs = require('./routes/inputs');
 var products = require('./routes/products');
 var viewings = require('./routes/viewings');
+var kpis = require('./routes/kpis');
 
 var app = express();
 
@@ -38,8 +39,7 @@ app.use('/unity', unity);
 app.use('/inputs', inputs);
 app.use('/products', products);
 app.use('/viewings', viewings);
-
-
+app.use('/kpis', kpis);
 
 
 // catch 404 and forward to error handler

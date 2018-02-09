@@ -18,10 +18,11 @@ app.controller('pointOfSailController', ['$scope', '$http', '$window',
                 var product = {};
                 product.id = value.id;
                 product.name = value.name;
-                product.path_image = value.path_image;                
-                product.delivery = 0;
-                product.return = 0;
-                product.empty = 0;
+                product.path_image = value.path_image;
+                product.typeTransaction = {};
+                product.typeTransaction.delivery = 0;
+                product.typeTransaction.return = 0;
+                product.typeTransaction.empty = 0;
                 $scope.productsToSend.push(product);
             });
         });        
@@ -33,6 +34,10 @@ app.controller('pointOfSailController', ['$scope', '$http', '$window',
                 data: JSON.stringify({data:$scope.productsToSend}),
                 headers: { "Content-Type": "application/json; charset=utf-8" }
             }).then(function(response) {
+
+                if(response.data.result == 1){
+                    alert("Se han guardado los datos correctamente");
+                }               
                 console.log(response);                
             });
         }

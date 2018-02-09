@@ -10,18 +10,18 @@
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 		<title>GoodVibes prototype - Home</title>
-        <link rel="stylesheet" href="css/style.css" crossorigin="anonymous">
-        <script src="js/angular.min.js"></script>
-	    <script src="js/viewings.js"></script>
+        <link rel="stylesheet" href="/css/style.css" crossorigin="anonymous">
+        <script src="/js/angular.min.js"></script>
+	    <script src="/js/viewings.js"></script>
 	</head>
 	<body ng-app="googApp" ng-controller="pointOfSailController">
 		<div class="slide-img">
-			<a href="index.html"><img src="images/app/good-vibes-logo.jpg"></a>
+			<a href="index.html"><img src="/images/app/good-vibes-logo.jpg"></a>
 		</div>			
 		<div class="detalle-local border">
 			<div class="detalle-local-header flex flex-wrap d-flex justify-content-around content-center content-between">
 				<div class="head-image">
-					<img src="images/locales/porto-vanilla.png">
+					<img src="/images/locales/porto-vanilla.png">
 				</div>
 			</div>			
 			<div class="detalle-local-info">
@@ -35,15 +35,15 @@
                     <div class="row align-items-center" ng-repeat="p in productsToSend">
 						<div class="col productos-info">
 							<div class="productos-image">
-								<img src="images/{{p.path_image}}">
+								<img src="/images/{{p.path_image}}">
 							</div>								
 							<div class="productos-title">
 								<label>{{p.name}}</label>
 							</div>
 						</div>
-						<div class="col"><input type="text" ng-model="p.delivery" class="detalle-input form-control" /></div>
-						<div class="col"><input type="text" ng-model="p.return" class="detalle-input form-control" /></div>
-						<div class="col"><input type="text" ng-model="p.empty" class="detalle-input form-control" /></div>
+						<div class="col"><input type="text" ng-model="p.typeTransaction.delivery" class="detalle-input form-control" /></div>
+						<div class="col"><input type="text" ng-model="p.typeTransaction.return" class="detalle-input form-control" /></div>
+						<div class="col"><input type="text" ng-model="p.typeTransaction.empty" class="detalle-input form-control" /></div>
 					</div>
 				</div>
 				<div class="filters flex d-flex justify-content-around content-center content-between ">
