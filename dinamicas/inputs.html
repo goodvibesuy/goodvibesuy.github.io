@@ -19,13 +19,13 @@
 	<title>GoodVibes prototype - Home</title>
 	<!-- IPHONE -->
 	<meta name="apple-mobile-web-app-capable" content="yes">
-	<link rel="apple-touch-icon" href="images/icons/guru.png">
+	<link rel="apple-touch-icon" href="/images/icons/guru.png">
 	<!-- IPHONE -->
-	<link rel="manifest" href="manifest.json">
-	<script src="main.js"></script>
-	<link rel="stylesheet" href="css/style.css" crossorigin="anonymous">
-	<script src="js/angular.min.js"></script>
-	<script src="js/inputs.js"></script>
+	<link rel="manifest" href="/manifest.json">
+	<script src="/main.js"></script>
+	<link rel="stylesheet" href="/css/style.css" crossorigin="anonymous">
+	<script src="/js/angular.min.js"></script>
+	<script src="/js/inputs.js"></script>
 	<!-- dev start -->
 	<!-- dev end -->
 </head>
@@ -33,60 +33,80 @@
 <body ng-app="googApp" ng-controller="pointOfSailController">
 	<div class="slide-img cabezal">
 		<a href="index.html">
-			<img src="images/app/good-vibes-logo.jpg">
+			<img src="/images/app/good-vibes-logo.jpg">
 		</a>
 	</div>
-	<div class="card" style="margin:15px;">
-		<div class="card-header">
-			<b>Agregar insumo</b>
-		</div>
-		<div class="card-body">
-			<div class="form-group">
-				<span class="input-group-addon">Nombre:</span>
-				<input type="text" class="form-control" ng-model="name">
-			</div>
-			<div class="form-group">
-				<span class="input-group-addon">Unidad:</span>
-				<select ng-model="unity" class="form-control">
-					<option ng-repeat="u in units" ng-value="{{u.id}}">{{u.name}}</option>
-				</select>
-			</div>			
 
-
-			<button type="button" ng-click="newInput()" class="btn btn-primary">Agregar unidad</button>
-		</div>
-	</div>
-
-	<div class="card" style="margin:15px;">
-		<div class="card-header">
-			<b>Editar insumo</b>
-		</div>
-		<div class="card-body">
-			<div class="form-group">
-				<span class="input-group-addon">Nombre:</span>
-				<input type="text" class="form-control" ng-model="nameUpdate" id="name">
-			</div>
-			<div class="form-group">
-				<span class="input-group-addon">Unidad:</span>
-				<input type="text" class="form-control" ng-model="addressUpdate" id="address">
-			</div>			
-			<button type="button" ng-click="editPointOfSale()" class="btn btn-primary">Editar unidad</button>
-		</div>
-	</div>
+	<table class="table">
+		<tr>
+			<td>
+				<div class="card" style="margin:15px;">
+					<div class="card-header">
+						<b>Agregar insumo</b>
+					</div>
+					<div class="card-body">
+						<div class="form-group">
+							<span class="input-group-addon">Nombre:</span>
+							<input type="text" class="form-control" ng-model="name">
+						</div>
+						<div class="form-group">
+							<span class="input-group-addon">Unidad:</span>
+							<select ng-model="unity" class="form-control">
+								<option ng-repeat="u in units" ng-value="{{u.id}}">{{u.name}}</option>
+							</select>
+						</div>
+						<div class="form-group">
+							<span class="input-group-addon">Precio:</span>
+							<input type="number" class="form-control" ng-model="price">
+						</div>
+						<button type="button" ng-click="newInput()" class="btn btn-primary">Agregar unidad</button>
+					</div>
+				</div>
+			</td>
+			<td>
+				<div class="card" style="margin:15px;">
+					<div class="card-header">
+						<b>Editar insumo</b>
+					</div>
+					<div class="card-body">
+						<div class="form-group">
+							<span class="input-group-addon">Nombre:</span>
+							<input type="text" class="form-control" ng-model="nameUpdate" id="name">
+						</div>
+						<div class="form-group">
+							<span class="input-group-addon">Unidad:</span>
+							<input type="text" class="form-control" ng-model="addressUpdate" id="address">
+						</div>
+						<button type="button" ng-click="editPointOfSale()" class="btn btn-primary">Editar unidad</button>
+					</div>
+				</div>
+			</td>
+		</tr>
+	</table>
 
 	<div class="flex flex-wrap d-flex justify-content-around content-center content-between boxs-container">
-		<div class="boxs-lista border" ng-repeat="i in inputs">			
-			<div class="lista-info">
-				<div class="lista-title">
-                    <label>{{i.name}}</label>                    
-                </div>
-                <div class="lista-title">
-                    <label>{{i.unity}}</label>                    
-                </div>				
-				<a href="javascript:;" ng-click="delete(i.id)">x</a>
-				<a href="javascript:;" ng-click="update(p.id,p.name,p.address,p.tel)">update</a>
-			</div>
-		</div>
+		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th scope="col">Nombre</th>
+					<th scope="col">Unidad</th>
+					<th scope="col">Editar</th>
+					<th scope="col">Eliminar</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr ng-repeat="i in inputs">
+					<td>{{i.name}}</td>
+					<td>{{i.unity}}</td>
+					<td>
+						<a href="javascript:;" ng-click="update(p.id,p.name,p.address,p.tel)">update</a>
+					</td>
+					<td>
+						<a href="javascript:;" ng-click="delete(i.id)">x</a>
+					</td>
+				</tr>
+			</tbody>
+		</table>
 	</div>
 </body>
 

@@ -26,58 +26,54 @@ app.controller('pointOfSailController', ['$scope', '$http', '$window',
                 var entrada = {};
                 entrada.product = key;
                 for(var j = 0; j < $scope.kpis[key].length; j++){
-                    entrada[$scope.kpis[key][j].type] = $scope.kpis[key][j].quantity;
+                    if( $scope.kpis[key][j].type == "delivery" || $scope.kpis[key][j].type  == "return"){
+                        entrada[$scope.kpis[key][j].type] = $scope.kpis[key][j].quantity;
+                    }                    
                 }
                 data.push(entrada);
             });
-            
-            var chart = AmCharts.makeChart("chartdiv", {
-                "theme": "light",
+
+            var chart = AmCharts.makeChart( "chartdiv", {
                 "type": "serial",
+                "theme": "light",
                 "dataProvider": data,
-                "valueAxes": [{
-                    "stackType": "3d",
-                    "unit": "%",
-                    "position": "left",
-                    "title": "GDP growth rate",
-                }],
+                "valueAxes": [ {
+                  "gridColor": "#FFFFFF",
+                  "gridAlpha": 0.2,
+                  "dashLength": 0
+                } ],
+                "gridAboveGraphs": true,
                 "startDuration": 1,
-                "graphs": [
-                    {
-                        "balloonText": "Vacios: <b>[[value]]</b>",
-                        "fillAlphas": 0.9,
-                        "lineAlpha": 0.2,
-                        "title": "Vacios",
-                        "type": "column",
-                        "valueField": "empty"
-                    }, {
-                        "balloonText": "Devueltos: <b>[[value]]</b>",
-                        "fillAlphas": 0.9,
-                        "lineAlpha": 0.2,
-                        "title": "Devueltos",
-                        "type": "column",
-                        "valueField": "return"
-                    },
-                    {
-                    "balloonText": "Entregados: <b>[[value]]</b>",
-                    "fillAlphas": 0.9,
-                    "lineAlpha": 0.2,
-                    "title": "Entregados",
-                    "type": "column",
-                    "valueField": "delivery"
-                }],
-                "plotAreaFillAlphas": 0.1,
-                "depth3D": 90,
-                "angle": 75,
+                "graphs": [ {
+                  "balloonText": "[[category]]: <b>[[value]]</b>",
+                  "fillAlphas": 0.8,
+                  "lineAlpha": 0.2,
+                  "type": "column",
+                  "valueField": "delivery"
+                },{
+                  "balloonText": "[[category]]:* <b>[[value]]</b>",
+                  "fillAlphas": 0.8,
+                  "lineAlpha": 0.2,
+                  "type": "column",
+                  "valueField": "return"
+                } ],
+                "chartCursor": {
+                  "categoryBalloonEnabled": false,
+                  "cursorAlpha": 0,
+                  "zoomable": false
+                },
                 "categoryField": "product",
                 "categoryAxis": {
-                    "gridPosition": "start"
+                  "gridPosition": "start",
+                  "gridAlpha": 0,
+                  "tickPosition": "start",
+                  "tickLength": 20
                 },
                 "export": {
-                    "enabled": true
-                 }
-            });
-
+                  "enabled": true
+                }
+              
+              } );
 
         });
 }]);

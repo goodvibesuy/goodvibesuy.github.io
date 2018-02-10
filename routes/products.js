@@ -24,8 +24,8 @@ router.get('/', function (req, res, next) {
 
 router.post('/', function (req, res, next) {
   con.query(
-    "INSERT INTO product  (name, address, tel) VALUES(?,?,?)",
-    [req.body.name, req.body.address, req.body.tel],
+    "INSERT INTO product  (name, path_image) VALUES(?,?)",
+    [req.body.name, req.body.image],
     function (err, resultClient) {
       if (err) {
         if (err.code === "ER_DUP_ENTRY") {

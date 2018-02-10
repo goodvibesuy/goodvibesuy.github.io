@@ -5,43 +5,38 @@ var controllerBack = "riesgoNuevo";
 
 app.controller('pointOfSailController', ['$scope', '$http', '$window',
     function($scope, $http, $window) {        
-
         $http({
             method: 'GET',
-            url: "http://localhost:3000/unity",
+            url: "http://localhost:3000/products",
             data: JSON.stringify({"a":"b"}),
             headers: { "Content-Type": "application/json; charset=utf-8" }
         }).then(function(response) {
-            $scope.units = response.data.data;
-            console.log($scope.units);
-        });
-
-
-        $http({
-            method: 'GET',
-            url: "http://localhost:3000/inputs",
-            data: JSON.stringify({"a":"b"}),
-            headers: { "Content-Type": "application/json; charset=utf-8" }
-        }).then(function(response) {
-            $scope.inputs = response.data.data;            
-        });
+            $scope.products = response.data.data;            
+        });          
         
-        $scope.newInput = function(){
+        $scope.newProduct = function(){
             $http({
                 method: 'POST',
-                url: "http://localhost:3000/inputs",
-                data: JSON.stringify({name:$scope.name,unity:$scope.unity,price:$scope.price}),
+                url: "http://localhost:3000/products",
+                data: JSON.stringify({name:$scope.name,image:$scope.image}),
                 headers: { "Content-Type": "application/json; charset=utf-8" }
             }).then(function(response) {
-                console.log(response);                
+                console.log(response);
+                $http({
+                    method: 'GET',
+                    url: "http://localhost:3000/products",
+                    data: JSON.stringify({"a":"b"}),
+                    headers: { "Content-Type": "application/json; charset=utf-8" }
+                }).then(function(response) {
+                    $scope.products = response.data.data;            
+                });
             });
         };
 
-        $scope.update = function(id,name,address,tel){
+        $scope.update = function(id,name,image){
             $scope.idUpdate =id;
             $scope.nameUpdate = name;
-            $scope.addressUpdate = address;
-            $scope.telUpdate = tel;
+            $scope.imageUpdate = image;
             $http({
                 method: 'PUT',
                 url: "http://localhost:3000/unity",
@@ -52,12 +47,12 @@ app.controller('pointOfSailController', ['$scope', '$http', '$window',
             });
         };
 
-        $scope.editPointOfSale = function(){
+        $scope.editProduct = function(){
             $http({
                 method: 'PUT',
                 url: "http://localhost:3000/unity",
                 data: JSON.stringify({id:$scope.idUpdate,name:$scope.nameUpdate,
-                                    address:$scope.addressUpdate,tel:$scope.telUpdate}),
+                                    image:$scope.imageUpdate}),
                 headers: { "Content-Type": "application/json; charset=utf-8" }
             }).then(function(response) {
                 console.log(response);
@@ -67,7 +62,7 @@ app.controller('pointOfSailController', ['$scope', '$http', '$window',
         $scope.delete = function(id){
             $http({
                 method: 'DELETE',
-                url: "http://localhost:3000/inputs",
+                url: "http://localhost:3000/unity",
                 data: JSON.stringify({id:id}),
                 headers: { "Content-Type": "application/json; charset=utf-8" }
             }).then(function(response) {

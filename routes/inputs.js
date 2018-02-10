@@ -1,25 +1,9 @@
 var express = require('express');
 var router = express.Router();
 
-var mysql = require('mysql');
-
-var con = mysql.createConnection({
-  host: "localhost",
-  user: "root",
-  password: "",
-  database: "good"
-});
-
-con.connect(function (err) {
-  if (err) throw err;
-})
-
-
 router.get('/', function (req, res, next) {
-  con.query("SELECT * FROM input", function (err, result) {
-    if (err) throw err;
-    console.log("Result: ", result);
-    res.send({ result: 1, message: "OK", data: result });
+  inputsModel.inputs(function (result) {
+    res.send(result);
   });
 });
 
