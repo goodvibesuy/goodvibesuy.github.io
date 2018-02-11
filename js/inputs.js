@@ -37,19 +37,23 @@ app.controller('pointOfSailController', ['$scope', '$http', '$window',
             });
         };
 
-        $scope.update = function(id,name,address,tel){
-            $scope.idUpdate =id;
-            $scope.nameUpdate = name;
-            $scope.addressUpdate = address;
-            $scope.telUpdate = tel;
+        $scope.editInput = function(){
             $http({
                 method: 'PUT',
-                url: "http://localhost:3000/unity",
-                data: JSON.stringify({id:$scope.id,name:$scope.name,address:$scope.address,tel:$scope.tel}),
+                url: "http://localhost:3000/inputs",
+                data: JSON.stringify({name:$scope.nameUpdate,unity:$scope.unityUpdate,price:$scope.priceUpdate,id:$scope.idUpdate}),
                 headers: { "Content-Type": "application/json; charset=utf-8" }
             }).then(function(response) {
-                console.log(response);
+                console.log(response);                
             });
+        };
+        
+
+        $scope.update = function(id,name,unity,amount){
+            $scope.idUpdate =id;
+            $scope.nameUpdate = name;
+            $scope.unityUpdate = unity;
+            $scope.priceUpdate = amount;
         };
 
         $scope.editPointOfSale = function(){

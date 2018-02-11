@@ -15,29 +15,82 @@ var inputsModel = function () {
 };
 
 inputsModel.inputs = function (callBack) {
-    con.query("SELECT * FROM input", function (err, result) {
+    con.query("SELECT * FROM input INNER JOIN inputPrice ON id  = idInput ORDER BY date DESC", function (err, result) {
         if (err) throw err;
         callBack({ result: 1, message: "OK", data: result });
     });
 };
 
-inputsModel.sales = function (callBack) {
-    var sumaEntregas = 0;
-    con.query("SELECT SUM(quantity) as quantity FROM viewing_product WHERE type = 'delivery' AND idproduct= 1", function (err, result) {
-        if (err) throw err;
-        sumaEntregas = result[0].quantity;
-        con.query("SELECT quantity FROM viewing_product WHERE type = 'delivery' AND `idproduct`= 1 ORDER BY `idviewing` DESC LIMIT 1", function (err, result) {
-            if (err) throw err;
-            sumaEntregas -= result[0].quantity;
+inputsModel.addInput = function (name, idUnity, price, callBack) {
+    con.query(
+        "INSERT INTO input  (name, unity) VALUES(?,?)",
+        [name, idUnity],
+        function (err, result) {
+            if (err) {
+                if (err.code === "ER_DUP_ENTRY") {
+                    con.release();
+                }
+            } else {
+                var idInput = result.insertId;
 
-            con.query("SELECT SUM(quantity) as quantity FROM viewing_product WHERE type = 'return' AND `idproduct`= 1 ", function (err, result) {
-                if (err) throw err;
-                console.log(result[0].quantity);
-                sumaEntregas -= result[0].quantity;
-                callBack({ result: 1, message: "OK", data: sumaEntregas });
-            });
-        });
-    });
+                con.query(
+                    "INSERT INTO inputPrice  (date, amount,idInput) VALUES(NOW(),?,?)",
+                    [price,idInput],
+                    function (err, result) {
+                        if (err) {
+                            if (err.code === "ER_DUP_ENTRY") {
+                                con.release();
+                            }
+                        } else {
+                            callBack({ result: 1, message: "OK" });
+                        };
+                    });
+            }
+        }
+    );
 };
+
+inputsModel.updateInput = function (name, idUnity, price, id, callBack) {
+    con.query(
+        "UPDATE input  SET name = ?, unity = ? WHERE id = ?",
+        [name, idUnity, id],
+        function (err, resultClient) {
+            if (err) {
+                if (err.code === "ER_DUP_ENTRY") {
+                    con.release();
+                }
+            } else {
+                con.query(
+                    "INSERT INTO inputPrice  (date, amount,idInput) VALUES(NOW(),?,?)",
+                    [price,id],
+                    function (err, result) {
+                        if (err) {
+                            if (err.code === "ER_DUP_ENTRY") {
+                                con.release();
+                            }
+                        } else {
+                            callBack({ result: 1, message: "OK" });
+                        };
+                    });
+            }
+        }
+    );
+}
+
+inputsModel.deleteInput = function (id, callBack) {
+    con.query(
+        "DELETE FROM input WHERE id = ? ",
+        [id],
+        function (err, resultClient) {
+            if (err) {
+                if (err.code === "ER_DUP_ENTRY") {
+                    con.release();
+                }
+            } else {
+                callBack({ result: 1, message: "OK" });
+            }
+        }
+    );
+}
 
 module.exports = inputsModel;
