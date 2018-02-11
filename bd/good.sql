@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: localhost
--- Tiempo de generación: 11-02-2018 a las 01:24:12
+-- Tiempo de generación: 11-02-2018 a las 14:24:34
 -- Versión del servidor: 10.1.13-MariaDB
 -- Versión de PHP: 5.6.23
 
@@ -38,7 +38,14 @@ CREATE TABLE `input` (
 
 INSERT INTO `input` (`id`, `name`, `unity`) VALUES
 (2, 'Limones', 1),
-(3, 'Naranja', 1);
+(3, 'Naranja', 1),
+(4, 'Pepino', 1),
+(5, 'Manzana Roja', 1),
+(6, 'Pera', 1),
+(7, 'Espinaca', 1),
+(8, 'Apio', 1),
+(9, 'Kale', 1),
+(10, 'Manzana verde', 1);
 
 -- --------------------------------------------------------
 
@@ -59,7 +66,15 @@ CREATE TABLE `inputPrice` (
 INSERT INTO `inputPrice` (`date`, `amount`, `idInput`) VALUES
 ('2018-02-10 21:00:43', 100, 2),
 ('2018-02-10 21:02:24', 150, 3),
-('2018-02-10 21:22:57', 170, 3);
+('2018-02-10 21:22:57', 170, 3),
+('2018-02-11 08:48:50', 70, 4),
+('2018-02-11 08:51:05', 75, 5),
+('2018-02-11 08:51:46', 120, 6),
+('2018-02-11 08:52:30', 150, 7),
+('2018-02-11 08:54:04', 200, 8),
+('2018-02-11 08:54:37', 120, 9),
+('2018-02-11 08:55:25', 75, 5),
+('2018-02-11 08:56:30', 100, 10);
 
 -- --------------------------------------------------------
 
@@ -116,6 +131,18 @@ CREATE TABLE `productPrice` (
   `date` datetime NOT NULL,
   `amount` int(11) DEFAULT NULL,
   `idProduct` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `product_input`
+--
+
+CREATE TABLE `product_input` (
+  `idproduct` int(11) DEFAULT NULL,
+  `idInput` int(11) DEFAULT NULL,
+  `quantity` double DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -238,6 +265,13 @@ ALTER TABLE `productPrice`
   ADD KEY `idProduct_idx` (`idProduct`);
 
 --
+-- Indices de la tabla `product_input`
+--
+ALTER TABLE `product_input`
+  ADD KEY `idProduct_idx` (`idproduct`),
+  ADD KEY `idInput_idx` (`idInput`);
+
+--
 -- Indices de la tabla `unity`
 --
 ALTER TABLE `unity`
@@ -265,7 +299,7 @@ ALTER TABLE `viewing_product`
 -- AUTO_INCREMENT de la tabla `input`
 --
 ALTER TABLE `input`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 --
 -- AUTO_INCREMENT de la tabla `pointofsale`
 --
@@ -302,6 +336,13 @@ ALTER TABLE `inputPrice`
 --
 ALTER TABLE `productPrice`
   ADD CONSTRAINT `idProduct` FOREIGN KEY (`idProduct`) REFERENCES `product` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Filtros para la tabla `product_input`
+--
+ALTER TABLE `product_input`
+  ADD CONSTRAINT `idInput2` FOREIGN KEY (`idInput`) REFERENCES `input` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `idProduct2` FOREIGN KEY (`idproduct`) REFERENCES `product` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
 -- Filtros para la tabla `viewing`
