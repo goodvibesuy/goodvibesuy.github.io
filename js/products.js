@@ -11,7 +11,19 @@ app.controller('pointOfSailController', ['$scope', '$http', '$window',
             data: JSON.stringify({"a":"b"}),
             headers: { "Content-Type": "application/json; charset=utf-8" }
         }).then(function(response) {
-            $scope.products = response.data.data;            
+            $scope.products = response.data.data;     
+            
+            console.log($scope.products);
+            for(var i = 0; i < $scope.products.length ; i++){
+                $http({
+                    method: 'POST',
+                    url: "http://localhost:3000/inputsbyproduct",
+                    data: JSON.stringify({"idProduct":$scope.products[i].id}),
+                    headers: { "Content-Type": "application/json; charset=utf-8" }
+                }).then(function(response2) {
+                    console.log(response2);
+                });
+            }
         });          
         
         $scope.newProduct = function(){

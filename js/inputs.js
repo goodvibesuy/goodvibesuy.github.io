@@ -17,13 +17,14 @@ app.controller('pointOfSailController', ['$scope', '$http', '$window',
         });
 
 
+
         $http({
             method: 'GET',
             url: "http://localhost:3000/inputs",
             data: JSON.stringify({"a":"b"}),
             headers: { "Content-Type": "application/json; charset=utf-8" }
         }).then(function(response) {
-            $scope.inputs = response.data.data;            
+            $scope.inputs = response.data.data;
         });
         
         $scope.newInput = function(){
@@ -33,7 +34,15 @@ app.controller('pointOfSailController', ['$scope', '$http', '$window',
                 data: JSON.stringify({name:$scope.name,unity:$scope.unity,price:$scope.price}),
                 headers: { "Content-Type": "application/json; charset=utf-8" }
             }).then(function(response) {
-                console.log(response);                
+                console.log(response);      
+                $http({
+                    method: 'GET',
+                    url: "http://localhost:3000/inputs",
+                    data: JSON.stringify({"a":"b"}),
+                    headers: { "Content-Type": "application/json; charset=utf-8" }
+                }).then(function(response) {
+                    $scope.inputs = response.data.data;            
+                });          
             });
         };
 

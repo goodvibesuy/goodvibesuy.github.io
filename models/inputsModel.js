@@ -21,6 +21,14 @@ inputsModel.inputs = function (callBack) {
     });
 };
 
+inputsModel.inputsByProduct = function(idProduct,callBack){
+    con.query("SELECT * FROM input INNER JOIN product_input ON id  = idInput WHERE idProduct = ?",[idProduct] ,function (err, result) {
+        if (err) throw err;
+        callBack({ result: 1, message: "OK", data: result });
+    });
+};
+
+
 inputsModel.addInput = function (name, idUnity, price, callBack) {
     con.query(
         "INSERT INTO input  (name, unity) VALUES(?,?)",

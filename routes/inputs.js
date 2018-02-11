@@ -15,6 +15,13 @@ router.post('/', function (req, res, next) {
   });
 });
 
+//cambiar por get
+router.post('/inputsbyproduct',function(req,res,next){
+  inputsModel.inputsByProduct(req.body.idProduct,function(result){
+    res.send(result);    
+  });
+});
+
 router.put('/', function (req, res, next) {  
   inputsModel.updateInput(req.body.name, req.body.unity,req.body.price,req.body.id,function(result){
     res.send(result);    
