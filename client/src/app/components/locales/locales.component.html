@@ -2,7 +2,9 @@
     <input type="text" class="form-control" placeholder="Buscar locales...">
   </div>
   <div class="flex flex-wrap d-flex justify-content-around content-center content-between boxs-container">
-    <div class="boxs-lista border" onclick="window.location='detalle-local.html'">
+    <div class="boxs-lista border" 
+    [routerLink]="['/detalle-local', '3']">
+    <!--onclick="window.location='detalle-local.html'"-->
       <div class="lista-image">
         <img src="images/locales/porto-vanilla.png">
       </div>

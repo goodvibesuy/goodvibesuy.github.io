@@ -6,6 +6,10 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { ProductosComponent } from './components/productos/productos.component';
 import { LocalesComponent } from './components/locales/locales.component';
 import { ReportesComponent } from './components/reportes/reportes.component';
+import { InputComponent } from './components/input/input.component';
+import { MapaComponent } from './components/mapa/mapa.component';
+import { DetalleLocalComponent } from './components/detalle-local/detalle-local.component';
+import { ConfigsComponent } from './components/configs/configs.component';
 
 const routes: Routes = [
 	{
@@ -23,6 +27,22 @@ const routes: Routes = [
 	{
 		path: 'reportes',
 		component: ReportesComponent
+	},
+	{
+		path: 'input',
+		component: InputComponent
+	},
+	{
+		path: 'mapa',
+		component: MapaComponent
+	},
+	{
+		path: 'detalle-local/:id',
+		component: DetalleLocalComponent
+	},
+	{
+		path: 'configs',
+		component: ConfigsComponent
 	}
 ];
 

@@ -10,6 +10,9 @@ import { ProductosComponent } from './components/productos/productos.component';
 import { LocalesComponent } from './components/locales/locales.component';
 import { ReportesComponent } from './components/reportes/reportes.component';
 import { InputComponent } from './components/input/input.component';
+import { MapaComponent } from './components/mapa/mapa.component';
+import { DetalleLocalComponent } from './components/detalle-local/detalle-local.component';
+import { ConfigsComponent } from './components/configs/configs.component';
 
 @NgModule({
 	declarations: [
@@ -19,7 +22,10 @@ import { InputComponent } from './components/input/input.component';
 		ProductosComponent,
 		LocalesComponent,
 		ReportesComponent,
-		InputComponent
+		InputComponent,
+		MapaComponent,
+		DetalleLocalComponent,
+		ConfigsComponent
 	],
 	imports: [
 		BrowserModule,
