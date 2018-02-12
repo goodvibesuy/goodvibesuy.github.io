@@ -1,0 +1,52 @@
+<div class="card" style="margin:15px;">
+	<div class="card-header">
+		<b>Agregar insumo</b>
+	</div>
+	<div class="card-body">
+		<div class="form-group">
+			<span class="input-group-addon">Nombre:</span>
+			<input type="text" class="form-control" ng-model="name">
+		</div>
+		<div class="form-group">
+			<span class="input-group-addon">Unidad:</span>
+			<select ng-model="unity" class="form-control">
+					<option ng-repeat="u in units" ng-value="{{u.id}}">{{u.name}}</option>
+				</select>
+		</div>
+
+
+		<button type="button" ng-click="newInput()" class="btn btn-primary">Agregar unidad</button>
+	</div>
+</div>
+
+<div class="card" style="margin:15px;">
+	<div class="card-header">
+		<b>Editar insumo</b>
+	</div>
+	<div class="card-body">
+		<div class="form-group">
+			<span class="input-group-addon">Nombre:</span>
+			<input type="text" class="form-control" ng-model="nameUpdate" id="name">
+		</div>
+		<div class="form-group">
+			<span class="input-group-addon">Unidad:</span>
+			<input type="text" class="form-control" ng-model="addressUpdate" id="address">
+		</div>
+		<button type="button" ng-click="editPointOfSale()" class="btn btn-primary">Editar unidad</button>
+	</div>
+</div>
+
+<div class="flex flex-wrap d-flex justify-content-around content-center content-between boxs-container">
+	<div class="boxs-lista border" ng-repeat="i in inputs">
+		<div class="lista-info">
+			<div class="lista-title">
+				<label>{{i.name}}</label>
+			</div>
+			<div class="lista-title">
+				<label>{{i.unity}}</label>
+			</div>
+			<a href="javascript:;" ng-click="delete(i.id)">x</a>
+			<a href="javascript:;" ng-click="update(p.id,p.name,p.address,p.tel)">update</a>
+		</div>
+	</div>
+</div>

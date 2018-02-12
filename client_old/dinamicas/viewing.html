@@ -1,0 +1,56 @@
+<html>
+	<head>
+	<!-- Required meta tags -->
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<!-- Bootstrap CSS -->
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+		<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+		<title>GoodVibes prototype - Home</title>
+        <link rel="stylesheet" href="/css/style.css" crossorigin="anonymous">
+        <script src="/js/angular.min.js"></script>
+	    <script src="/js/viewings.js"></script>
+	</head>
+	<body ng-app="googApp" ng-controller="pointOfSailController">
+		<div class="slide-img">
+			<a href="index.html"><img src="/images/app/good-vibes-logo.jpg"></a>
+		</div>			
+		<div class="detalle-local border">
+			<div class="detalle-local-header flex flex-wrap d-flex justify-content-around content-center content-between">
+				<div class="head-image">
+					<img src="/images/locales/porto-vanilla.png">
+				</div>
+			</div>			
+			<div class="detalle-local-info">
+				<div class="container">
+					<div class="row align-items-center">
+						<div class="col" ></div>
+						<div class="col">Entregados</div>
+						<div class="col">Devolución vencidos</div>
+						<div class="col">Devolución vacíos</div>
+                    </div>
+                    <div class="row align-items-center" ng-repeat="p in productsToSend">
+						<div class="col productos-info">
+							<div class="productos-image">
+								<img src="/images/{{p.path_image}}">
+							</div>								
+							<div class="productos-title">
+								<label>{{p.name}}</label>
+							</div>
+						</div>
+						<div class="col"><input type="number" ng-model="p.typeTransaction.delivery" class="detalle-input form-control" /></div>
+						<div class="col"><input type="number" ng-model="p.typeTransaction.return" class="detalle-input form-control" /></div>
+						<div class="col"><input type="number" ng-model="p.typeTransaction.empty" class="detalle-input form-control" /></div>
+					</div>
+				</div>
+				<div class="filters flex d-flex justify-content-around content-center content-between ">
+					<button type="button" class="btn btn-success btn-lg" ng-click="send()">Confirmar</button>
+					<button type="button" class="btn btn-secondary btn-lg">Cancelar</button>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>
