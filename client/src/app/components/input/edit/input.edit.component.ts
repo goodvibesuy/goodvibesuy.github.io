@@ -4,8 +4,8 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
- import { InputService } from '../../../services/input.service';
- import { Input } from '../../../shared/models/input.model';
+import { InputService } from '../../../services/input.service';
+import { Input } from '../../../shared/models/input.model';
 
 @Component({
   selector: 'app-input-edit',
@@ -16,25 +16,35 @@ export class InputEditComponent implements OnInit, OnDestroy {
 
   id: number;
   paramsSub: any;
-  
+
   private input: Input;
 
   constructor(
     private activatedRoute: ActivatedRoute,
-     private inputService: InputService
+    private inputService: InputService
   ) { }
 
   ngOnInit() {
-    this.paramsSub = this.activatedRoute.params.subscribe(params => this.id = parseInt(params['id'], 10));
-    
-    // this.inputService.getInputs()
-    //   .subscribe(data => this.inputs = data,
-    //   error => { }
-    //   );
+    this.paramsSub = this.activatedRoute.params
+      .subscribe(params => {
+
+        this.inputService.get()
+          .subscribe(data => {
+            debugger;
+            this.input = ((<Input[]>data).find(s => s.id == params['id']))
+          }),
+          error => { }
+      }
+      );
   }
 
   ngOnDestroy() {
     this.paramsSub.unsubscribe();
   }
+
+  actualizar(id: number, nombre: string, unidad :number){
+    this.inputService.update(id, nombre, unidad)
+    .subscribe(data => {}),
+    error => { }
+  }
 }
- 

@@ -1,4 +1,4 @@
-export interface Input {
+export interface SupplyUnit{
     id: number;
     name: string;
 }

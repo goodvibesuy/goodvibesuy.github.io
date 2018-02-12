@@ -1,8 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
-
-import { AppRoutingModule } from './app-routing.module';
+import { FormsModule } from '@angular/forms';
 
 // components
 import { AppComponent } from './app.component';
@@ -18,6 +17,9 @@ import { InputAddComponent } from './components/input/add/input.add.component';
 import { MapaComponent } from './components/mapa/mapa.component';
 import { DetalleLocalComponent } from './components/detalle-local/detalle-local.component';
 import { ConfigsComponent } from './components/configs/configs.component';
+
+// app routing 
+import { AppRoutingModule } from './app-routing.module';
 
 // services
 import { InputService } from './services/input.service';
@@ -40,6 +42,7 @@ import { InputService } from './services/input.service';
 	],
 	imports: [
 		BrowserModule,
+		FormsModule,
 		HttpClientModule,
 		AppRoutingModule
 	],

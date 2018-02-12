@@ -17,24 +17,29 @@ export class InputService {
         private http: HttpClient
     ) { }
 
-    getInputs(): Observable<Input[]> {
+    get(): Observable<Input[]> {
         return this.http.get<Input[]>(this.inputsUrl)
             .pipe(
-            tap(heroes => this.log(`fetched heroes`)),
+            tap(heroes => this.log(`fetched input`)),
             map(r => (<any>r).data)
             )
     }
 
-    editInput(input: Input):void{
-        // $http({
-        //     method: 'PUT',
-        //     url: "http://localhost:3000/inputs",
-        //     data: JSON.stringify({name:$scope.nameUpdate,unity:$scope.unityUpdate,price:$scope.priceUpdate,id:$scope.idUpdate}),
-        //     headers: { "Content-Type": "application/json; charset=utf-8" }
-        // }).then(function(response) {
-            console.log('inputs edited');                
-        // });
+    update(id: number, name: string, supplyUnit: number): Observable<any> {
+        return this.http
+            .put<Input[]>(
+            this.inputsUrl, // + '/' + id,
+            { 'name': name, 'unity': supplyUnit, 'price': 123 }
+            );
     }
+
+    // delete(id: number): Observable<any> {
+    //     return this.http
+    //         .delete<Input[]>(
+    //         this.inputsUrl, //+ '/' + id,
+    //         { 'name': name, 'unity': supplyUnit, 'price': 123 }
+    //         );
+    // }
 
     /**
  * Handle Http operation that failed.
