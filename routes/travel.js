@@ -15,9 +15,14 @@ router.post('/', function (req, res, next) {
     });
 });
 
-//cambiar por get
-router.post('/inputsbyproduct', function (req, res, next) {
-    travelModel.inputsByProduct(req.body.idProduct, function (result) {
+router.post('/addPointOfSale', function (req, res, next) {
+    travelModel.addPointOfSale(req.body.idRoute,req.body.idPointOfSale, function (result) {
+        res.send(result);
+    });
+});
+
+router.post('/addUser', function (req, res, next) {
+    travelModel.addPointOfSale(req.body.idRoute,req.body.idUser, function (result) {
         res.send(result);
     });
 });

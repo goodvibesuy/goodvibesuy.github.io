@@ -15,29 +15,42 @@ var travelModel = function () {
 };
 
 travelModel.getAll = function (callBack) {
-    con.query("SELECT * FROM travel", function (err, result) {
+    con.query("SELECT * FROM route", function (err, result) {
         if (err) throw err;
         callBack({ result: 1, message: "OK", data: result });
     });
 };
 
 travelModel.add = function (travelName,callBack) {
-    con.query("INSERT INTO travel (name) VALUES (?)",[travelName], function (err, result) {
+    con.query("INSERT INTO route (name) VALUES (?)",[travelName], function (err, result) {
         if (err) throw err;
         callBack({ result: 1, message: "OK", data: result });
     });
 };
 
-travelModel.update = function (travelName,idTravel,callBack) {
-    con.query("UPDATE travel SET  name = ? WHERE idTravel =",[travelName,idTravel], function (err, result) {
+travelModel.addPointOfSale = function (idRoute,idPointOfSale,callBack) {
+    con.query("INSERT INTO route_pointofsale (idroute,idpointofsale) VALUES (?,?)",[idRoute,idPointOfSale], function (err, result) {
         if (err) throw err;
         callBack({ result: 1, message: "OK", data: result });
     });
 };
 
+travelModel.addUser = function (idRoute,idUser,callBack) {
+    con.query("INSERT INTO route_user (idroute,iduser) VALUES (?,?)",[idRoute,idUser], function (err, result) {
+        if (err) throw err;
+        callBack({ result: 1, message: "OK", data: result });
+    });
+};
 
-travelModel.delete = function (idTravel,callBack) {
-    con.query("DELETE FROM travel WHERE idTravel = ?",[idTravel], function (err, result) {
+travelModel.update = function (travelName,idRoute,callBack) {
+    con.query("UPDATE route SET  name = ? WHERE idRoute =",[travelName,idRoute], function (err, result) {
+        if (err) throw err;
+        callBack({ result: 1, message: "OK", data: result });
+    });
+};
+
+travelModel.delete = function (idRoute,callBack) {
+    con.query("DELETE FROM route WHERE idRoute = ?",[idRoute], function (err, result) {
         if (err) throw err;
         callBack({ result: 1, message: "OK", data: result });
     });
