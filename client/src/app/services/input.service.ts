@@ -25,6 +25,17 @@ export class InputService {
             )
     }
 
+    editInput(input: Input):void{
+        // $http({
+        //     method: 'PUT',
+        //     url: "http://localhost:3000/inputs",
+        //     data: JSON.stringify({name:$scope.nameUpdate,unity:$scope.unityUpdate,price:$scope.priceUpdate,id:$scope.idUpdate}),
+        //     headers: { "Content-Type": "application/json; charset=utf-8" }
+        // }).then(function(response) {
+            console.log('inputs edited');                
+        // });
+    }
+
     /**
  * Handle Http operation that failed.
  * Let the app continue.

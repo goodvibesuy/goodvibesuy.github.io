@@ -7,6 +7,9 @@ import { ProductosComponent } from './components/productos/productos.component';
 import { LocalesComponent } from './components/locales/locales.component';
 import { ReportesComponent } from './components/reportes/reportes.component';
 import { InputComponent } from './components/input/input.component';
+import { InputListComponent } from './components/input/list/input.list.component';
+import { InputEditComponent } from './components/input/edit/input.edit.component';
+import { InputAddComponent } from './components/input/add/input.add.component';
 import { MapaComponent } from './components/mapa/mapa.component';
 import { DetalleLocalComponent } from './components/detalle-local/detalle-local.component';
 import { ConfigsComponent } from './components/configs/configs.component';
@@ -29,8 +32,13 @@ const routes: Routes = [
 		component: ReportesComponent
 	},
 	{
-		path: 'input',
-		component: InputComponent
+		path: 'inputs',
+		component: InputComponent,
+		children: [
+			{ path: '', component: InputListComponent},
+			{ path: 'edit/:id', component: InputEditComponent},
+			{ path: 'add', component: InputAddComponent}
+		]
 	},
 	{
 		path: 'mapa',

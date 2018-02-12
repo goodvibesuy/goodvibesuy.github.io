@@ -1,9 +1,14 @@
 
-/* supply en vez de imput?? */
+/* supply en vez de input?? */
 
 import { Component, OnInit } from '@angular/core';
-import { InputService } from '../../services/input.service'
-import { Input } from '../../shared/models/input.model'
+
+import { InputListComponent } from './list/input.list.component';
+import { InputEditComponent } from './edit/input.edit.component';
+import { InputAddComponent } from './add/input.add.component';
+
+// import { InputService } from '../../services/input.service';
+// import { Input } from '../../shared/models/input.model';
 
 @Component({
   selector: 'app-input',
@@ -12,17 +17,18 @@ import { Input } from '../../shared/models/input.model'
 })
 export class InputComponent implements OnInit {
 
-  private inputs: Input[];
+  // private inputs: Input[];
 
   constructor(
-    private inputService: InputService
+    // private inputService: InputService
   ) { }
 
   ngOnInit() {
-    this.inputService.getInputs()
-      .subscribe(data => this.inputs = data,
-      error => { }
-      );
+    // this.inputService.getInputs()
+    //   .subscribe(data => this.inputs = data,
+    //   error => { }
+    //   );
   }
 
 }
+ 

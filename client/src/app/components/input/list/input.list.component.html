@@ -1,0 +1,17 @@
+<a routerLink="add">add</a>
+
+<div class="flex flex-wrap d-flex justify-content-around content-center content-between boxs-container">
+	<div class="boxs-lista border" *ngFor="let i of inputs">
+		<div class="lista-info">
+			<div class="lista-title">
+				<label>{{i.name}}</label>
+			</div>
+			<div class="lista-title">
+				<label>{{i.unity}}</label>
+			</div>
+			<a href="javascript:;" ng-click="delete(i.id)">x</a>
+			<a [routerLink]="['edit', i.id]">update</a>
+		</div>
+	</div>
+</div>
+
