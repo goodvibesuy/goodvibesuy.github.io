@@ -1,21 +1,18 @@
-está pagina tiene codigo angular 1 -> formatear
-
-<!-- <div class="card" style="margin:15px;">
+ <div class="card" style="margin:15px;">
 	<div class="card-header">
 		<b>Agregar insumo</b>
 	</div>
 	<div class="card-body">
 		<div class="form-group">
 			<span class="input-group-addon">Nombre:</span>
-			<input type="text" class="form-control" ng-model="name">
+			<input type="text" class="form-control" ><!--ng-model="name"-->
 		</div>
 		<div class="form-group">
 			<span class="input-group-addon">Unidad:</span>
 			<select ng-model="unity" class="form-control">
-					<option ng-repeat="u in units" ng-value="{{u.id}}">{{u.name}}</option>
-				</select>
+				<!--<option ng-repeat="u in units" ng-value="{{u.id}}">{{u.name}}</option>-->
+			</select>
 		</div>
-
 
 		<button type="button" ng-click="newInput()" class="btn btn-primary">Agregar unidad</button>
 	</div>
@@ -39,7 +36,7 @@ está pagina tiene codigo angular 1 -> formatear
 </div>
 
 <div class="flex flex-wrap d-flex justify-content-around content-center content-between boxs-container">
-	<div class="boxs-lista border" ng-repeat="i in inputs">
+	<div class="boxs-lista border" *ngFor="let i of inputs">
 		<div class="lista-info">
 			<div class="lista-title">
 				<label>{{i.name}}</label>
@@ -51,4 +48,4 @@ está pagina tiene codigo angular 1 -> formatear
 			<a href="javascript:;" ng-click="update(p.id,p.name,p.address,p.tel)">update</a>
 		</div>
 	</div>
-</div> -->
+</div>
