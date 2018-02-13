@@ -3,7 +3,6 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 import { DashboardComponent } from './components/dashboard/dashboard.component';
-import { ProductosComponent } from './components/productos/productos.component';
 import { LocalesComponent } from './components/locales/locales.component';
 import { ReportesComponent } from './components/reportes/reportes.component';
 import { InputComponent } from './components/input/input.component';
@@ -15,6 +14,10 @@ import { InputAddComponent } from './components/input/add/input.add.component';
 import { MapaComponent } from './components/mapa/mapa.component';
 import { DetalleLocalComponent } from './components/detalle-local/detalle-local.component';
 import { ConfigsComponent } from './components/configs/configs.component';
+import { ProductsComponent } from './components/products/products.component';
+import { ProductsListComponent } from './components/products/list/products.list.component';
+import { ProductEditComponent } from './components/products/edit/product.edit.component';
+import { ProductAddComponent } from './components/products/add/product.add.component';
 
 const routes: Routes = [
 	{
@@ -23,7 +26,12 @@ const routes: Routes = [
 	},
 	{
 		path: 'productos',
-		component: ProductosComponent
+		component: ProductsComponent,
+		children: [
+			{ path: '', component: ProductsListComponent },
+			{ path: 'editar/:id', component: ProductEditComponent },
+			{ path: 'agregar', component: ProductAddComponent }
+		]
 	},
 	{
 		path: 'locales',
@@ -38,8 +46,8 @@ const routes: Routes = [
 		component: InputComponent,
 		children: [
 			{ path: '', component: InputListComponent},
-			{ path: 'edit/:id', component: InputEditComponent},
-			{ path: 'add', component: InputAddComponent}
+			{ path: 'editar/:id', component: InputEditComponent},
+			{ path: 'agregar', component: InputAddComponent}
 		]
 	},
 	{
