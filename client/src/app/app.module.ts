@@ -26,8 +26,8 @@ import { InputService } from './services/input.service';
 import { RouteService } from './services/route.service';
 import { RoutesComponent } from './components/routes/routes.component';
 import { ListComponent } from './components/routes/list/list.component';
-import { Add } from './component/routes/add.route/add.route.component';
-import { Route } from './components/routes/route.add/route.add.component';
+import { RouteAdd } from './components/routes/route.add/route.add.component';
+import { RouteEdit } from './components/routes/route.edit/route.edit.component';
 
 @NgModule({
 	declarations: [
@@ -46,8 +46,8 @@ import { Route } from './components/routes/route.add/route.add.component';
 		ConfigsComponent,
 		RoutesComponent,
 		ListComponent,
-		Add.RouteComponent,
-		Route.AddComponent
+		RouteAdd,
+		RouteEdit
 	],
 	imports: [
 		BrowserModule,

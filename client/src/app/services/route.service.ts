@@ -17,4 +17,18 @@ export class RouteService {
       map(r => (<any>r).data)
       )
   }
+
+  agregar(route: Route): Observable<any> {
+    return this.http
+      .post(
+      this.routeUrl,
+      {idroute:route.id, name : route.name}
+      );
+  }
+
+  delete(id: number): Observable<any> {
+    return this.http
+        .delete(this.routeUrl + '/' + id );
+  }
+
 }

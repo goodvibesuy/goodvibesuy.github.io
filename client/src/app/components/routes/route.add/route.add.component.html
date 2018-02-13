@@ -5,9 +5,9 @@
 	<div class="card-body">
 		<div class="form-group">
 			<span class="input-group-addon">Nombre:</span>
-			<input type="text" class="form-control" ><!--ng-model="name"-->
+			<input type="text" class="form-control" [(ngModel)]="route.name">
 		</div>
-		<button type="button" ng-click="newInput()" class="btn btn-primary">Agregar ruta</button>
-		<button type="button" class="btn btn-light" routerLink="/inputs">Cancelar</button>
+    <button type="button" (click)="agregar()" class="btn btn-primary">Agregar ruta</button>
+    <button type="button" class="btn btn-light" routerLink="/recorrido">Cancelar</button>
 	</div>
 </div>

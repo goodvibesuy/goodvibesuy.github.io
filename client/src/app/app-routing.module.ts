@@ -11,6 +11,8 @@ import { RoutesComponent } from './components/routes/routes.component';
 import { ListComponent } from './components/routes/list/list.component';
 import { InputListComponent } from './components/input/list/input.list.component';
 import { InputEditComponent } from './components/input/edit/input.edit.component';
+import { RouteAdd } from './components/routes/route.add/route.add.component';
+import { RouteEdit } from './components/routes/route.edit/route.edit.component';
 import { InputAddComponent } from './components/input/add/input.add.component';
 import { MapaComponent } from './components/mapa/mapa.component';
 import { DetalleLocalComponent } from './components/detalle-local/detalle-local.component';
@@ -46,7 +48,9 @@ const routes: Routes = [
 		path: 'recorridos',
 		component: RoutesComponent,
 		children: [
-			{ path: '', component: ListComponent}
+			{ path: '', component: ListComponent},
+			{ path: 'add', component: RouteAdd},		
+			{ path: 'edit/:id', component: RouteEdit}				
 		]
 	},
 	{

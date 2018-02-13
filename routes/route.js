@@ -33,8 +33,8 @@ router.put('/', function (req, res, next) {
     });
 });
 
-router.delete('/', function (req, res, next) {
-    travelModel.delete(req.body.id, function (result) {
+router.delete('/:id', function (req, res, next) {
+    travelModel.delete(req.params.id, function (result) {
         res.send(result);
     });
 });
