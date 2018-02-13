@@ -1,11 +1,18 @@
 <span class="glyphicon glyphicon-plus" routerLink="add">add</span>
 
 <div class="flex flex-wrap d-flex justify-content-around content-center content-between boxs-container">
-	<div class="boxs-lista border" *ngFor="let i of routes">
-		<div class="lista-info">
-			<div class="lista-title">
-				<label>{{i.name}}</label>
-			</div>
-		</div>
-	</div>
+	<table class="table">
+		<tr>
+			<td>Nombre</td>
+			<td>Eliminar</td>
+		</tr>
+		<tr *ngFor="let i of routes">
+			<td>{{i.name}}</td>
+			<td>
+				<a (click)="delete(i.idroute)">
+					<i class="fa fa-trash-o" style="font-size: 1.7em;"></i>
+				</a>
+			</td>
+		</tr>
+	</table>
 </div>

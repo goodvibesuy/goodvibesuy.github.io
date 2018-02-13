@@ -20,9 +20,19 @@ export class ListComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.loadInputs();
+  }
+
+  delete(id: number): void{
+    this.routeServices
+      .delete(id)
+      .subscribe(data=> this.loadInputs());
+  }
+
+  loadInputs():void{
     this.routeServices.get().subscribe(data => this.routes = data,
       error => {}
-    )
+    );
   }
 
 }
