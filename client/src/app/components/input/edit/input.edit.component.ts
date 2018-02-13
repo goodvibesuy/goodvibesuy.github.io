@@ -53,7 +53,7 @@ export class InputEditComponent implements OnInit, OnDestroy {
   actualizar() {
     this.inputService.update(this.input)
       .subscribe(data => {
-        this.router.navigateByUrl('/inputs');
+        this.router.navigateByUrl('/insumos');
       });
   }
 }

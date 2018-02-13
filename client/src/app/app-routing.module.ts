@@ -36,7 +36,7 @@ const routes: Routes = [
 		component: ReportesComponent
 	},
 	{
-		path: 'inputs',
+		path: 'insumos',
 		component: InputComponent,
 		children: [
 			{ path: '', component: InputListComponent},

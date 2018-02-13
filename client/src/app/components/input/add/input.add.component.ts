@@ -36,7 +36,7 @@ export class InputAddComponent implements OnInit {
   agregar() : void{
     this.inputService.agregar(this.input)
       .subscribe(data => {
-        this.router.navigateByUrl('/inputs');
+        this.router.navigateByUrl('/insumos');
       });
   }
 }
