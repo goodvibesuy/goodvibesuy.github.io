@@ -23,6 +23,11 @@ import { AppRoutingModule } from './app-routing.module';
 
 // services
 import { InputService } from './services/input.service';
+import { RouteService } from './services/route.service';
+import { RoutesComponent } from './components/routes/routes.component';
+import { ListComponent } from './components/routes/list/list.component';
+import { Add } from './component/routes/add.route/add.route.component';
+import { Route } from './components/routes/route.add/route.add.component';
 
 @NgModule({
 	declarations: [
@@ -38,7 +43,11 @@ import { InputService } from './services/input.service';
 		InputAddComponent,
 		MapaComponent,
 		DetalleLocalComponent,
-		ConfigsComponent
+		ConfigsComponent,
+		RoutesComponent,
+		ListComponent,
+		Add.RouteComponent,
+		Route.AddComponent
 	],
 	imports: [
 		BrowserModule,
@@ -47,7 +56,8 @@ import { InputService } from './services/input.service';
 		AppRoutingModule
 	],
 	providers: [
-		InputService
+		InputService,
+		RouteService
 	],
 	bootstrap: [AppComponent]
 })

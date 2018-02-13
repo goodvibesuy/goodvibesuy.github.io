@@ -1,4 +1,5 @@
 var mysql = require('mysql');
+var messages = require('../messages/messages');
 
 var con = mysql.createConnection({
   host: "localhost",
