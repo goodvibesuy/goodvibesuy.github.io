@@ -3,19 +3,16 @@
 
 import { Component, OnInit } from '@angular/core';
 
-import { InputListComponent } from './list/input.list.component';
-import { InputEditComponent } from './edit/input.edit.component';
-import { InputAddComponent } from './add/input.add.component';
 
 // import { InputService } from '../../services/input.service';
 // import { Input } from '../../shared/models/input.model';
 
 @Component({
-  selector: 'app-input',
-  templateUrl: './input.component.html',
-  styleUrls: ['./input.component.css']
+  selector: 'app-routes',
+  templateUrl: './routes.component.html',
+  styleUrls: ['./routes.component.css']
 })
-export class InputComponent implements OnInit {
+export class RoutesComponent implements OnInit {
 
   // private inputs: Input[];
 

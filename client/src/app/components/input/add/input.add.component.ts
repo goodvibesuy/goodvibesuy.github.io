@@ -2,8 +2,11 @@
 /* supply en vez de imput?? */
 
 import { Component, OnInit } from '@angular/core';
-//import { InputService } from '../../services/input.service'
-//import { Input } from '../../shared/models/input.model'
+// service
+import { InputService } from '../../../services/input.service';
+// models
+import { Input } from '../../../shared/models/input.model';
+import { SupplyUnit } from '../../../shared/models/supply-unit.model';
 
 @Component({
   selector: 'app-input-add',
@@ -12,17 +15,21 @@ import { Component, OnInit } from '@angular/core';
 })
 export class InputAddComponent implements OnInit {
 
-  //private inputs: Input[];
+  private input: Input;
+  private units: SupplyUnit[];
 
   constructor(
-    //private inputService: InputService
-  ) { }
-
-  ngOnInit() {
-    // this.inputService.getInputs()
-    //   .subscribe(data => this.inputs = data,
-    //   error => { }
-    //   );
+    private inputService: InputService
+  ) {
+    this.input = <Input>{};
   }
 
+  ngOnInit() {
+    this.inputService.getUnits()
+      .subscribe(data => {
+        this.units = <SupplyUnit[]>data;
+      });
+  }
+
+  // agregar(i)
 }

@@ -6,11 +6,13 @@ import { Observable } from 'rxjs/Observable';
 import { of } from 'rxjs/observable/of';
 
 import { Input } from '../shared/models/input.model'
+import { SupplyUnit } from '../shared/models/supply-unit.model'
 
 @Injectable()
 export class InputService {
 
     inputsUrl: string = '/api/inputs';
+    supplyUnitsUrl: string = '/api/unity';
     headers = { "Content-Type": "application/json; charset=utf-8" };
 
     constructor(
@@ -25,11 +27,19 @@ export class InputService {
             )
     }
 
+    getUnits(): Observable<SupplyUnit[]> {
+        return this.http.get<SupplyUnit[]>(this.supplyUnitsUrl)
+            .pipe(
+            tap(heroes => this.log(`fetched SupplyUnit`)),
+            map(r => (<any>r).data)
+            )
+    }
+
     update(id: number, name: string, supplyUnit: number): Observable<any> {
         return this.http
             .put<Input[]>(
             this.inputsUrl, // + '/' + id,
-            { 'name': name, 'unity': supplyUnit, 'price': 123 }
+            { 'id': id, 'name': name, 'unity': supplyUnit, 'price': 123 }
             );
     }
 

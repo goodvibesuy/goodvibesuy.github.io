@@ -3,9 +3,11 @@
 
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-
+// service
 import { InputService } from '../../../services/input.service';
+// models
 import { Input } from '../../../shared/models/input.model';
+import { SupplyUnit } from '../../../shared/models/supply-unit.model';
 
 @Component({
   selector: 'app-input-edit',
@@ -18,6 +20,7 @@ export class InputEditComponent implements OnInit, OnDestroy {
   paramsSub: any;
 
   private input: Input;
+  private units: SupplyUnit[];
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -30,11 +33,15 @@ export class InputEditComponent implements OnInit, OnDestroy {
 
         this.inputService.get()
           .subscribe(data => {
-            debugger;
             this.input = ((<Input[]>data).find(s => s.id == params['id']))
-          }),
-          error => { }
-      }
+          });
+
+        this.inputService.getUnits()
+          .subscribe(data => {
+            this.units = <SupplyUnit[]>data;
+          });
+      },
+      error => { }
       );
   }
 
@@ -42,9 +49,9 @@ export class InputEditComponent implements OnInit, OnDestroy {
     this.paramsSub.unsubscribe();
   }
 
-  actualizar(id: number, nombre: string, unidad :number){
+  actualizar(id: number, nombre: string, unidad: number) {
     this.inputService.update(id, nombre, unidad)
-    .subscribe(data => {}),
-    error => { }
+      .subscribe(data => { }),
+      error => { }
   }
 }

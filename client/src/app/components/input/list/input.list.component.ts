@@ -21,7 +21,7 @@ export class InputListComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.inputService.getInputs()
+    this.inputService.get()
       .subscribe(data => this.inputs = data,
       error => { }
       );
