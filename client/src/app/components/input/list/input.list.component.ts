@@ -21,9 +21,20 @@ export class InputListComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.inputService.get()
+    this.loadInputs();
+  }
+
+  delete(id: number): void{
+    this.inputService
+      .delete(id)
+      .subscribe(data=> this.loadInputs());
+  }
+
+  loadInputs():void{
+    this.inputService
+      .get()
       .subscribe(data => this.inputs = data,
       error => { }
-      );
+    );
   }
 }

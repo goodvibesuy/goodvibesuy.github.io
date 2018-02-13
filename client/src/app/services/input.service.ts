@@ -35,21 +35,26 @@ export class InputService {
             )
     }
 
-    update(id: number, name: string, supplyUnit: number): Observable<any> {
+    update(input: Input): Observable<any> {
         return this.http
             .put<Input[]>(
-            this.inputsUrl, // + '/' + id,
-            { 'id': id, 'name': name, 'unity': supplyUnit, 'price': 123 }
+                this.inputsUrl,
+                input
             );
     }
 
-    // delete(id: number): Observable<any> {
-    //     return this.http
-    //         .delete<Input[]>(
-    //         this.inputsUrl, //+ '/' + id,
-    //         { 'name': name, 'unity': supplyUnit, 'price': 123 }
-    //         );
-    // }
+    agregar( input: Input): Observable<any>{        
+        return this.http
+        .post(
+            this.inputsUrl,
+            input
+        );
+    }
+
+    delete(id: number): Observable<any> {
+        return this.http
+            .delete(this.inputsUrl + '/' + id );
+    }
 
     /**
  * Handle Http operation that failed.

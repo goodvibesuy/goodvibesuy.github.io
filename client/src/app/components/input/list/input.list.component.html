@@ -1,17 +1,33 @@
-<span class="glyphicon glyphicon-plus" routerLink="add">add</span>
+<span class="glyphicon glyphicon-plus" routerLink="add">
+	<button>add</button>
+</span>
 
 <div class="flex flex-wrap d-flex justify-content-around content-center content-between boxs-container">
-	<div class="boxs-lista border" *ngFor="let i of inputs">
-		<div class="lista-info">
-			<div class="lista-title">
-				<label>{{i.name}}</label>
-			</div>
-			<div class="lista-title">
-				<label>{{i.unity}}</label>
-			</div>
-			<a href="javascript:;" ng-click="delete(i.id)">x</a>
-			<a [routerLink]="['edit', i.id]">update</a>
-		</div>
-	</div>
-</div>
 
+	<table class="table table-striped">
+		<thead>
+			<tr>
+				<th scope="col">Nombre</th>
+				<th scope="col">Precio</th>
+				<th scope="col" style="width:100px;text-align: center;">Editar</th>
+				<th scope="col" style="width:100px;text-align: center;">Eliminar</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr *ngFor="let i of inputs">
+				<td>{{i.name}}</td>
+				<td>{{i.amount}} / {{i.unity}}</td>
+				<td style="text-align: center;">
+					<a [routerLink]="['edit', i.id]">
+								<i class="fa fa-edit" style="font-size: 1.7em;"></i>
+							</a>
+				</td>
+				<td style="text-align: center;">
+					<a (click)="delete(i.id)">
+								<i class="fa fa-trash-o" style="font-size: 1.7em;"></i>
+							</a>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+</div>

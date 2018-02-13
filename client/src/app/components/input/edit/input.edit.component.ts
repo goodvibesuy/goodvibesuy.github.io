@@ -2,7 +2,7 @@
 /* supply en vez de imput?? */
 
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 // service
 import { InputService } from '../../../services/input.service';
 // models
@@ -24,6 +24,7 @@ export class InputEditComponent implements OnInit, OnDestroy {
 
   constructor(
     private activatedRoute: ActivatedRoute,
+    private router: Router,
     private inputService: InputService
   ) { }
 
@@ -49,9 +50,10 @@ export class InputEditComponent implements OnInit, OnDestroy {
     this.paramsSub.unsubscribe();
   }
 
-  actualizar(id: number, nombre: string, unidad: number) {
-    this.inputService.update(id, nombre, unidad)
-      .subscribe(data => { }),
-      error => { }
+  actualizar() {
+    this.inputService.update(this.input)
+      .subscribe(data => {
+        this.router.navigateByUrl('/inputs');
+      });
   }
 }

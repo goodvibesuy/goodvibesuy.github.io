@@ -1,23 +1,32 @@
+<table class="table">
+	<tr>
+		<td>
+			<div class="card" style="margin:15px;">
+				<div class="card-header">
+					<b>Editar insumo</b>
+				</div>
+				<div class="card-body">
+					<div class="form-group">
+						<span class="input-group-addon">Nombre:</span>
+						<input type="text" class="form-control" id="name" *ngIf="input" [(ngModel)]="input.name">
+					</div>
+					<div class="form-group">
+						<span class="input-group-addon">Unidad:</span>
 
-<div class="card" style="margin:15px;">
-	<div class="card-header">
-		<b>Editar insumo</b>
-	</div>
-	<div class="card-body">
-		<div class="form-group">
-			<span class="input-group-addon">Nombre:</span>
-			<input type="text" class="form-control" id="name" *ngIf="input" [(ngModel)]="input.name">
-		</div>
-		<div class="form-group">
-			<span class="input-group-addon">Unidad:</span>
-
-			<select class="form-control" *ngIf="input" [(ngModel)]="input.unity">
+						<select class="form-control" *ngIf="input" [(ngModel)]="input.unity">
 				<option *ngFor="let unit of units" [ngValue]="unit.id">{{unit.name}}</option>
 			</select>
+					</div>
 
-			<!--<input type="text" class="form-control" id="unity" *ngIf="input" [(ngModel)]="input.unity">-->
-		</div>
-		<button type="button" class="btn btn-primary" (click)="actualizar(input.id, input.name, input.unity)">Actualizar</button>
-		<button type="button" class="btn btn-light" routerLink="/inputs">Cancelar</button>
-	</div>
-</div>
+					<div class="form-group">
+						<span class="input-group-addon">Precio:</span>
+						<input type="text" class="form-control" id="amount" *ngIf="input" [(ngModel)]="input.amount">
+					</div>
+
+					<button type="button" class="btn btn-primary" (click)="actualizar()">Actualizar</button>
+					<button type="button" class="btn btn-light" routerLink="/inputs">Cancelar</button>
+				</div>
+			</div>
+		</td>
+	</tr>
+</table>
