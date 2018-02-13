@@ -1,0 +1,11 @@
+<span class="glyphicon glyphicon-plus" routerLink="add">add</span>
+
+<div class="flex flex-wrap d-flex justify-content-around content-center content-between boxs-container">
+	<div class="boxs-lista border" *ngFor="let i of routes">
+		<div class="lista-info">
+			<div class="lista-title">
+				<label>{{i.name}}</label>
+			</div>
+		</div>
+	</div>
+</div>

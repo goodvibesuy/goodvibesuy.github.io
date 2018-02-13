@@ -1,6 +1,5 @@
 
 /* supply en vez de imput?? */
-
 import { Component, OnInit, Input } from '@angular/core';
 import { AsyncPipe } from '@angular/common';
 
