@@ -36,6 +36,20 @@ travelModel.addPointOfSale = function (idRoute,idPointOfSale,callBack) {
     });
 };
 
+travelModel.removePointOfSale = function(idRoute,idPointOfSale,callBack){
+    con.query("DELETE FROM route_pointofsale WHERE idroute = ? AND idpointofsale = ?",[idRoute,idPointOfSale], function (err, result) {
+        if (err) throw err;
+        callBack({ result: 1, message: "OK", data: result });
+    });
+}
+
+travelModel.getPointsOfSales = function (idRoute,callBack){
+    con.query("SELECT * FROM route_pointofsale INNER JOIN pointofsale as POS ON POS.id = idpointofsale WHERE idroute = ?",[idRoute], function (err, result) {
+        if (err) throw err;
+        callBack({ result: 1, message: "OK", data: result });
+    });
+};
+
 travelModel.addUser = function (idRoute,idUser,callBack) {
     con.query("INSERT INTO route_user (idroute,iduser) VALUES (?,?)",[idRoute,idUser], function (err, result) {
         if (err) throw err;

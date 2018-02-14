@@ -18,10 +18,63 @@
 	</tr>
 </table>
 
-<div class="form-group">
-	<span class="input-group-addon">Punto de venta:</span>
-
-	<select class="form-control" >
-<option *ngFor="let unit of pointsofsales" [ngValue]="unit.id">{{unit.name}}</option>
-</select>
-</div>
+<table class="table">
+	<tr>
+		<td>
+			<div class="card">
+				<div class="card-header">
+					Puntos de venta
+				</div>
+				<div class="card-body">
+					<table class="table">
+						<tr>
+							<td>Nombre</td>
+							<td>Eliminar</td>
+						</tr>
+						<tr *ngFor="let i of pointsOfSaleRoute">
+							<td>{{i.name}}</td>
+							<td>
+								<a (click)="remove(i.id)">
+									<i class="fa fa-trash-o" style="font-size: 1.7em;"></i>
+								</a>
+							</td>
+						</tr>
+					</table>
+					<span class="input-group-addon">Punto de venta:</span>
+					<select class="form-control" [(ngModel)]="rPOS.idPointOfSale">
+						<option *ngFor="let pos of pointsOfSales" [ngValue]="pos.id">{{pos.name}}</option>
+					</select>
+					<button type="button" class="btn btn-primary" (click)="agregarPuntoDeVenta()">Agregar</button>
+				</div>
+			</div>
+		</td>
+		<td>
+			<div class="card">
+				<div class="card-header">
+					Usuarios
+				</div>
+				<div class="card-body">
+					<table class="table">
+						<tr>
+							<td>Nombre</td>
+							<td>Eliminar</td>
+						</tr>
+						<tr *ngFor="let i of pointsOfSaleRoute">
+							<td>{{i.name}}</td>
+							<td>
+								<a (click)="remove(i.id)">
+									<i class="fa fa-trash-o" style="font-size: 1.7em;"></i>
+								</a>
+							</td>
+						</tr>
+					</table>
+					<span class="input-group-addon">Punto de venta:</span>
+					<select class="form-control" [(ngModel)]="rPOS.idPointOfSale">
+						<option *ngFor="let pos of pointsOfSales" [ngValue]="pos.id">{{pos.name}}</option>
+					</select>
+					<button type="button" class="btn btn-primary" (click)="agregarPuntoDeVenta()">Agregar</button>
+				</div>
+			</div>
+		</td>
+	</tr>
+</table>

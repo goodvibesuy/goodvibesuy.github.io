@@ -4,11 +4,12 @@ import { catchError, map, tap } from 'rxjs/operators';
 import { Observable } from 'rxjs/Observable';
 import { Route } from '../shared/models/route.model'
 import { PointOfSale } from '../shared/models/pointofsale.model'
+import { RoutePointOfSale } from '../shared/models/RoutePointOfSale.model'
 
 @Injectable()
 export class RouteService {
   routeUrl: string = '/api/route';
-  pointOfSaleUrl: string = '/api/pointOfSale';
+  pointOfSaleUrl: string = '/api/pointOfSail';
   constructor(private http: HttpClient) {
 
   }
@@ -41,6 +42,28 @@ export class RouteService {
     return this.http.get<PointOfSale[]>(this.pointOfSaleUrl)
       .pipe(
         map(r => (<any>r).data)
+      );
+  }
+
+  getPointsOfSalesRoute(idRoute:number): Observable<PointOfSale[]> {
+    return this.http.get<PointOfSale[]>(this.routeUrl + "/pointofsales/" + idRoute)
+      .pipe(
+        map(r => (<any>r).data)
+      );
+  }
+
+  addPointOfSale(rPOS:RoutePointOfSale):Observable<any>{
+    return this.http
+      .post(
+        this.routeUrl + "/addPointOfSale",
+        { idRoute: rPOS.idRoute, idPointOfSale: rPOS.idPointOfSale }
+      );
+  }
+
+  remove(idRoute:number,idPointOfSale:number):Observable<any>{
+    return this.http
+      .delete(
+        this.routeUrl + "/removePointOfSale/"+ idRoute + "/" + idPointOfSale
       );
   }
 

@@ -9,6 +9,12 @@ router.get('/', function (req, res, next) {
     });
 });
 
+router.get('/pointofsales/:idRoute', function (req, res, next) {
+    travelModel.getPointsOfSales(req.params.idRoute,function (result) {
+        res.send(result);
+    });
+});
+
 router.post('/', function (req, res, next) {
     travelModel.add(req.body.name, function (result) {
         res.send(result);
@@ -20,6 +26,14 @@ router.post('/addPointOfSale', function (req, res, next) {
         res.send(result);
     });
 });
+
+//removePointOfSale
+router.delete('/removePointOfSale/:idRoute/:idPointOfSale', function (req, res, next) {
+    travelModel.removePointOfSale(req.params.idRoute,req.params.idPointOfSale, function (result) {
+        res.send(result);
+    });
+});
+
 
 router.post('/addUser', function (req, res, next) {
     travelModel.addPointOfSale(req.body.idRoute,req.body.idUser, function (result) {
