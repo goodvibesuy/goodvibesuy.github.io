@@ -7,15 +7,23 @@ import { FormsModule } from '@angular/forms';
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './components/header/header.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
-import { ProductosComponent } from './components/productos/productos.component';
 import { LocalesComponent } from './components/locales/locales.component';
 import { ReportesComponent } from './components/reportes/reportes.component';
+// Inputs
 import { InputComponent } from './components/input/input.component';
 import { InputListComponent } from './components/input/list/input.list.component';
 import { InputEditComponent } from './components/input/edit/input.edit.component';
 import { InputAddComponent } from './components/input/add/input.add.component';
+// Products
+import { ProductsComponent } from './components/products/products.component';
+import { ProductsListComponent } from './components/products/list/products.list.component';
+import { ProductEditComponent } from './components/products/edit/product.edit.component';
+import { ProductAddComponent } from './components/products/add/product.add.component';
+// Mapa
 import { MapaComponent } from './components/mapa/mapa.component';
+// Detalle local
 import { DetalleLocalComponent } from './components/detalle-local/detalle-local.component';
+// Configs
 import { ConfigsComponent } from './components/configs/configs.component';
 
 // app routing 
@@ -23,18 +31,21 @@ import { AppRoutingModule } from './app-routing.module';
 
 // services
 import { InputService } from './services/input.service';
+import { ProductsService } from './services/products.service';
 import { RouteService } from './services/route.service';
 import { RoutesComponent } from './components/routes/routes.component';
 import { ListComponent } from './components/routes/list/list.component';
-import { RouteAdd } from './components/routes/route.add/route.add.component';
-import { RouteEdit } from './components/routes/route.edit/route.edit.component';
+import { RouteAddComponent } from './components/routes/route.add/route.add.component';
 
 @NgModule({
 	declarations: [
 		AppComponent,
 		HeaderComponent,
 		DashboardComponent,
-		ProductosComponent,
+		ProductsComponent,
+		ProductsListComponent,
+		ProductEditComponent,
+		ProductAddComponent,
 		LocalesComponent,
 		ReportesComponent,
 		InputComponent,
@@ -46,8 +57,7 @@ import { RouteEdit } from './components/routes/route.edit/route.edit.component';
 		ConfigsComponent,
 		RoutesComponent,
 		ListComponent,
-		RouteAdd,
-		RouteEdit
+		RouteAddComponent
 	],
 	imports: [
 		BrowserModule,
@@ -57,6 +67,7 @@ import { RouteEdit } from './components/routes/route.edit/route.edit.component';
 	],
 	providers: [
 		InputService,
+		ProductsService,
 		RouteService
 	],
 	bootstrap: [AppComponent]
