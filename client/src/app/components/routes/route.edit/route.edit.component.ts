@@ -2,6 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RouteService } from '../../../services/route.service';
 import { Route as RouteModel } from '../../../shared/models/route.model'
+import { PointOfSale } from '../../../shared/models/pointofsale.model';
 
 @Component({
   selector: 'app-route.edit',
@@ -13,6 +14,7 @@ export class RouteEdit implements OnInit {
   paramsSub: any;
 
   private route:RouteModel;
+  private pointsOfSales:PointOfSale[];
 
   constructor(    private activatedRoute: ActivatedRoute,
     private router: Router,
@@ -29,6 +31,11 @@ export class RouteEdit implements OnInit {
     },
     error => { }
     );
+
+      this.routeService.getPointsOfSales()
+        .subscribe(data => {
+          this.pointsOfSales = <PointOfSale[]>data;
+        });
   }
 
   actualizar() {

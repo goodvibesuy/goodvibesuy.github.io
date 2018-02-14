@@ -17,3 +17,11 @@
 		</td>
 	</tr>
 </table>
+
+<div class="form-group">
+	<span class="input-group-addon">Punto de venta:</span>
+
+	<select class="form-control" >
+<option *ngFor="let unit of pointsofsales" [ngValue]="unit.id">{{unit.name}}</option>
+</select>
+</div>
