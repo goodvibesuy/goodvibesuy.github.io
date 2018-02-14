@@ -22,9 +22,18 @@ export class RouteService {
     return this.http
       .post(
       this.routeUrl,
-      {idroute:route.id, name : route.name}
+      {idroute:route.idroute, name : route.name}
       );
   }
+
+
+  update(route: Route): Observable<any> {
+    return this.http
+        .put<Route[]>(
+            this.routeUrl,
+            route
+        );
+}
 
   delete(id: number): Observable<any> {
     return this.http

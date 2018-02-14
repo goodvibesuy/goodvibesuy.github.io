@@ -9,14 +9,34 @@ import { Route as RouteModel } from '../../../shared/models/route.model'
   styleUrls: ['./route.edit.component.css']
 })
 export class RouteEdit implements OnInit {
+  id: number;
+  paramsSub: any;
+
+  private route:RouteModel;
 
   constructor(    private activatedRoute: ActivatedRoute,
     private router: Router,
-    private inputService: RouteService) { }
+    private routeService: RouteService) { }
 
   ngOnInit() {
+    this.paramsSub = this.activatedRoute.params
+    .subscribe(params => {
+      this.routeService.get()
+        .subscribe(data => {
+          console.log(data);
+          this.route = ((<RouteModel[]>data).find(s => s.idroute == params['id']))
+        });
+    },
+    error => { }
+    );
   }
 
+  actualizar() {
+    this.routeService.update(this.route)
+      .subscribe(data => {
+        this.router.navigateByUrl('/inputs');
+      });
+  }
 }
 
 /*

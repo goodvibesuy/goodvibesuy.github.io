@@ -28,7 +28,7 @@ router.post('/addUser', function (req, res, next) {
 });
 
 router.put('/', function (req, res, next) {
-    travelModel.updateInput(req.body.name, req.body.unity, req.body.price, req.body.id, function (result) {
+    travelModel.update(req.body.name,req.body.idroute, function (result) {
         res.send(result);
     });
 });

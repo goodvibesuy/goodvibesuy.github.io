@@ -44,7 +44,7 @@ travelModel.addUser = function (idRoute,idUser,callBack) {
 };
 
 travelModel.update = function (travelName,idRoute,callBack) {
-    con.query("UPDATE route SET  name = ? WHERE idRoute =",[travelName,idRoute], function (err, result) {
+    con.query("UPDATE route SET  name = ? WHERE idroute =?",[travelName,idRoute], function (err, result) {
         if (err) throw err;
         callBack({ result: 1, message: "OK", data: result });
     });

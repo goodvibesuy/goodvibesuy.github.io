@@ -4,10 +4,16 @@
 	<table class="table">
 		<tr>
 			<td>Nombre</td>
+			<td>Editar</td>
 			<td>Eliminar</td>
 		</tr>
 		<tr *ngFor="let i of routes">
 			<td>{{i.name}}</td>
+			<td style="text-align: center;">
+				<a [routerLink]="['edit', i.idroute]">
+					<i class="fa fa-edit" style="font-size: 1.7em;"></i>
+				</a>
+			</td>
 			<td>
 				<a (click)="delete(i.idroute)">
 					<i class="fa fa-trash-o" style="font-size: 1.7em;"></i>
