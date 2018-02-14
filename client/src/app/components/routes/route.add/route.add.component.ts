@@ -24,7 +24,7 @@ export class RouteAdd implements OnInit {
   agregar() : void{
     this.routeService.agregar(this.route)
       .subscribe(data => {
-        this.router.navigateByUrl('/inputs');
+        this.router.navigateByUrl('/recorridos');
       });
   }
 }
