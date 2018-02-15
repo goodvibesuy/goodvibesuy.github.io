@@ -27,6 +27,13 @@ router.post('/addPointOfSale', function (req, res, next) {
     });
 });
 
+router.post('/addUser', function (req, res, next) {
+    travelModel.addUser(req.body.idRoute,req.body.idUser, function (result) {
+        res.send(result);
+    });
+});
+
+
 //removePointOfSale
 router.delete('/removePointOfSale/:idRoute/:idPointOfSale', function (req, res, next) {
     travelModel.removePointOfSale(req.params.idRoute,req.params.idPointOfSale, function (result) {

@@ -5,6 +5,7 @@ import { Observable } from 'rxjs/Observable';
 import { Route } from '../shared/models/route.model'
 import { PointOfSale } from '../shared/models/pointofsale.model'
 import { RoutePointOfSale } from '../shared/models/RoutePointOfSale.model'
+import { RouteUser } from '../shared/models/routeUser.model';
 
 @Injectable()
 export class RouteService {
@@ -59,6 +60,15 @@ export class RouteService {
         { idRoute: rPOS.idRoute, idPointOfSale: rPOS.idPointOfSale }
       );
   }
+
+  addUser(rUser:RouteUser):Observable<any>{
+    return this.http
+      .post(
+        this.routeUrl + "/addUser",
+        { idRoute: rUser.idRoute, idUser: rUser.idUser, date : rUser.date }
+      );
+  }
+
 
   remove(idRoute:number,idPointOfSale:number):Observable<any>{
     return this.http

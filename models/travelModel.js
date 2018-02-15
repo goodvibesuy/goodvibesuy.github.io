@@ -36,6 +36,14 @@ travelModel.addPointOfSale = function (idRoute,idPointOfSale,callBack) {
     });
 };
 
+travelModel.addUser = function(idRoute,idUser,callBack){
+    con.query("INSERT INTO route_user (idroute,idUser,date) VALUES (?,?,NOW())",[idRoute,idPointOfSale], function (err, result) {
+        if (err) throw err;
+        callBack({ result: 1, message: "OK", data: result });
+    });
+    res.send(result);
+};
+
 travelModel.removePointOfSale = function(idRoute,idPointOfSale,callBack){
     con.query("DELETE FROM route_pointofsale WHERE idroute = ? AND idpointofsale = ?",[idRoute,idPointOfSale], function (err, result) {
         if (err) throw err;

@@ -37,6 +37,7 @@ import { RoutesComponent } from './components/routes/routes.component';
 import { ListComponent } from './components/routes/list/list.component';
 import { RouteAdd } from './components/routes/route.add/route.add.component';
 import { RouteEdit } from './components/routes/route.edit/route.edit.component';
+import { UsersService } from './services/users.service';
 
 @NgModule({
 	declarations: [
@@ -70,7 +71,8 @@ import { RouteEdit } from './components/routes/route.edit/route.edit.component';
 	providers: [
 		InputService,
 		ProductsService,
-		RouteService
+		RouteService,
+		UsersService
 	],
 	bootstrap: [AppComponent]
 })

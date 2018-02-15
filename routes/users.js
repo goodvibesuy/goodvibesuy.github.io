@@ -20,7 +20,7 @@ router.get("/userRol", function (req, res) {
 });
 */
 
-router.get("/users", function (req, res) {
+router.get("/", function (req, res) {
   userModel.users(function (result) {
     res.send(result);
   });
