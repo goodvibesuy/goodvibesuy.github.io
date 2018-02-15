@@ -38,6 +38,7 @@ import { ListComponent } from './components/routes/list/list.component';
 import { RouteAdd } from './components/routes/route.add/route.add.component';
 import { RouteEdit } from './components/routes/route.edit/route.edit.component';
 import { UsersService } from './services/users.service';
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
 	declarations: [
@@ -66,7 +67,8 @@ import { UsersService } from './services/users.service';
 		BrowserModule,
 		FormsModule,
 		HttpClientModule,
-		AppRoutingModule
+		AppRoutingModule,
+		NgbModule.forRoot()
 	],
 	providers: [
 		InputService,

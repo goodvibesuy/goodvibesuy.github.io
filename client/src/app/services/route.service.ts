@@ -6,6 +6,7 @@ import { Route } from '../shared/models/route.model'
 import { PointOfSale } from '../shared/models/pointofsale.model'
 import { RoutePointOfSale } from '../shared/models/RoutePointOfSale.model'
 import { RouteUser } from '../shared/models/routeUser.model';
+import { User } from '../shared/models/user.model';
 
 @Injectable()
 export class RouteService {
@@ -39,8 +40,25 @@ export class RouteService {
       );
   }
 
+  reorderPointOfSale(idRoute:number,idPointOfSale:number,position:number,newPosition:number): Observable<any> {
+    return this.http
+      .put<Route[]>(
+        this.routeUrl + "/reorderPointOfSale",
+        {idRoute:idRoute,idPointOfSale:idPointOfSale,position:position,newPosition:newPosition}
+      );
+  };
+  
+
+
   getPointsOfSales(): Observable<PointOfSale[]> {
     return this.http.get<PointOfSale[]>(this.pointOfSaleUrl)
+      .pipe(
+        map(r => (<any>r).data)
+      );
+  }
+
+  getUsersRoute(idRoute:number): Observable<User[]> {
+    return this.http.get<User[]>(this.routeUrl + "/users/" + idRoute)
       .pipe(
         map(r => (<any>r).data)
       );

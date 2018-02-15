@@ -6,8 +6,8 @@
 					<b>Editar recorrido</b>
 				</div>
 				<div class="card-body">
-					<div class="form-group">
-						<span class="input-group-addon">Nombre:</span>
+					<div class="form-group">							
+						<span class="input-group-addon">Nombre:</span>						
 						<input type="text" class="form-control" id="name" *ngIf="route" [(ngModel)]="route.name">
 					</div>
 					<button type="button" class="btn btn-primary" (click)="actualizar()">Actualizar</button>
@@ -28,10 +28,15 @@
 				<div class="card-body">
 					<table class="table">
 						<tr>
+							<td style="width: 15px;"></td>
 							<td>Nombre</td>
 							<td>Eliminar</td>
 						</tr>
 						<tr *ngFor="let i of pointsOfSaleRoute">
+							<td>
+								<span class="fa fa-arrow-circle-up"  (click)="changeOrder(i.id,i.position, i.position - 1)"  *ngIf="i.position !== 1"></span>
+								<span class="fa fa-arrow-circle-down" (click)="changeOrder(i.id,i.position,i.position + 1)" *ngIf="i.position !== pointsOfSaleRoute.length"></span>
+							</td>
 							<td>{{i.name}}</td>
 							<td>
 								<a (click)="remove(i.id)">
@@ -56,10 +61,12 @@
 				<div class="card-body">
 					<table class="table">
 						<tr>
+							<td>Fecha</td>
 							<td>Nombre</td>
 							<td>Eliminar</td>
 						</tr>
-						<tr *ngFor="let u of users">
+						<tr *ngFor="let u of usersRoute">
+							<td>{{u.date}}</td>
 							<td>{{u.user}}</td>
 							<td>
 								<a (click)="remove(u.id)">
@@ -72,6 +79,14 @@
 					<select class="form-control" [(ngModel)]="rUser.idUser">
 						<option *ngFor="let u of users" [ngValue]="u.id">{{u.user}}</option>
 					</select>
+					<div class="input-group">
+						<input class="form-control" placeholder="yyyy-mm-dd" name="dp" [(ngModel)]="rUser.date" ngbDatepicker #d="ngbDatepicker">
+						<div class="input-group-append">
+							<button class="btn btn-outline-secondary" (click)="d.toggle()" type="button">
+								<img src="img/calendar-icon.svg" style="width: 1.2rem; height: 1rem; cursor: pointer;" />
+							</button>
+						</div>
+					</div>
 					<button type="button" class="btn btn-primary" (click)="agregarUsuario()">Agregar</button>
 				</div>
 			</div>

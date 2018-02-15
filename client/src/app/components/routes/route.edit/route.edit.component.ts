@@ -8,6 +8,7 @@ import { RoutePointOfSale } from '../../../shared/models/RoutePointOfSale.model'
 import { RouteUser } from '../../../shared/models/routeUser.model';
 import { User } from '../../../shared/models/user.model';
 
+
 @Component({
   selector: 'app-route.edit',
   templateUrl: './route.edit.component.html',
@@ -20,7 +21,8 @@ export class RouteEdit implements OnInit {
   //Puntos de venta para el combo
   private pointsOfSales:PointOfSale[];
   //Usuarios para el combo
-  private users:User[];
+  private users:User[];  
+  private usersRoute:User[];
   //Interfaz que mapea ruta y punto de venta
   private rPOS:RoutePointOfSale;
   //Interfaz que mapea ruta y usuario
@@ -48,6 +50,7 @@ export class RouteEdit implements OnInit {
           this.rUser.idRoute = this.route.idroute;
           this.getPointOfSalesRoute();
           this.getUsers();
+          this.getUsersRoute();
         });
     },
     error => { }
@@ -66,12 +69,6 @@ export class RouteEdit implements OnInit {
     });
   }
 
-  getUsers(){
-    this.userService.get().subscribe(data => {
-      this.users = data;
-    });
-  }
-
   actualizar() {
     this.routeService.update(this.route)
       .subscribe(data => {
@@ -79,9 +76,21 @@ export class RouteEdit implements OnInit {
       });
   }
 
+  getUsersRoute(){
+    this.routeService.getUsersRoute(this.route.idroute).subscribe(data => {
+      this.usersRoute = data;
+    });
+  }
+
   getPointOfSalesRoute(){
     this.routeService.getPointsOfSalesRoute(this.route.idroute).subscribe(data => {
       this.pointsOfSaleRoute = data;
+    });
+  }
+
+  getUsers(){
+    this.userService.get().subscribe(data => {
+      this.users = data;
     });
   }
 
@@ -96,4 +105,11 @@ export class RouteEdit implements OnInit {
       this.getPointOfSalesRoute();
     });
   }
+
+  changeOrder(idpointofSale:number,position:number,newposition:number){   
+    this.routeService.reorderPointOfSale(this.route.idroute,idpointofSale,position,newposition).subscribe(data => {
+      this.getPointOfSalesRoute();
+    });
+  }
+
 }
