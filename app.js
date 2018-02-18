@@ -27,7 +27,7 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
 app.use(express.static('./client/dist'));
-
+app.use(express.static('./client/images'));
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
@@ -37,15 +37,15 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', routes);
-app.use('/users', users);
-app.use('/pointOfSail', pointOfSail);
-app.use('/unity', unity);
-app.use('/inputs', inputs);
-app.use('/products', products);
-app.use('/viewings', viewings);
-app.use('/kpis', kpis);
-app.use('/route', route);
+app.use('/api', routes);
+app.use('/api/users', users);
+app.use('/api/pointOfSail', pointOfSail);
+app.use('/api/unity', unity);
+app.use('/api/inputs', inputs);
+app.use('/api/products', products);
+app.use('/api/viewings', viewings);
+app.use('/api/kpis', kpis);
+app.use('/api/route', route);
 
 
 // catch 404 and forward to error handler
