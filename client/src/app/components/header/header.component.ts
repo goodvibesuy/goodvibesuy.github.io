@@ -12,14 +12,18 @@ export class HeaderComponent {
 
   getName(): string {
     return (
-      this.location
-        .path()
-        .replace("/", "")[0]
-        .toUpperCase() +
-      this.location
-        .path()
-        .replace("/", "")
-        .substr(1)
+      this.location.path() == '' ?
+      'Home':
+      (
+        this.location
+          .path()
+          .replace("/", "")[0]
+          .toUpperCase() +
+        this.location
+          .path()
+          .replace("/", "")
+          .substr(1)
+      )
     );
   }
 }
