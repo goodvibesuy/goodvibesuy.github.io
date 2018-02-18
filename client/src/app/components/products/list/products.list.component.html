@@ -7,18 +7,22 @@
 	<table class="table table-striped">
 		<thead>
 			<tr>
-				<th scope="col">Nombre</th>
 				<th scope="col">Imagen</th>
+				<th scope="col">Nombre</th>
 				<th scope="col" style="width:100px;text-align: center;">Editar</th>
 				<th scope="col" style="width:100px;text-align: center;">Eliminar</th>
 			</tr>
 		</thead>
 		<tbody>
 			<tr *ngFor="let i of products">
+				<td>
+					<a href="{{'images/productos/'+ i.path_image}}" target="_blank">
+						<img src="{{'images/productos/'+ getSmallImage(i.path_image)}}" />
+					</a>
+				</td>
 				<td>{{i.name}}</td>
-				<td>{{i.path_image}}</td>
 				<td style="text-align: center;">
-					<a [routerLink]="['edit', i.id]">
+					<a [routerLink]="['editar', i.id]">
 						<i class="fa fa-edit" style="font-size: 1.7em;"></i>
 					</a>
 				</td>

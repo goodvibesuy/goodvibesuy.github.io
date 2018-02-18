@@ -8,23 +8,28 @@
 				<div class="card-body">
 					<div class="form-group">
 						<span class="input-group-addon">Nombre:</span>
-						<input type="text" class="form-control" id="name" *ngIf="input" [(ngModel)]="input.name">
+						<input type="text" class="form-control" id="name" *ngIf="product" [(ngModel)]="product.name">
 					</div>
+
 					<div class="form-group">
+						<span class="input-group-addon">Imagen:</span>
+						<input type="file" class="form-control">
+					</div>
+					<!-- <div class="form-group">
 						<span class="input-group-addon">Unidad:</span>
 
-						<select class="form-control" *ngIf="input" [(ngModel)]="input.unity">
-				<option *ngFor="let unit of units" [ngValue]="unit.id">{{unit.name}}</option>
-			</select>
-					</div>
+						<select class="form-control" *ngIf="product" [(ngModel)]="product.unity">
+							<option *ngFor="let unit of units" [ngValue]="unit.id">{{unit.name}}</option>
+						</select>
+					</div> -->
 
-					<div class="form-group">
+					<!-- <div class="form-group">
 						<span class="input-group-addon">Precio:</span>
-						<input type="text" class="form-control" id="amount" *ngIf="input" [(ngModel)]="input.amount">
-					</div>
+						<input type="text" class="form-control" id="amount" *ngIf="product" [(ngModel)]="product.amount">
+					</div> -->
 
 					<button type="button" class="btn btn-primary" (click)="actualizar()">Actualizar</button>
-					<button type="button" class="btn btn-light" routerLink="/insumos">Cancelar</button>
+					<button type="button" class="btn btn-light" routerLink="/productos">Cancelar</button>
 				</div>
 			</div>
 		</td>

@@ -26,4 +26,9 @@ export class ProductsListComponent implements OnInit {
       .get()
       .subscribe(data => (this.products = data), error => {});
   }
+
+  getSmallImage(path: string) : string {
+    var dotIndex = path.indexOf('.');
+    return path.substr(0,dotIndex) + '_small' + path.substr(dotIndex);
+  }
 }
