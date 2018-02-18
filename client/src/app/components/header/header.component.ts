@@ -11,7 +11,7 @@ export class HeaderComponent {
   constructor(private location: Location) {}
 
   getName(): string {
-    return (
+    var name =
       this.location.path() == '' ?
       'Home':
       (
@@ -23,7 +23,7 @@ export class HeaderComponent {
           .path()
           .replace("/", "")
           .substr(1)
-      )
-    );
+      );
+    return name.indexOf('/')>0?name.substring(0,name.indexOf('/')):name;
   }
 }
