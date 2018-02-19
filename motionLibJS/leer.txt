@@ -1,0 +1,122 @@
+--------------------
+--- Introduccion ---
+--------------------
+
+Esta libreria contiene funcionalidades utilizadas en varios proyectos de la 
+empresa MotionSoft Consulting SRL. 
+Cambios en el comportamiento de las operaciones
+o en su firma deben ser realizados con extrema precaucion y contemplando los 
+productos que la utilizan.
+
+La libreria está categorizada por temas, donde a cada uno le corresponde una 
+carpeta. 
+
+-------------------
+--- Nomeclatura ---
+-------------------
+
+Las carpetas y los archivos son nombrados utilizando CamelCase comenzando con minuscula.
+Los objetos javascript son nombrados utilizando CamelCase comenzando con mayuscula.
+ 
+
+-----------------
+--- Carpetas ----
+-----------------
+
+--- clientSide ---
+
+Código exclusivamente de cliente que ejecutará en un browser, por ejemplo, funcionalidades
+generales sobre el DOM de una página.
+
+--- serverSide ---
+
+Código exclusivamente de servidor que ejecutará sobre Node.js.
+
+--- common ---
+
+Código que puede ser ejecutado en un browser o sobre Node.js. Implementado
+utilizando el mecanismo de exportacion de Node.js pero que puede ser 
+utilizado en browsers sin problemas, utilizando una herramienta como browserify.
+En la siguiente sección se detalla un mecanismo de uso de estos modulos en 
+el front-end.
+
+------------------------------------------------------
+--- Uso de MotionLib/clientSide y MotionLib/Common ---
+------------------------------------------------------
+
+El uso de los modulos definidos en motionLibJS para front-end es bastante trabajosa
+dado que nos vemos obligados a utilizar rutas relativas largas para referenciar desde
+nuestras paginas, los archivos js que necesitamos.
+Por otro lado, los modulos javascript de la carpeta common se exportan utilizando el objeto 
+"module" de Node.js y se incluyen otros modulos utilizando la funcion "require" la 
+cual tambien es exclusiva de Node.js y no esta implementada en los browsers.
+
+Para poder utilizar estos modulos y evitar las rutas relativas largas en el browser se 
+recomienda el uso de la herramienta "Browserify".
+Esta herramienta genera un modulo unico capaz de ejecutar en un browser a partir
+de varios modulos, incluso aquellos escritos para Node.js.
+
+--- Instalacion de Browserify ---
+Utilizando npm debemos instalarlo a nivel global dado que es una herramienta de 
+uso general:
+
+> npm install -g browserify
+
+	::Importante: para la instalacion global es necesario permisos de administrador tanto
+	  linux como en windows.
+
+Para generar un archivo con metarUtils.js y todas sus dependencias ejecutamos:
+	  
+> browserify "motionLibJS/common/metarUtils.js" -o "public/javascripts/metarUtils.js"
+
+Sin embargo si queremos generar un modulo unico llamado motionLib.js en la carpeta 
+"public/javascripts" conteniendo todos los modulos de la carpeta common debemos combinar 
+browserify con otra herramienta que nos permitirá utilizar wildcards en los comandos de
+browserify. Dicha herramienta se llama require-globify y se instala igual que browserify:
+
+> npm install require-globify --save-dev
+
+Para generar un unico archivo en base todos los modulos js definidos en la carpeta common 
+y la carpeta clientSide necesitamos una definicion que ya esta agregada en 
+motionLibJS/browserifyEntry.js.
+Entonces solo necesitamos ejecutar el siguiente comando:
+
+> browserify -t require-globify motionLibJS/browserifyEntry.js > "public/javascripts/motionLib.js"
+
+----------------------------------
+--- Automatización de procesos ---
+----------------------------------
+
+Cuando estamos desarrollando es incomodo tener que realizar un build con browserify cada vez 
+que cambiamos un archivo o minificar archivos cada vez que queremos deployar. 
+Para automatizar esta y otras tareas se puede utilizar la herramienta Gulp que nos permite 
+automatizar las tareas mediante scripts.
+
+--- Instalacion de Gulp ---
+
+Instalacion global de Gulp:
+
+> npm install -g gulp 
+
+Tambien es necesario instalarlo localmente al proyecto. Solo es necesario instalarlo en 
+las dependencias de dev.
+
+> npm install gulp --save-dev
+
+Hay muchas herramientas que trabajan con Gulp y sirven para automatizar diferentes procesos.
+A continuacion se detallan las herramientas que nos seran de utilidad tanto durante el 
+desarrollo como a la hora de deployar en dev o staging.
+
+--- Browser Sync ---
+Cuando estamos desarrollando front-end es tedioso estar refrescando el browser para analizar los
+cambios que vamos implementando. 
+Sin embargo podemos automatizar esta tarea utilizando browser-sync. Este modulo nos permitirá 
+refrescar el browser automaticamente cuando realizamos un cambio en algun archivo del front-end.
+
+Para instalar browser-sync:
+
+> npm install browser-sync --save-dev
+
+Dejo un tutorial bastante basico pero muy claro sobre gulp.
+https://css-tricks.com/gulp-for-beginners/
+

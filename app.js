@@ -15,6 +15,24 @@ var viewings = require('./routes/viewings');
 var kpis = require('./routes/kpis');
 var route = require('./routes/route');
 
+var mysql = require('mysql');
+
+var con = mysql.createConnection({
+  host: "localhost",
+  user: "root",
+  password: "",
+  database: "good"
+});
+
+con.connect(function (err) {
+  if (err) throw err;
+});
+
+
+var acl = require('./motionLibJS/serverSide/acl/motionACL');
+//var masterDBController = require('./bd/masterConnectionsBD');
+acl.setUp(con);
+
 
 var app = express();
 

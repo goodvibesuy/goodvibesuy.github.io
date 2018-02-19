@@ -1,0 +1,16 @@
+Ejemplo
+
+// En app.js
+var acl = require('./motionLibJS/serverSide/acl/motionACL');
+var masterDBController = require('./bd/masterConnectionsBD');
+acl.setUp(masterDBController.dbMasterConnection.connection);
+
+
+// En algun router
+acl.getACL().isAllowed(req.headers['user'], 'accounts', 'post', function(err, response) {
+    if (response) {
+        // Tiene permisos
+    } else {
+        // No tiene permisos
+    }
+});

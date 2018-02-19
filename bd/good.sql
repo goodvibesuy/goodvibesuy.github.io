@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: localhost
--- Tiempo de generación: 15-02-2018 a las 23:33:35
+-- Tiempo de generación: 19-02-2018 a las 22:37:15
 -- Versión del servidor: 5.5.8
 -- Versión de PHP: 5.3.5
 
@@ -165,6 +165,65 @@ CREATE TABLE IF NOT EXISTS `product_input` (
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `resources`
+--
+
+CREATE TABLE IF NOT EXISTS `resources` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(20) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
+
+--
+-- Volcar la base de datos para la tabla `resources`
+--
+
+INSERT INTO `resources` (`id`, `name`) VALUES
+(1, 'routes');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `rols`
+--
+
+CREATE TABLE IF NOT EXISTS `rols` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
+
+--
+-- Volcar la base de datos para la tabla `rols`
+--
+
+INSERT INTO `rols` (`id`, `name`) VALUES
+(1, 'admin'),
+(2, 'registred');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `rols_resources`
+--
+
+CREATE TABLE IF NOT EXISTS `rols_resources` (
+  `rol_id` int(11) NOT NULL,
+  `resource_id` int(11) NOT NULL,
+  KEY `rol_id` (`rol_id`),
+  KEY `resource_id` (`resource_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Volcar la base de datos para la tabla `rols_resources`
+--
+
+INSERT INTO `rols_resources` (`rol_id`, `resource_id`) VALUES
+(1, 1);
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `route`
 --
 
@@ -256,10 +315,11 @@ INSERT INTO `unity` (`id`, `name`) VALUES
 
 CREATE TABLE IF NOT EXISTS `users` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `user` varchar(256) NOT NULL,
+  `user_name` varchar(256) NOT NULL,
   `firstname` varchar(256) NOT NULL,
   `lastname` varchar(50) NOT NULL,
   `password` varchar(30) NOT NULL,
+  `rol_id` int(11) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=5 ;
 
@@ -267,10 +327,10 @@ CREATE TABLE IF NOT EXISTS `users` (
 -- Volcar la base de datos para la tabla `users`
 --
 
-INSERT INTO `users` (`id`, `user`, `firstname`, `lastname`, `password`) VALUES
-(2, 'cabecacorada', 'Cabeca', 'Corada', '123456'),
-(3, 'olho', 'olho', 'olho', '123456'),
-(4, 'cosaboa', 'cosa', 'boa', '123456');
+INSERT INTO `users` (`id`, `user_name`, `firstname`, `lastname`, `password`, `rol_id`) VALUES
+(2, 'cabecacorada', 'Cabeca', 'Corada', '123456', 1),
+(3, 'olho', 'olho', 'olho', '123456', 1),
+(4, 'cosaboa', 'cosa', 'boa', '123456', 1);
 
 -- --------------------------------------------------------
 
@@ -369,6 +429,13 @@ ALTER TABLE `productprice`
 ALTER TABLE `product_input`
   ADD CONSTRAINT `idInput2` FOREIGN KEY (`idInput`) REFERENCES `input` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   ADD CONSTRAINT `idProduct2` FOREIGN KEY (`idproduct`) REFERENCES `product` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Filtros para la tabla `rols_resources`
+--
+ALTER TABLE `rols_resources`
+  ADD CONSTRAINT `rols_resources_ibfk_1` FOREIGN KEY (`rol_id`) REFERENCES `rols` (`id`),
+  ADD CONSTRAINT `rols_resources_ibfk_2` FOREIGN KEY (`resource_id`) REFERENCES `resources` (`id`);
 
 --
 -- Filtros para la tabla `route_pointofsale`
