@@ -30,8 +30,8 @@ export class InputService {
     getUnits(): Observable<SupplyUnit[]> {
         return this.http.get<SupplyUnit[]>(this.supplyUnitsUrl)
             .pipe(
-            tap(d => this.log(`fetched SupplyUnit`)),
-            map(r => (<any>r).data)
+                tap(d => this.log(`fetched SupplyUnit`)),
+                map(r => (<any>r).data )
             )
     }
 

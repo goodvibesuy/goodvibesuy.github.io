@@ -12,12 +12,13 @@ import { ActivatedRoute, ParamMap } from '@angular/router';
 export class DetalleLocalComponent implements OnInit {
 
   constructor(
-    private id: string,
-    private route: ActivatedRoute) { }
+    // private id: string,
+    // private route: ActivatedRoute
+  ) { }
 
     ngOnInit(): void {
-      this.route.paramMap
-        .switchMap((params: ParamMap) => params.getAll('id'))
-        .subscribe(id =>  this.id =id);
+      // this.route.paramMap
+      //   .switchMap((params: ParamMap) => params.getAll('id'))
+      //   .subscribe(id =>  this.id =id);
     }
 }

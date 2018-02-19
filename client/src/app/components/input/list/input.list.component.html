@@ -1,5 +1,5 @@
 <span>
-	<button class="fa fa-plus btn btn-success" routerLink="add"></button>
+	<button class="fa fa-plus btn btn-success" routerLink="agregar"></button>
 </span>
 
 <div class="flex flex-wrap d-flex justify-content-around content-center content-between boxs-container">
@@ -16,9 +16,9 @@
 		<tbody>
 			<tr *ngFor="let i of inputs">
 				<td>{{i.name}}</td>
-				<td>{{i.amount}} / {{i.unity}}</td>
+				<td>$ {{i.amount}} / {{ getUnit(i.unity) }}</td>
 				<td style="text-align: center;">
-					<a [routerLink]="['edit', i.id]">
+					<a [routerLink]="['editar', i.id]">
 						<i class="fa fa-edit" style="font-size: 1.7em;"></i>
 					</a>
 				</td>

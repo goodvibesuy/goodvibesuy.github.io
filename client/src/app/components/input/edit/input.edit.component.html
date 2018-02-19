@@ -1,32 +1,39 @@
 <table class="table">
-	<tr>
-		<td>
-			<div class="card" style="margin:15px;">
-				<div class="card-header">
-					<b>Editar insumo</b>
-				</div>
-				<div class="card-body">
-					<div class="form-group">
-						<span class="input-group-addon">Nombre:</span>
-						<input type="text" class="form-control" id="name" *ngIf="input" [(ngModel)]="input.name">
-					</div>
-					<div class="form-group">
-						<span class="input-group-addon">Unidad:</span>
+  <tr>
+    <td>
+      <div class="card" style="margin:15px;">
+        <div class="card-header">
+          <b>Editar insumo</b>
+        </div>
+        <div class="card-body">
 
-						<select class="form-control" *ngIf="input" [(ngModel)]="input.unity">
-				<option *ngFor="let unit of units" [ngValue]="unit.id">{{unit.name}}</option>
-			</select>
-					</div>
+          <div class="form-group">
+            <span class="input-group-addon">Nombre:</span>
+            <input type="text" class="form-control" id="name" *ngIf="input" [(ngModel)]="input.name">
+          </div>
 
-					<div class="form-group">
-						<span class="input-group-addon">Precio:</span>
-						<input type="text" class="form-control" id="amount" *ngIf="input" [(ngModel)]="input.amount">
-					</div>
+          <div class="form-group">
+            <span class="input-group-addon">Unidad:</span>
 
-					<button type="button" class="btn btn-primary" (click)="actualizar()">Actualizar</button>
-					<button type="button" class="btn btn-light" routerLink="/insumos">Cancelar</button>
-				</div>
-			</div>
-		</td>
-	</tr>
+            <select class="form-control" *ngIf="input" [(ngModel)]="input.unity">
+              <option *ngFor="let unit of units" [ngValue]="unit.id">{{unit.name}}</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <span class="input-group-addon">Precio:</span>
+            <input type="text" class="form-control" id="amount" *ngIf="input" [(ngModel)]="input.amount">
+          </div>
+
+          <div class="form-group">
+            <span class="input-group-addon">Imagen:</span>
+            <input type="file" class="form-control">
+          </div>
+
+          <button type="button" class="btn btn-primary" (click)="actualizar()">Actualizar</button>
+          <button type="button" class="btn btn-light" routerLink="/insumos">Cancelar</button>
+        </div>
+      </div>
+    </td>
+  </tr>
 </table>

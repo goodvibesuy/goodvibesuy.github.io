@@ -32,7 +32,7 @@ travelModel.add = function (travelName, callBack) {
 travelModel.addPointOfSale = function (idRoute, idPointOfSale, callBack) {
     con.query("SELECT position AS last FROM route_pointofsale WHERE idroute = ? order by position desc limit 1", [idRoute], function (err, result) {
         if (err) throw err;
-        var lastPointOfSale = result[0].last;
+        var lastPointOfSale = result.length == 0 ? 0 : result[0].last;
         con.query("INSERT INTO route_pointofsale (idroute,idpointofsale,position) VALUES (?,?,?)", [idRoute, idPointOfSale, lastPointOfSale + 1], function (err, result) {
             if (err) throw err;
             callBack({ result: 1, message: "OK", data: result });

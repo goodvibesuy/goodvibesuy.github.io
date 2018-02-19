@@ -57,7 +57,7 @@ const routes: Routes = [
 		component: RoutesComponent,
 		children: [
 			{ path: '', component: ListComponent},
-			{ path: 'add', component: RouteAdd},		
+			{ path: 'agregar', component: RouteAdd},		
 			{ path: 'edit/:id', component: RouteEdit}				
 		]
 	},

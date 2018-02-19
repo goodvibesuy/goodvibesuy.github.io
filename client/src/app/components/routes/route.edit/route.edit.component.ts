@@ -72,7 +72,7 @@ export class RouteEdit implements OnInit {
   actualizar() {
     this.routeService.update(this.route)
       .subscribe(data => {
-        this.router.navigateByUrl('/inputs');
+        this.router.navigateByUrl('/recorridos');
       });
   }
 
