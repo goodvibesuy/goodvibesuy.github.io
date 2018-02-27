@@ -72,6 +72,13 @@ travelModel.removePointOfSale = function (idRoute, idPointOfSale, callBack) {
     });
 }
 
+travelModel.removeUser = function (idRoute, idUser ,callBack) {
+    con.query("DELETE FROM route_user WHERE idroute = ? AND iduser = ? ", [idRoute, idUser], function (err, result) {
+        if (err) throw err;
+        callBack({ result: 1, message: "OK", data: result });
+    });
+}
+
 travelModel.reorderPointOfSale = function (idRoute, idPointOfSale, position, newPosition, callBack) {
     con.query("UPDATE route_pointofsale SET position = ? WHERE idroute = ? AND position = ?", [position, idRoute, newPosition], function (err, result) {
         if (err) throw err;
