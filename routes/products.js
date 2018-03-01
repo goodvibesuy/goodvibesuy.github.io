@@ -30,6 +30,7 @@ router.post('/', function (req, res, next) {
       if (err) {
         if (err.code === "ER_DUP_ENTRY") {
           con.release();
+          res.send({ result: 0, message: "error", error: err });
         }
       } else {
         res.send({ result: 1, message: "OK" });
@@ -40,8 +41,8 @@ router.post('/', function (req, res, next) {
 
 router.put('/', function (req, res, next) {  
   con.query(
-    "UPDATE product  SET name = ?, address = ?, tel = ? WHERE id = ?",
-    [req.body.name, req.body.address, req.body.tel, req.body.id],
+    "UPDATE product  SET name = ?, path_image = ? WHERE id = ?",
+    [req.body.name, req.body.path_image, req.body.id],
     function (err, resultClient) {
       if (err) {
         if (err.code === "ER_DUP_ENTRY") {

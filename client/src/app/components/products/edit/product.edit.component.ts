@@ -1,48 +1,72 @@
-
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { DomSanitizer } from '@angular/platform-browser';
 // service
 import { ProductsService } from '../../../services/products.service';
+import { ImagesService } from '../../../services/images.service';
 // models
 import { Product } from '../../../shared/models/product.model';
+import { GVFile } from '../../../shared/models/gvfile.model'
 
 @Component({
-  templateUrl: './product.edit.component.html',
-  styleUrls: ['./product.edit.component.css']
+	templateUrl: './product.edit.component.html',
+	styleUrls: ['./product.edit.component.css']
 })
 export class ProductEditComponent implements OnInit, OnDestroy {
+	paramsSub: any;
 
-  paramsSub: any;
+    private product: Product;
+    private imageFile: GVFile;
+    
+    constructor(
+		// public http: HttpClient,
+		private activatedRoute: ActivatedRoute,
+        private router: Router,
+        private domSanitizer: DomSanitizer,
+		private productsService: ProductsService,
+		private imagesService: ImagesService
+	) {}
 
-  private product: Product;
+	ngOnInit() {
+		this.paramsSub = this.activatedRoute.params.subscribe(
+			params => {
+				this.productsService.get().subscribe(data => {
+					this.product = (<Product[]>data).find(s => s.id == params['id']);
+				});
+			},
+			error => {}
+		);
+	}
 
-  constructor(
-    private activatedRoute: ActivatedRoute,
-    private router: Router,
-    private productsService: ProductsService
-  ) { }
+	ngOnDestroy() {
+		this.paramsSub.unsubscribe();
+	}
 
-  ngOnInit() {
-    this.paramsSub = this.activatedRoute.params
-      .subscribe(params => {
+	actualizar() {
+        const category: string = 'productos';
 
-        this.productsService.get()
-          .subscribe(data => {
-            this.product = ((<Product[]>data).find(s => s.id == params['id']))
-          });
-      },
-      error => { }
-      );
-  }
+        this.imagesService//name + this.imageFile.type.replace('image/','')
+            .sendImage(category, this.product.path_image, this.imageFile.size, this.imageFile.data)
+            .subscribe(res => {
+               
+                this.productsService
+                    .update(this.product)
+                    .subscribe(data => {
+                        this.router.navigateByUrl('/productos');
+                    },
+                    error => {
+                        console.error(error);
+                    });
+            });
+	}
 
-  ngOnDestroy() {
-    this.paramsSub.unsubscribe();
-  }
+    getImage(){
+        return this.imageFile?
+            this.domSanitizer.bypassSecurityTrustUrl('data:image/' + this.imageFile.type + ';base64, ' + this.imageFile.data) :
+            'images/productos/'+ this.imagesService.getSmallImage(this.product.path_image);
+    }
 
-  actualizar() {
-    this.productsService.update(this.product)
-      .subscribe(data => {
-        this.router.navigateByUrl('/productos');
-      });
-  }
+	handleSelected(file: GVFile): void {
+        this.imageFile = file;
+	}
 }
