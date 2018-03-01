@@ -38,7 +38,14 @@ import { ListComponent } from './components/routes/list/list.component';
 import { RouteAdd } from './components/routes/route.add/route.add.component';
 import { RouteEdit } from './components/routes/route.edit/route.edit.component';
 import { UsersService } from './services/users.service';
-import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import { ImagesService} from './services/images.service';
+import { NgbModule} from '@ng-bootstrap/ng-bootstrap';
+
+// shared
+import { FilePicker } from './shared/components/file-picker/file-picker.component';
+// models
+//import { GVFile } from './shared/models/gvfile.model';
+
 
 @NgModule({
 	declarations: [
@@ -61,7 +68,11 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 		RoutesComponent,
 		ListComponent,
 		RouteAdd,
-		RouteEdit
+		RouteEdit,
+		// shared		
+        FilePicker,
+        // models
+    //    GVFile
 	],
 	imports: [
 		BrowserModule,
@@ -74,7 +85,8 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 		InputService,
 		ProductsService,
 		RouteService,
-		UsersService
+		UsersService,
+		ImagesService
 	],
 	bootstrap: [AppComponent]
 })
