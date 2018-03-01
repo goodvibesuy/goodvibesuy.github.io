@@ -1,22 +1,40 @@
-<table class="table">
-	<tr>
-		<td>
-			<div class="card" style="margin:15px;">
-				<div class="card-header">
-					<b>Editar recorrido</b>
+
+<form novalidate [formGroup]="myform">
+	<div class="form-group">
+		<label>Password</label>
+		<input type="password" class="form-control" formControlName="password">
+		<div class="form-control-feedback" *ngIf="password.errors && (password.dirty || password.touched)">
+			<p *ngIf="password.errors.required">Password is required</p>
+			<p *ngIf="password.errors.minlength">Password must be 8 characters long, we need another {{password.errors.minlength.requiredLength - password.errors.minlength.actualLength}}
+				characters </p>
+		</div>
+	</div>
+</form>
+
+
+<form novalidate [formGroup]="editForm">
+	<div class="card" style="margin:15px;">
+		<div class="card-header">
+			<b>Editar recorrido</b>
+		</div>
+		<div class="card-body">
+			<div class="form-group">
+				<span class="input-group-addon">Nombre:</span>
+				<input type="text" class="form-control" id="name" formControlName="editName" *ngIf="route" [(ngModel)]="route.name">				
+				<!--
+				<div class="form-control-feedback" *ngIf="editName.errors && (editName.dirty || editName.touched)">
+					<p *ngIf="editName.errors.required">Password is required</p>
 				</div>
-				<div class="card-body">
-					<div class="form-group">							
-						<span class="input-group-addon">Nombre:</span>						
-						<input type="text" class="form-control" id="name" *ngIf="route" [(ngModel)]="route.name">
-					</div>
-					<button type="button" class="btn btn-primary" (click)="actualizar()">Actualizar</button>
-					<button type="button" class="btn btn-light" routerLink="/recorridos">Cancelar</button>
-				</div>
+			-->
 			</div>
-		</td>
-	</tr>
-</table>
+			<button type="button" class="btn btn-primary" (click)="actualizar()">Actualizar</button>
+			<button type="button" class="btn btn-light" routerLink="/recorridos">Cancelar</button>
+		</div>
+	</div>
+</form>
+
+
+
 
 <table class="table">
 	<tr>
@@ -34,7 +52,7 @@
 						</tr>
 						<tr *ngFor="let i of pointsOfSaleRoute">
 							<td>
-								<span class="fa fa-arrow-circle-up"  (click)="changeOrder(i.id,i.position, i.position - 1)"  *ngIf="i.position !== 1"></span>
+								<span class="fa fa-arrow-circle-up" (click)="changeOrder(i.id,i.position, i.position - 1)" *ngIf="i.position !== 1"></span>
 								<span class="fa fa-arrow-circle-down" (click)="changeOrder(i.id,i.position,i.position + 1)" *ngIf="i.position !== pointsOfSaleRoute.length"></span>
 							</td>
 							<td>{{i.name}}</td>
