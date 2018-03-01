@@ -95,6 +95,13 @@ export class RouteService {
       );
   }
 
+  removeUser(idRoute:number,idUser:number):Observable<any>{
+    return this.http
+      .delete(
+        this.routeUrl + "/removeUser/"+ idRoute + "/" + idUser
+      );
+  }
+
   delete(id: number): Observable<any> {
     return this.http
       .delete(this.routeUrl + '/' + id);

@@ -69,6 +69,12 @@ export class RouteEdit implements OnInit {
     });
   }
 
+  removeUser(idUser){
+    this.routeService.removeUser(this.route.idroute,idUser).subscribe(data => {
+      this.getUsersRoute();
+    });
+  }
+
   actualizar() {
     this.routeService.update(this.route)
       .subscribe(data => {
@@ -102,7 +108,7 @@ export class RouteEdit implements OnInit {
 
   agregarUsuario(){
     this.routeService.addUser(this.rUser).subscribe(data => {
-      this.getPointOfSalesRoute();
+      this.getUsersRoute();
     });
   }
 

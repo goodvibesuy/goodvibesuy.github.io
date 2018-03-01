@@ -95,6 +95,18 @@ router.delete('/removePointOfSale/:idRoute/:idPointOfSale', function (req, res, 
     });
 });
 
+//removePointOfSale
+router.delete('/removeUser/:idRoute/:idUser', function (req, res, next) {
+    acl.getACL().isAllowed("cabecacorada", 'routes', 'get', function (err, response) {
+        if (response) {
+            travelModel.removeUser(req.params.idRoute,req.params.idUser, function (result) {
+                res.send(result);
+            });
+        } else {
+            res.send({ result: -1, message: "messages.PERMISSION_DENIED", data: null });
+        }
+    });
+});
 
 router.post('/addUser', function (req, res, next) {
     acl.getACL().isAllowed("cabecacorada", 'routes', 'get', function (err, response) {

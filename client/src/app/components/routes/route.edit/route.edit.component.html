@@ -66,10 +66,10 @@
 							<td>Eliminar</td>
 						</tr>
 						<tr *ngFor="let u of usersRoute">
-							<td>{{u.date}}</td>
-							<td>{{u.user}}</td>
+							<td>{{u.date | date:'dd/MM/yyyy'}}</td>
+							<td>{{u.firstname}} {{u.lastname}}</td>
 							<td>
-								<a (click)="remove(u.id)">
+								<a (click)="removeUser(u.id)">
 									<i class="fa fa-trash-o" style="font-size: 1.7em;"></i>
 								</a>
 							</td>
@@ -77,7 +77,7 @@
 					</table>
 					<span class="input-group-addon">Usuario:</span>
 					<select class="form-control" [(ngModel)]="rUser.idUser">
-						<option *ngFor="let u of users" [ngValue]="u.id">{{u.user}}</option>
+						<option *ngFor="let u of users" [ngValue]="u.id">{{u.firstname}} {{u.lastname}}</option>
 					</select>
 					<div class="input-group">
 						<input class="form-control" placeholder="yyyy-mm-dd" name="dp" [(ngModel)]="rUser.date" ngbDatepicker #d="ngbDatepicker">
