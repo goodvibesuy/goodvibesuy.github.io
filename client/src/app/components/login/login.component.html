@@ -1,0 +1,22 @@
+<div class="login-page">
+  <div class="form">
+    <form novalidate [formGroup]="loginform" class="login-form">
+        <div class="errorMessage" *ngIf="errorForm">
+            Usuario o contraseña incorrecta        
+        </div>
+        <div class="form-group">
+            <input type="text" placeholder="Usuario" class="form-control" formControlName="username">
+            <div class="form-control-feedback" *ngIf="username.errors && (username.dirty || username.touched)">
+                <p *ngIf="username.errors.required" class="error">Usuario requerido</p>                
+            </div>
+        </div>
+        <div class="form-group">
+            <input type="password" placeholder="password" class="form-control" formControlName="password">
+            <div class="form-control-feedback" *ngIf="password.errors && (password.dirty || password.touched)">
+                <p *ngIf="password.errors.required" class="error">Contraseña requerida</p>                
+            </div>
+        </div>
+        <button (click)="login()">login</button>
+    </form>
+  </div>
+</div>

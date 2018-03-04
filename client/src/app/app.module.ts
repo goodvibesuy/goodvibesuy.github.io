@@ -44,6 +44,8 @@ import { NgbModule} from '@ng-bootstrap/ng-bootstrap';
 
 // shared
 import { FilePicker } from './shared/components/file-picker/file-picker.component';
+import { LoginComponent } from './components/login/login.component';
+import { AuthenticateService } from './services/authenticate.service';
 // models
 //import { GVFile } from './shared/models/gvfile.model';
 
@@ -74,6 +76,7 @@ import { FilePicker } from './shared/components/file-picker/file-picker.componen
 		RouteEdit,
 		// shared		
         FilePicker,
+		LoginComponent,
         // models
     //    GVFile
 	],
@@ -90,7 +93,8 @@ import { FilePicker } from './shared/components/file-picker/file-picker.componen
 		ProductsService,
 		RouteService,
 		UsersService,
-		ImagesService
+        ImagesService,
+        AuthenticateService
 	],
 	bootstrap: [AppComponent]
 })
