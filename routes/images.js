@@ -3,23 +3,32 @@ var router = express.Router();
 
 var fs = require('fs');
 
-// var gm = require('gm').subClass({imageMagick: true});
-
-
-router.post('/', function (req, res, next) {  
+router.post('/', function (req, res, next) { 
+    
+    console.log('POST ' + req.body);
     var buf = Buffer.from(req.body.data, 'base64');
-
 
     var dir = 'client\\images\\' + req.body.cat + '\\';
     var fileName = req.body.name;
     var path = dir + fileName;
+
+    if(fs.existsSync(path)){
+        fs.renameSync(path, dir + "temp_" + fileName);
+    }
     fs.writeFile(path, buf, 'binary', function(err){
         if (err) {
             throw err
         }
         else {
-            // var smallFileName = fileName.substr(0, fileName.indexOf('.')) + '_small' + fileName.substr(fileName.indexOf('.'));
-            
+            console.log('Recibida image: ' + req.body.name + '. Guardada: ' + path);
+       }
+   });
+
+    res.send({ result: 1, message: "OK" });
+});
+
+module.exports = router;
+
             
 // TODO: RESIZE !! 
             // gm(path)
@@ -58,11 +67,11 @@ router.post('/', function (req, res, next) {
 
 
 
-            console.log('Recibida image: ' + req.body.name + '. Guardada: ' + path);
-       }
-   });
+//             console.log('Recibida image: ' + req.body.name + '. Guardada: ' + path);
+//        }
+//    });
 
-    res.send({ result: 1, message: "OK" });
-});
+//     res.send({ result: 1, message: "OK" });
+// });
 
-module.exports = router;
+// module.exports = router;

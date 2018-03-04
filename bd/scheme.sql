@@ -59,7 +59,7 @@ SELECT 'Estructura de tabla para la tabla `product`';
 CREATE TABLE IF NOT EXISTS `product` (
     `id` int(11) NOT NULL AUTO_INCREMENT,
     `name` varchar(56) NOT NULL,
-    `path_image` varchar(128) NOT NULL,
+    `path_image` varchar(128) DEFAULT NULL,
     PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 

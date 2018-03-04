@@ -25,7 +25,7 @@ router.get('/', function (req, res, next) {
 router.post('/', function (req, res, next) {
   con.query(
     "INSERT INTO product  (name, path_image) VALUES(?,?)",
-    [req.body.name, req.body.image],
+    [req.body.name, req.body.path_image],
     function (err, resultClient) {
       if (err) {
         if (err.code === "ER_DUP_ENTRY") {
@@ -33,7 +33,7 @@ router.post('/', function (req, res, next) {
           res.send({ result: 0, message: "error", error: err });
         }
       } else {
-        res.send({ result: 1, message: "OK" });
+        res.send({ result: 1, message: "OK", insertId: resultClient.insertId });
       }
     }
   );

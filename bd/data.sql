@@ -53,7 +53,8 @@ INSERT INTO `product` (`id`, `name`, `path_image`) VALUES
 (1, 'Paradise Dream', 'paradise-dream.png'),
 (2, 'Citra Trip', 'citra-trip.png'),
 (3, 'Sun Kiss', 'sun-kiss.png'),
-(4, 'Green Life', 'green-life.png');
+(4, 'Green Life', 'green-life.png'),
+(5, 'Yello Rolling', 'yellow-rolling.png');
 
 --
 -- Volcar la base de datos para la tabla `resources`
