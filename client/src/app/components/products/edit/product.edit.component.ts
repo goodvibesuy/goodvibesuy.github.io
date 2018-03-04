@@ -62,19 +62,6 @@ export class ProductEditComponent implements OnInit, OnDestroy {
             }
         });
     }
-/*
-                            .subscribe(data => {
-        this.imagesService
-            .sendImage(category, this.product.path_image, this.imageFile.size, this.imageFile.data)
-            .subscribe(res => {
-               
-                
-                        this.router.navigateByUrl('/productos');
-                    },
-                    error => {
-                        console.error(error);
-                    });
-            });}*/
 
     getImage(){
         return this.imageFile?
@@ -82,7 +69,10 @@ export class ProductEditComponent implements OnInit, OnDestroy {
             'images/productos/'+ this.imagesService.getSmallImage(this.product.path_image);
     }
 
-	handleSelected(file: GVFile): void {
-        this.imageFile = file;
+	handleSelected(file: GVFile): void {        
+        if(!!file) {
+            this.imageFile = file;
+            this.product.path_image = this.product.id + '_' + this.imageFile.name;
+        }
 	}
 }

@@ -1,28 +1,63 @@
-import { Component, OnInit } from "@angular/core";
-import { ActivatedRoute, Router } from "@angular/router";
+import { Component } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { DomSanitizer } from '@angular/platform-browser';
 // service
-import { ProductsService } from "../../../services/products.service";
+import { ProductsService } from '../../../services/products.service';
+import { ImagesService } from '../../../services/images.service';
 // models
-import { Product } from "../../../shared/models/product.model";
+import { Product } from '../../../shared/models/product.model';
+import { GVFile } from '../../../shared/models/gvfile.model'
 
 @Component({
-  templateUrl: "./product.add.component.html",
-  styleUrls: ["./product.add.component.css"]
+	templateUrl: './product.add.component.html',
+	styleUrls: ['./product.add.component.css']
 })
-export class ProductAddComponent implements OnInit {
-  private product: Product;
+export class ProductAddComponent {
+	private product: Product;
+    private imageFile: GVFile;
 
-  constructor(
-    private productsService: ProductsService,
-    private router: Router) {
-    this.product = <Product>{ id: -1, name: "", path_image: "" };
-  }
+	constructor(
+        private router: Router,
+        private domSanitizer: DomSanitizer,
+		private productsService: ProductsService,
+		private imagesService: ImagesService) {
+		this.product = <Product>{ id: -1, name: '', path_image: null };
+	}
 
-  ngOnInit() {}
+	agregar() {
+        const category: string = 'productos';        
+        
+        var promise = this.productsService.agregar(this.product);
 
-  agregar(): void {
-    this.productsService.agregar(this.product).subscribe(data => {
-      this.router.navigateByUrl("/productos");
-    });
-  }
+        promise.subscribe(data => {
+            if (!!this.imageFile ) {
+
+                this.imagesService
+                    .sendImage(category, this.product.path_image, this.imageFile.size, this.imageFile.data)
+                    .subscribe(res => {
+                        this.router.navigateByUrl('/productos');
+                    },
+                    error => {
+                        console.error(error);
+                    });
+            } else {
+                this.router.navigateByUrl('/productos');
+            }
+        });
+    }
+
+	getImage() {
+		return this.imageFile
+			? this.domSanitizer.bypassSecurityTrustUrl(
+					'data:image/' + this.imageFile.type + ';base64, ' + this.imageFile.data
+				)
+			: 'images/productos/' + this.imagesService.getSmallImage(this.product.path_image);
+	}
+
+	handleSelected(file: GVFile): void {
+        if(!!file) {
+            this.imageFile = file;
+            this.product.path_image = this.imageFile.name;
+        }
+	}
 }
