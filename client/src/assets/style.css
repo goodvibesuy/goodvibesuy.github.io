@@ -163,3 +163,9 @@
 	padding-bottom: 5px;
 	text-align: center;
 }
+
+
+/* Small image */
+.small_image { 
+    width: 20px
+};
