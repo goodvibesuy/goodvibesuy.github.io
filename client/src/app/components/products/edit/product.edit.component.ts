@@ -19,7 +19,6 @@ export class ProductEditComponent implements OnInit, OnDestroy {
     private imageFile: GVFile;
     
     constructor(
-		// public http: HttpClient,
 		private activatedRoute: ActivatedRoute,
         private router: Router,
         private domSanitizer: DomSanitizer,
@@ -45,20 +44,37 @@ export class ProductEditComponent implements OnInit, OnDestroy {
 	actualizar() {
         const category: string = 'productos';
 
-        this.imagesService//name + this.imageFile.type.replace('image/','')
-            .sendImage(category, this.product.path_image, this.imageFile.size, this.imageFile.data)
-            .subscribe(res => {
-               
-                this.productsService
-                    .update(this.product)
-                    .subscribe(data => {
+        var promise = this.productsService
+                            .update(this.product);
+
+        promise.subscribe(data => {
+            if (!!this.imageFile ) {
+                this.imagesService
+                    .sendImage(category, this.product.path_image, this.imageFile.size, this.imageFile.data)
+                    .subscribe(res => {
                         this.router.navigateByUrl('/productos');
                     },
                     error => {
                         console.error(error);
                     });
-            });
-	}
+            } else {
+                this.router.navigateByUrl('/productos');
+            }
+        });
+    }
+/*
+                            .subscribe(data => {
+        this.imagesService
+            .sendImage(category, this.product.path_image, this.imageFile.size, this.imageFile.data)
+            .subscribe(res => {
+               
+                
+                        this.router.navigateByUrl('/productos');
+                    },
+                    error => {
+                        console.error(error);
+                    });
+            });}*/
 
     getImage(){
         return this.imageFile?

@@ -16,8 +16,9 @@ export class ImagesService {
     ) { }
     
     getSmallImage(imagePath: string): string {
-		var dotIndex = imagePath.indexOf('.');
-		return imagePath.substr(0, dotIndex) + '_small' + imagePath.substr(dotIndex);
+        return imagePath;
+		// var dotIndex = imagePath.indexOf('.');
+		// return imagePath.substr(0, dotIndex) + '_small' + imagePath.substr(dotIndex);
     }
     
     /*.pipe(
