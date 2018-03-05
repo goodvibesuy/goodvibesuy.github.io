@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+//import { Headers, RequestOptions } from '@angular/http';
 import { catchError, map, tap } from 'rxjs/operators';
 import { Observable } from 'rxjs/Observable';
 import { Route } from '../shared/models/route.model'
@@ -16,11 +17,13 @@ export class RouteService {
 
   }
 
-  get(): Observable<Route[]> {
-    return this.http.get<Route[]>(this.routeUrl)
+  get(tokenId:string, user:string, accountId:Number): Observable<Route[]> {
+    console.log({'tokenId': tokenId, 'user': user, 'accountId': accountId.toString()});
+    let headers = new HttpHeaders({'tokenId': tokenId, 'user': user, 'accountId': accountId.toString()});    
+    return this.http.get<Route[]>(this.routeUrl,{headers:headers})
       .pipe(
         map(r => (<any>r).data)
-      )
+      );
   }
 
   agregar(route: Route): Observable<any> {

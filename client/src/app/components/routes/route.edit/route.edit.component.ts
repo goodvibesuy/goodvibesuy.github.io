@@ -27,6 +27,11 @@ import {
 })
 
 export class RouteEdit implements OnInit {
+
+    private token: string;
+    private userSaved: string;
+    private accountId: Number;
+
   public myform: FormGroup;
   public editForm: FormGroup;
 
@@ -86,11 +91,17 @@ export class RouteEdit implements OnInit {
   }
 
   ngOnInit() {
+
+    this.token = localStorage.getItem("token");
+        this.userSaved = localStorage.getItem("user");
+        this.accountId = Number(localStorage.getItem("accountId"));
+
     this.editName = new FormControl('', Validators.required);
+
 
     this.paramsSub = this.activatedRoute.params
       .subscribe(params => {
-        this.routeService.get()
+        this.routeService.get(this.token,this.userSaved,this.accountId)
           .subscribe(data => {
             console.log(data);
 

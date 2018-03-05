@@ -10,6 +10,15 @@ export class DashboardComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
+    var token = localStorage.getItem("token");
+    var userSaved = localStorage.getItem("user");
+    var accountId = localStorage.getItem("accountId");
+    console.log(token,userSaved,accountId);
+
+
+    
+
+
   }
 
 }

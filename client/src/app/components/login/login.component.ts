@@ -45,10 +45,12 @@ export class LoginComponent implements OnInit {
 
 
   login(){
-
     this.authenticateService.login(this.username.value,this.password.value).subscribe(data =>{
         console.log(data.result);
         if(data.result){
+            localStorage.setItem("token", data.tokenId);
+            localStorage.setItem("user", data.user);
+            localStorage.setItem("accountId", data.accountId);            
             this.router.navigate(['dashboard']);
         }else{
             this.errorForm = true;
