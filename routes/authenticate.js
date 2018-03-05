@@ -42,6 +42,7 @@ router.post('/login', function (req, res, next) {
     });
 });
 
+
 router.get('/verifyToken', function (req, res, next) {
     masterDBController.verifySession(req.headers['user'], req.headers['tokenid'], req.headers['accountid'], function (err, authError, response, dbName) {
         res.send({ result: !authError });

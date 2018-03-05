@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
+import { map } from 'rxjs/operators';
 
 @Injectable()
 export class AuthenticateService {
@@ -17,5 +18,17 @@ export class AuthenticateService {
             { user,pass}
           );
       }
+
+
+      verifyToken(tokenId:string, user:string, accountId:Number): Observable<any> {
+        let headers = new HttpHeaders({'tokenId': tokenId, 'user': user, 'accountId': accountId.toString()});    
+        return this.http.get(this.AUTHENTICATE_URL + "/verifyToken" ,{headers:headers});
+      }
+
+      closeSession(tokenId:string, user:string, accountId:Number): Observable<any> {
+        let headers = new HttpHeaders({'tokenId': tokenId, 'user': user, 'accountId': accountId.toString()});    
+        return this.http.get(this.AUTHENTICATE_URL + "/closeSession" ,{headers:headers});
+      }
+      
 
 }
