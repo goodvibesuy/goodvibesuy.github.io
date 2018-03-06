@@ -2,14 +2,11 @@ var acl = require('acl');
 //var masterDBController = require('../bd/masterConnectionsBD');
 acl = new acl(new acl.memoryBackend());
 
-console.log("11aasda");
-
 var motionACL = function () {
-    console.log("aasda");
+
 };
 
 motionACL.setUp = function(connection){
-    console.log("setup");
     connection.query("SELECT id FROM rols ",
         function(err, rols) {
             if (err) {

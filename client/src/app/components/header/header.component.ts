@@ -1,6 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { Location } from "@angular/common";
 import { AuthenticateService } from "../../services/authenticate.service";
+import { Router } from "@angular/router";
 
 @Component({
     selector: "app-header",
@@ -13,16 +14,19 @@ export class HeaderComponent {
     private userSaved: string;
     private accountId: Number;
 
-    constructor(private location: Location, private authenticateService: AuthenticateService) { }
+    constructor(private router:Router, private location: Location, private authenticateService: AuthenticateService) { }
 
     ngOnInit() {
         this.token = localStorage.getItem("token");
         this.userSaved = localStorage.getItem("user");
         this.accountId = Number(localStorage.getItem("accountId"));
-        this.authenticateService.verifyToken(this.token, this.userSaved, this.accountId).
+
+        if(this.token !== null && this.userSaved !== null){
+            this.authenticateService.verifyToken(this.token, this.userSaved, this.accountId).
             subscribe(data => {
                 this.visible = data.result;
             });
+        }
     }
 
     closeSession() {
@@ -32,6 +36,7 @@ export class HeaderComponent {
                 localStorage.removeItem("user");
                 localStorage.removeItem("accountId");
                 this.visible = data.result;
+                this.router.navigate(['']);
             });
     }
 

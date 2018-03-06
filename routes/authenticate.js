@@ -16,6 +16,7 @@ router.post('/login', function (req, res, next) {
                     loginresponse.accounts[0].id, function (err, authError, response, dbName) {
                         var con = clientDBController.getUserConnection(dbName);
 
+                        console.warn("Sacar lo que manda el rol para afuera");
                         con.query(
                             "SELECT * FROM users WHERE id_user_master = ?", [loginresponse.user.id],
                             function (err, userResult) {
@@ -25,6 +26,7 @@ router.post('/login', function (req, res, next) {
                                     if (userResult.length > 0) {
                                         res.send({
                                             result: true, tokenId: loginresponse.tokenId, user: loginresponse.user.userName,
+                                            rolId : loginresponse.user.rolId,
                                             accountId: loginresponse.accounts[0].id, extension: userResult[0].extension, message: ""
                                         });
                                     }

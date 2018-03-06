@@ -6,7 +6,6 @@ import { map } from 'rxjs/operators';
 @Injectable()
 export class AuthenticateService {
     AUTHENTICATE_URL: string = "/api/authenticate";
-
     constructor(
         private http: HttpClient
     ) { }
@@ -19,9 +18,8 @@ export class AuthenticateService {
           );
       }
 
-
-      verifyToken(tokenId:string, user:string, accountId:Number): Observable<any> {
-        let headers = new HttpHeaders({'tokenId': tokenId, 'user': user, 'accountId': accountId.toString()});    
+      verifyToken(tokenId:string, user:string, accountId:Number): Observable<any> {        
+        let headers = new HttpHeaders({'tokenId': tokenId || "", 'user': user || "", 'accountId': accountId.toString()});            
         return this.http.get(this.AUTHENTICATE_URL + "/verifyToken" ,{headers:headers});
       }
 
@@ -29,6 +27,4 @@ export class AuthenticateService {
         let headers = new HttpHeaders({'tokenId': tokenId, 'user': user, 'accountId': accountId.toString()});    
         return this.http.get(this.AUTHENTICATE_URL + "/closeSession" ,{headers:headers});
       }
-      
-
 }

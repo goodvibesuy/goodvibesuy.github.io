@@ -31,8 +31,9 @@ con.connect(function(err) {
 });
 
 var acl = require('./motionLibJS/serverSide/acl/motionACL');
-//var masterDBController = require('./bd/masterConnectionsBD');
-acl.setUp(con);
+var masterDBController = require('./bd/masterConnectionsBD');
+acl.setUp(masterDBController.dbMasterConnection.connection);
+
 
 var app = express();
 

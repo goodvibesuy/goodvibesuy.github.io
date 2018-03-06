@@ -19,12 +19,10 @@ export class RouteService {
 
 
 
-    get(tokenId: string, user: string, accountId: Number): Observable<Route[]> {
-        let headers = new HttpHeaders({ 'tokenId': tokenId, 'user': user, 'accountId': accountId.toString() });
-        return this.http.get<Route[]>(this.routeUrl, { headers: headers })
-            .pipe(
-                map(r => (<any>r).data)
-            );
+    get(tokenId: string, user: string, accountId: Number): Observable<any> {
+
+        let headers = new HttpHeaders({ 'tokenId': tokenId || "", 'user': user || "", 'accountId': accountId.toString() });
+        return this.http.get<Route[]>(this.routeUrl, { headers: headers });
     }
 
     agregar(route: Route): Observable<any> {

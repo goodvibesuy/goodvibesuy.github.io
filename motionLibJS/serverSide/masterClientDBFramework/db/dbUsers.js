@@ -81,7 +81,7 @@ DBUsers.prototype.updateState = function (userId, state, accountId, callBack, ca
 DBUsers.prototype.login = function (user, password, loginCallback) {
     var userDataBuilder = require('../datatypes/User');
     var loginResponseBuilder = require('../datatypes/LoginResponse');
-    var proyection = 'id,password,user_name,active';
+    var proyection = 'id,password,user_name,active,rol_id';
     if (this.usersDbModelMap) {
         for (var map in this.usersDbModelMap.fields) {
             proyection = proyection + ', ' + map.dbField;
@@ -113,7 +113,7 @@ DBUsers.prototype.login = function (user, password, loginCallback) {
                         return;
                     } else {
                         // Login success
-                        userData = new userDataBuilder(rows[0].id, rows[0].user_name);
+                        userData = new userDataBuilder(rows[0].id, rows[0].user_name,rows[0].rol_id);
                         loginResult = true;
 
                         // if extra fields, assing to user
