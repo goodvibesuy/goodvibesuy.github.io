@@ -46,6 +46,12 @@ import { NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import { FilePicker } from './shared/components/file-picker/file-picker.component';
 import { LoginComponent } from './components/login/login.component';
 import { AuthenticateService } from './services/authenticate.service';
+import { PointOfSaleService } from './services/point-of-sale.service';
+
+
+import { ActivatedRoute, ParamMap } from '@angular/router';
+import { GeneralComponent } from './components/general/general.component';
+import { ViewingService } from './services/viewing.service';
 // models
 //import { GVFile } from './shared/models/gvfile.model';
 
@@ -77,6 +83,7 @@ import { AuthenticateService } from './services/authenticate.service';
 		// shared		
         FilePicker,
 		LoginComponent,
+		GeneralComponent,
         // models
     //    GVFile
 	],
@@ -94,7 +101,9 @@ import { AuthenticateService } from './services/authenticate.service';
 		RouteService,
 		UsersService,
         ImagesService,
-        AuthenticateService
+        AuthenticateService,
+        PointOfSaleService,
+        ViewingService
 	],
 	bootstrap: [AppComponent]
 })

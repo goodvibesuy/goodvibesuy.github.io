@@ -3,4 +3,5 @@ export interface PointOfSale {
     name: string;
     address: string;
     tel: string;
+    image:string;
 }

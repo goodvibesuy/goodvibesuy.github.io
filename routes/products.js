@@ -1,19 +1,25 @@
 var express = require('express');
 var router = express.Router();
+var productModel = require('../models/productsModel');
+var acl = require('../motionLibJS/serverSide/acl/motionACL');
+var masterDBController = require('../bd/masterConnectionsBD');
+var clientDBController = require('../bd/clientConnectionsBD');
 
-var mysql = require('mysql');
-
-var con = mysql.createConnection({
-  host: "localhost",
-  user: "root",
-  password: "",
-  database: "good"
+router.get('/', function (req, res, next) {
+    masterDBController.verifySession(req.headers['user'], req.headers['tokenid'], req.headers['accountid'], function (err, authError, response, dbName) {
+        acl.getACL().isAllowed(req.headers['user'], 'routes', 'get', function (err, response) {
+            if (response) {
+                productModel.getAll(function (result) {
+                    res.send(result);
+                });
+            } else {
+                res.send({ result: -1, message: "messages.PERMISSION_DENIED", data: null });
+            }
+        });
+    });
 });
 
-con.connect(function (err) {
-  if (err) throw err;
-})
-
+/*
 router.get('/', function (req, res, next) {
   con.query("SELECT * FROM product", function (err, result) {
     if (err) throw err;
@@ -21,7 +27,9 @@ router.get('/', function (req, res, next) {
     res.send({ result: 1, message: "OK", data: result });
   });
 });
+*/
 
+/*
 router.post('/', function (req, res, next) {
   con.query(
     "INSERT INTO product  (name, path_image) VALUES(?,?)",
@@ -70,5 +78,6 @@ router.delete('/', function (req, res, next) {
     }
   );
 });
+*/
 
 module.exports = router;

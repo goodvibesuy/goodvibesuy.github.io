@@ -23,7 +23,8 @@ export class ProductsListComponent implements OnInit {
 	}
 
 	loadProducts(): void {
-		this.productsService.get().subscribe(data => (this.products = data), error => {});
+        
+		//this.productsService.get().subscribe(data => (this.products = data), error => {});
 	}
 
 	getSmallImage(path: string): string {

@@ -2,79 +2,18 @@
     <input type="text" class="form-control" placeholder="Buscar locales...">
   </div>
   <div class="flex flex-wrap d-flex justify-content-around content-center content-between boxs-container">
-    <div class="boxs-lista border" 
-    [routerLink]="['/detalle-local', '3']">
-    <!--onclick="window.location='detalle-local.html'"-->
+    <div class="boxs-lista border" *ngFor="let pos of pointsOfSale"
+    [routerLink]="['/detalle-local', pos.id]">    
       <div class="lista-image">
-        <img src="images/locales/porto-vanilla.png">
+        <img src="images/locales/{{pos.image}}">
       </div>
       <div class="lista-info">
         <div class="lista-title">
-          <label>Porto Vanila</label>
+          <label>{{pos.name}}</label>
         </div>
         <div class="lista-info-content">
           <label>Productos entregados: 1560</label>
           <label>Productos pagos: 1560</label>
-        </div>
-      </div>
-    </div>
-    
-    <div class="boxs-lista border">
-      <div class="lista-image">
-        <img src="images/locales/las-gaviotas.png">
-      </div>
-      <div class="lista-info">
-        <div class="lista-title">
-          <label>Las Gaviotas</label>
-        </div>
-        <div class="lista-info-content">
-          <label>Productos entregados: 1260</label>
-          <label>Productos pagos: 1060</label>
-        </div>
-      </div>
-    </div>
-    
-    <div class="boxs-lista border">
-      <div class="lista-image">
-        <img src="images/locales/el-viejo-y-el-mar.jpg">
-      </div>
-      <div class="lista-info">
-        <div class="lista-title">
-          <label>El Viejo y El Mar</label>
-        </div>
-        <div class="lista-info-content">
-          <label>Productos entregados: 860</label>
-          <label>Productos pagos: 760</label>
-        </div>
-      </div>
-    </div>
-    
-    <div class="boxs-lista border">
-      <div class="lista-image">
-        <img src="images/locales/che-montevideo.png">
-      </div>
-      <div class="lista-info">
-        <div class="lista-title">
-          <label>Che Montevideo</label>
-        </div>
-        <div class="lista-info-content">
-          <label>Productos entregados: 860</label>
-          <label>Productos pagos: 760</label>
-        </div>
-      </div>
-    </div>
-    
-    <div class="boxs-lista border">
-      <div class="lista-image">
-        <img src="images/locales/el-mingus.jpg">
-      </div>
-      <div class="lista-info">
-        <div class="lista-title">
-          <label>El Mingus</label>
-        </div>
-        <div class="lista-info-content">
-          <label>Productos entregados: 860</label>
-          <label>Productos pagos: 760</label>
         </div>
       </div>
     </div>

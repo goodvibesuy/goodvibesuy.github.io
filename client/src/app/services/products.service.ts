@@ -1,6 +1,6 @@
 // Product.service
 import { Injectable } from "@angular/core";
-import { HttpClient } from "@angular/common/http";
+import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { catchError, map, tap } from "rxjs/operators";
 import { Observable } from "rxjs/Observable";
 import { of } from "rxjs/observable/of";
@@ -10,50 +10,58 @@ import { SupplyUnit } from "../shared/models/supply-unit.model";
 
 @Injectable()
 export class ProductsService {
-  PRODUCTS_URL: string = "/api/products";
+    PRODUCTS_URL: string = "/api/products";
 
-  constructor(private http: HttpClient) {}
+    constructor(private http: HttpClient) { }
 
-  get(): Observable<Product[]> {
-    return this.http
-      .get<Product[]>(this.PRODUCTS_URL)
-      .pipe(map(r => (<any>r).data));
-  }
 
-  update(Product: Product): Observable<any> {
-    return this.http.put<Product[]>(this.PRODUCTS_URL, Product);
-  }
+    get(tokenId: string, user: string, accountId: Number): Observable<any> {
+        let headers = new HttpHeaders({ 'tokenId': tokenId || "", 'user': user || "", 'accountId': accountId.toString() });
+        return this.http.get<Product[]>(this.PRODUCTS_URL, { headers: headers });
+    }
 
-  agregar(Product: Product): Observable<any> {
-    return this.http.post(this.PRODUCTS_URL, Product);
-  }
+    /*
+      get(): Observable<Product[]> {
+        return this.http
+          .get<Product[]>(this.PRODUCTS_URL)
+          .pipe(map(r => (<any>r).data));
+      }
+      */
 
-  delete(id: number): Observable<any> {
-    return this.http.delete(this.PRODUCTS_URL + "/" + id);
-  }
+    update(Product: Product): Observable<any> {
+        return this.http.put<Product[]>(this.PRODUCTS_URL, Product);
+    }
 
-  /**
- * Handle Http operation that failed.
- * Let the app continue.
- * @param operation - name of the operation that failed
- * @param result - optional value to return as the observable result
- */
-  private handleError<T>(operation = "operation", result?: T) {
-    return (error: any): Observable<T> => {
-      // TODO: send the error to remote logging infrastructure
-      console.error(error); // log to console instead
+    agregar(Product: Product): Observable<any> {
+        return this.http.post(this.PRODUCTS_URL, Product);
+    }
 
-      // TODO: better job of transforming error for user consumption
-      this.log(`${operation} failed: ${error.message}`);
+    delete(id: number): Observable<any> {
+        return this.http.delete(this.PRODUCTS_URL + "/" + id);
+    }
 
-      // Let the app keep running by returning an empty result.
-      return of(result as T);
-    };
-  }
+    /**
+   * Handle Http operation that failed.
+   * Let the app continue.
+   * @param operation - name of the operation that failed
+   * @param result - optional value to return as the observable result
+   */
+    private handleError<T>(operation = "operation", result?: T) {
+        return (error: any): Observable<T> => {
+            // TODO: send the error to remote logging infrastructure
+            console.error(error); // log to console instead
 
-  /** Log a HeroService message with the MessageService */
-  private log(message: string) {
-    //this.messageService.add('HeroService: ' + message);
-    console.log("log: " + message);
-  }
+            // TODO: better job of transforming error for user consumption
+            this.log(`${operation} failed: ${error.message}`);
+
+            // Let the app keep running by returning an empty result.
+            return of(result as T);
+        };
+    }
+
+    /** Log a HeroService message with the MessageService */
+    private log(message: string) {
+        //this.messageService.add('HeroService: ' + message);
+        console.log("log: " + message);
+    }
 }

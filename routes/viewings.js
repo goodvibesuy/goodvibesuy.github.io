@@ -12,13 +12,12 @@ router.get('/', function (req, res, next) {
 });
 
 router.post('/', function (req, res, next) {
-  //console.log(req.body.data);
-  var data = req.body.data;
-  var idpointofsail = 1;
+  var data = req.body.data;  
 
-  viewingsModel.addVisit(idpointofsail, data, function (result) {
+  viewingsModel.addVisit(req.body.idPointOfSale, data, function (result) {
     res.send(result);
   });  
 });
+
 
 module.exports = router;

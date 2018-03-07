@@ -45,7 +45,7 @@ viewingsModel.addVisit = function (idpointofsail,data, callBack) {
                         );
                     });
                 }
-                callBack({ result: 1, message: "OK" });
+                callBack({ result: 1, message: "OK", data : null });
             }
         }
     );

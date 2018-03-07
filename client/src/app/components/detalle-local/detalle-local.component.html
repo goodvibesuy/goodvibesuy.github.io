@@ -1,4 +1,40 @@
-<p>
-  detalle-local works!
-  {{ id }}
-</p>
+<div class="detalle-local border">
+    <div class="detalle-local-header flex flex-wrap d-flex justify-content-around content-center content-between">
+        <div class="head-image">
+            <img src="images/locales/{{pointOfSale.image}}">
+        </div>
+    </div>
+    <div class="detalle-local-info">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col"></div>
+                <div class="col">Entregados</div>
+                <div class="col">Devolución vencidos</div>
+                <div class="col">Devolución vacíos</div>
+            </div>
+            <div class="row align-items-center" *ngFor="let product of productsToSend">
+                <div class="col productos-info">
+                    <div class="productos-image">
+                        <img src="images/productos/{{product.path_image}}">
+                    </div>
+                    <div class="productos-title">
+                        <label>{{product.name}}</label>
+                    </div>
+                </div>            
+                <div class="col">
+                    <input type="number" class="detalle-input form-control" [(ngModel)]="product.typeTransaction.delivery" />
+                </div>
+                <div class="col">
+                    <input type="number" class="detalle-input form-control" [(ngModel)]="product.typeTransaction.empty"/>
+                </div>
+                <div class="col">
+                    <input type="number" class="detalle-input form-control" [(ngModel)]="product.typeTransaction.return"/>
+                </div>
+            </div>
+        </div>
+        <div class="filters flex d-flex justify-content-around content-center content-between">            
+            <button type="button" class="btn btn-secondary btn-lg">Cancelar</button>
+            <button type="button" (click)="agregar()" class="btn btn-success btn-lg">Agregar Visita</button>
+        </div>
+    </div>
+</div>
