@@ -10,17 +10,18 @@ import { GeneralComponent } from '../general/general.component';
     templateUrl: './locales.component.html',
     styleUrls: ['./locales.component.css']
 })
-export class LocalesComponent extends GeneralComponent implements OnInit {    
-    private pointsOfSale:PointOfSale[];    
+export class LocalesComponent extends GeneralComponent implements OnInit {
+    private pointsOfSale: PointOfSale[];
+    private filter: string;
 
-    constructor(private router: Router, 
-        private pointOFSaleService:PointOfSaleService,
-        private productService:ProductsService
-    ) { 
+    constructor(private router: Router,
+        private pointOFSaleService: PointOfSaleService,
+        private productService: ProductsService
+    ) {
         super();
     }
 
-    ngOnInit() {        
+    ngOnInit() {
         this.setHeaderValues();
         this.loadPointsOfSale();
     }
@@ -28,15 +29,31 @@ export class LocalesComponent extends GeneralComponent implements OnInit {
     loadPointsOfSale(): void {
         this.pointOFSaleService.get(this.generateHeader()).subscribe(
             data => {
-                console.log(data);
-                if (data.result === -1) {                    
-                    this.removeHeaderValues();                    
+                if (data.result === -1) {
+                    this.removeHeaderValues();
                     this.router.navigate(['']);
                 } else {
                     this.pointsOfSale = data.data
                 }
             },
             error => { }
-        );        
+        );
+    }
+
+    filterPOS(): void {
+        if (this.filter !== "") {
+            this.pointOFSaleService.getFilteredByName(this.generateHeader(), this.filter).subscribe(
+                data => {
+                    if (data.result === -1) {
+                        this.removeHeaderValues();
+                        this.router.navigate(['']);
+                    } else {
+                        this.pointsOfSale = data.data
+                    }
+                }
+            );
+        }else{
+            this.loadPointsOfSale();
+        }
     }
 }

@@ -33,6 +33,22 @@ router.get('/getPointOfSale/:idPOS', function (req, res, next) {
     });
 });
 
+router.get('/getFilteredByName/:filterName', function (req, res, next) {
+    masterDBController.verifySession(req.headers['user'], req.headers['tokenid'], req.headers['accountid'], function (err, authError, response, dbName) {
+        acl.getACL().isAllowed(req.headers['user'], 'routes', 'get', function (err, response) {
+            if (response) {
+                pointsOfSaleModel.getFilteredByName(req.params.filterName,function (result) {
+                    res.send(result);
+                });
+            } else {
+                res.send({ result: -1, message: "messages.PERMISSION_DENIED", data: null });
+            }
+        });
+    });
+});
+
+
+
 /*
 router.post('/', function (req, res, next) {
     con.query(

@@ -28,5 +28,11 @@ pointOfSaleModel.getPointOfSale = function (idPointOfSale,callBack) {
     });
 };
 
+pointOfSaleModel.getFilteredByName = function (filterName,callBack) {
+    con.query("SELECT * FROM pointofsale WHERE name LIKE ?", ["%" +filterName + "%"],function (err, result) {
+        if (err) throw err;
+        callBack({ result: 1, message: "OK", data: result });
+    });
+};
 
 module.exports = pointOfSaleModel;

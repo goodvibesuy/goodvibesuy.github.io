@@ -12,6 +12,11 @@ export class PointOfSaleService {
         return this.http.get<PointOfSale[]>(this.pointOfSaleURL, { headers: headers });
     }
 
+    
+    getFilteredByName(headers:HttpHeaders,filterName:string): Observable<any> {
+        return this.http.get<PointOfSale[]>(this.pointOfSaleURL + "/getFilteredByName/"+ filterName, { headers: headers });
+    }
+
     getPointOfSale(headers:HttpHeaders,idPointOfSale:Number): Observable<any> {
         return this.http.get<PointOfSale[]>(this.pointOfSaleURL + "/getPointOfSale/" + idPointOfSale, { headers: headers });
     }

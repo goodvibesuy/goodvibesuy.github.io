@@ -1,0 +1,16 @@
+img{
+    max-width: 90px;
+    max-height: 60px;
+}
+
+.imageContainer{
+    float: left;
+    margin: 5px;
+    width: 100px;
+    text-align: center;
+}
+
+.lista-info{
+    float:left;
+    margin-left: 5px;
+}
