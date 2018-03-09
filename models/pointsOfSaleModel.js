@@ -35,4 +35,22 @@ pointOfSaleModel.getFilteredByName = function (filterName,callBack) {
     });
 };
 
+
+pointOfSaleModel.delete = function (id,callBack) {
+    con.query(
+        "DELETE FROM pointofsale WHERE id = ? ",
+        [id],
+        function (err, resultClient) {
+            if (err) {
+                if (err.code === "ER_DUP_ENTRY") {
+                    con.release();
+                }
+            } else {
+                callBack({ result: 1, message: "OK" });
+            }
+        }
+    );
+};
+
+
 module.exports = pointOfSaleModel;

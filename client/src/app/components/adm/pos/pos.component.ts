@@ -38,4 +38,12 @@ export class PosComponent extends GeneralComponent implements OnInit {
         );
     }
 
+    delete(idPOS):void{
+        this.pointOFSaleService.deletePointOfSale(this.generateHeader(),idPOS).subscribe(
+            response => {
+                console.log(response);
+            }
+        )
+    }
+
 }

@@ -21,4 +21,8 @@ export class PointOfSaleService {
         return this.http.get<PointOfSale[]>(this.pointOfSaleURL + "/getPointOfSale/" + idPointOfSale, { headers: headers });
     }
 
+    deletePointOfSale(headers:HttpHeaders,idPointOfSale:Number): Observable<any> {
+        return this.http.delete(this.pointOfSaleURL + "/" + idPointOfSale, { headers: headers });
+    }
+
 }

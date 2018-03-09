@@ -48,6 +48,19 @@ router.get('/getFilteredByName/:filterName', function (req, res, next) {
 });
 
 
+router.delete('/', function (req, res, next) {
+    masterDBController.verifySession(req.headers['user'], req.headers['tokenid'], req.headers['accountid'], function (err, authError, response, dbName) {
+        acl.getACL().isAllowed(req.headers['user'], 'routes', 'get', function (err, response) {
+            if (response) {
+                pointsOfSaleModel.delete(req.body.id,function (result) {
+                    res.send(result);
+                });
+            } else {
+                res.send({ result: -1, message: "messages.PERMISSION_DENIED", data: null });
+            }
+        });
+    });    
+});
 
 /*
 router.post('/', function (req, res, next) {
@@ -82,21 +95,7 @@ router.put('/', function (req, res, next) {
     );
 });
 
-router.delete('/', function (req, res, next) {
-    con.query(
-        "DELETE FROM pointofsale WHERE id = ? ",
-        [req.body.id],
-        function (err, resultClient) {
-            if (err) {
-                if (err.code === "ER_DUP_ENTRY") {
-                    con.release();
-                }
-            } else {
-                res.send({ result: 1, message: "OK" });
-            }
-        }
-    );
-});
+
 */
 
 module.exports = router;

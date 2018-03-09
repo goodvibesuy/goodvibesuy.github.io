@@ -10,7 +10,7 @@
     <tr  *ngFor="let pos of pointsOfSale">
         <td>{{pos.name}}</td>
         <td>{{pos.address}}</td>
-        <td>{{pos.tel}}</td>
+        <td><a href="tel:{{pos.tel}}">{{pos.tel}}</a></td>
         <td>
             <img src="images/locales/{{pos.image}}" />
         </td>
