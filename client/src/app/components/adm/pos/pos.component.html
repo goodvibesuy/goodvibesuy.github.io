@@ -1,0 +1,29 @@
+<table class="table">
+    <tr>
+        <td>Nombre</td>
+        <td>Direción</td>
+        <td>Tel</td>
+        <td>Imagen</td>
+        <td>Editar</td>
+        <td>Eliminar</td>
+    </tr>
+    <tr  *ngFor="let pos of pointsOfSale">
+        <td>{{pos.name}}</td>
+        <td>{{pos.address}}</td>
+        <td>{{pos.tel}}</td>
+        <td>
+            <img src="images/locales/{{pos.image}}" />
+        </td>
+        <td style="text-align: center;">
+            <a [routerLink]="['editar', pos.id]">
+                <i class="fa fa-edit" style="font-size: 1.7em;"></i>
+            </a>
+        </td>
+        <td style="text-align: center;">
+            <a (click)="delete(pos.id)">
+                <i class="fa fa-trash-o" style="font-size: 1.7em;"></i>
+            </a>
+        </td>
+    </tr>
+</table>
+

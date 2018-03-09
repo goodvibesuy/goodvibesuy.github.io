@@ -46,7 +46,7 @@ export class DetalleLocalComponent extends GeneralComponent implements OnInit {
     }
 
     getProducts(): void {
-        this.productService.get(this.token, this.userSaved, this.accountId).subscribe(
+        this.productService.get(this.generateHeader()).subscribe(
             response => {
                 this.products = response.data;
                 this.productsToSend = new Array();

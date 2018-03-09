@@ -52,6 +52,7 @@ import { PointOfSaleService } from './services/point-of-sale.service';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { GeneralComponent } from './components/general/general.component';
 import { ViewingService } from './services/viewing.service';
+import { PosComponent } from './components/adm/pos/pos.component';
 // models
 //import { GVFile } from './shared/models/gvfile.model';
 
@@ -84,6 +85,7 @@ import { ViewingService } from './services/viewing.service';
         FilePicker,
 		LoginComponent,
 		GeneralComponent,
+		PosComponent,
         // models
     //    GVFile
 	],

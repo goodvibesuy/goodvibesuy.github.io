@@ -21,8 +21,13 @@ import { ProductsListComponent } from './components/products/list/products.list.
 import { ProductEditComponent } from './components/products/edit/product.edit.component';
 import { ProductAddComponent } from './components/products/add/product.add.component';
 import { LoginComponent } from './components/login/login.component';
+import { PosComponent } from './components/adm/pos/pos.component';
 
 const routes: Routes = [
+    {
+        path:'admPuntosDeVenta',
+        component:PosComponent
+    },
 	{
 		path: '',
 		component: LoginComponent

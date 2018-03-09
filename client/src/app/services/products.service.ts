@@ -15,8 +15,7 @@ export class ProductsService {
     constructor(private http: HttpClient) { }
 
 
-    get(tokenId: string, user: string, accountId: Number): Observable<any> {
-        let headers = new HttpHeaders({ 'tokenId': tokenId || "", 'user': user || "", 'accountId': accountId.toString() });
+    get(headers:HttpHeaders): Observable<any> {
         return this.http.get<Product[]>(this.PRODUCTS_URL, { headers: headers });
     }
 
