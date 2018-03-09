@@ -1,10 +1,10 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { AsyncPipe } from '@angular/common';
 
-import { Product } from '../../../shared/models/product.model';
-import { ImagesService } from '../../../services/images.service';
-import { ProductsService } from '../../../services/products.service';
-import { GeneralComponent } from '../../general/general.component';
+import { Product } from '../../../../shared/models/product.model';
+import { ImagesService } from '../../../../services/images.service';
+import { ProductsService } from '../../../../services/products.service';
+import { GeneralComponent } from '../../../general/general.component';
 
 @Component({
 	templateUrl: './products.list.component.html',

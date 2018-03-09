@@ -3,9 +3,9 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { AsyncPipe } from '@angular/common';
 
-import { InputService } from '../../../services/input.service';
-import { Input as InputModel } from '../../../shared/models/input.model'
-import { SupplyUnit } from '../../../shared/models/supply-unit.model';
+import { InputService } from '../../../../services/input.service';
+import { Input as InputModel } from '../../../../shared/models/input.model'
+import { SupplyUnit } from '../../../../shared/models/supply-unit.model';
 
 @Component({
   selector: 'app-input-list',

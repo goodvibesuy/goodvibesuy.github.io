@@ -11,15 +11,15 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { LocalesComponent } from './components/locales/locales.component';
 import { ReportesComponent } from './components/reportes/reportes.component';
 // Inputs
-import { InputComponent } from './components/input/input.component';
-import { InputListComponent } from './components/input/list/input.list.component';
-import { InputEditComponent } from './components/input/edit/input.edit.component';
-import { InputAddComponent } from './components/input/add/input.add.component';
+import { InputComponent } from './components/adm/input/input.component';
+import { InputListComponent } from './components/adm/input/list/input.list.component';
+import { InputEditComponent } from './components/adm/input/edit/input.edit.component';
+import { InputAddComponent } from './components/adm/input/add/input.add.component';
 // Products
-import { ProductsComponent } from './components/products/products.component';
-import { ProductsListComponent } from './components/products/list/products.list.component';
-import { ProductEditComponent } from './components/products/edit/product.edit.component';
-import { ProductAddComponent } from './components/products/add/product.add.component';
+import { ProductsComponent } from './components/adm/products/products.component';
+import { ProductsListComponent } from './components/adm/products/list/products.list.component';
+import { ProductEditComponent } from './components/adm/products/edit/product.edit.component';
+import { ProductAddComponent } from './components/adm/products/add/product.add.component';
 // Mapa
 import { MapaComponent } from './components/mapa/mapa.component';
 // Detalle local

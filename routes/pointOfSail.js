@@ -48,6 +48,21 @@ router.get('/getFilteredByName/:filterName', function (req, res, next) {
 });
 
 
+router.put('/', function (req, res, next) {
+    masterDBController.verifySession(req.headers['user'], req.headers['tokenid'], req.headers['accountid'], function (err, authError, response, dbName) {
+        acl.getACL().isAllowed(req.headers['user'], 'routes', 'get', function (err, response) {
+            if (response) {
+                pointsOfSaleModel.update(req.body.id,req.body.name,req.body.address, req.body.tel,function (result) {
+                    res.send(result);
+                });
+            } else {
+                res.send({ result: -1, message: "messages.PERMISSION_DENIED", data: null });
+            }
+        });
+    });    
+});
+
+
 router.delete('/:id', function (req, res, next) {
     masterDBController.verifySession(req.headers['user'], req.headers['tokenid'], req.headers['accountid'], function (err, authError, response, dbName) {
         acl.getACL().isAllowed(req.headers['user'], 'routes', 'get', function (err, response) {
@@ -62,54 +77,20 @@ router.delete('/:id', function (req, res, next) {
     });    
 });
 
-/*
-router.delete('/:id', function (req, res, next) {
-    acl.getACL().isAllowed("cabecacorada", 'routes', 'get', function (err, response) {
-        if (response) {
-            travelModel.delete(req.params.id, function (result) {
-                res.send(result);
-            });
-        } else {
-            res.send({ result: -1, message: "messages.PERMISSION_DENIED", data: null });
-        }
+
+router.post('/', function (req, res, next) {
+    masterDBController.verifySession(req.headers['user'], req.headers['tokenid'], req.headers['accountid'], function (err, authError, response, dbName) {
+        acl.getACL().isAllowed(req.headers['user'], 'routes', 'get', function (err, response) {
+            if (response) {
+                pointsOfSaleModel.add(req.body.name,req.body.address, req.body.tel,function (result) {
+                    res.send(result);
+                });
+            } else {
+                res.send({ result: -1, message: "messages.PERMISSION_DENIED", data: null });
+            }
+        });
     });
 });
-*/
 
-/*
-router.post('/', function (req, res, next) {
-    con.query(
-        "INSERT INTO pointofsale  (name, address, tel) VALUES(?,?,?)",
-        [req.body.name, req.body.address, req.body.tel],
-        function (err, resultClient) {
-            if (err) {
-                if (err.code === "ER_DUP_ENTRY") {
-                    con.release();
-                }
-            } else {
-                res.send({ result: 1, message: "OK" });
-            }
-        }
-    );
-});
-
-router.put('/', function (req, res, next) {
-    con.query(
-        "UPDATE pointofsale  SET name = ?, address = ?, tel = ? WHERE id = ?",
-        [req.body.name, req.body.address, req.body.tel, req.body.id],
-        function (err, resultClient) {
-            if (err) {
-                if (err.code === "ER_DUP_ENTRY") {
-                    con.release();
-                }
-            } else {
-                res.send({ result: 1, message: "OK" });
-            }
-        }
-    );
-});
-
-
-*/
 
 module.exports = router;

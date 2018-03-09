@@ -1,21 +1,69 @@
-<table class="table">
+<div class="card" style="margin:15px;" *ngIf="typeOfView == 3">
+    <div class="card-header">
+        <b>Agregar Punto de venta</b>
+    </div>
+    <div class="card-body">
+        <div class="form-group">
+            <span class="input-group-addon">Nombre:</span>
+            <input type="text" class="form-control" id="POSName" [(ngModel)]="POSName">
+        </div>
+        <div class="form-group">
+            <span class="input-group-addon">Dirección:</span>
+            <input type="text" class="form-control" id="POSAddress" [(ngModel)]="POSAddress">
+        </div>
+        <div class="form-group">
+            <span class="input-group-addon">Telefono:</span>
+            <input type="text" class="form-control" id="POSTel" [(ngModel)]="POSTel">
+        </div>
+        <button type="button" class="btn btn-light" (click)="cancelAdd()">Cancelar</button>
+        <button type="button" class="btn btn-primary" (click)="add()">Actualizar</button>
+    </div>
+</div>
+
+<div class="card" style="margin:15px;" *ngIf="typeOfView == 2">
+    <div class="card-header">
+        <b>Editar Punto de venta</b>
+    </div>
+    <div class="card-body">
+        <div class="form-group">
+            <span class="input-group-addon">Nombre:</span>
+            <input type="text" class="form-control" id="POSEditName" [(ngModel)]="POSEditName">
+        </div>
+        <div class="form-group">
+            <span class="input-group-addon">Dirección:</span>
+            <input type="text" class="form-control" id="POSEditAddress" [(ngModel)]="POSEditAddress">
+        </div>
+        <div class="form-group">
+            <span class="input-group-addon">Telefono:</span>
+            <input type="text" class="form-control" id="POSEditTel" [(ngModel)]="POSEditTel">
+        </div>
+        <button type="button" class="btn btn-light" (click)="cancelEdit()">Cancelar</button>
+        <button type="button" class="btn btn-primary" (click)="actualizar()">Actualizar</button>
+    </div>
+</div>
+
+<button class="btn" (click)="addForm()">+</button>
+
+<table class="table" *ngIf="typeOfView == 1">
     <tr>
+        <td>Imagen</td>
         <td>Nombre</td>
         <td>Direción</td>
         <td>Tel</td>
-        <td>Imagen</td>
         <td>Editar</td>
         <td>Eliminar</td>
     </tr>
-    <tr  *ngFor="let pos of pointsOfSale">
+    <tr *ngFor="let pos of pointsOfSale">
+        <td>
+            <img style="width:50px;" src="images/locales/{{pos.image}}" />
+        </td>
         <td>{{pos.name}}</td>
         <td>{{pos.address}}</td>
-        <td><a href="tel:{{pos.tel}}">{{pos.tel}}</a></td>
         <td>
-            <img src="images/locales/{{pos.image}}" />
+            <a href="tel:{{pos.tel}}">{{pos.tel}}</a>
         </td>
         <td style="text-align: center;">
-            <a [routerLink]="['editar', pos.id]">
+            <a (click)="formEdit(pos.id)">
                 <i class="fa fa-edit" style="font-size: 1.7em;"></i>
             </a>
         </td>
@@ -26,4 +74,3 @@
         </td>
     </tr>
 </table>
-

@@ -48,12 +48,49 @@ pointOfSaleModel.delete = function (id,callBack) {
                     con.release();
                 }
                 */
+                let errorMessage = "";
+                if (err.code === "ER_ROW_IS_REFERENCED_2") {
+                    errorMessage = "No se puede borrar el registro, porque es utilizado en otra parte del sistema";
+                }                
+
+               callBack({ result: -1, message: errorMessage, data : null });
             } else {
-                callBack({ result: 1, message: "OK" });
+                callBack({ result: 1, message: "OK", data: null });
             }
         }
     );
 };
 
+pointOfSaleModel.update = function (id,name,address,tel,callBack) {
+    con.query(
+        "UPDATE pointofsale  SET name = ?, address = ?, tel = ? WHERE id = ?",
+        [name,address,tel, id],
+        function (err, resultClient) {
+            if (err) {
+                if (err.code === "ER_DUP_ENTRY") {
+                    con.release();
+                }
+            } else {
+                callBack({ result: 1, message: "Los datos se actualizaron correctamente" });
+            }
+        }
+    );    
+};
+
+pointOfSaleModel.add = function(name, address, tel,callBack){
+    con.query(
+        "INSERT INTO pointofsale  (name, address, tel) VALUES(?,?,?)",
+        [name, address, tel],
+        function (err, resultClient) {
+            if (err) {
+                if (err.code === "ER_DUP_ENTRY") {
+                    con.release();
+                }
+            } else {
+                callBack({ result: 1, message: "OK", data:null });
+            }
+        }
+    );
+};
 
 module.exports = pointOfSaleModel;

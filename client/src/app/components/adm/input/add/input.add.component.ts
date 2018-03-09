@@ -4,10 +4,10 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 // service
-import { InputService } from '../../../services/input.service';
+import { InputService } from '../../../../services/input.service';
 // models
-import { Input } from '../../../shared/models/input.model';
-import { SupplyUnit } from '../../../shared/models/supply-unit.model';
+import { Input } from '../../../../shared/models/input.model';
+import { SupplyUnit } from '../../../../shared/models/supply-unit.model';
 
 @Component({
   selector: 'app-input-add',
