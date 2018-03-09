@@ -42,9 +42,12 @@ pointOfSaleModel.delete = function (id,callBack) {
         [id],
         function (err, resultClient) {
             if (err) {
+                console.log(err);
+                /*
                 if (err.code === "ER_DUP_ENTRY") {
                     con.release();
                 }
+                */
             } else {
                 callBack({ result: 1, message: "OK" });
             }

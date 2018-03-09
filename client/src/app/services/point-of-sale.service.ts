@@ -25,4 +25,10 @@ export class PointOfSaleService {
         return this.http.delete(this.pointOfSaleURL + "/" + idPointOfSale, { headers: headers });
     }
 
+/*
+    delete(id: number): Observable<any> {
+        return this.http
+            .delete(this.routeUrl + '/' + id);
+    }
+    */
 }
