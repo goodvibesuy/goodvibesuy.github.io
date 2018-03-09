@@ -7,9 +7,9 @@ import { FormsModule,ReactiveFormsModule } from '@angular/forms';
 // components
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './components/header/header.component';
-import { DashboardComponent } from './components/dashboard/dashboard.component';
-import { LocalesComponent } from './components/locales/locales.component';
-import { ReportesComponent } from './components/reportes/reportes.component';
+import { DashboardComponent } from './components/front/dashboard/dashboard.component';
+import { LocalesComponent } from './components/front/locales/locales.component';
+import { ReportesComponent } from './components/front/reportes/reportes.component';
 // Inputs
 import { InputComponent } from './components/adm/input/input.component';
 import { InputListComponent } from './components/adm/input/list/input.list.component';
@@ -21,11 +21,16 @@ import { ProductsListComponent } from './components/adm/products/list/products.l
 import { ProductEditComponent } from './components/adm/products/edit/product.edit.component';
 import { ProductAddComponent } from './components/adm/products/add/product.add.component';
 // Mapa
-import { MapaComponent } from './components/mapa/mapa.component';
+import { MapaComponent } from './components/front/mapa/mapa.component';
 // Detalle local
-import { DetalleLocalComponent } from './components/detalle-local/detalle-local.component';
+import { DetalleLocalComponent } from './components/front/detalle-local/detalle-local.component';
 // Configs
 import { ConfigsComponent } from './components/configs/configs.component';
+
+import { RoutesComponent } from './components/adm/routes/routes.component';
+import { ListComponent } from './components/adm/routes/list/list.component';
+import { RouteAdd } from './components/adm/routes/route.add/route.add.component';
+import { RouteEdit } from './components/adm/routes/route.edit/route.edit.component';
 
 // app routing 
 import { AppRoutingModule } from './app-routing.module';
@@ -34,10 +39,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { InputService } from './services/input.service';
 import { ProductsService } from './services/products.service';
 import { RouteService } from './services/route.service';
-import { RoutesComponent } from './components/routes/routes.component';
-import { ListComponent } from './components/routes/list/list.component';
-import { RouteAdd } from './components/routes/route.add/route.add.component';
-import { RouteEdit } from './components/routes/route.edit/route.edit.component';
+
 import { UsersService } from './services/users.service';
 import { ImagesService} from './services/images.service';
 import { NgbModule} from '@ng-bootstrap/ng-bootstrap';

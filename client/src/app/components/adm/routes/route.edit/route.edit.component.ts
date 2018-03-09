@@ -1,12 +1,12 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { RouteService } from '../../../services/route.service';
-import { UsersService } from '../../../services/users.service';
-import { Route as RouteModel } from '../../../shared/models/route.model'
-import { PointOfSale } from '../../../shared/models/pointofsale.model';
-import { RoutePointOfSale } from '../../../shared/models/RoutePointOfSale.model';
-import { RouteUser } from '../../../shared/models/routeUser.model';
-import { User } from '../../../shared/models/user.model';
+import { RouteService } from '../../../../services/route.service';
+import { UsersService } from '../../../../services/users.service';
+import { Route as RouteModel } from '../../../../shared/models/route.model'
+import { PointOfSale } from '../../../../shared/models/pointofsale.model';
+import { RoutePointOfSale } from '../../../../shared/models/RoutePointOfSale.model';
+import { RouteUser } from '../../../../shared/models/routeUser.model';
+import { User } from '../../../../shared/models/user.model';
 
 //import { FormGroup, FormControl, Validators } from '@angular/forms';
 import {

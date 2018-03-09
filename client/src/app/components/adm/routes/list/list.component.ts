@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
-import { RouteService } from '../../../services/route.service';
-import { Route as RouteModel } from '../../../shared/models/route.model'
+import { RouteService } from '../../../../services/route.service';
+import { Route as RouteModel } from '../../../../shared/models/route.model'
 import { Router } from '@angular/router';
 
 @Component({

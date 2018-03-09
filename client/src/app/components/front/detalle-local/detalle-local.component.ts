@@ -1,12 +1,12 @@
 import 'rxjs/add/operator/switchMap';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, ParamMap } from '@angular/router';
-import { PointOfSaleService } from '../../services/point-of-sale.service';
-import { PointOfSale } from '../../shared/models/pointofsale.model';
-import { GeneralComponent } from '../general/general.component';
-import { ProductsService } from '../../services/products.service';
-import { Product } from '../../shared/models/product.model';
-import { ViewingService } from '../../services/viewing.service';
+import { PointOfSaleService } from '../../../services/point-of-sale.service';
+import { PointOfSale } from '../../../shared/models/pointofsale.model';
+import { GeneralComponent } from '../../general/general.component';
+import { ProductsService } from '../../../services/products.service';
+import { Product } from '../../../shared/models/product.model';
+import { ViewingService } from '../../../services/viewing.service';
 
 @Component({
     selector: 'app-detalle-local',

@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { PointOfSaleService } from '../../services/point-of-sale.service';
+import { PointOfSaleService } from '../../../services/point-of-sale.service';
 import { Router } from '@angular/router';
-import { PointOfSale } from '../../shared/models/pointofsale.model';
-import { ProductsService } from '../../services/products.service';
-import { GeneralComponent } from '../general/general.component';
+import { PointOfSale } from '../../../shared/models/pointofsale.model';
+import { ProductsService } from '../../../services/products.service';
+import { GeneralComponent } from '../../general/general.component';
 
 @Component({
     selector: 'app-locales',

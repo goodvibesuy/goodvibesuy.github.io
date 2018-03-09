@@ -2,19 +2,19 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-import { DashboardComponent } from './components/dashboard/dashboard.component';
-import { LocalesComponent } from './components/locales/locales.component';
-import { ReportesComponent } from './components/reportes/reportes.component';
+import { DashboardComponent } from './components/front/dashboard/dashboard.component';
+import { LocalesComponent } from './components/front/locales/locales.component';
+import { ReportesComponent } from './components/front/reportes/reportes.component';
 import { InputComponent } from './components/adm/input/input.component';
-import { RoutesComponent } from './components/routes/routes.component';
-import { ListComponent } from './components/routes/list/list.component';
+import { RoutesComponent } from './components/adm/routes/routes.component';
+import { ListComponent } from './components/adm/routes/list/list.component';
 import { InputListComponent } from './components/adm/input/list/input.list.component';
 import { InputEditComponent } from './components/adm/input/edit/input.edit.component';
-import { RouteAdd } from './components/routes/route.add/route.add.component';
-import { RouteEdit } from './components/routes/route.edit/route.edit.component';
+import { RouteAdd } from './components/adm/routes/route.add/route.add.component';
+import { RouteEdit } from './components/adm/routes/route.edit/route.edit.component';
 import { InputAddComponent } from './components/adm/input/add/input.add.component';
-import { MapaComponent } from './components/mapa/mapa.component';
-import { DetalleLocalComponent } from './components/detalle-local/detalle-local.component';
+import { MapaComponent } from './components/front/mapa/mapa.component';
+import { DetalleLocalComponent } from './components/front/detalle-local/detalle-local.component';
 import { ConfigsComponent } from './components/configs/configs.component';
 import { ProductsComponent } from './components/adm/products/products.component';
 import { ProductsListComponent } from './components/adm/products/list/products.list.component';
