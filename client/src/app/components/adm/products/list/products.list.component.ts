@@ -4,21 +4,17 @@ import { AsyncPipe } from '@angular/common';
 import { Product } from '../../../../shared/models/product.model';
 import { ImagesService } from '../../../../services/images.service';
 import { ProductsService } from '../../../../services/products.service';
-import { GeneralComponent } from '../../../general/general.component';
 
 @Component({
 	templateUrl: './products.list.component.html',
 	styleUrls: ['./products.list.component.css']
 })
-export class ProductsListComponent extends GeneralComponent implements OnInit {
+export class ProductsListComponent implements OnInit {
 	private products: Product[];
 
-	constructor(private productsService: ProductsService, private imagesService: ImagesService) {
-        super();
-    }
+	constructor(private productsService: ProductsService, private imagesService: ImagesService) {}
 
 	ngOnInit() {
-        this.setHeaderValues();
 		this.loadProducts();
 	}
 
@@ -26,14 +22,13 @@ export class ProductsListComponent extends GeneralComponent implements OnInit {
 		this.productsService.delete(id).subscribe(data => this.loadProducts());
 	}
 
-	loadProducts(): void {        
-		this.productsService.get(this.generateHeader()).subscribe(
-            
-            response => {
-                this.products = response.data
-            }, 
-            error => {}
-        );
+	loadProducts(): void {
+		this.productsService.get().subscribe(
+			response => {
+				this.products = response.data;
+			},
+			error => {}
+		);
 	}
 
 	getSmallImage(path: string): string {

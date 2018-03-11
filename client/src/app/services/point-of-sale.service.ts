@@ -5,30 +5,30 @@ import { PointOfSale } from '../shared/models/pointofsale.model';
 
 @Injectable()
 export class PointOfSaleService {
-    private pointOfSaleURL:string = '/api/pointOfSail';
-    constructor(private http: HttpClient) { }
+	private pointOfSaleURL: string = '/api/pointOfSail';
+	constructor(private http: HttpClient) {}
 
-    get(headers:HttpHeaders): Observable<any> {
-        return this.http.get<PointOfSale[]>(this.pointOfSaleURL, { headers: headers });
-    }
-    
-    getFilteredByName(headers:HttpHeaders,filterName:string): Observable<any> {
-        return this.http.get<PointOfSale[]>(this.pointOfSaleURL + "/getFilteredByName/"+ filterName, { headers: headers });
-    }
+	get(): Observable<any> {
+		return this.http.get<PointOfSale[]>(this.pointOfSaleURL);
+	}
 
-    getPointOfSale(headers:HttpHeaders,idPointOfSale:Number): Observable<any> {
-        return this.http.get<PointOfSale[]>(this.pointOfSaleURL + "/getPointOfSale/" + idPointOfSale, { headers: headers });
-    }
+	getFilteredByName(filterName: string): Observable<any> {
+		return this.http.get<PointOfSale[]>(this.pointOfSaleURL + '/getFilteredByName/' + filterName);
+	}
 
-    addPointOfSale(headers:HttpHeaders,name,address,tel):Observable<any>{
-        return this.http.post(this.pointOfSaleURL, {name,address,tel}, { headers: headers });
-    }
+	getPointOfSale(idPointOfSale: Number): Observable<any> {
+		return this.http.get<PointOfSale[]>(this.pointOfSaleURL + '/getPointOfSale/' + idPointOfSale);
+	}
 
-    updatePointOfSale(headers:HttpHeaders,idPointOfSale:Number,name:string,address:string,tel:string): Observable<PointOfSale> {
-        return this.http.put<PointOfSale>(this.pointOfSaleURL , {id:idPointOfSale,name,address,tel}, { headers: headers });
-    }
+	addPointOfSale(name, address, tel): Observable<any> {
+		return this.http.post(this.pointOfSaleURL, { name, address, tel });
+	}
 
-    deletePointOfSale(headers:HttpHeaders,idPointOfSale:Number): Observable<any> {
-        return this.http.delete(this.pointOfSaleURL + "/" + idPointOfSale, { headers: headers });
-    }
+	updatePointOfSale(idPointOfSale: Number, name: string, address: string, tel: string): Observable<PointOfSale> {
+		return this.http.put<PointOfSale>(this.pointOfSaleURL, { id: idPointOfSale, name, address, tel });
+	}
+
+	deletePointOfSale(idPointOfSale: Number): Observable<any> {
+		return this.http.delete(this.pointOfSaleURL + '/' + idPointOfSale);
+	}
 }

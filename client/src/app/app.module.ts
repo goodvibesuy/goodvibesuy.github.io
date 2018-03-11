@@ -39,10 +39,12 @@ import { AppRoutingModule } from './app-routing.module';
 import { InputService } from './services/input.service';
 import { ProductsService } from './services/products.service';
 import { RouteService } from './services/route.service';
+import { TokenService} from './services/token.service';
 
 import { UsersService } from './services/users.service';
 import { ImagesService} from './services/images.service';
 import { NgbModule} from '@ng-bootstrap/ng-bootstrap';
+
 
 // shared
 import { FilePicker } from './shared/components/file-picker/file-picker.component';
@@ -50,16 +52,14 @@ import { LoginComponent } from './components/login/login.component';
 import { AuthenticateService } from './services/authenticate.service';
 import { PointOfSaleService } from './services/point-of-sale.service';
 
-
 import { ActivatedRoute, ParamMap } from '@angular/router';
-import { GeneralComponent } from './components/general/general.component';
 import { ViewingService } from './services/viewing.service';
 import { PosComponent } from './components/adm/pos/pos.component';
 import { HeaderService } from './services/header.service';
 // models
 //import { GVFile } from './shared/models/gvfile.model';
 
-
+import { InterceptorModule } from './auth/token.interceptor'
 
 
 @NgModule({
@@ -87,7 +87,6 @@ import { HeaderService } from './services/header.service';
 		// shared		
         FilePicker,
 		LoginComponent,
-		GeneralComponent,
 		PosComponent,
         // models
     //    GVFile
@@ -97,7 +96,8 @@ import { HeaderService } from './services/header.service';
 		FormsModule,
 		ReactiveFormsModule,
 		HttpClientModule,
-		AppRoutingModule,
+        AppRoutingModule,
+        InterceptorModule,
 		NgbModule.forRoot()
 	],
 	providers: [
@@ -109,7 +109,8 @@ import { HeaderService } from './services/header.service';
         AuthenticateService,
         PointOfSaleService,
         ViewingService,
-        HeaderService
+        HeaderService,
+        TokenService
 	],
 	bootstrap: [AppComponent]
 })

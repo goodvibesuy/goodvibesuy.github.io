@@ -84,7 +84,7 @@ export class RouteEdit implements OnInit {
         this.editName = new FormControl('', Validators.required);
         this.paramsSub = this.activatedRoute.params
             .subscribe(params => {
-                this.routeService.get(this.token, this.userSaved, this.accountId)
+                this.routeService.get()
                     .subscribe(data => {
                         this.route = ((<RouteModel[]>data).find(s => s.idroute == params['id']));
                         this.rPOS.idRoute = this.route.idroute;

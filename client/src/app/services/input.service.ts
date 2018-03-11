@@ -5,87 +5,66 @@ import { catchError, map, tap } from 'rxjs/operators';
 import { Observable } from 'rxjs/Observable';
 import { of } from 'rxjs/observable/of';
 
-import { Input } from '../shared/models/input.model'
-import { SupplyUnit } from '../shared/models/supply-unit.model'
+import { Input } from '../shared/models/input.model';
+import { SupplyUnit } from '../shared/models/supply-unit.model';
 
 @Injectable()
 export class InputService {
+	inputsUrl: string = '/api/inputs';
+	supplyUnitsUrl: string = '/api/unity';
+	headers = { 'Content-Type': 'application/json; charset=utf-8' };
 
-    inputsUrl: string = '/api/inputs';
-    supplyUnitsUrl: string = '/api/unity';
-    headers = { "Content-Type": "application/json; charset=utf-8" };
+	constructor(private http: HttpClient) {}
 
-    constructor(
-        private http: HttpClient
-    ) { }
+	get(): Observable<Input[]> {
+		return this.http
+			.get<Input[]>(this.inputsUrl)
+			.pipe(tap(d => this.log(`fetched input`)), map(r => (<any>r).data));
+	}
 
-    get(): Observable<Input[]> {
-        return this.http.get<Input[]>(this.inputsUrl)
-            .pipe(
-            tap(d => this.log(`fetched input`)),
-            map(r => (<any>r).data)
-            )
-    }
+	getUnits(): Observable<SupplyUnit[]> {
+		return this.http
+			.get<SupplyUnit[]>(this.supplyUnitsUrl)
+			.pipe(tap(d => this.log(`fetched SupplyUnit`)), map(r => (<any>r).data));
+	}
 
-    getUnits(): Observable<SupplyUnit[]> {
-        return this.http.get<SupplyUnit[]>(this.supplyUnitsUrl)
-            .pipe(
-                tap(d => this.log(`fetched SupplyUnit`)),
-                map(r => (<any>r).data )
-            )
-    }
+	update(input: Input): Observable<any> {
+		return this.http.put<Input[]>(this.inputsUrl, input);
+	}
 
-    update(input: Input): Observable<any> {
-        return this.http
-            .put<Input[]>(
-                this.inputsUrl,
-                input
-            );
-    }
+	agregar(input: Input): Observable<any> {
+		return this.http.post(this.inputsUrl, input);
+	}
 
-    agregar( input: Input): Observable<any>{        
-        return this.http
-        .post(
-            this.inputsUrl,
-            input
-        );
-    }
+	delete(id: number): Observable<any> {
+		return this.http.delete(this.inputsUrl + '/' + id);
+	}
 
-    delete(id: number): Observable<any> {
-        return this.http
-            .delete(this.inputsUrl + '/' + id );
-    }
+	/**
+	 * Handle Http operation that failed.
+	 * Let the app continue.
+	 * @param operation - name of the operation that failed
+	 * @param result - optional value to return as the observable result
+	 */
+	private handleError<T>(operation = 'operation', result?: T) {
+		return (error: any): Observable<T> => {
+			// TODO: send the error to remote logging infrastructure
+			console.error(error); // log to console instead
 
-    /**
- * Handle Http operation that failed.
- * Let the app continue.
- * @param operation - name of the operation that failed
- * @param result - optional value to return as the observable result
- */
-    private handleError<T>(operation = 'operation', result?: T) {
-        return (error: any): Observable<T> => {
+			// TODO: better job of transforming error for user consumption
+			this.log(`${operation} failed: ${error.message}`);
 
-            // TODO: send the error to remote logging infrastructure
-            console.error(error); // log to console instead
+			// Let the app keep running by returning an empty result.
+			return of(result as T);
+		};
+	}
 
-            // TODO: better job of transforming error for user consumption
-            this.log(`${operation} failed: ${error.message}`);
-
-            // Let the app keep running by returning an empty result.
-            return of(result as T);
-        };
-    }
-
-    /** Log a HeroService message with the MessageService */
-    private log(message: string) {
-        //this.messageService.add('HeroService: ' + message);
-        console.log('log: ' + message);
-    }
+	/** Log a HeroService message with the MessageService */
+	private log(message: string) {
+		//this.messageService.add('HeroService: ' + message);
+		console.log('log: ' + message);
+	}
 }
-
-
-
-
 
 /*var app = angular.module('googApp', []);
 

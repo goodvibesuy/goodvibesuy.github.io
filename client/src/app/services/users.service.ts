@@ -6,18 +6,11 @@ import { map } from 'rxjs/operators';
 
 @Injectable()
 export class UsersService {
+	private userUrl: string = '/api/users/';
 
-  private userUrl:string = '/api/users/';
-  
-  constructor(private http: HttpClient) { }
+	constructor(private http: HttpClient) {}
 
-  get(): Observable<User[]> {
-    return this.http.get<User[]>(this.userUrl)
-      .pipe(
-        map(r => (<any>r).data)
-      )
-  }
-
-  
-
+	get(): Observable<User[]> {
+		return this.http.get<User[]>(this.userUrl).pipe(map(r => (<any>r).data));
+	}
 }

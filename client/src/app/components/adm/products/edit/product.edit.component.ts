@@ -9,13 +9,11 @@ import { Product } from '../../../../shared/models/product.model';
 import { GVFile } from '../../../../shared/models/gvfile.model';
 import { GVHttpResult, ResultCode } from '../../../../shared/httpResult';
 
-import { GeneralComponent } from '../../../general/general.component';
-
 @Component({
 	templateUrl: './product.edit.component.html',
 	styleUrls: ['./product.edit.component.css']
 })
-export class ProductEditComponent extends GeneralComponent implements OnInit, OnDestroy {
+export class ProductEditComponent implements OnInit, OnDestroy {
 	paramsSub: any;
 
 	private product: Product;
@@ -27,15 +25,12 @@ export class ProductEditComponent extends GeneralComponent implements OnInit, On
 		private domSanitizer: DomSanitizer,
 		private productsService: ProductsService,
 		private imagesService: ImagesService
-	) {
-		super();
-	}
+	) { }
 
 	ngOnInit() {
-		this.setHeaderValues();
 		this.paramsSub = this.activatedRoute.params.subscribe(
 			params => {
-				this.productsService.get(this.generateHeader()).subscribe(res => {
+				this.productsService.get().subscribe(res => {
 					if (res.result == ResultCode.Error) {
 						// TODO: handle error
 					} else {

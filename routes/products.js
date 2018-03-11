@@ -27,9 +27,8 @@ router.get('/', function (req, res, next) {
     res.send({ result: 1, message: "OK", data: result });
   });
 });
-*/
 
-/*
+
 router.post('/', function (req, res, next) {
   con.query(
     "INSERT INTO product  (name, path_image) VALUES(?,?)",
@@ -78,6 +77,7 @@ router.delete('/', function (req, res, next) {
     }
   );
 });
+
 */
 
 module.exports = router;
