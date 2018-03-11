@@ -1,22 +1,30 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, DoCheck, OnChanges, SimpleChanges } from "@angular/core";
 import { Location } from "@angular/common";
 import { AuthenticateService } from "../../services/authenticate.service";
 import { Router } from "@angular/router";
+import { HeaderService } from "../../services/header.service";
 
 @Component({
     selector: "app-header",
     templateUrl: "./header.component.html",
     styleUrls: ["./header.component.css"]
 })
-export class HeaderComponent {
-    private visible = false;
+export class HeaderComponent implements OnInit{
+    private visible:Boolean = false;
     private token: string;
     private userSaved: string;
     private accountId: Number;
 
-    constructor(private router:Router, private location: Location, private authenticateService: AuthenticateService) { }
+    constructor(private router:Router, 
+        private location: Location, 
+        private authenticateService: AuthenticateService,
+        private headerService:HeaderService
+    ) { 
+    }
 
     ngOnInit() {
+        this.headerService.currentVisibility.subscribe(visibility => this.visible = visibility);
+        
         this.token = localStorage.getItem("token");
         this.userSaved = localStorage.getItem("user");
         this.accountId = Number(localStorage.getItem("accountId"));
@@ -26,7 +34,7 @@ export class HeaderComponent {
             subscribe(data => {
                 this.visible = data.result;
             });
-        }
+        }        
     }
 
     closeSession() {

@@ -17,19 +17,23 @@
         <a class="nav-link" routerLink="/locales">Locales</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" routerLink="/productos">Productos</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" routerLink="/insumos">Insumos</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" routerLink="/recorridos">Recorridos</a>
-      </li>      
-      <li class="nav-item">
         <a class="nav-link disabled" routerLink="/reportes">Reportes</a>
       </li>
       <li class="nav-item">
         <a class="nav-link disabled" routerLink="/mapa">Mapas</a>
+      </li>
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Admin
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <a class="dropdown-item" routerLink="/insumos">Insumos</a>
+          <a class="dropdown-item" routerLink="/productos">Productos</a>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" routerLink="/admPuntosDeVenta">Puntos de venta</a>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" routerLink="/recorridos">Recorridos</a>
+        </div>
       </li>
       <li class="nav-item">
         <a class="nav-link disabled" routerLink="/configs">Configuraciones</a>

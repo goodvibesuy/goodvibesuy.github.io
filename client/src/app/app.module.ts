@@ -55,6 +55,7 @@ import { ActivatedRoute, ParamMap } from '@angular/router';
 import { GeneralComponent } from './components/general/general.component';
 import { ViewingService } from './services/viewing.service';
 import { PosComponent } from './components/adm/pos/pos.component';
+import { HeaderService } from './services/header.service';
 // models
 //import { GVFile } from './shared/models/gvfile.model';
 
@@ -107,7 +108,8 @@ import { PosComponent } from './components/adm/pos/pos.component';
         ImagesService,
         AuthenticateService,
         PointOfSaleService,
-        ViewingService
+        ViewingService,
+        HeaderService
 	],
 	bootstrap: [AppComponent]
 })

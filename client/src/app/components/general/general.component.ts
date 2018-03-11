@@ -12,7 +12,9 @@ export class GeneralComponent {
     protected userSaved: string;
     protected accountId: Number;
 
-    constructor() { }
+    constructor() { 
+        console.log(">>>>");
+    }
 
     protected setHeaderValues() {
         this.token = localStorage.getItem("token");
