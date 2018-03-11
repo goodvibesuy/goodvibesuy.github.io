@@ -32,7 +32,7 @@ CREATE TABLE IF NOT EXISTS `input` (
   `unity` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `fk_input_unity1_idx` (`unity`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=11 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
 
 
 -- --------------------------------------------------------
@@ -61,7 +61,8 @@ CREATE TABLE `pointofsale` (
   `address` varchar(256) NOT NULL,
   `tel` varchar(15) NOT NULL,
   `image` varchar(56) NOT NULL,
-  `coord` point NOT NULL
+  `coord` point NOT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
