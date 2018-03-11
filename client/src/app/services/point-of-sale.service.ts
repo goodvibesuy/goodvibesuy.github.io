@@ -24,8 +24,8 @@ export class PointOfSaleService {
 		return this.http.post(this.pointOfSaleURL, { name, address, tel ,coords});
 	}
 
-	updatePointOfSale(idPointOfSale: Number, name: string, address: string, tel: string): Observable<PointOfSale> {
-		return this.http.put<PointOfSale>(this.pointOfSaleURL, { id: idPointOfSale, name, address, tel });
+	updatePointOfSale(idPointOfSale: Number, name: string, address: string, tel: string,coord:google.maps.LatLng): Observable<PointOfSale> {
+		return this.http.put<PointOfSale>(this.pointOfSaleURL, { id: idPointOfSale, name, address, tel,coord });
 	}
 
 	deletePointOfSale(idPointOfSale: Number): Observable<any> {

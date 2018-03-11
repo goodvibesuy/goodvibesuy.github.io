@@ -47,22 +47,6 @@ router.get('/getFilteredByName/:filterName', function (req, res, next) {
     });
 });
 
-
-router.put('/', function (req, res, next) {
-    masterDBController.verifySession(req.headers['user'], req.headers['tokenid'], req.headers['accountid'], function (err, authError, response, dbName) {
-        acl.getACL().isAllowed(req.headers['user'], 'routes', 'get', function (err, response) {
-            if (response) {
-                pointsOfSaleModel.update(req.body.id,req.body.name,req.body.address, req.body.tel,function (result) {
-                    res.send(result);
-                });
-            } else {
-                res.send({ result: -1, message: "messages.PERMISSION_DENIED", data: null });
-            }
-        });
-    });    
-});
-
-
 router.delete('/:id', function (req, res, next) {
     masterDBController.verifySession(req.headers['user'], req.headers['tokenid'], req.headers['accountid'], function (err, authError, response, dbName) {
         acl.getACL().isAllowed(req.headers['user'], 'routes', 'get', function (err, response) {
@@ -92,5 +76,18 @@ router.post('/', function (req, res, next) {
     });
 });
 
+router.put('/', function (req, res, next) {
+    masterDBController.verifySession(req.headers['user'], req.headers['tokenid'], req.headers['accountid'], function (err, authError, response, dbName) {
+        acl.getACL().isAllowed(req.headers['user'], 'routes', 'get', function (err, response) {
+            if (response) {
+                pointsOfSaleModel.update(req.body.id,req.body.name,req.body.address, req.body.tel,req.body.coord,function (result) {
+                    res.send(result);
+                });
+            } else {
+                res.send({ result: -1, message: "messages.PERMISSION_DENIED", data: null });
+            }
+        });
+    });    
+});
 
 module.exports = router;

@@ -61,10 +61,10 @@ pointOfSaleModel.delete = function (id,callBack) {
     );
 };
 
-pointOfSaleModel.update = function (id,name,address,tel,callBack) {
+pointOfSaleModel.update = function (id,name,address,tel,coord,callBack) {
     con.query(
-        "UPDATE pointofsale  SET name = ?, address = ?, tel = ? WHERE id = ?",
-        [name,address,tel, id],
+        "UPDATE pointofsale  SET name = ?, address = ?, tel = ?, coord = POINT(?,?) WHERE id = ?",
+        [name,address,tel, Number(coord.lat) , Number(coord.lng),id],
         function (err, resultClient) {
             if (err) {
                 if (err.code === "ER_DUP_ENTRY") {

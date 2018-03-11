@@ -55,17 +55,11 @@ export class PosComponent implements OnInit {
         this.geocoder.geocode({ address: address }, function (results, status) {
             if (status.toString() === 'OK') {
                 mapEdit.setCenter(results[0].geometry.location);
-                editMarker.setMap(null);
-
-                editMarker = new google.maps.Marker({
-                    map: mapEdit,
-                    position: results[0].geometry.location
-                });
+                editMarker.setPosition(results[0].geometry.location);
             } else {
                 alert('Geocode was not successful for the following reason: ' + status);
             }
         });
-        this.POSEditMarker = editMarker;
     }
 
     geocodeAddress(geocoder, resultsMap) {
@@ -131,15 +125,12 @@ export class PosComponent implements OnInit {
     }
 
     actualizar() {
-        console.log(this.POSEditMarker.getPosition().lat());
-        /*
         this.pointOFSaleService
-            .updatePointOfSale(this.POSEdit.id, this.POSEditName, this.POSEditAddress, this.POSEditTel)
+            .updatePointOfSale(this.POSEdit.id, this.POSEditName, this.POSEditAddress, this.POSEditTel,this.POSEditMarker.getPosition())
             .subscribe(response => {
                 this.typeOfView = 1;
                 console.log(response);
             });
-            */
     }
 
     loadPointsOfSale(): void {
