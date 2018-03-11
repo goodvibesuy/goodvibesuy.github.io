@@ -55,14 +55,14 @@ CREATE TABLE IF NOT EXISTS `inputprice` (
 -- Estructura de tabla para la tabla `pointofsale`
 --
 
-CREATE TABLE IF NOT EXISTS `pointofsale` (
+CREATE TABLE `pointofsale` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(56) NOT NULL,
   `address` varchar(256) NOT NULL,
   `tel` varchar(15) NOT NULL,
   `image` varchar(56) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
+  `coord` point NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
