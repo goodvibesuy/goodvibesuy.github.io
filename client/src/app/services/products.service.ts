@@ -7,6 +7,7 @@ import { of } from "rxjs/observable/of";
 
 import { Product } from "../shared/models/product.model";
 import { SupplyUnit } from "../shared/models/supply-unit.model";
+import { GVHttpResult } from "../shared/httpResult";
 
 @Injectable()
 export class ProductsService {
@@ -15,8 +16,8 @@ export class ProductsService {
     constructor(private http: HttpClient) { }
 
 
-    get(headers:HttpHeaders): Observable<any> {
-        return this.http.get<Product[]>(this.PRODUCTS_URL, { headers: headers });
+    get(headers:HttpHeaders): Observable<GVHttpResult<Product[]>> {
+        return this.http.get<GVHttpResult<Product[]>>(this.PRODUCTS_URL, { headers: headers });
     }
 
     /*
