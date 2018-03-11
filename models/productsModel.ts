@@ -56,12 +56,30 @@ class ProductModel {
 				});
 			}
 		});
-	}
+    }
+    
+    update(id: number, name: string, path_image: string, callback: (r: Result) => void): void {
+		con.query("UPDATE product  SET name = ?, path_image = ? WHERE id = ?", [name, path_image, id], function(err: any, result: any) {
+			if (!!err) {
+				// TODO: log error -> common/errorHandling.ts
+				// errorHandler.log(err);
+				callback({
+					result: ResultCode.Error,
+					message: err.code
+				});
+			} else {
+				callback({
+					result: ResultCode.OK,
+					message: 'OK'
+				});
+			}
+		});
+	};
 
-	delete(productId: number, callback: (r: Result) => void): void {
+    delete(productId: number, callback: (r: Result) => void): void {
 		con.query('DELETE FROM product WHERE id = ? ', [productId], function(err: any, result: any) {
 			if (!!err) {
-				// TODO: log error
+				// TODO: log error -> common/errorHandling.ts
 				// errorHandler.log(err);
 				callback({
 					result: ResultCode.Error,

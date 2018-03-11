@@ -19,16 +19,8 @@ export class ProductsService {
 		return this.http.get<GVHttpResult<Product[]>>(this.PRODUCTS_URL);
 	}
 
-	/*
-      get(): Observable<Product[]> {
-        return this.http
-          .get<Product[]>(this.PRODUCTS_URL)
-          .pipe(map(r => (<any>r).data));
-      }
-      */
-
-	update(Product: Product): Observable<any> {
-		return this.http.put<Product[]>(this.PRODUCTS_URL, Product);
+	update(product: Product): Observable<any> {
+		return this.http.put<Product[]>(this.PRODUCTS_URL + '/' + product.id, product);
 	}
 
 	agregar(Product: Product): Observable<any> {
