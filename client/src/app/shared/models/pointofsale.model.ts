@@ -4,4 +4,5 @@ export interface PointOfSale {
     address: string;
     tel: string;
     image:string;
+    coord:google.maps.LatLng;
 }

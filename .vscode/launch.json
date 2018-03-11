@@ -5,10 +5,11 @@
     "version": "0.2.0",
     "configurations": [
         {
+
+            "program": "${workspaceFolder}\/bin\/www",
             "type": "node",
             "request": "launch",
             "name": "Iniciar programa",
-            "program": "${workspaceFolder}\\bin\\www",
             "outFiles": [
                 "${workspaceFolder}/**/*.js"
             ]

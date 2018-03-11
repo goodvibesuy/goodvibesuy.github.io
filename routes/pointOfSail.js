@@ -82,7 +82,7 @@ router.post('/', function (req, res, next) {
     masterDBController.verifySession(req.headers['user'], req.headers['tokenid'], req.headers['accountid'], function (err, authError, response, dbName) {
         acl.getACL().isAllowed(req.headers['user'], 'routes', 'get', function (err, response) {
             if (response) {
-                pointsOfSaleModel.add(req.body.name,req.body.address, req.body.tel,function (result) {
+                pointsOfSaleModel.add(req.body.name,req.body.address, req.body.tel,req.body.coords,function (result) {
                     res.send(result);
                 });
             } else {

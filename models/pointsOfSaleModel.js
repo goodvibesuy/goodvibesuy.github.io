@@ -77,12 +77,14 @@ pointOfSaleModel.update = function (id,name,address,tel,callBack) {
     );    
 };
 
-pointOfSaleModel.add = function(name, address, tel,callBack){
+pointOfSaleModel.add = function(name, address, tel,coord,callBack){
     con.query(
-        "INSERT INTO pointofsale  (name, address, tel) VALUES(?,?,?)",
-        [name, address, tel],
+        "INSERT INTO pointofsale  (name, address, tel,coord) VALUES(?,?,?,POINT(?,?))",
+        [name, address, tel,Number(coord.lat) , Number(coord.lng)],
         function (err, resultClient) {
             if (err) {
+                console.log(err);
+                console.log(err.sql);
                 if (err.code === "ER_DUP_ENTRY") {
                     con.release();
                 }
