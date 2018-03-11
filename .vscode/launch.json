@@ -9,7 +9,8 @@
             "program": "${workspaceFolder}\/bin\/www",
             "type": "node",
             "request": "launch",
-            "name": "Iniciar programa",
+            "preLaunchTask": "tsc_compiler",
+            "name": "Iniciar cosaboa",
             "outFiles": [
                 "${workspaceFolder}/**/*.js"
             ]

@@ -3,7 +3,8 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www",
+    "node": "node ./bin/www",
+    "start": "tsc --watch | node ./bin/www",
     "tsc": "tsc"
   },
   "dependencies": {
@@ -20,7 +21,9 @@
     "morgan": "~1.6.1",
     "mysql": "^2.15.0",
     "serve-favicon": "~2.3.0",
-    "sha1": "^1.1.1",
+    "sha1": "^1.1.1"
+  },
+  "devDependencies": {
     "typescript": "^2.7.2"
   }
 }
