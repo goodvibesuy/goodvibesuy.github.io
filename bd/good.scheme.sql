@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: localhost
--- Tiempo de generación: 19-02-2018 a las 22:37:15
+-- Tiempo de generación: 06-03-2018 a las 19:03:53
 -- Versión del servidor: 5.5.8
 -- Versión de PHP: 5.3.5
 
@@ -18,7 +18,8 @@ SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 --
 -- Base de datos: `good`
 --
-
+CREATE DATABASE `good`;
+USE `good`;
 -- --------------------------------------------------------
 
 --
@@ -33,20 +34,6 @@ CREATE TABLE IF NOT EXISTS `input` (
   KEY `fk_input_unity1_idx` (`unity`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=11 ;
 
---
--- Volcar la base de datos para la tabla `input`
---
-
-INSERT INTO `input` (`id`, `name`, `unity`) VALUES
-(2, 'Limones', 1),
-(3, 'Naranja', 1),
-(4, 'Pepino', 1),
-(5, 'Manzana Roja', 1),
-(6, 'Pera', 1),
-(7, 'Espinaca', 1),
-(8, 'Apio', 1),
-(9, 'Kale', 1),
-(10, 'Manzana verde', 1);
 
 -- --------------------------------------------------------
 
@@ -61,22 +48,6 @@ CREATE TABLE IF NOT EXISTS `inputprice` (
   KEY `idInput_idx` (`idInput`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
---
--- Volcar la base de datos para la tabla `inputprice`
---
-
-INSERT INTO `inputprice` (`date`, `amount`, `idInput`) VALUES
-('2018-02-10 21:00:43', 100, 2),
-('2018-02-10 21:02:24', 150, 3),
-('2018-02-10 21:22:57', 170, 3),
-('2018-02-11 08:48:50', 70, 4),
-('2018-02-11 08:51:05', 75, 5),
-('2018-02-11 08:51:46', 120, 6),
-('2018-02-11 08:52:30', 150, 7),
-('2018-02-11 08:54:04', 200, 8),
-('2018-02-11 08:54:37', 120, 9),
-('2018-02-11 08:55:25', 75, 5),
-('2018-02-11 08:56:30', 100, 10);
 
 -- --------------------------------------------------------
 
@@ -93,15 +64,6 @@ CREATE TABLE IF NOT EXISTS `pointofsale` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
 
---
--- Volcar la base de datos para la tabla `pointofsale`
---
-
-INSERT INTO `pointofsale` (`id`, `name`, `address`, `tel`, `image`) VALUES
-(1, 'Porto Vanilla..', 'erwrwerew', '21312321', 'porto-vanilla.png'),
-(2, 'Las Gaviotas', 'erwrwerew66', '21312321', 'las-gaviotas.png'),
-(3, 'El Viejo y El Mar', 'asdasda', '1111', 'el-viejo-y-el-mar.jpg');
-
 -- --------------------------------------------------------
 
 --
@@ -109,21 +71,12 @@ INSERT INTO `pointofsale` (`id`, `name`, `address`, `tel`, `image`) VALUES
 --
 
 CREATE TABLE IF NOT EXISTS `product` (
-  `id` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(56) NOT NULL,
   `path_image` varchar(128) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
---
--- Volcar la base de datos para la tabla `product`
---
-
-INSERT INTO `product` (`id`, `name`, `path_image`) VALUES
-(1, 'Paradise Dream', 'paradiseDream.png'),
-(2, 'Citra Trip', 'citraTrip.png'),
-(3, 'Sun Kiss', 'sunKiss.png'),
-(4, 'Green Life', 'greenLife.png');
 
 -- --------------------------------------------------------
 
@@ -137,11 +90,6 @@ CREATE TABLE IF NOT EXISTS `productprice` (
   `idProduct` int(11) DEFAULT NULL,
   KEY `idProduct_idx` (`idProduct`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Volcar la base de datos para la tabla `productprice`
---
-
 
 -- --------------------------------------------------------
 
@@ -157,70 +105,6 @@ CREATE TABLE IF NOT EXISTS `product_input` (
   KEY `idInput_idx` (`idInput`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
---
--- Volcar la base de datos para la tabla `product_input`
---
-
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `resources`
---
-
-CREATE TABLE IF NOT EXISTS `resources` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(20) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
-
---
--- Volcar la base de datos para la tabla `resources`
---
-
-INSERT INTO `resources` (`id`, `name`) VALUES
-(1, 'routes');
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `rols`
---
-
-CREATE TABLE IF NOT EXISTS `rols` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(100) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
-
---
--- Volcar la base de datos para la tabla `rols`
---
-
-INSERT INTO `rols` (`id`, `name`) VALUES
-(1, 'admin'),
-(2, 'registred');
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `rols_resources`
---
-
-CREATE TABLE IF NOT EXISTS `rols_resources` (
-  `rol_id` int(11) NOT NULL,
-  `resource_id` int(11) NOT NULL,
-  KEY `rol_id` (`rol_id`),
-  KEY `resource_id` (`resource_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Volcar la base de datos para la tabla `rols_resources`
---
-
-INSERT INTO `rols_resources` (`rol_id`, `resource_id`) VALUES
-(1, 1);
-
 -- --------------------------------------------------------
 
 --
@@ -231,16 +115,7 @@ CREATE TABLE IF NOT EXISTS `route` (
   `idroute` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`idroute`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=10 ;
-
---
--- Volcar la base de datos para la tabla `route`
---
-
-INSERT INTO `route` (`idroute`, `name`) VALUES
-(6, 'Punta Carretas'),
-(8, 'Olho2'),
-(9, 'Otro');
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=11 ;
 
 -- --------------------------------------------------------
 
@@ -256,15 +131,6 @@ CREATE TABLE IF NOT EXISTS `route_pointofsale` (
   KEY `idPointofsale_idx` (`idpointofsale`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
---
--- Volcar la base de datos para la tabla `route_pointofsale`
---
-
-INSERT INTO `route_pointofsale` (`idroute`, `idpointofsale`, `position`) VALUES
-(9, 3, 1),
-(9, 2, 3),
-(9, 1, 2);
-
 -- --------------------------------------------------------
 
 --
@@ -279,14 +145,6 @@ CREATE TABLE IF NOT EXISTS `route_user` (
   KEY `idroute2` (`idroute`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
---
--- Volcar la base de datos para la tabla `route_user`
---
-
-INSERT INTO `route_user` (`idroute`, `iduser`, `date`) VALUES
-(9, 3, '2018-02-01'),
-(9, 3, '2018-02-03');
-
 -- --------------------------------------------------------
 
 --
@@ -298,14 +156,6 @@ CREATE TABLE IF NOT EXISTS `unity` (
   `name` varchar(56) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
-
---
--- Volcar la base de datos para la tabla `unity`
---
-
-INSERT INTO `unity` (`id`, `name`) VALUES
-(1, 'Kg'),
-(2, 'L');
 
 -- --------------------------------------------------------
 
@@ -320,17 +170,9 @@ CREATE TABLE IF NOT EXISTS `users` (
   `lastname` varchar(50) NOT NULL,
   `password` varchar(30) NOT NULL,
   `rol_id` int(11) NOT NULL,
+  `id_user_master` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=5 ;
-
---
--- Volcar la base de datos para la tabla `users`
---
-
-INSERT INTO `users` (`id`, `user_name`, `firstname`, `lastname`, `password`, `rol_id`) VALUES
-(2, 'cabecacorada', 'Cabeca', 'Corada', '123456', 1),
-(3, 'olho', 'olho', 'olho', '123456', 1),
-(4, 'cosaboa', 'cosa', 'boa', '123456', 1);
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=6 ;
 
 -- --------------------------------------------------------
 
@@ -346,16 +188,6 @@ CREATE TABLE IF NOT EXISTS `viewing` (
   KEY `idpointofsail_idx` (`idpointofsail`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=13 ;
 
---
--- Volcar la base de datos para la tabla `viewing`
---
-
-INSERT INTO `viewing` (`idviewing`, `date`, `idpointofsail`) VALUES
-(9, '2018-02-10 13:36:39', 1),
-(10, '2018-02-10 13:37:33', 1),
-(11, '2018-02-10 18:10:18', 1),
-(12, '2018-02-10 19:08:18', 1);
-
 -- --------------------------------------------------------
 
 --
@@ -370,36 +202,6 @@ CREATE TABLE IF NOT EXISTS `viewing_product` (
   KEY `idviewing_idx` (`idviewing`),
   KEY `fk_viewing_product_product1_idx` (`idproduct`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Volcar la base de datos para la tabla `viewing_product`
---
-
-INSERT INTO `viewing_product` (`idviewing`, `idproduct`, `quantity`, `type`) VALUES
-(9, 1, 15, 'delivery'),
-(9, 1, 0, 'return'),
-(9, 1, 0, 'empty'),
-(9, 2, 20, 'delivery'),
-(9, 2, 0, 'return'),
-(9, 2, 0, 'empty'),
-(10, 1, 20, 'delivery'),
-(10, 1, 2, 'return'),
-(10, 1, 0, 'empty'),
-(10, 2, 20, 'delivery'),
-(10, 2, 3, 'return'),
-(10, 2, 0, 'empty'),
-(12, 1, 11, 'delivery'),
-(12, 1, 3, 'return'),
-(12, 1, 8, 'empty'),
-(12, 2, 15, 'delivery'),
-(12, 2, 3, 'return'),
-(12, 2, 5, 'empty'),
-(12, 3, 14, 'delivery'),
-(12, 3, 4, 'return'),
-(12, 3, 3, 'empty'),
-(12, 4, 11, 'delivery'),
-(12, 4, 4, 'return'),
-(12, 4, 4, 'empty');
 
 --
 -- Filtros para las tablas descargadas (dump)
@@ -429,13 +231,6 @@ ALTER TABLE `productprice`
 ALTER TABLE `product_input`
   ADD CONSTRAINT `idInput2` FOREIGN KEY (`idInput`) REFERENCES `input` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   ADD CONSTRAINT `idProduct2` FOREIGN KEY (`idproduct`) REFERENCES `product` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
-
---
--- Filtros para la tabla `rols_resources`
---
-ALTER TABLE `rols_resources`
-  ADD CONSTRAINT `rols_resources_ibfk_1` FOREIGN KEY (`rol_id`) REFERENCES `rols` (`id`),
-  ADD CONSTRAINT `rols_resources_ibfk_2` FOREIGN KEY (`resource_id`) REFERENCES `resources` (`id`);
 
 --
 -- Filtros para la tabla `route_pointofsale`

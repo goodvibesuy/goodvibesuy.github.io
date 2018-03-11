@@ -1,16 +1,41 @@
+-- phpMyAdmin SQL Dump
+-- version 3.3.9
+-- http://www.phpmyadmin.net
+--
+-- Servidor: localhost
+-- Tiempo de generación: 06-03-2018 a las 19:03:53
+-- Versión del servidor: 5.5.8
+-- Versión de PHP: 5.3.5
+
 SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8 */;
+
+--
+-- Base de datos: `good`
+--
+USE `good`;
+
+-- --------------------------------------------------------
 
 --
 -- Volcar la base de datos para la tabla `unity`
 --
+
 INSERT INTO `unity` (`id`, `name`) VALUES
 (1, 'Kg'),
 (2, 'L');
 
+-- --------------------------------------------------------
+
 --
 -- Volcar la base de datos para la tabla `input`
 --
+
 INSERT INTO `input` (`id`, `name`, `unity`) VALUES
 (2, 'Limones', 1),
 (3, 'Naranja', 1),
@@ -22,9 +47,12 @@ INSERT INTO `input` (`id`, `name`, `unity`) VALUES
 (9, 'Kale', 1),
 (10, 'Manzana verde', 1);
 
+-- --------------------------------------------------------
+
 --
 -- Volcar la base de datos para la tabla `inputprice`
 --
+
 INSERT INTO `inputprice` (`date`, `amount`, `idInput`) VALUES
 ('2018-02-10 21:00:43', 100, 2),
 ('2018-02-10 21:02:24', 150, 3),
@@ -38,86 +66,95 @@ INSERT INTO `inputprice` (`date`, `amount`, `idInput`) VALUES
 ('2018-02-11 08:55:25', 75, 5),
 ('2018-02-11 08:56:30', 100, 10);
 
+-- --------------------------------------------------------
+
 --
 -- Volcar la base de datos para la tabla `pointofsale`
 --
+
 INSERT INTO `pointofsale` (`id`, `name`, `address`, `tel`, `image`) VALUES
 (1, 'Porto Vanilla..', 'erwrwerew', '21312321', 'porto-vanilla.png'),
 (2, 'Las Gaviotas', 'erwrwerew66', '21312321', 'las-gaviotas.png'),
 (3, 'El Viejo y El Mar', 'asdasda', '1111', 'el-viejo-y-el-mar.jpg');
 
+-- --------------------------------------------------------
+
 --
 -- Volcar la base de datos para la tabla `product`
 --
+
 INSERT INTO `product` (`id`, `name`, `path_image`) VALUES
-(1, 'Paradise Dream', 'paradise-dream.png'),
-(2, 'Citra Trip', 'citra-trip.png'),
-(3, 'Sun Kiss', 'sun-kiss.png'),
-(4, 'Green Life', 'green-life.png'),
-(5, 'Yello Rolling', 'yellow-rolling.png');
+(1, 'Paradise Dream', 'paradiseDream.png'),
+(2, 'Citra Trip', 'citraTrip.png'),
+(3, 'Sun Kiss', 'sunKiss.png'),
+(4, 'Green Life', 'greenLife.png');
 
---
--- Volcar la base de datos para la tabla `resources`
---
-INSERT INTO `resources` (`id`, `name`) VALUES
-(1, 'routes');
-
---
--- Volcar la base de datos para la tabla `rols`
---
-INSERT INTO `rols` (`id`, `name`) VALUES
-(1, 'admin'),
-(2, 'registred');
-
---
--- Volcar la base de datos para la tabla `rols_resources`
---
-INSERT INTO `rols_resources` (`rol_id`, `resource_id`) VALUES
-(1, 1);
+-- --------------------------------------------------------
 
 --
 -- Volcar la base de datos para la tabla `route`
 --
+
 INSERT INTO `route` (`idroute`, `name`) VALUES
 (6, 'Punta Carretas'),
 (8, 'Olho2'),
-(9, 'Otro');
+(9, 'Otro'),
+(10, 'Otra ruta2');
+
+-- --------------------------------------------------------
 
 --
 -- Volcar la base de datos para la tabla `route_pointofsale`
 --
+
 INSERT INTO `route_pointofsale` (`idroute`, `idpointofsale`, `position`) VALUES
 (9, 3, 1),
 (9, 2, 3),
-(9, 1, 2);
+(9, 1, 2),
+(10, 1, 1);
+
+-- --------------------------------------------------------
 
 --
 -- Volcar la base de datos para la tabla `users`
 --
-INSERT INTO `users` (`id`, `user_name`, `firstname`, `lastname`, `password`, `rol_id`) VALUES
-(2, 'cabecacorada', 'Cabeca', 'Corada', '123456', 1),
-(3, 'olho', 'olho', 'olho', '123456', 1),
-(4, 'cosaboa', 'cosa', 'boa', '123456', 1);
+
+INSERT INTO `users` (`id`, `user_name`, `firstname`, `lastname`, `password`, `rol_id`, `id_user_master`) VALUES
+(2, 'cabecacorada', 'Cabeca', 'Corada', '123456', 1, 0),
+(3, 'olho', 'olho', 'olho', '123456', 1, 0),
+(4, 'cosaboa', 'cosa', 'boa', '123456', 1, 26),
+(5, 'cosaruin', 'Cosa', 'Ruin', '7c4a8d09ca3762af61e59520943dc2', 2, 27);
+
+-- --------------------------------------------------------
 
 --
 -- Volcar la base de datos para la tabla `route_user`
 --
+
 INSERT INTO `route_user` (`idroute`, `iduser`, `date`) VALUES
 (9, 3, '2018-02-01'),
-(9, 3, '2018-02-03');
+(9, 3, '2018-02-03'),
+(10, 2, '2018-02-01'),
+(10, 4, '2018-02-07');
+
+-- --------------------------------------------------------
 
 --
 -- Volcar la base de datos para la tabla `viewing`
 --
+
 INSERT INTO `viewing` (`idviewing`, `date`, `idpointofsail`) VALUES
 (9, '2018-02-10 13:36:39', 1),
 (10, '2018-02-10 13:37:33', 1),
 (11, '2018-02-10 18:10:18', 1),
 (12, '2018-02-10 19:08:18', 1);
 
+-- --------------------------------------------------------
+
 --
 -- Volcar la base de datos para la tabla `viewing_product`
 --
+
 INSERT INTO `viewing_product` (`idviewing`, `idproduct`, `quantity`, `type`) VALUES
 (9, 1, 15, 'delivery'),
 (9, 1, 0, 'return'),
