@@ -21,7 +21,8 @@ class ProductModel {
 		con.query('SELECT * FROM product', function(err: any, result: Product[]) {
 			if (!!err) {
 				// TODO: log error
-				// errorHandler.log(err);
+                // errorHandler.log(err);
+                console.error(err);
 				callBack({
 					result: ResultCode.Error,
 					message: 'Error'
@@ -44,6 +45,7 @@ class ProductModel {
 			if (!!err) {
 				// TODO: log error
 				// errorHandler.log(err);
+                console.error(err);
 				callBack({
 					result: ResultCode.Error,
 					message: 'Error'
@@ -63,6 +65,7 @@ class ProductModel {
 			if (!!err) {
 				// TODO: log error -> common/errorHandling.ts
 				// errorHandler.log(err);
+                console.error(err);
 				callback({
 					result: ResultCode.Error,
 					message: err.code
@@ -81,6 +84,7 @@ class ProductModel {
 			if (!!err) {
 				// TODO: log error -> common/errorHandling.ts
 				// errorHandler.log(err);
+                console.error(err);
 				callback({
 					result: ResultCode.Error,
 					message: err.code

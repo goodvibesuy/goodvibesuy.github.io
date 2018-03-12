@@ -5,14 +5,14 @@ import { RouterModule, Routes } from '@angular/router';
 import { DashboardComponent } from './components/front/dashboard/dashboard.component';
 import { LocalesComponent } from './components/front/locales/locales.component';
 import { ReportesComponent } from './components/front/reportes/reportes.component';
-import { InputComponent } from './components/adm/input/input.component';
+import { SupplyComponent } from './components/adm/supply/supply.component';
 import { RoutesComponent } from './components/adm/routes/routes.component';
 import { ListComponent } from './components/adm/routes/list/list.component';
-import { InputListComponent } from './components/adm/input/list/input.list.component';
-import { InputEditComponent } from './components/adm/input/edit/input.edit.component';
+import { SupplyListComponent } from './components/adm/supply/list/supply.list.component';
+import { SupplyEditComponent } from './components/adm/supply/edit/supply.edit.component';
 import { RouteAdd } from './components/adm/routes/route.add/route.add.component';
 import { RouteEdit } from './components/adm/routes/route.edit/route.edit.component';
-import { InputAddComponent } from './components/adm/input/add/input.add.component';
+import { SupplyAddComponent } from './components/adm/supply/add/supply.add.component';
 import { MapaComponent } from './components/front/mapa/mapa.component';
 import { DetalleLocalComponent } from './components/front/detalle-local/detalle-local.component';
 import { ConfigsComponent } from './components/configs/configs.component';
@@ -55,11 +55,11 @@ const routes: Routes = [
 	},
 	{
 		path: 'insumos',
-		component: InputComponent,
+		component: SupplyComponent,
 		children: [
-			{ path: '', component: InputListComponent},
-			{ path: 'editar/:id', component: InputEditComponent},
-			{ path: 'agregar', component: InputAddComponent}
+			{ path: '', component: SupplyListComponent},
+			{ path: 'editar/:id', component: SupplyEditComponent},
+			{ path: 'agregar', component: SupplyAddComponent}
 		]
 	},
 	{

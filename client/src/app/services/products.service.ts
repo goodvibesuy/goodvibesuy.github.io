@@ -6,7 +6,6 @@ import { Observable } from 'rxjs/Observable';
 import { of } from 'rxjs/observable/of';
 
 import { Product } from '../shared/models/product.model';
-import { SupplyUnit } from '../shared/models/supply-unit.model';
 import { GVHttpResult } from '../shared/httpResult';
 
 @Injectable()

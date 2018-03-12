@@ -5,39 +5,35 @@ import { catchError, map, tap } from 'rxjs/operators';
 import { Observable } from 'rxjs/Observable';
 import { of } from 'rxjs/observable/of';
 
-import { Input } from '../shared/models/input.model';
-import { SupplyUnit } from '../shared/models/supply-unit.model';
+import { Supply } from '../shared/models/supply.model';
+import { Unit } from '../shared/models/unit.model';
 
 @Injectable()
-export class InputService {
-	inputsUrl: string = '/api/inputs';
-	supplyUnitsUrl: string = '/api/unity';
+export class SupplyService {
+	suppliesUrl: string = '/api/supplies';
+	unitsUrl: string = '/api/units';
 	headers = { 'Content-Type': 'application/json; charset=utf-8' };
 
 	constructor(private http: HttpClient) {}
 
-	get(): Observable<Input[]> {
-		return this.http
-			.get<Input[]>(this.inputsUrl)
-			.pipe(tap(d => this.log(`fetched input`)), map(r => (<any>r).data));
+	get(): Observable<Supply[]> {
+		return this.http.get<Supply[]>(this.suppliesUrl).pipe(map(r => (<any>r).data));
 	}
 
-	getUnits(): Observable<SupplyUnit[]> {
-		return this.http
-			.get<SupplyUnit[]>(this.supplyUnitsUrl)
-			.pipe(tap(d => this.log(`fetched SupplyUnit`)), map(r => (<any>r).data));
+	getUnits(): Observable<Unit[]> {
+		return this.http.get<Unit[]>(this.unitsUrl).pipe(map(r => (<any>r).data));
 	}
 
-	update(input: Input): Observable<any> {
-		return this.http.put<Input[]>(this.inputsUrl, input);
+	update(input: Supply): Observable<any> {
+		return this.http.put<Supply[]>(this.suppliesUrl, input);
 	}
 
-	agregar(input: Input): Observable<any> {
-		return this.http.post(this.inputsUrl, input);
+	agregar(input: Supply): Observable<any> {
+		return this.http.post(this.suppliesUrl, input);
 	}
 
 	delete(id: number): Observable<any> {
-		return this.http.delete(this.inputsUrl + '/' + id);
+		return this.http.delete(this.suppliesUrl + '/' + id);
 	}
 
 	/**

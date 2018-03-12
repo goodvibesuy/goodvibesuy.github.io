@@ -1,6 +1,6 @@
-export interface Input {
+export interface Supply {
     id: number;
     name: string;
-    unity: number;
+    unit: number;
     amount: number;
 }

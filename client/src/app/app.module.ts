@@ -10,11 +10,11 @@ import { HeaderComponent } from './components/header/header.component';
 import { DashboardComponent } from './components/front/dashboard/dashboard.component';
 import { LocalesComponent } from './components/front/locales/locales.component';
 import { ReportesComponent } from './components/front/reportes/reportes.component';
-// Inputs
-import { InputComponent } from './components/adm/input/input.component';
-import { InputListComponent } from './components/adm/input/list/input.list.component';
-import { InputEditComponent } from './components/adm/input/edit/input.edit.component';
-import { InputAddComponent } from './components/adm/input/add/input.add.component';
+// supplys
+import { SupplyComponent } from './components/adm/supply/supply.component';
+import { SupplyListComponent } from './components/adm/supply/list/supply.list.component';
+import { SupplyEditComponent } from './components/adm/supply/edit/supply.edit.component';
+import { SupplyAddComponent } from './components/adm/supply/add/supply.add.component';
 // Products
 import { ProductsComponent } from './components/adm/products/products.component';
 import { ProductsListComponent } from './components/adm/products/list/products.list.component';
@@ -36,7 +36,7 @@ import { RouteEdit } from './components/adm/routes/route.edit/route.edit.compone
 import { AppRoutingModule } from './app-routing.module';
 
 // services
-import { InputService } from './services/input.service';
+import { SupplyService } from './services/supply.service';
 import { ProductsService } from './services/products.service';
 import { RouteService } from './services/route.service';
 import { TokenService} from './services/token.service';
@@ -73,10 +73,10 @@ import { InterceptorModule } from './auth/token.interceptor'
 		ProductAddComponent,
 		LocalesComponent,
 		ReportesComponent,
-		InputComponent,
-		InputListComponent,
-		InputEditComponent,
-		InputAddComponent,
+		SupplyComponent,
+		SupplyListComponent,
+		SupplyEditComponent,
+		SupplyAddComponent,
 		MapaComponent,
 		DetalleLocalComponent,
 		ConfigsComponent,
@@ -101,7 +101,7 @@ import { InterceptorModule } from './auth/token.interceptor'
 		NgbModule.forRoot()
 	],
 	providers: [
-		InputService,
+		SupplyService,
 		ProductsService,
 		RouteService,
 		UsersService,

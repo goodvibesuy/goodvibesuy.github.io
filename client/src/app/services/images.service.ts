@@ -18,13 +18,11 @@ export class ImagesService {
 	}
 
 	/*.pipe(
-                tap(d => this.log(`fetched SupplyUnit`)),
                 map(r => (<any>r).data )
             )
             
-             this.inputService.getUnits()
+             this.inp ut Service.getUnits()
       .subscribe(data => {
-        this.units = <SupplyUnit[]>data;
       });*/
 
 	sendImage(category: string, fileName: string, fileSize: number, fileData: string) {

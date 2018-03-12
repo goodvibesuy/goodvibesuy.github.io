@@ -14,16 +14,16 @@
 			</tr>
 		</thead>
 		<tbody>
-			<tr *ngFor="let i of inputs">
-				<td>{{i.name}}</td>
-				<td>$ {{i.amount}} / {{ getUnit(i.unity) }}</td>
+			<tr *ngFor="let s of supplies">
+				<td>{{s.name}}</td>
+				<td>$ {{s.amount}} / {{ getUnit(s.unit) }}</td>
 				<td style="text-align: center;">
-					<a [routerLink]="['editar', i.id]">
+					<a [routerLink]="['editar', s.id]">
 						<i class="fa fa-edit" style="font-size: 1.7em;"></i>
 					</a>
 				</td>
 				<td style="text-align: center;">
-					<a (click)="delete(i.id)">
+					<a (click)="delete(s.id)">
 						<i class="fa fa-trash-o" style="font-size: 1.7em;"></i>
 					</a>
 				</td>

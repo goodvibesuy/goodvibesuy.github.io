@@ -23,20 +23,20 @@ USE `good`;
 -- --------------------------------------------------------
 
 --
--- Volcar la base de datos para la tabla `unity`
+-- Volcar la base de datos para la tabla `unit`
 --
 
-INSERT INTO `unity` (`id`, `name`) VALUES
+INSERT INTO `unit` (`id`, `name`) VALUES
 (1, 'Kg'),
 (2, 'L');
 
 -- --------------------------------------------------------
 
 --
--- Volcar la base de datos para la tabla `input`
+-- Volcar la base de datos para la tabla `supply`
 --
 
-INSERT INTO `input` (`id`, `name`, `unity`) VALUES
+INSERT INTO `supply` (`id`, `name`, `unit`) VALUES
 (2, 'Limones', 1),
 (3, 'Naranja', 1),
 (4, 'Pepino', 1),
@@ -50,10 +50,10 @@ INSERT INTO `input` (`id`, `name`, `unity`) VALUES
 -- --------------------------------------------------------
 
 --
--- Volcar la base de datos para la tabla `inputprice`
+-- Volcar la base de datos para la tabla `supplyprice`
 --
 
-INSERT INTO `inputprice` (`date`, `amount`, `idInput`) VALUES
+INSERT INTO `supplyprice` (`date`, `amount`, `idSupply`) VALUES
 ('2018-02-10 21:00:43', 100, 2),
 ('2018-02-10 21:02:24', 150, 3),
 ('2018-02-10 21:22:57', 170, 3),

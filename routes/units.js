@@ -16,7 +16,7 @@ con.connect(function (err) {
 
 
 router.get('/', function (req, res, next) {
-  con.query("SELECT * FROM unity", function (err, result) {
+  con.query("SELECT * FROM unit", function (err, result) {
     if (err) throw err;
     console.log("Result: ", result);
     res.send({ result: 1, message: "OK", data: result });
@@ -25,8 +25,8 @@ router.get('/', function (req, res, next) {
 
 router.post('/', function (req, res, next) {  
   con.query(
-    "INSERT INTO unity  (name, unity) VALUES(?,?)",
-    [req.body.name, req.body.unity],
+    "INSERT INTO unit  (name, unit) VALUES(?,?)",
+    [req.body.name, req.body.unit],
     function (err, resultClient) {
       if (err) {
         if (err.code === "ER_DUP_ENTRY") {
@@ -41,8 +41,8 @@ router.post('/', function (req, res, next) {
 
 router.put('/', function (req, res, next) {  
   con.query(
-    "UPDATE unity  SET name = ?, unity = ? WHERE id = ?",
-    [req.body.name, req.body.unity, req.body.id],
+    "UPDATE unit  SET name = ?, unit = ? WHERE id = ?",
+    [req.body.name, req.body.unit, req.body.id],
     function (err, resultClient) {
       if (err) {
         if (err.code === "ER_DUP_ENTRY") {
@@ -57,7 +57,7 @@ router.put('/', function (req, res, next) {
 
 router.delete('/', function (req, res, next) {  
   con.query(
-    "DELETE FROM unity WHERE id = ? ",
+    "DELETE FROM unit WHERE id = ? ",
     [req.body.id],
     function (err, resultClient) {
       if (err) {

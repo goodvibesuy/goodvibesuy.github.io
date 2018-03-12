@@ -23,29 +23,29 @@ USE `good`;
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `input`
+-- Estructura de tabla para la tabla `supply`
 --
 
-CREATE TABLE IF NOT EXISTS `input` (
+CREATE TABLE IF NOT EXISTS `supply` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(56) NOT NULL,
-  `unity` int(11) NOT NULL,
+  `unit` int(11) NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `fk_input_unity1_idx` (`unity`)
+  KEY `fk_supply_unit1_idx` (`unit`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
 
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `inputprice`
+-- Estructura de tabla para la tabla `supplyprice`
 --
 
-CREATE TABLE IF NOT EXISTS `inputprice` (
+CREATE TABLE IF NOT EXISTS `supplyprice` (
   `date` datetime NOT NULL,
   `amount` int(11) DEFAULT NULL,
-  `idInput` int(11) DEFAULT NULL,
-  KEY `idInput_idx` (`idInput`)
+  `idSupply` int(11) DEFAULT NULL,
+  KEY `idSupply_idx` (`idSupply`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 
@@ -95,15 +95,15 @@ CREATE TABLE IF NOT EXISTS `productprice` (
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `product_input`
+-- Estructura de tabla para la tabla `product_supply`
 --
 
-CREATE TABLE IF NOT EXISTS `product_input` (
+CREATE TABLE IF NOT EXISTS `product_supply` (
   `idproduct` int(11) DEFAULT NULL,
-  `idInput` int(11) DEFAULT NULL,
+  `idSupply` int(11) DEFAULT NULL,
   `quantity` double DEFAULT NULL,
   KEY `idProduct_idx` (`idproduct`),
-  KEY `idInput_idx` (`idInput`)
+  KEY `idSupply_idx` (`idSupply`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -149,10 +149,10 @@ CREATE TABLE IF NOT EXISTS `route_user` (
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `unity`
+-- Estructura de tabla para la tabla `unit`
 --
 
-CREATE TABLE IF NOT EXISTS `unity` (
+CREATE TABLE IF NOT EXISTS `unit` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(56) NOT NULL,
   PRIMARY KEY (`id`)
@@ -209,16 +209,16 @@ CREATE TABLE IF NOT EXISTS `viewing_product` (
 --
 
 --
--- Filtros para la tabla `input`
+-- Filtros para la tabla `supply`
 --
-ALTER TABLE `input`
-  ADD CONSTRAINT `fk_input_unity1` FOREIGN KEY (`unity`) REFERENCES `unity` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+ALTER TABLE `supply`
+  ADD CONSTRAINT `fk_supply_unit1` FOREIGN KEY (`unit`) REFERENCES `unit` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
--- Filtros para la tabla `inputprice`
+-- Filtros para la tabla `supplyprice`
 --
-ALTER TABLE `inputprice`
-  ADD CONSTRAINT `idInput` FOREIGN KEY (`idInput`) REFERENCES `input` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+ALTER TABLE `supplyprice`
+  ADD CONSTRAINT `idSupply` FOREIGN KEY (`idSupply`) REFERENCES `supply` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
 -- Filtros para la tabla `productprice`
@@ -227,10 +227,10 @@ ALTER TABLE `productprice`
   ADD CONSTRAINT `idProduct` FOREIGN KEY (`idProduct`) REFERENCES `product` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
--- Filtros para la tabla `product_input`
+-- Filtros para la tabla `product_supply`
 --
-ALTER TABLE `product_input`
-  ADD CONSTRAINT `idInput2` FOREIGN KEY (`idInput`) REFERENCES `input` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+ALTER TABLE `product_supply`
+  ADD CONSTRAINT `idSupply2` FOREIGN KEY (`idSupply`) REFERENCES `supply` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   ADD CONSTRAINT `idProduct2` FOREIGN KEY (`idproduct`) REFERENCES `product` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
