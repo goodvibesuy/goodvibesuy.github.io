@@ -15,6 +15,7 @@ export class PosComponent implements OnInit {
     private POSEditName: string;
     private POSEditAddress: string;
     private POSEditTel: string;
+    private POSEditCoord:google.maps.LatLng;
     private POSName: string;
     private POSAddress: string;
     private POSTel: string;
@@ -77,10 +78,11 @@ export class PosComponent implements OnInit {
 
     geocodeAddress(geocoder, resultsMap) {
         var address = this.POSAddress;
+        var thisPrincipal = this;
         geocoder.geocode({ address: address }, function (results, status) {
             if (status === 'OK') {
                 resultsMap.setCenter(results[0].geometry.location);
-                this.POSMarker = new google.maps.Marker({
+                thisPrincipal.POSMarker = new google.maps.Marker({
                     map: resultsMap,
                     position: results[0].geometry.location
                 });
@@ -92,16 +94,17 @@ export class PosComponent implements OnInit {
 
     formEdit(idPointOfSale): void {
         this.typeOfView = 2;
-        this.POSEdit = this.pointsOfSale.filter(function (pos) {
+        var POSEdit = this.pointsOfSale.filter(function (pos) {
             return idPointOfSale == pos.id;
         })[0];
-        this.POSEditName = this.POSEdit.name;
-        this.POSEditAddress = this.POSEdit.address;
-        this.POSEditTel = this.POSEdit.tel;
-        
-        if(this.POSEdit.coord !== null){
+        this.POSEditName = POSEdit.name;
+        this.POSEditAddress = POSEdit.address;
+        this.POSEditTel = POSEdit.tel;
+        this.POSEditCoord = new google.maps.LatLng(POSEdit.coord.x,POSEdit.coord.x);
+
+        if(this.POSEditCoord !== null && this.POSEditCoord !== undefined){
             var mapProp = {
-                center: new google.maps.LatLng(this.POSEdit.coord.x, this.POSEdit.coord.y),
+                center: new google.maps.LatLng(this.POSEditCoord.lat(), this.POSEditCoord.lng()),
                 zoom: 14,
                 mapTypeId: google.maps.MapTypeId.ROADMAP
             };
@@ -119,7 +122,7 @@ export class PosComponent implements OnInit {
             this.POSEditMarker = new google.maps.Marker({
                 map: this.mapEdit,
                 draggable:true,
-                position: new google.maps.LatLng(this.POSEdit.coord.x, this.POSEdit.coord.y)
+                position: new google.maps.LatLng(this.POSEditCoord.lat(), this.POSEditCoord.lng())
             });
         }
     }
