@@ -20,6 +20,7 @@ var ProductModel = /** @class */ (function () {
             if (!!err) {
                 // TODO: log error
                 // errorHandler.log(err);
+                console.error(err);
                 callBack({
                     result: result_1.ResultCode.Error,
                     message: 'Error'
@@ -39,6 +40,7 @@ var ProductModel = /** @class */ (function () {
             if (!!err) {
                 // TODO: log error
                 // errorHandler.log(err);
+                console.error(err);
                 callBack({
                     result: result_1.ResultCode.Error,
                     message: 'Error'
@@ -53,11 +55,32 @@ var ProductModel = /** @class */ (function () {
             }
         });
     };
+    ProductModel.prototype.update = function (id, name, path_image, callback) {
+        con.query("UPDATE product  SET name = ?, path_image = ? WHERE id = ?", [name, path_image, id], function (err, result) {
+            if (!!err) {
+                // TODO: log error -> common/errorHandling.ts
+                // errorHandler.log(err);
+                console.error(err);
+                callback({
+                    result: result_1.ResultCode.Error,
+                    message: err.code
+                });
+            }
+            else {
+                callback({
+                    result: result_1.ResultCode.OK,
+                    message: 'OK'
+                });
+            }
+        });
+    };
+    ;
     ProductModel.prototype.delete = function (productId, callback) {
         con.query('DELETE FROM product WHERE id = ? ', [productId], function (err, result) {
             if (!!err) {
-                // TODO: log error
+                // TODO: log error -> common/errorHandling.ts
                 // errorHandler.log(err);
+                console.error(err);
                 callback({
                     result: result_1.ResultCode.Error,
                     message: err.code

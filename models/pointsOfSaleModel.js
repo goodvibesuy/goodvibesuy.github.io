@@ -1,98 +1,134 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var result_1 = require("../datatypes/result");
 var mysql = require('mysql');
-
 var con = mysql.createConnection({
-    host: "localhost",
-    user: "root",
-    password: "",
-    database: "good"
+    host: 'localhost',
+    user: 'root',
+    password: '',
+    database: 'good'
 });
-
 con.connect(function (err) {
-    if (err) throw err;
+    if (err)
+        throw err;
 });
-
-var pointOfSaleModel = function () {
-};
-
-pointOfSaleModel.getAll = function (callBack) {
-    con.query("SELECT * FROM pointofsale", function (err, result) {
-        if (err) throw err;
-        callBack({ result: 1, message: "OK", data: result });
-    });
-};
-
-pointOfSaleModel.getPointOfSale = function (idPointOfSale,callBack) {
-    con.query("SELECT * FROM pointofsale WHERE id = ?", [idPointOfSale],function (err, result) {
-        if (err) throw err;
-        callBack({ result: 1, message: "OK", data: result[0] });
-    });
-};
-
-pointOfSaleModel.getFilteredByName = function (filterName,callBack) {
-    con.query("SELECT * FROM pointofsale WHERE name LIKE ?", ["%" +filterName + "%"],function (err, result) {
-        if (err) throw err;
-        callBack({ result: 1, message: "OK", data: result });
-    });
-};
-
-
-pointOfSaleModel.delete = function (id,callBack) {
-    con.query(
-        "DELETE FROM pointofsale WHERE id = ? ",
-        [id],
-        function (err, resultClient) {
-            if (err) {
-                console.log(err);
-                /*
-                if (err.code === "ER_DUP_ENTRY") {
-                    con.release();
-                }
-                */
-                let errorMessage = "";
+var PointsOfSaleModel = /** @class */ (function () {
+    function PointsOfSaleModel() {
+        console.log("constructor POS");
+    }
+    PointsOfSaleModel.prototype.getAll = function (callBack) {
+        con.query('SELECT * FROM pointofsale', function (err, result) {
+            if (!!err) {
+                callBack({
+                    result: result_1.ResultCode.Error,
+                    message: 'Error'
+                });
+            }
+            else {
+                callBack({
+                    result: result_1.ResultCode.OK,
+                    message: 'OK',
+                    data: result
+                });
+            }
+        });
+    };
+    PointsOfSaleModel.prototype.getPointOfSale = function (idPointOfSale, callBack) {
+        con.query("SELECT * FROM pointofsale WHERE id = ?", [idPointOfSale], function (err, result) {
+            if (!!err) {
+                callBack({
+                    result: result_1.ResultCode.Error,
+                    message: 'Error'
+                });
+            }
+            else {
+                callBack({
+                    result: result_1.ResultCode.OK,
+                    message: 'OK',
+                    data: result
+                });
+            }
+        });
+    };
+    PointsOfSaleModel.prototype.getFilteredByName = function (filterName, callBack) {
+        con.query("SELECT * FROM pointofsale WHERE name LIKE ?", ["%" + filterName + "%"], function (err, result) {
+            if (!!err) {
+                callBack({
+                    result: result_1.ResultCode.Error,
+                    message: 'Error'
+                });
+            }
+            else {
+                callBack({
+                    result: result_1.ResultCode.OK,
+                    message: 'OK',
+                    data: result
+                });
+            }
+        });
+    };
+    PointsOfSaleModel.prototype.add = function (name, address, tel, coord, callBack) {
+        con.query("INSERT INTO pointofsale  (name, address, tel,coord) VALUES(?,?,?,POINT(?,?))", [name, address, tel, Number(coord.lat), Number(coord.lng)], function (err, result) {
+            if (!!err) {
+                //if (err.code === "ER_DUP_ENTRY") 
+                console.error(err);
+                callBack({
+                    result: result_1.ResultCode.Error,
+                    message: 'Error'
+                });
+            }
+            else {
+                callBack({
+                    result: result_1.ResultCode.OK,
+                    message: 'OK',
+                    data: result.insertId
+                });
+            }
+        });
+    };
+    PointsOfSaleModel.prototype.update = function (id, name, address, tel, coord, callback) {
+        con.query("UPDATE pointofsale  SET name = ?, address = ?, tel = ?, coord = POINT(?,?) WHERE id = ?", [name, address, tel, Number(coord.lat), Number(coord.lng), id], function (err, result) {
+            if (!!err) {
+                // TODO: log error -> common/errorHandling.ts
+                // errorHandler.log(err);
+                console.error(err);
+                callback({
+                    result: result_1.ResultCode.Error,
+                    message: err.code
+                });
+            }
+            else {
+                callback({
+                    result: result_1.ResultCode.OK,
+                    message: "Los datos se actualizaron correctamente"
+                });
+            }
+        });
+    };
+    ;
+    PointsOfSaleModel.prototype.delete = function (id, callback) {
+        con.query('DELETE FROM pointofsale WHERE id = ? ', [id], function (err, result) {
+            if (!!err) {
+                // TODO: log error -> common/errorHandling.ts
+                // errorHandler.log(err);
+                console.error(err);
+                var errorMessage = "";
                 if (err.code === "ER_ROW_IS_REFERENCED_2") {
                     errorMessage = "No se puede borrar el registro, porque es utilizado en otra parte del sistema";
-                }                
-
-               callBack({ result: -1, message: errorMessage, data : null });
-            } else {
-                callBack({ result: 1, message: "OK", data: null });
-            }
-        }
-    );
-};
-
-pointOfSaleModel.update = function (id,name,address,tel,coord,callBack) {
-    con.query(
-        "UPDATE pointofsale  SET name = ?, address = ?, tel = ?, coord = POINT(?,?) WHERE id = ?",
-        [name,address,tel, Number(coord.lat) , Number(coord.lng),id],
-        function (err, resultClient) {
-            if (err) {
-                if (err.code === "ER_DUP_ENTRY") {
-                    con.release();
                 }
-            } else {
-                callBack({ result: 1, message: "Los datos se actualizaron correctamente" });
+                callback({
+                    result: result_1.ResultCode.Error,
+                    message: errorMessage
+                });
             }
-        }
-    );    
-};
-
-pointOfSaleModel.add = function(name, address, tel,coord,callBack){
-    con.query(
-        "INSERT INTO pointofsale  (name, address, tel,coord) VALUES(?,?,?,POINT(?,?))",
-        [name, address, tel,Number(coord.lat) , Number(coord.lng)],
-        function (err, resultClient) {
-            if (err) {
-                console.log(err);
-                console.log(err.sql);
-                if (err.code === "ER_DUP_ENTRY") {
-                    con.release();
-                }
-            } else {
-                callBack({ result: 1, message: "OK", data:null });
+            else {
+                callback({
+                    result: result_1.ResultCode.OK,
+                    message: 'OK'
+                });
             }
-        }
-    );
-};
-
-module.exports = pointOfSaleModel;
+        });
+    };
+    return PointsOfSaleModel;
+}());
+module.exports = new PointsOfSaleModel();

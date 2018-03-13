@@ -48,14 +48,27 @@ export class PosComponent implements OnInit {
         this.geocodeAddress(this.geocoder, this.map);
     }
 
+    setEditMarker(editMarker : google.maps.Marker){
+        this.POSEditMarker = editMarker;
+        console.log(this.POSEditMarker);
+    }
+
     locationEdit(){
         var mapEdit = this.mapEdit;
         var address = this.POSEditAddress;
-        var editMarker = this.POSEditMarker;
+        var thisPrincipal = this;
         this.geocoder.geocode({ address: address }, function (results, status) {
             if (status.toString() === 'OK') {
                 mapEdit.setCenter(results[0].geometry.location);
-                editMarker.setPosition(results[0].geometry.location);
+                if(thisPrincipal.POSEditMarker === null || thisPrincipal.POSEditMarker === undefined){
+                    thisPrincipal.POSEditMarker = new google.maps.Marker({
+                        map: mapEdit,
+                        draggable:true,
+                        position: results[0].geometry.location
+                    });
+                }else{
+                    thisPrincipal.POSEditMarker.setPosition(results[0].geometry.location);
+                }
             } else {
                 alert('Geocode was not successful for the following reason: ' + status);
             }
@@ -78,7 +91,6 @@ export class PosComponent implements OnInit {
     }
 
     formEdit(idPointOfSale): void {
-        console.log(this.POSEditMarker);
         this.typeOfView = 2;
         this.POSEdit = this.pointsOfSale.filter(function (pos) {
             return idPointOfSale == pos.id;
@@ -86,27 +98,34 @@ export class PosComponent implements OnInit {
         this.POSEditName = this.POSEdit.name;
         this.POSEditAddress = this.POSEdit.address;
         this.POSEditTel = this.POSEdit.tel;
-        let mapProp = {
-            center: new google.maps.LatLng(this.POSEdit.coord.lat(), this.POSEdit.coord.lng()),
-            zoom: 14,
-            mapTypeId: google.maps.MapTypeId.ROADMAP
-        };
+        
+        if(this.POSEdit.coord !== null){
+            var mapProp = {
+                center: new google.maps.LatLng(this.POSEdit.coord.x, this.POSEdit.coord.y),
+                zoom: 14,
+                mapTypeId: google.maps.MapTypeId.ROADMAP
+            };
+        }else{
+            var mapProp = {
+                center: new google.maps.LatLng(-34.909664, -56.163319),
+                zoom: 14,
+                mapTypeId: google.maps.MapTypeId.ROADMAP
+            };
+        }
+
         this.mapEdit = new google.maps.Map(this.gmapEditElement.nativeElement, mapProp);
-        this.POSEditMarker = new google.maps.Marker({
-            map: this.mapEdit,
-            draggable:true,
-            position: new google.maps.LatLng(this.POSEdit.coord.lat(), this.POSEdit.coord.lng())
-        });
-        console.log(this.POSEditMarker);
+
+        if(this.POSEdit.coord !== null){
+            this.POSEditMarker = new google.maps.Marker({
+                map: this.mapEdit,
+                draggable:true,
+                position: new google.maps.LatLng(this.POSEdit.coord.x, this.POSEdit.coord.y)
+            });
+        }
     }
 
     addForm() {
         this.typeOfView = 3;
-        
-        this.POSMarker = new google.maps.Marker({
-            map: this.map,
-            position: { "lat": -34.923297, "lng": -56.159758 }
-        });
     }
 
     cancelEdit() {

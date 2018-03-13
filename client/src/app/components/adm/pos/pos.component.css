@@ -3,6 +3,35 @@
 }
 
 .tarjeta{
-    width: 300px;
+    width: 100%!important;
     height: 500px;
+    float: left;
+}
+
+#formAdd{
+    margin:10px;;
+}
+
+.footer{
+    text-align:center;
+}
+
+.btn-circle {
+    width: 30px;
+    height: 30px;
+    padding: 6px 0px;
+    border-radius: 15px;
+    text-align: center;
+    font-size: 12px;
+    line-height: 1.42857;
+}
+
+
+.add{
+    background-color: green;
+    color: white;
+    float: right;
+    margin: 10px;
+    font-weight: bold;
+    font-size: 15px;
 }
