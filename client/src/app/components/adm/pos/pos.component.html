@@ -69,6 +69,14 @@
                             <span class="input-group-addon">Telefono:</span>
                             <input type="text" class="form-control" id="POSEditTel" [(ngModel)]="POSEditTel">
                         </div>
+                        <div class="form-group">
+                            <span class="input-group-addon">Imagen:</span>
+                            <img [src]="getImage()" *ngIf="product" class="small_image" />
+                            <file-picker text="Cambiar" (selected)="handleSelected($event)"></file-picker>
+                            <div *ngIf="filestring">
+                                {{filestring}}
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -99,9 +107,9 @@
                 <td>
 
                     <img *ngIf="pos.image !== ''" style="width:50px;" src="images/locales/{{pos.image}}" />
-                    <i *ngIf="pos.image === ''" class="fa fa-home" style="font-size: 2.0em;" ></i>
+                    <i *ngIf="pos.image === ''" class="fa fa-home" style="font-size: 2.0em;"></i>
 
-                    
+
                 </td>
                 <td>{{pos.name}}</td>
                 <td>{{pos.address}}</td>

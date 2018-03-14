@@ -80,10 +80,16 @@ var ProductModel = /** @class */ (function () {
             if (!!err) {
                 // TODO: log error -> common/errorHandling.ts
                 // errorHandler.log(err);
-                console.error(err);
+                var errorMessage = '';
+                if (err.code === "ER_ROW_IS_REFERENCED_2") {
+                    errorMessage = "No se puede borrar el registro, porque es utilizado en otra parte del sistema.";
+                }
+                else {
+                    errorMessage = "No se puede borrar el registro.";
+                }
                 callback({
                     result: result_1.ResultCode.Error,
-                    message: err.code
+                    message: errorMessage
                 });
             }
             else {

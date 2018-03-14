@@ -3,6 +3,9 @@ import { Router } from '@angular/router';
 import { PointOfSaleService } from '../../../services/point-of-sale.service';
 import { PointOfSale } from '../../../shared/models/pointofsale.model';
 import { } from '@types/googlemaps';
+import { DomSanitizer } from '@angular/platform-browser';
+import { GVFile } from '../../../shared/models/gvfile.model';
+import { ImagesService } from '../../../services/images.service';
 
 @Component({
     selector: 'app-pos',
@@ -10,6 +13,9 @@ import { } from '@types/googlemaps';
     styleUrls: ['./pos.component.css']
 })
 export class PosComponent implements OnInit {
+    
+    private imageFile: GVFile;
+
     private pointsOfSale: PointOfSale[];
     private POSEdit: PointOfSale;
     private POSEditName: string;
@@ -31,7 +37,11 @@ export class PosComponent implements OnInit {
     private mapEdit:google.maps.Map;
     private geocoder = new google.maps.Geocoder();
 
-    constructor(private router: Router, private pointOFSaleService: PointOfSaleService) { }
+    constructor(private router: Router, 
+        private pointOFSaleService: PointOfSaleService,
+        private domSanitizer: DomSanitizer,
+        private imagesService: ImagesService
+    ) { }
 
     ngOnInit() {
         this.loadPointsOfSale();
@@ -184,4 +194,22 @@ export class PosComponent implements OnInit {
             }
         });
     }
+
+
+    getImage() {
+		return this.imageFile
+			? this.domSanitizer.bypassSecurityTrustUrl(
+					'data:image/' + this.imageFile.type + ';base64, ' + this.imageFile.data
+			  )
+			: 'images/locales/' + this.imagesService.getSmallImage(this.POSEdit.image);
+	}
+
+	handleSelected(file: GVFile): void {
+		if (!!file) {
+            this.imageFile = file;
+            this.POSEdit.image = this.POSEdit.id + '_' + this.imageFile.name;
+		}
+	}
+
+
 }
