@@ -7,6 +7,7 @@
 	<table class="table table-striped">
 		<thead>
 			<tr>
+				<th scope="col">Imagen</th>
 				<th scope="col">Nombre</th>
 				<th scope="col">Precio</th>
 				<th scope="col" style="width:100px;text-align: center;">Editar</th>
@@ -14,7 +15,12 @@
 			</tr>
 		</thead>
 		<tbody>
-			<tr *ngFor="let s of supplies">
+			<tr *ngFor="let s of supplies" class="supply-row">
+                <td>
+                    <a href="{{'images/supplies/'+ s.path_image}}" target="_blank">
+                        <img src="{{'images/supplies/'+ s.path_image}}"  class="small_image small_image_supply" />
+                    </a>
+                </td>
 				<td>{{s.name}}</td>
 				<td>$ {{s.amount}} / {{ getUnit(s.unit) }}</td>
 				<td style="text-align: center;">

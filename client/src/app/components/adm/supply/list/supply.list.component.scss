@@ -1,0 +1,15 @@
+.small_image_supply {
+    width: 50px;
+    max-height: 50px;
+}
+
+tr.supply-row {
+	&:hover {
+		background-color: #fdf6e4 !important;
+	}
+
+	td {
+		height: 75px;
+		vertical-align: middle;
+	}
+}

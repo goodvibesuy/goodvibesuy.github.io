@@ -34,8 +34,11 @@ suppliesModel.suppliesByProduct = function(idProduct, callBack) {
 	);
 };
 
-suppliesModel.addSupply = function(name, idUnit, amount, callBack) {
-	con.query('INSERT INTO supply  (name, unit) VALUES(?,?)', [name, idUnit], function(err, result) {
+suppliesModel.addSupply = function(name, idUnit, amount, path_image, callBack) {
+	con.query('INSERT INTO supply  (name, unit, path_image) VALUES(?,?,?)', [name, idUnit, path_image], function(
+		err,
+		result
+	) {
 		if (err) {
 			// sea cual sea el tipo de error => siempre (debería) tengo que liberar la conexión
 			// sino el cliente web queda esperando
@@ -49,7 +52,7 @@ suppliesModel.addSupply = function(name, idUnit, amount, callBack) {
 			var idSupply = result.insertId;
 
 			con.query(
-				'INSERT INTO supplyPrice  (date, amount,idSupply) VALUES(NOW(),?,?)',
+				'INSERT INTO supplyPrice  (date, amount, idSupply) VALUES(NOW(),?,?)',
 				[amount, idSupply],
 				function(err, result) {
 					// sea cual sea el tipo de error => siempre tengo que liberar la conexión
@@ -70,8 +73,8 @@ suppliesModel.addSupply = function(name, idUnit, amount, callBack) {
 	});
 };
 
-suppliesModel.updateSupply = function(name, idUnit, amount, id, callBack) {
-	con.query('UPDATE supply  SET name = ?, unit = ? WHERE id = ?', [name, idUnit, id], function(err, resultClient) {
+suppliesModel.updateSupply = function(id, name, idUnit, amount, path_image, callBack) {
+	con.query('UPDATE supply  SET name = ?, unit = ?, path_image = ? WHERE id = ?', [name, idUnit, path_image, id], function(err, resultClient) {
 		if (err) {
 			// sea cual sea el tipo de error => siempre tengo que liberar la conexión
 			// sino el cliente web queda esperando
@@ -110,9 +113,9 @@ suppliesModel.deleteSupply = function(id, callBack) {
 		if (err) {
 			if (err.code === 'ER_DUP_ENTRY') {
 				callBack({ result: -1, message: 'Error: ER_DUP_ENTRY' });
-			} else if ( err.code == 'ER_ROW_IS_REFERENCED_2') {
+			} else if (err.code == 'ER_ROW_IS_REFERENCED_2') {
 				callBack({ result: -1, message: 'Error: ER_ROW_IS_REFERENCED_2' });
-			} else  {
+			} else {
 				callBack({ result: -1, message: 'Error: generic' });
 			}
 		} else {
