@@ -4,6 +4,7 @@ import { AsyncPipe } from '@angular/common';
 import { Product } from '../../../../shared/models/product.model';
 import { ImagesService } from '../../../../services/images.service';
 import { ProductsService } from '../../../../services/products.service';
+import { ResultCode } from '../../../../../../../datatypes/result';
 
 @Component({
 	templateUrl: './products.list.component.html',
@@ -19,7 +20,22 @@ export class ProductsListComponent implements OnInit {
 	}
 
 	delete(id: number): void {
-		this.productsService.delete(id).subscribe(data => this.loadProducts());
+        this.productsService
+            .delete(id)
+            .subscribe(
+                res => {
+                    if ( res.result == ResultCode.OK){
+                        this.loadProducts()
+                    } else {
+                        console.log("ERROR: " + res.message);
+                        alert("ERROR: " + res.message);
+                    }
+                },
+                err => {
+                    console.log("UNEXPECTED ERROR: " + err);
+                    alert(err);
+                }
+            );
 	}
 
 	loadProducts(): void {

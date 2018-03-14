@@ -7,7 +7,7 @@ import { ImagesService } from '../../../../services/images.service';
 // models
 import { Product } from '../../../../shared/models/product.model';
 import { GVFile } from '../../../../shared/models/gvfile.model';
-import { GVHttpResult, ResultCode } from '../../../../shared/httpResult';
+import { ResultCode } from '../../../../../../../datatypes/result';
 
 @Component({
 	templateUrl: './product.edit.component.html',
