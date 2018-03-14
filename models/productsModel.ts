@@ -83,11 +83,16 @@ class ProductModel {
 		con.query('DELETE FROM product WHERE id = ? ', [productId], function(err: any, result: any) {
 			if (!!err) {
 				// TODO: log error -> common/errorHandling.ts
-				// errorHandler.log(err);
-                console.error(err);
+                // errorHandler.log(err);
+                let errorMessage = '';
+                if (err.code === "ER_ROW_IS_REFERENCED_2") {
+                    errorMessage = "No se puede borrar el registro, porque es utilizado en otra parte del sistema.";
+                } else {
+                    errorMessage = "No se puede borrar el registro.";
+                }
 				callback({
 					result: ResultCode.Error,
-					message: err.code
+					message: errorMessage
 				});
 			} else {
 				callback({

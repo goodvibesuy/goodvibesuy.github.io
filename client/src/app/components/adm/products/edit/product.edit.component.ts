@@ -7,7 +7,7 @@ import { ImagesService } from '../../../../services/images.service';
 // models
 import { Product } from '../../../../shared/models/product.model';
 import { GVFile } from '../../../../shared/models/gvfile.model';
-import { GVHttpResult, ResultCode } from '../../../../shared/httpResult';
+import { ResultCode } from '../../../../../../../datatypes/result';
 
 @Component({
 	templateUrl: './product.edit.component.html',
@@ -58,14 +58,14 @@ export class ProductEditComponent implements OnInit, OnDestroy {
 					.sendImage(category, this.product.path_image, this.imageFile.size, this.imageFile.data)
 					.subscribe(
 						res => {
-							this.router.navigateByUrl('/productos');
+							this.router.navigateByUrl('/admin/productos');
 						},
 						error => {
 							console.error(error);
 						}
 					);
 			} else {
-				this.router.navigateByUrl('/productos');
+				this.router.navigateByUrl('/admin/productos');
 			}
 		});
 	}

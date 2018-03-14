@@ -30,6 +30,7 @@ CREATE TABLE IF NOT EXISTS `supply` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(56) NOT NULL,
   `unit` int(11) NOT NULL,
+  `path_image` varchar(128) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `fk_supply_unit1_idx` (`unit`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1;

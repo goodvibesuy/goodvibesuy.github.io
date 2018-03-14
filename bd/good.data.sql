@@ -36,16 +36,17 @@ INSERT INTO `unit` (`id`, `name`) VALUES
 -- Volcar la base de datos para la tabla `supply`
 --
 
-INSERT INTO `supply` (`id`, `name`, `unit`) VALUES
-(2, 'Limones', 1),
-(3, 'Naranja', 1),
-(4, 'Pepino', 1),
-(5, 'Manzana Roja', 1),
-(6, 'Pera', 1),
-(7, 'Espinaca', 1),
-(8, 'Apio', 1),
-(9, 'Kale', 1),
-(10, 'Manzana verde', 1);
+INSERT INTO `supply` (`id`, `name`, `unit`, `path_image`) VALUES
+(1, 'Edulcorate', 2, 'edulcorante.png'),
+(2, 'Limones', 1, 'limones.png'),
+(3, 'Naranja', 1, 'naranja.png'),
+(4, 'Pepino', 1, 'pepino.png'),
+(5, 'Manzana Roja', 1, 'manzana-roja.png'),
+(6, 'Pera', 1, 'pera.png'),
+(7, 'Espinaca', 1, 'espinaca.png'),
+(8, 'Apio', 1, 'apio.png'),
+(9, 'Kale', 1, 'kale.png'),
+(10, 'Manzana verde', 1, 'manzana-verde.png');
 
 -- --------------------------------------------------------
 

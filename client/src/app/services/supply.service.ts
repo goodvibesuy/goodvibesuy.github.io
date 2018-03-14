@@ -24,12 +24,12 @@ export class SupplyService {
 		return this.http.get<Unit[]>(this.unitsUrl).pipe(map(r => (<any>r).data));
 	}
 
-	update(input: Supply): Observable<any> {
-		return this.http.put<Supply[]>(this.suppliesUrl, input);
+	agregar(supply: Supply): Observable<any> {
+		return this.http.post(this.suppliesUrl, supply);
 	}
 
-	agregar(input: Supply): Observable<any> {
-		return this.http.post(this.suppliesUrl, input);
+	update(supply: Supply): Observable<any> {
+		return this.http.put<Supply[]>(this.suppliesUrl + '/' + supply.id, supply);
 	}
 
 	delete(id: number): Observable<any> {

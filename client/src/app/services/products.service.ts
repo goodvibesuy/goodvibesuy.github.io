@@ -6,7 +6,7 @@ import { Observable } from 'rxjs/Observable';
 import { of } from 'rxjs/observable/of';
 
 import { Product } from '../shared/models/product.model';
-import { GVHttpResult } from '../shared/httpResult';
+import { Result, ResultWithData, ResultCode } from '../../../../datatypes/result'
 
 @Injectable()
 export class ProductsService {
@@ -14,8 +14,8 @@ export class ProductsService {
 
 	constructor(private http: HttpClient) {}
 
-	get(): Observable<GVHttpResult<Product[]>> {
-		return this.http.get<GVHttpResult<Product[]>>(this.PRODUCTS_URL);
+	get(): Observable<ResultWithData<Product[]>> {
+		return this.http.get<ResultWithData<Product[]>>(this.PRODUCTS_URL);
 	}
 
 	update(product: Product): Observable<any> {
@@ -26,8 +26,8 @@ export class ProductsService {
 		return this.http.post(this.PRODUCTS_URL, Product);
 	}
 
-	delete(id: number): Observable<any> {
-		return this.http.delete(this.PRODUCTS_URL + '/' + id);
+	delete(id: number): Observable<Result> {
+		return this.http.delete<Result>(this.PRODUCTS_URL + '/' + id);
 	}
 
 	/**
