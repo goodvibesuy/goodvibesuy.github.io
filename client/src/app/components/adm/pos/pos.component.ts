@@ -42,7 +42,6 @@ export class PosComponent implements OnInit {
             mapTypeId: google.maps.MapTypeId.ROADMAP
         };
         this.map = new google.maps.Map(this.gmapElement.nativeElement, mapProp);
-
     }
 
     marcar() {
@@ -94,13 +93,13 @@ export class PosComponent implements OnInit {
 
     formEdit(idPointOfSale): void {
         this.typeOfView = 2;
-        var POSEdit = this.pointsOfSale.filter(function (pos) {
+        this.POSEdit = this.pointsOfSale.filter(function (pos) {
             return idPointOfSale == pos.id;
         })[0];
-        this.POSEditName = POSEdit.name;
-        this.POSEditAddress = POSEdit.address;
-        this.POSEditTel = POSEdit.tel;
-        this.POSEditCoord = new google.maps.LatLng(POSEdit.coord.x,POSEdit.coord.y);
+        this.POSEditName = this.POSEdit.name;
+        this.POSEditAddress = this.POSEdit.address;
+        this.POSEditTel = this.POSEdit.tel;
+        this.POSEditCoord = this.POSEdit.coord;
 
 
         if(this.POSEditCoord !== null && this.POSEditCoord !== undefined){
@@ -152,18 +151,24 @@ export class PosComponent implements OnInit {
             .updatePointOfSale(this.POSEdit.id, this.POSEditName, this.POSEditAddress, this.POSEditTel,this.POSEditMarker.getPosition())
             .subscribe(response => {
                 this.typeOfView = 1;
-                console.log(response);
+                this.loadPointsOfSale();
             });
     }
 
     loadPointsOfSale(): void {
         this.pointOFSaleService.get().subscribe(
-            data => {
+            response => {
                 this.typeOfView = 1;
-                if (data.result === -1) {
+                if (response.result === -1) {
                     this.router.navigate(['']);
                 } else {
-                    this.pointsOfSale = data.data;
+                    this.pointsOfSale = [];
+              
+                    for (let i of response.data) {
+                        i.coord = new google.maps.LatLng(i.coord.x,i.coord.y);
+                        this.pointsOfSale.push(i);
+                     }
+                    //this.POSEditCoord = new google.maps.LatLng(POSEdit.coord.x,POSEdit.coord.y);
                 }
             },
             error => { }

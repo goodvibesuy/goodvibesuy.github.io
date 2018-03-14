@@ -97,7 +97,11 @@
         <tbody>
             <tr *ngFor="let pos of pointsOfSale">
                 <td>
-                    <img style="width:50px;" src="images/locales/{{pos.image}}" />
+
+                    <img *ngIf="pos.image !== ''" style="width:50px;" src="images/locales/{{pos.image}}" />
+                    <i *ngIf="pos.image === ''" class="fa fa-home" style="font-size: 2.0em;" ></i>
+
+                    
                 </td>
                 <td>{{pos.name}}</td>
                 <td>{{pos.address}}</td>
