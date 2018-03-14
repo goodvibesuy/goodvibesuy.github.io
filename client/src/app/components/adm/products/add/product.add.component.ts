@@ -35,13 +35,13 @@ export class ProductAddComponent {
                 this.imagesService
                     .sendImage(category, this.product.path_image, this.imageFile.size, this.imageFile.data)
                     .subscribe(res => {
-                        this.router.navigateByUrl('/productos');
+                        this.router.navigateByUrl('/admin/productos');
                     },
                     error => {
                         console.error(error);
                     });
             } else {
-                this.router.navigateByUrl('/productos');
+                this.router.navigateByUrl('/admin/productos');
             }
         });
     }

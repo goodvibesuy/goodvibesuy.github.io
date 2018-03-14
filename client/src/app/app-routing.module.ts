@@ -37,7 +37,7 @@ const routes: Routes = [
 		component: DashboardComponent
 	},
 	{
-		path: 'productos',
+		path: 'admin/productos',
 		component: ProductsComponent,
 		children: [
 			{ path: '', component: ProductsListComponent },
