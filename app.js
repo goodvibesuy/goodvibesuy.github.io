@@ -6,6 +6,8 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
 var routes = require('./routes/index');
+var authenticate = require('./routes/authenticate');
+/*
 var users = require('./routes/users');
 var pointOfSail = require('./routes/pointOfSail');
 var units = require('./routes/units');
@@ -14,8 +16,9 @@ var products = require('./routes/products');
 var viewings = require('./routes/viewings');
 var kpis = require('./routes/kpis');
 var route = require('./routes/route');
+*/
 var images = require('./routes/images');
-var authenticate = require('./routes/authenticate');
+
 
 var mysql = require('mysql');
 
@@ -58,6 +61,8 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/api', routes);
+app.use('/api/authenticate',authenticate);
+/*
 app.use('/api/users', users);
 app.use('/api/pointOfSail', pointOfSail);
 app.use('/api/units', units);
@@ -66,7 +71,7 @@ app.use('/api/products', products);
 app.use('/api/viewings', viewings);
 app.use('/api/kpis', kpis);
 app.use('/api/route', route);
-app.use('/api/authenticate',authenticate);
+*/
 
 app.use('/api/images', images);
 
