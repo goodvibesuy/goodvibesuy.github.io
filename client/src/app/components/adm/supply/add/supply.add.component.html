@@ -1,31 +1,40 @@
 <table class="table">
-	<tr>
-		<td>
-			<div class="card" style="margin:15px;">
-				<div class="card-header">
-					<b>Agregar insumo</b>
-				</div>
-				<div class="card-body">
-					<div class="form-group">
-						<span class="input-group-addon">Nombre:</span>
-						<input type="text" class="form-control" [(ngModel)]="supply.name">
-					</div>
-					<div class="form-group">
-						<span class="input-group-addon">Unidad:</span>
+  <tr>
+    <td>
+      <div class="card" style="margin:15px;">
+        <div class="card-header">
+          <b>Agregar insumo</b>
+        </div>
+        <div class="card-body">
+          <div class="form-group">
+            <span class="input-group-addon">Nombre:</span>
+            <input type="text" class="form-control" [(ngModel)]="supply.name">
+          </div>
+          <div class="form-group">
+            <span class="input-group-addon">Unidad:</span>
 
-						<select class="form-control" [(ngModel)]="supply.units">
-				<option *ngFor="let unit of units" [ngValue]="unit.id">{{unit.name}}</option>
-			</select>
-					</div>
-					<div class="form-group">
-						<span class="input-group-addon">Precio:</span>
-						<input type="text" class="form-control" [(ngModel)]="supply.amount">
-					</div>
+            <select class="form-control" [(ngModel)]="supply.units">
+              <option *ngFor="let unit of units" [ngValue]="unit.id">{{unit.name}}</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <span class="input-group-addon">Precio:</span>
+            <input type="text" class="form-control" [(ngModel)]="supply.amount">
+          </div>
 
-					<button type="button" (click)="agregar()" class="btn btn-primary">Agregar unidad</button>
-					<button type="button" class="btn btn-light" routerLink="/insumos">Cancelar</button>
-				</div>
-			</div>
-		</td>
-	</tr>
+          <div class="form-group">
+            <span class="input-group-addon">Imagen:</span>
+            <img [src]="getImage()" *ngIf="supply" class="small_image add_supply" />
+            <file-picker text="Cambiar" (selected)="handleSelected($event)"></file-picker>
+            <div *ngIf="filestring">
+              {{filestring}}
+            </div>
+          </div>
+
+          <button type="button" (click)="agregar()" class="btn btn-primary">Agregar unidad</button>
+          <button type="button" class="btn btn-light" routerLink="/admin/insumos">Cancelar</button>
+        </div>
+      </div>
+    </td>
+  </tr>
 </table>

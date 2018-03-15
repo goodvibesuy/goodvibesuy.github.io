@@ -15,12 +15,13 @@ import { GVFile } from '../../../../shared/models/gvfile.model';
 	styleUrls: ['./supply.edit.component.css']
 })
 export class SupplyEditComponent implements OnInit, OnDestroy {
-	id: number;
-	paramsSub: any;
+	private id: number;
+	private paramsSub: any;
 
 	private supply: Supply;
 	private units: Unit[];
 	private imageFile: GVFile;
+	private category: string = 'insumos';
 
 	constructor(
 		private activatedRoute: ActivatedRoute,
@@ -50,24 +51,22 @@ export class SupplyEditComponent implements OnInit, OnDestroy {
 	}
 
 	actualizar() {
-		const category: string = 'supplies';
-
 		var promise = this.supplyService.update(this.supply);
 
 		promise.subscribe(data => {
 			if (!!this.imageFile) {
 				this.imagesService
-					.sendImage(category, this.supply.path_image, this.imageFile.size, this.imageFile.data)
+					.sendImage(this.category, this.supply.path_image, this.imageFile.size, this.imageFile.data)
 					.subscribe(
 						res => {
-							this.router.navigateByUrl('/insumos');
+							this.router.navigateByUrl('/admin/' + this.category);
 						},
 						error => {
 							console.error(error);
 						}
 					);
 			} else {
-				this.router.navigateByUrl('/insumos');
+				this.router.navigateByUrl('/admin/' + this.category);
 			}
 		});
 	}
@@ -77,7 +76,7 @@ export class SupplyEditComponent implements OnInit, OnDestroy {
 			? this.domSanitizer.bypassSecurityTrustUrl(
 					'data:image/' + this.imageFile.type + ';base64, ' + this.imageFile.data
 			  )
-			: 'images/supplies/' + this.imagesService.getSmallImage(this.supply.path_image);
+			: 'images/' + this.category + '/' + this.imagesService.getSmallImage(this.supply.path_image);
 	}
 
 	handleSelected(file: GVFile): void {

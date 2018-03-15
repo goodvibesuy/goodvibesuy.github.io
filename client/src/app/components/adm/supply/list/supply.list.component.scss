@@ -1,7 +1,8 @@
-.small_image_supply {
-    width: 50px;
-    max-height: 50px;
+img.small_list_image {
+    max-width: 100px;
+    max-height: 100px;
 }
+
 
 tr.supply-row {
 	&:hover {
