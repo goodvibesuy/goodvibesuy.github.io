@@ -3,13 +3,12 @@ var router = express.Router();
 var pointsOfSaleModel = require('../models/pointsOfSaleModel');
 var acl = require('../motionLibJS/serverSide/acl/motionACL');
 var masterDBController = require('../bd/masterConnectionsBD');
-var clientDBController = require('../bd/clientConnectionsBD');
 
 router.get('/', function (req, res, next) {
     masterDBController.verifySession(req.headers['user'], req.headers['tokenid'], req.headers['accountid'], function (err, authError, response, dbName) {
         acl.getACL().isAllowed(req.headers['user'], 'routes', 'get', function (err, response) {
             if (response) {
-                pointsOfSaleModel.getAll(function (result) {
+                pointsOfSaleModel.getAll(dbName,function (result) {
                     res.send(result);
                 });                
             } else {
@@ -23,7 +22,7 @@ router.get('/getPointOfSale/:idPOS', function (req, res, next) {
     masterDBController.verifySession(req.headers['user'], req.headers['tokenid'], req.headers['accountid'], function (err, authError, response, dbName) {
         acl.getACL().isAllowed(req.headers['user'], 'routes', 'get', function (err, response) {
             if (response) {
-                pointsOfSaleModel.getPointOfSale(req.params.idPOS,function (result) {
+                pointsOfSaleModel.getPointOfSale(req.params.idPOS,dbName,function (result) {
                     res.send(result);
                 });
             } else {
@@ -37,7 +36,7 @@ router.get('/getFilteredByName/:filterName', function (req, res, next) {
     masterDBController.verifySession(req.headers['user'], req.headers['tokenid'], req.headers['accountid'], function (err, authError, response, dbName) {
         acl.getACL().isAllowed(req.headers['user'], 'routes', 'get', function (err, response) {
             if (response) {
-                pointsOfSaleModel.getFilteredByName(req.params.filterName,function (result) {
+                pointsOfSaleModel.getFilteredByName(req.params.filterName,dbName,function (result) {
                     res.send(result);
                 });
             } else {
@@ -51,7 +50,7 @@ router.delete('/:id', function (req, res, next) {
     masterDBController.verifySession(req.headers['user'], req.headers['tokenid'], req.headers['accountid'], function (err, authError, response, dbName) {
         acl.getACL().isAllowed(req.headers['user'], 'routes', 'get', function (err, response) {
             if (response) {
-                pointsOfSaleModel.delete(req.params.id,function (result) {
+                pointsOfSaleModel.delete(req.params.id,dbName,function (result) {
                     res.send(result);
                 });
             } else {
@@ -66,7 +65,7 @@ router.post('/', function (req, res, next) {
     masterDBController.verifySession(req.headers['user'], req.headers['tokenid'], req.headers['accountid'], function (err, authError, response, dbName) {
         acl.getACL().isAllowed(req.headers['user'], 'routes', 'get', function (err, response) {
             if (response) {
-                pointsOfSaleModel.add(req.body.name,req.body.address, req.body.tel,req.body.coords,function (result) {
+                pointsOfSaleModel.add(req.body.name,req.body.address, req.body.tel,req.body.coords,dbName,function (result) {
                     res.send(result);
                 });
             } else {
@@ -80,7 +79,7 @@ router.put('/', function (req, res, next) {
     masterDBController.verifySession(req.headers['user'], req.headers['tokenid'], req.headers['accountid'], function (err, authError, response, dbName) {
         acl.getACL().isAllowed(req.headers['user'], 'routes', 'get', function (err, response) {
             if (response) {
-                pointsOfSaleModel.update(req.body.id,req.body.name,req.body.address, req.body.tel,req.body.coord,function (result) {
+                pointsOfSaleModel.update(req.body.id,req.body.name,req.body.address, req.body.tel,req.body.coord,dbName,function (result) {
                     res.send(result);
                 });
             } else {

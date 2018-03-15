@@ -3,7 +3,6 @@ var router = express.Router();
 var productModel = require('../models/productsModel');
 var acl = require('../motionLibJS/serverSide/acl/motionACL');
 var masterDBController = require('../bd/masterConnectionsBD');
-var clientDBController = require('../bd/clientConnectionsBD');
 var messages = require('../messages/messages');
 
 router.get('/', function(req, res, next) {
