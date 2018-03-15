@@ -103,3 +103,4 @@ var ProductModel = /** @class */ (function () {
     return ProductModel;
 }());
 module.exports = new ProductModel();
+//# sourceMappingURL=productsModel.js.map

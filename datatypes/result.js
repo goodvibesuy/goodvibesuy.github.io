@@ -5,3 +5,4 @@ var ResultCode;
     ResultCode[ResultCode["OK"] = 1] = "OK";
     ResultCode[ResultCode["Error"] = -1] = "Error";
 })(ResultCode = exports.ResultCode || (exports.ResultCode = {}));
+//# sourceMappingURL=result.js.map
