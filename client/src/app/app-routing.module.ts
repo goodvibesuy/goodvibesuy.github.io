@@ -54,7 +54,7 @@ const routes: Routes = [
 		component: ReportesComponent
 	},
 	{
-		path: 'insumos',
+		path: 'admin/insumos',
 		component: SupplyComponent,
 		children: [
 			{ path: '', component: SupplyListComponent},

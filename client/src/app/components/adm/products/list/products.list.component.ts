@@ -1,6 +1,8 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { AsyncPipe } from '@angular/common';
 
+import * as _ from 'lodash';
+
 import { Product } from '../../../../shared/models/product.model';
 import { ImagesService } from '../../../../services/images.service';
 import { ProductsService } from '../../../../services/products.service';
@@ -41,7 +43,10 @@ export class ProductsListComponent implements OnInit {
 	loadProducts(): void {
 		this.productsService.get().subscribe(
 			response => {
-				this.products = response.data;
+                this.products = _
+                        .chain(response.data)
+                        .sortBy( m => m.name.toLowerCase())
+                        .value();
 			},
 			error => {}
 		);
