@@ -73,10 +73,10 @@ INSERT INTO `supplyprice` (`date`, `amount`, `idSupply`) VALUES
 -- Volcar la base de datos para la tabla `pointofsale`
 --
 
-INSERT INTO `pointofsale` (`id`, `name`, `address`, `tel`, `image`) VALUES
-(1, 'Porto Vanilla..', 'erwrwerew', '21312321', 'porto-vanilla.png'),
-(2, 'Las Gaviotas', 'erwrwerew66', '21312321', 'las-gaviotas.png'),
-(3, 'El Viejo y El Mar', 'asdasda', '1111', 'el-viejo-y-el-mar.jpg');
+INSERT INTO `pointofsale` (`id`, `name`, `address`, `tel`, `image`, `coord`) VALUES
+(1, 'Porto Vanilla..', 'erwrwerew', '21312321', 'porto-vanilla.png', ST_GeomFromText('POINT(1 1)'),
+(2, 'Las Gaviotas', 'erwrwerew66', '21312321', 'las-gaviotas.png', ST_GeomFromText('POINT(1 1)'),
+(3, 'El Viejo y El Mar', 'asdasda', '1111', 'el-viejo-y-el-mar.jpg', ST_GeomFromText('POINT(1 1)');
 
 -- --------------------------------------------------------
 
