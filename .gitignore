@@ -2,3 +2,4 @@
 /.metadata/
 models/productsModel.js
 *.js.map
+client/dist

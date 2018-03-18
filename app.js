@@ -30,6 +30,7 @@ app.use(cors());
 // view engine setup
 //app.set('views', path.join(__dirname, 'views'));
 //app.set('view engine', 'jade');
+app.set('view engine', 'html');
 
 app.use(express.static('./client/dist'));
 app.use(express.static('./client/images'));

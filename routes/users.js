@@ -16,7 +16,7 @@ router.get("/", function (req, res) {
                 res.send({ result: -1, message: "messages.PERMISSION_DENIED", data: null });
             }
         })
-    })
+    });
 });
 
 module.exports = router;
