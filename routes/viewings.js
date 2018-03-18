@@ -3,6 +3,7 @@ var router = express.Router();
 
 var viewingsModel = require('../models/viewingsModel');
 
+/*
 router.get('/', function (req, res, next) {
   con.query("SELECT * FROM product", function (err, result) {
     if (err) throw err;
@@ -10,6 +11,7 @@ router.get('/', function (req, res, next) {
     res.send({ result: 1, message: "OK", data: result });
   });
 });
+*/
 
 router.post('/', function (req, res, next) {
   var data = req.body.data;  

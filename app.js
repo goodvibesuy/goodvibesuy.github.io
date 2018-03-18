@@ -4,10 +4,10 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-
+var mysql = require('mysql');
 var routes = require('./routes/index');
 var authenticate = require('./routes/authenticate');
-/*
+
 var users = require('./routes/users');
 var pointOfSail = require('./routes/pointOfSail');
 var units = require('./routes/units');
@@ -16,22 +16,7 @@ var products = require('./routes/products');
 var viewings = require('./routes/viewings');
 var kpis = require('./routes/kpis');
 var route = require('./routes/route');
-*/
 var images = require('./routes/images');
-
-
-var mysql = require('mysql');
-
-var con = mysql.createConnection({
-	host: 'localhost',
-	user: 'root',
-	password: '',
-	database: 'good'
-});
-
-con.connect(function(err) {
-	if (err) throw err;
-});
 
 var acl = require('./motionLibJS/serverSide/acl/motionACL');
 var masterDBController = require('./bd/masterConnectionsBD');
@@ -39,13 +24,12 @@ acl.setUp(masterDBController.dbMasterConnection.connection);
 
 
 var app = express();
-
 var cors = require('cors');
 app.use(cors());
 
 // view engine setup
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'jade');
+//app.set('views', path.join(__dirname, 'views'));
+//app.set('view engine', 'jade');
 
 app.use(express.static('./client/dist'));
 app.use(express.static('./client/images'));
@@ -57,12 +41,9 @@ app.use(bodyParser.json({ limit: '3mb' }));
 app.use(bodyParser.urlencoded({extended: false }));
 app.use(cookieParser());
 
-
 app.use(express.static(path.join(__dirname, 'public')));
-
 app.use('/api', routes);
 app.use('/api/authenticate',authenticate);
-/*
 app.use('/api/users', users);
 app.use('/api/pointOfSail', pointOfSail);
 app.use('/api/units', units);
@@ -71,8 +52,6 @@ app.use('/api/products', products);
 app.use('/api/viewings', viewings);
 app.use('/api/kpis', kpis);
 app.use('/api/route', route);
-*/
-
 app.use('/api/images', images);
 
 // catch 404 and forward to error handler

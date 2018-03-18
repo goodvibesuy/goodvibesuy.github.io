@@ -14,7 +14,7 @@ router.get('/', function(req, res, next) {
 	) {
 		acl.getACL().isAllowed(req.headers['user'], 'routes', 'get', function(err, response) {
 			if (response) {
-				productModel.getAll(function(result) {
+				productModel.getAll(dbName,function(result) {
 					res.send(result);
 				});
 			} else {
@@ -33,7 +33,7 @@ router.post('/', function(req, res, next) {
 	) {
 		acl.getACL().isAllowed(req.headers['user'], 'routes', 'get', function(err, response) {
 			if (response) {
-				productModel.add(req.body.name, req.body.path_image, function(result) {
+				productModel.add(req.body.name, req.body.path_image, dbName,function(result) {
 					if (result.result == 1) { // ResultCode.OK
 						res.send(result);
 					} else {
@@ -57,7 +57,7 @@ router.put('/:id', function(req, res, next) {
 	) {
 		acl.getACL().isAllowed(req.headers['user'], 'routes', 'get', function(err, response) {
 			if (response) {
-				productModel.update(req.params.id, req.body.name, req.body.path_image, function(result) {
+				productModel.update(req.params.id, req.body.name, req.body.path_image, dbName,function(result) {
 					if (result.result == 1) { // ResultCode.OK
 						res.send(result);
 					} else {
@@ -81,7 +81,7 @@ router.delete('/:id', function(req, res, next) {
 	) {
 		acl.getACL().isAllowed(req.headers['user'], 'routes', 'get', function(err, response) {
 			if (response) {
-				productModel.delete(req.params.id, function(result) {
+				productModel.delete(req.params.id,dbName, function(result) {
 					if (result.result == 1) { // ResultCode.OK
 						res.send(result);
 					} else {
