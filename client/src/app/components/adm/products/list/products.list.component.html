@@ -1,37 +1,37 @@
-<span>
-	<button class="fa fa-plus btn btn-success" routerLink="agregar"></button>
-</span>
-
-<div class="flex flex-wrap d-flex justify-content-around content-center content-between boxs-container">
-
-	<table class="table table-striped">
-		<thead class="thead-dark">
-			<tr>
-				<th scope="col">Imagen</th>
-				<th scope="col">Nombre</th>
-				<th scope="col" style="width:100px;text-align: center;">Editar</th>
-				<th scope="col" style="width:100px;text-align: center;">Eliminar</th>
-			</tr>
-		</thead>
-		<tbody>
-			<tr *ngFor="let i of products">
-				<td>
-					<a href="{{'images/productos/'+ i.path_image}}" target="_blank">
-						<img src="{{'images/productos/'+ getSmallImage(i.path_image)}}"  class="small_list_image" />
-					</a>
-				</td>
-				<td>{{i.name}}</td>
-				<td style="text-align: center;">
-					<a [routerLink]="['editar', i.id]">
-						<i class="fa fa-edit" style="font-size: 1.7em;"></i>
-					</a>
-				</td>
-				<td style="text-align: center;">
-					<a (click)="delete(i.id)">
-						<i class="fa fa-trash-o" style="font-size: 1.7em;"></i>
-					</a>
-				</td>
-			</tr>
-		</tbody>
-	</table>
+<div>
+    <div style="float: right;">
+        <button class="btn btn-circle add fa fa-plus" routerLink="agregar"></button>
+    </div>
+    <div>
+        <table class="table table-striped">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">Imagen</th>
+                    <th scope="col">Nombre</th>
+                    <th scope="col">Editar</th>
+                    <th scope="col">Eliminar</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let i of products">
+                    <td>
+                        <a href="{{'images/productos/'+ i.path_image}}" target="_blank">
+                            <img src="{{'images/productos/'+ getSmallImage(i.path_image)}}"  class="small_list_image" />
+                        </a>
+                    </td>
+                    <td>{{i.name}}</td>
+                    <td style="text-align: center;">
+                        <a [routerLink]="['editar', i.id]">
+                            <i class="fa fa-edit" style="font-size: 1.7em;"></i>
+                        </a>
+                    </td>
+                    <td style="text-align: center;">
+                        <a (click)="delete(i.id)">
+                            <i class="fa fa-trash-o" style="font-size: 1.7em;"></i>
+                        </a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>	
 </div>

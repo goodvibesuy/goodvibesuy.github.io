@@ -28,12 +28,13 @@ var cors = require('cors');
 app.use(cors());
 
 // view engine setup
-//app.set('views', path.join(__dirname, 'views'));
-//app.set('view engine', 'jade');
-app.set('view engine', 'html');
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'jade');
+
 
 app.use(express.static('./client/dist'));
 app.use(express.static('./client/images'));
+
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));

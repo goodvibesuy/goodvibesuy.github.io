@@ -42,7 +42,7 @@ CREATE TABLE IF NOT EXISTS `supply` (
 -- Estructura de tabla para la tabla `supplyprice`
 --
 
-CREATE TABLE IF NOT EXISTS `supplyprice` (
+CREATE TABLE IF NOT EXISTS `supplyPrice` (
   `date` datetime NOT NULL,
   `amount` int(11) DEFAULT NULL,
   `idSupply` int(11) DEFAULT NULL,

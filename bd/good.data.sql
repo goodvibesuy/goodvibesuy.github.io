@@ -54,7 +54,7 @@ INSERT INTO `supply` (`id`, `name`, `unit`, `path_image`) VALUES
 -- Volcar la base de datos para la tabla `supplyprice`
 --
 
-INSERT INTO `supplyprice` (`date`, `amount`, `idSupply`) VALUES
+INSERT INTO `supplyPrice` (`date`, `amount`, `idSupply`) VALUES
 ('2018-02-10 21:00:43', 100, 2),
 ('2018-02-10 21:02:24', 150, 3),
 ('2018-02-10 21:22:57', 170, 3),

@@ -90,7 +90,7 @@
 
 
 <div *ngIf="typeOfView == 1">
-    <button class="btn btn-circle add" (click)="addForm()">+</button>
+    <button class="btn btn-circle add fa fa-plus" (click)="addForm()"></button>
     <table class="table table-striped">
         <thead class="thead-dark">
             <tr>
@@ -106,8 +106,8 @@
             <tr *ngFor="let pos of pointsOfSale">
                 <td>
 
-                    <img *ngIf="pos.image !== ''" style="width:50px;" src="images/locales/{{pos.image}}" />
-                    <i *ngIf="pos.image === ''" class="fa fa-home" style="font-size: 2.0em;"></i>
+                    <img *ngIf="pos.image !== '' && pos.image !== null" style="width:50px;" src="images/locales/{{pos.image}}" />
+                    <i *ngIf="pos.image === '' || pos.image === null" class="fa fa-home" style="font-size: 2.0em;"></i>
 
 
                 </td>

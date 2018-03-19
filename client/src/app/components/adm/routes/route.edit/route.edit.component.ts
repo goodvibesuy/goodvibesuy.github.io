@@ -76,17 +76,16 @@ export class RouteEdit implements OnInit {
     }
 
     ngOnInit() {
-
         this.token = localStorage.getItem("token");
         this.userSaved = localStorage.getItem("user");
         this.accountId = Number(localStorage.getItem("accountId"));
-
         this.editName = new FormControl('', Validators.required);
         this.paramsSub = this.activatedRoute.params
             .subscribe(params => {
                 this.routeService.get()
-                    .subscribe(data => {
-                        this.route = ((<RouteModel[]>data).find(s => s.idroute == params['id']));
+                    .subscribe(response => {
+                        console.log(response.data);
+                        this.route = ((<RouteModel[]>response.data).find(s => s.idroute == params['id']));
                         this.rPOS.idRoute = this.route.idroute;
                         this.rUser.idRoute = this.route.idroute;
                         this.getPointOfSalesRoute();
@@ -106,7 +105,6 @@ export class RouteEdit implements OnInit {
 
         this.createFormControls();
         this.createForm();
-
         this.createFormEditControls();
         this.createFormEdit();
     }
@@ -180,6 +178,7 @@ export class RouteEdit implements OnInit {
 
     getUsers() {
         this.userService.get().subscribe(data => {
+            console.log(data);
             this.users = data;
         });
     }
