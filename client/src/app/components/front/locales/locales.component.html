@@ -4,7 +4,8 @@
 <div class="flex flex-wrap d-flex justify-content-around content-center content-between boxs-container">
     <div class="boxs-lista border" *ngFor="let pos of pointsOfSale" [routerLink]="['/detalle-local', pos.id]">
         <div class="imageContainer">
-            <img src="images/locales/{{pos.image}}" alt="{{pos.name}}">
+            <img *ngIf="pos.image !== '' && pos.image !== null" style="width:50px;" src="images/locales/{{pos.image}}" />
+            <i *ngIf="pos.image === '' || pos.image === null" class="fa fa-home" style="font-size: 2.0em;"></i>
         </div>
         <div class="lista-info">
             <div class="lista-title">

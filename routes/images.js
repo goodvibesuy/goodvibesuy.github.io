@@ -8,7 +8,7 @@ router.post('/', function (req, res, next) {
     console.log('POST ' + req.body);
     var buf = Buffer.from(req.body.data, 'base64');
 
-    var dir = 'client\\images\\' + req.body.cat + '\\';
+    var dir = 'client\/images\/' + req.body.cat + '\/';
     var fileName = req.body.name;
     var path = dir + fileName;
 
