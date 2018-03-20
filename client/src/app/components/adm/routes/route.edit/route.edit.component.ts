@@ -151,6 +151,9 @@ export class RouteEdit implements OnInit {
 
     remove(idPointOfSale) {
         this.routeService.remove(this.route.idroute, idPointOfSale).subscribe(data => {
+            if(data.result === -1){
+                alert(data.message);
+            }
             this.getPointOfSalesRoute();
         });
     }
@@ -194,6 +197,7 @@ export class RouteEdit implements OnInit {
     }
 
     agregarUsuario() {
+        console.log(this.rUser);
         this.routeService.addUser(this.rUser).subscribe(data => {
             this.getUsersRoute();
         });

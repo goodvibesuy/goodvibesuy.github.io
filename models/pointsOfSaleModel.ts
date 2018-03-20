@@ -17,6 +17,7 @@ class PointsOfSaleModel {
                 console.error(err);
             } else {
                 con.query('SELECT * FROM pointofsale', function (err: any, result: any[]) {
+                    con.release();
                     if (!!err) {
                         callBack({
                             result: ResultCode.Error,
@@ -42,6 +43,7 @@ class PointsOfSaleModel {
                 console.error(err);
             } else {
                 con.query("SELECT * FROM pointofsale WHERE id = ?", [idPointOfSale], function (err: any, result: any) {
+                    con.release();
                     if (!!err) {
                         callBack({
                             result: ResultCode.Error,
@@ -67,6 +69,7 @@ class PointsOfSaleModel {
                 console.error(err);
             } else {
                 con.query("SELECT * FROM pointofsale WHERE name LIKE ?", ["%" + filterName + "%"], function (err: any, result: any[]) {
+                    con.release();
                     if (!!err) {
                         callBack({
                             result: ResultCode.Error,
@@ -96,6 +99,7 @@ class PointsOfSaleModel {
                         err: any,
                         result: any
                     ) {
+                        con.release();
                         if (!!err) {
                             //if (err.code === "ER_DUP_ENTRY") 
                             console.error(err);
@@ -124,6 +128,7 @@ class PointsOfSaleModel {
             } else {
                 con.query("UPDATE pointofsale  SET name = ?, address = ?, tel = ?, image = ?, coord = POINT(?,?) WHERE id = ?",
                     [name, address, tel, image, Number(coord.lat), Number(coord.lng), id], function (err: any, result: any) {
+                        con.release();
                         if (!!err) {
                             // TODO: log error -> common/errorHandling.ts
                             // errorHandler.log(err);
@@ -151,6 +156,7 @@ class PointsOfSaleModel {
                 console.error(err);
             } else {
                 con.query('DELETE FROM pointofsale WHERE id = ? ', [id], function (err: any, result: any) {
+                    con.release();
                     if (!!err) {
                         // TODO: log error -> common/errorHandling.ts
                         // errorHandler.log(err);

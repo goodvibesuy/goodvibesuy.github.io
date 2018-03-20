@@ -15,6 +15,7 @@ var ProductModel = /** @class */ (function () {
             }
             else {
                 con.query('SELECT * FROM product', function (err, result) {
+                    con.release();
                     if (!!err) {
                         // TODO: log error
                         // errorHandler.log(err);
@@ -37,6 +38,7 @@ var ProductModel = /** @class */ (function () {
             }
             else {
                 con.query('INSERT INTO product  (name, path_image) VALUES(?,?)', [name, pathImage], function (err, result) {
+                    con.release();
                     if (!!err) {
                         // TODO: log error
                         // errorHandler.log(err);
@@ -66,6 +68,7 @@ var ProductModel = /** @class */ (function () {
             }
             else {
                 con.query("UPDATE product  SET name = ?, path_image = ? WHERE id = ?", [name, path_image, id], function (err, result) {
+                    con.release();
                     if (!!err) {
                         // TODO: log error -> common/errorHandling.ts
                         // errorHandler.log(err);
@@ -95,6 +98,7 @@ var ProductModel = /** @class */ (function () {
             }
             else {
                 con.query('DELETE FROM product WHERE id = ? ', [productId], function (err, result) {
+                    con.release();
                     if (!!err) {
                         // TODO: log error -> common/errorHandling.ts
                         // errorHandler.log(err);

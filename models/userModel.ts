@@ -15,8 +15,10 @@ class UserModel {
             } else {
                 con.query("SELECT * FROM users ", function (err:any, result:any) {
                     if (err) {
+                        con.release();
                         console.log(err);
                     } else {
+                        con.release();
                         if (err) throw err;
                         callBack({ result: 1, message: "OK", data: result });
                     }

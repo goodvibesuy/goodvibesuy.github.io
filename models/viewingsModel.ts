@@ -11,8 +11,8 @@ class ViewingsModel {
         var pool = clientDBController.getUserConnection(dbName);
         pool.getConnection(function (err: any, con: any) {
             if (err) {
-                con.release();
                 console.error(err);
+                con.release();                
             } else {
                 con.query(
                     "INSERT INTO viewing  (date, idpointofsail) VALUES(NOW(),?)",
@@ -43,6 +43,7 @@ class ViewingsModel {
                                     );
                                 });
                             }
+                            con.release();
                             callBack({ result: 1, message: "OK"});
                         }
                     }

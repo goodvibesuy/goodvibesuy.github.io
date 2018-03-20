@@ -14,6 +14,7 @@ class ProductModel {
                 console.error(err);
             } else {
                 con.query('SELECT * FROM product', function(err: any, result: Product[]) {
+                    con.release();
                     if (!!err) {
                         // TODO: log error
                         // errorHandler.log(err);
@@ -38,6 +39,7 @@ class ProductModel {
                     err: any,
                     result: any
                 ) {
+                    con.release();
                     if (!!err) {
                         // TODO: log error
                         // errorHandler.log(err);
@@ -66,6 +68,7 @@ class ProductModel {
                 console.error(err);
             } else {
                 con.query("UPDATE product  SET name = ?, path_image = ? WHERE id = ?", [name, path_image, id], function(err: any, result: any) {
+                    con.release();
                     if (!!err) {
                         // TODO: log error -> common/errorHandling.ts
                         // errorHandler.log(err);
@@ -93,6 +96,7 @@ class ProductModel {
                 console.error(err);
             } else {
                 con.query('DELETE FROM product WHERE id = ? ', [productId], function(err: any, result: any) {
+                    con.release();
                     if (!!err) {
                         // TODO: log error -> common/errorHandling.ts
                         // errorHandler.log(err);

@@ -166,7 +166,8 @@ export class PosComponent implements OnInit {
 						.subscribe(
 							res => {
                                 this.imageFile=null;
-								this.typeOfView = 1;
+                                this.typeOfView = 1;
+                                
 								this.loadPointsOfSale();
 							},
 							error => {
@@ -198,7 +199,8 @@ export class PosComponent implements OnInit {
 						.subscribe(
 							res => {
                                 this.imageFile=null;
-								this.typeOfView = 1;
+                                this.typeOfView = 1;
+                                this.POSEditMarker.setMap(null);
 								this.loadPointsOfSale();
 							},
 							error => {
