@@ -1,0 +1,90 @@
+<form novalidate>
+    <div class="card" style="margin:15px;">
+        <div class="card-header">
+            <b>Editar recorrido</b>
+        </div>
+        <div class="card-body">
+            <div class="form-group">
+                <span class="input-group-addon">Nombre:</span>
+                <input type="text" class="form-control" id="name" *ngIf="route" [(ngModel)]="route.name">
+            </div>
+            <table class="table">
+                <tr>
+                    <td>
+                        <div class="card">
+                            <div class="card-header">
+                                Puntos de venta
+                            </div>
+                            <div class="card-body">
+                                <table class="table">
+                                    <tr>
+                                        <td style="width: 15px;"></td>
+                                        <td>Nombre</td>
+                                        <td>Eliminar</td>
+                                    </tr>
+                                    <tr *ngFor="let i of pointsOfSaleRoute">
+                                        <td>
+                                            <span class="fa fa-arrow-circle-up" (click)="changeOrder(i.id,i.position, i.position - 1)" *ngIf="i.position !== 1"></span>
+                                            <span class="fa fa-arrow-circle-down" (click)="changeOrder(i.id,i.position,i.position + 1)" *ngIf="i.position !== pointsOfSaleRoute.length"></span>
+                                        </td>
+                                        <td>{{i.name}}</td>
+                                        <td>
+                                            <a (click)="remove(i.id)">
+                                                <i class="fa fa-trash-o" style="font-size: 1.7em;"></i>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                </table>
+                                <span class="input-group-addon">Punto de venta:</span>
+                                <select class="form-control" [(ngModel)]="rPOS.idPointOfSale">
+                                    <option *ngFor="let pos of pointsOfSales" [ngValue]="pos.id">{{pos.name}}</option>
+                                </select>
+                                <button type="button" class="btn btn-primary" (click)="agregarPuntoDeVenta()">Agregar</button>
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="card">
+                            <div class="card-header">
+                                Usuarios
+                            </div>
+                            <div class="card-body">
+                                <table class="table">
+                                    <tr>
+                                        <td>Fecha</td>
+                                        <td>Nombre</td>
+                                        <td>Eliminar</td>
+                                    </tr>
+                                    <tr *ngFor="let u of usersRoute">
+                                        <td>{{u.date | date:'dd/MM/yyyy'}}</td>
+                                        <td>{{u.firstname}} {{u.lastname}}</td>
+                                        <td>
+                                            <a (click)="removeUser(u.id)">
+                                                <i class="fa fa-trash-o" style="font-size: 1.7em;"></i>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                </table>
+                                <span class="input-group-addon">Usuario:</span>
+                                <select class="form-control" [(ngModel)]="rUser.idUser">
+                                    <option *ngFor="let u of users" [ngValue]="u.id">{{u.firstname}} {{u.lastname}}</option>
+                                </select>
+                                <div class="input-group">
+                                    <input class="form-control" placeholder="yyyy-mm-dd" name="dp" [(ngModel)]="rUser.date" ngbDatepicker #d="ngbDatepicker">
+                                    <div class="input-group-append">
+                                        <button class="btn btn-outline-secondary" (click)="d.toggle()" type="button">
+                                            <img src="img/calendar-icon.svg" style="width: 1.2rem; height: 1rem; cursor: pointer;" />
+                                        </button>
+                                    </div>
+                                </div>
+                                <button type="button" class="btn btn-primary" (click)="agregarUsuario()">Agregar</button>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+            <button type="button" class="btn btn-primary" (click)="actualizar()">Actualizar</button>
+            <button type="button" class="btn btn-light" routerLink="/recorridos">Cancelar</button>
+        </div>
+    </div>
+</form>

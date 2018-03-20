@@ -29,8 +29,8 @@ export class RouteEdit implements OnInit {
     private userSaved: string;
     private accountId: Number;
 
-    public myform: FormGroup;
-    public editForm: FormGroup;    
+    //public myform: FormGroup;
+    //public editForm: FormGroup;    
 
     firstName: FormControl;
     lastName: FormControl;
@@ -124,6 +124,7 @@ export class RouteEdit implements OnInit {
     }
 
     createForm() {
+        /*
         this.myform = new FormGroup({
             name: new FormGroup({
                 firstName: this.firstName,
@@ -133,6 +134,7 @@ export class RouteEdit implements OnInit {
             password: this.password,
             language: this.language
         });
+        */
     }
 
     createFormEditControls() {
@@ -140,9 +142,11 @@ export class RouteEdit implements OnInit {
     }
 
     createFormEdit() {
+        /*
         this.editForm = new FormGroup({
             editName: this.editName
         });
+        */
     }
 
     remove(idPointOfSale) {
