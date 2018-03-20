@@ -25,7 +25,7 @@ import { PosComponent } from './components/adm/pos/pos.component';
 
 const routes: Routes = [
     {
-        path:'admPuntosDeVenta',
+        path:'admin/puntos-de-venta',
         component:PosComponent
     },
 	{

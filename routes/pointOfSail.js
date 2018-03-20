@@ -65,7 +65,7 @@ router.post('/', function (req, res, next) {
     masterDBController.verifySession(req.headers['user'], req.headers['tokenid'], req.headers['accountid'], function (err, authError, response, dbName) {
         acl.getACL().isAllowed(req.headers['user'], 'routes', 'get', function (err, response) {
             if (response) {
-                pointsOfSaleModel.add(req.body.name,req.body.address, req.body.tel,req.body.coords,dbName,function (result) {
+                pointsOfSaleModel.add(req.body.name,req.body.address, req.body.tel,req.body.image, req.body.coords,dbName,function (result) {
                     res.send(result);
                 });
             } else {
@@ -79,7 +79,7 @@ router.put('/', function (req, res, next) {
     masterDBController.verifySession(req.headers['user'], req.headers['tokenid'], req.headers['accountid'], function (err, authError, response, dbName) {
         acl.getACL().isAllowed(req.headers['user'], 'routes', 'get', function (err, response) {
             if (response) {
-                pointsOfSaleModel.update(req.body.id,req.body.name,req.body.address, req.body.tel,req.body.coord,dbName,function (result) {
+                pointsOfSaleModel.update(req.body.id,req.body.name,req.body.address, req.body.tel, req.body.image, req.body.coord,dbName,function (result) {
                     res.send(result);
                 });
             } else {
