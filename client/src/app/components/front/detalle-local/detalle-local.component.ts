@@ -35,8 +35,8 @@ export class DetalleLocalComponent implements OnInit {
 	getPointOfSale(id: Number): void {
 		var pos: PointOfSale;
 		this.pointOFSaleService.getPointOfSale(id).subscribe(result => {
-			console.log();
-			this.pointOfSale = result.data;
+			console.log(result.data,"data");
+			this.pointOfSale = result.data[0];
 		});
 	}
 

@@ -197,8 +197,9 @@ export class PosComponent implements OnInit {
 						.sendImage('locales', this.imagePath, this.imageFile.size, this.imageFile.data)
 						.subscribe(
 							res => {
-								this.imageFile = null;
-								this.typeOfView = 1;
+                                this.imageFile=null;
+                                this.typeOfView = 1;
+                                this.POSEditMarker.setMap(null);
 								this.loadPointsOfSale();
 							},
 							error => {
