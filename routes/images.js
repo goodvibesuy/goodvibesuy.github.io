@@ -2,18 +2,19 @@ var express = require('express');
 var router = express.Router();
 
 var fs = require('fs');
+const pathUtils = require('path');
 
 router.post('/', function (req, res, next) { 
     
     console.log('POST ' + req.body);
     var buf = Buffer.from(req.body.data, 'base64');
 
-    var dir = 'client\/dist\/images\/' + req.body.cat + '\/';
+    var dir = pathUtils.join('client', 'dist', 'images', req.body.cat, '');
     var fileName = req.body.name;
-    var path = dir + fileName;
+    var path = pathUtils.join(dir, fileName);
 
     if(fs.existsSync(path)){
-        fs.renameSync(path, dir + "temp_" + fileName);
+        fs.renameSync(path, pathUtils.join(dir, + "temp_" + fileName));
     }
     fs.writeFile(path, buf, 'binary', function(err){
         if (err) {
