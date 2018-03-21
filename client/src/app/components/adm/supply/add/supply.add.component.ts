@@ -1,15 +1,13 @@
-/* supply en vez de imput?? */
-
 import { Component, OnInit } from '@angular/core';
+import { DomSanitizer } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 // service
 import { SupplyService } from '../../../../services/supply.service';
-// models
-import { Supply } from '../../../../shared/models/supply.model';
-import { Unit } from '../../../../shared/models/unit.model';
-import { DomSanitizer } from '@angular/platform-browser';
 import { ImagesService } from '../../../../services/images.service';
-import { GVFile } from '../../../../shared/models/gvfile.model';
+// models
+import { Supply } from '../../../../models/supply.model';
+import { Unit } from '../../../../models/unit.model';
+import { GVFile } from '../../../../models/gvfile.model';
 
 @Component({
 	selector: 'app-input-add',

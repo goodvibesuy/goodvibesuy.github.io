@@ -1,10 +1,10 @@
 import { Component, ViewChild, OnInit, ViewContainerRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { PointOfSaleService } from '../../../services/point-of-sale.service';
-import { PointOfSale } from '../../../shared/models/pointofsale.model';
+import { PointOfSale } from '../../../models/pointofsale.model';
 import {} from '@types/googlemaps';
 import { DomSanitizer } from '@angular/platform-browser';
-import { GVFile } from '../../../shared/models/gvfile.model';
+import { GVFile } from '../../../models/gvfile.model';
 import { ImagesService } from '../../../services/images.service';
 
 @Component({
@@ -14,7 +14,7 @@ import { ImagesService } from '../../../services/images.service';
 })
 export class PosComponent implements OnInit {
 	private imageFile: GVFile;
-    private imagePath: string;
+	private imagePath: string;
 
 	private pointsOfSale: PointOfSale[];
 	private POSEdit: PointOfSale;
@@ -106,8 +106,8 @@ export class PosComponent implements OnInit {
 		this.typeOfView = 2;
 		this.POSEdit = this.pointsOfSale.filter(function(pos) {
 			return idPointOfSale == pos.id;
-        })[0];
-        this.imagePath = this.POSEdit.image;
+		})[0];
+		this.imagePath = this.POSEdit.image;
 		this.POSEditName = this.POSEdit.name;
 		this.POSEditAddress = this.POSEdit.address;
 		this.POSEditTel = this.POSEdit.tel;
@@ -139,13 +139,13 @@ export class PosComponent implements OnInit {
 	}
 
 	addForm() {
-        this.typeOfView = 3;
-        // clean properties
-        
-        this.POSName = '';
-        this.POSAddress = '';
-        this.POSTel = '';
-        this.imagePath = '';
+		this.typeOfView = 3;
+		// clean properties
+
+		this.POSName = '';
+		this.POSAddress = '';
+		this.POSTel = '';
+		this.imagePath = '';
 	}
 
 	cancelEdit() {
@@ -165,7 +165,7 @@ export class PosComponent implements OnInit {
 						.sendImage('locales', this.imagePath, this.imageFile.size, this.imageFile.data)
 						.subscribe(
 							res => {
-                                this.imageFile=null;
+								this.imageFile = null;
 								this.typeOfView = 1;
 								this.loadPointsOfSale();
 							},
@@ -174,7 +174,7 @@ export class PosComponent implements OnInit {
 							}
 						);
 				} else {
-                    this.imageFile=null;
+					this.imageFile = null;
 					this.typeOfView = 1;
 					this.loadPointsOfSale();
 				}
@@ -187,8 +187,8 @@ export class PosComponent implements OnInit {
 				this.POSEdit.id,
 				this.POSEditName,
 				this.POSEditAddress,
-                this.POSEditTel,
-                this.imagePath,
+				this.POSEditTel,
+				this.imagePath,
 				this.POSEditMarker.getPosition()
 			)
 			.subscribe(response => {
@@ -197,7 +197,7 @@ export class PosComponent implements OnInit {
 						.sendImage('locales', this.imagePath, this.imageFile.size, this.imageFile.data)
 						.subscribe(
 							res => {
-                                this.imageFile=null;
+								this.imageFile = null;
 								this.typeOfView = 1;
 								this.loadPointsOfSale();
 							},
@@ -206,7 +206,7 @@ export class PosComponent implements OnInit {
 							}
 						);
 				} else {
-                    this.imageFile=null;
+					this.imageFile = null;
 					this.typeOfView = 1;
 					this.loadPointsOfSale();
 				}
@@ -256,7 +256,7 @@ export class PosComponent implements OnInit {
 	handleSelected(file: GVFile): void {
 		if (!!file) {
 			this.imageFile = file;
-			this.imagePath = (this.POSEdit ? (this.POSEdit.id + '_') : '') + this.imageFile.name;
+			this.imagePath = (this.POSEdit ? this.POSEdit.id + '_' : '') + this.imageFile.name;
 		}
 	}
 }

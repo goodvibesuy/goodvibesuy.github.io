@@ -1,5 +1,5 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
-import {GVFile} from '../../../shared/models/gvfile.model'
+import {GVFile} from '../../../models/gvfile.model'
 
 @Component({
 	selector: 'file-picker',

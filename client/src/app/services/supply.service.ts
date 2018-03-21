@@ -5,8 +5,8 @@ import { catchError, map, tap } from 'rxjs/operators';
 import { Observable } from 'rxjs/Observable';
 import { of } from 'rxjs/observable/of';
 
-import { Supply } from '../shared/models/supply.model';
-import { Unit } from '../shared/models/unit.model';
+import { Supply } from '../models/supply.model';
+import { Unit } from '../models/unit.model';
 
 @Injectable()
 export class SupplyService {

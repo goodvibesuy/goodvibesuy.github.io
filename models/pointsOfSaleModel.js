@@ -85,7 +85,7 @@ var PointsOfSaleModel = /** @class */ (function () {
             }
         });
     };
-    PointsOfSaleModel.prototype.add = function (name, address, tel, coord, dbName, callBack) {
+    PointsOfSaleModel.prototype.add = function (name, address, tel, image, coord, dbName, callBack) {
         var pool = clientDBController.getUserConnection(dbName);
         pool.getConnection(function (err, con) {
             if (err) {
@@ -93,7 +93,7 @@ var PointsOfSaleModel = /** @class */ (function () {
                 console.error(err);
             }
             else {
-                con.query("INSERT INTO pointofsale  (name, address, tel,coord) VALUES(?,?,?,POINT(?,?))", [name, address, tel, Number(coord.lat), Number(coord.lng)], function (err, result) {
+                con.query("INSERT INTO pointofsale  (name, address, tel, image, coord) VALUES(?,?,?,?,POINT(?,?))", [name, address, tel, image, Number(coord.lat), Number(coord.lng)], function (err, result) {
                     if (!!err) {
                         //if (err.code === "ER_DUP_ENTRY") 
                         console.error(err);
@@ -113,7 +113,7 @@ var PointsOfSaleModel = /** @class */ (function () {
             }
         });
     };
-    PointsOfSaleModel.prototype.update = function (id, name, address, tel, coord, dbName, callback) {
+    PointsOfSaleModel.prototype.update = function (id, name, address, tel, image, coord, dbName, callback) {
         var pool = clientDBController.getUserConnection(dbName);
         pool.getConnection(function (err, con) {
             if (err) {
@@ -121,7 +121,7 @@ var PointsOfSaleModel = /** @class */ (function () {
                 console.error(err);
             }
             else {
-                con.query("UPDATE pointofsale  SET name = ?, address = ?, tel = ?, coord = POINT(?,?) WHERE id = ?", [name, address, tel, Number(coord.lat), Number(coord.lng), id], function (err, result) {
+                con.query("UPDATE pointofsale  SET name = ?, address = ?, tel = ?, image = ?, coord = POINT(?,?) WHERE id = ?", [name, address, tel, image, Number(coord.lat), Number(coord.lng), id], function (err, result) {
                     if (!!err) {
                         // TODO: log error -> common/errorHandling.ts
                         // errorHandler.log(err);

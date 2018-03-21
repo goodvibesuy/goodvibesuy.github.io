@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RouteService } from '../../../../services/route.service';
-import { Route as RouteModel } from '../../../../shared/models/route.model'
+import { Route as RouteModel } from '../../../../models/route.model'
 
 @Component({
   selector: 'app-route.add',

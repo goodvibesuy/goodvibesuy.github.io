@@ -4,8 +4,8 @@ import { AsyncPipe } from '@angular/common';
 import * as _ from 'lodash';
 
 import { SupplyService } from '../../../../services/supply.service';
-import { Supply } from '../../../../shared/models/supply.model';
-import { Unit } from '../../../../shared/models/unit.model';
+import { Supply } from '../../../../models/supply.model';
+import { Unit } from '../../../../models/unit.model';
 import { ResultCode } from '../../../../../../../datatypes/result';
 
 @Component({

@@ -5,8 +5,8 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { ProductsService } from '../../../../services/products.service';
 import { ImagesService } from '../../../../services/images.service';
 // models
-import { Product } from '../../../../shared/models/product.model';
-import { GVFile } from '../../../../shared/models/gvfile.model';
+import { Product } from '../../../../models/product.model';
+import { GVFile } from '../../../../models/gvfile.model';
 import { ResultCode } from '../../../../../../../datatypes/result';
 
 @Component({
@@ -25,7 +25,7 @@ export class ProductEditComponent implements OnInit, OnDestroy {
 		private domSanitizer: DomSanitizer,
 		private productsService: ProductsService,
 		private imagesService: ImagesService
-	) { }
+	) {}
 
 	ngOnInit() {
 		this.paramsSub = this.activatedRoute.params.subscribe(

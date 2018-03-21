@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { HttpHeaders, HttpClient } from '@angular/common/http';
-import { PointOfSale } from '../shared/models/pointofsale.model';
+import { PointOfSale } from '../models/pointofsale.model';
 
 @Injectable()
 export class PointOfSaleService {

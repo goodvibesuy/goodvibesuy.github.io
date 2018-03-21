@@ -2,11 +2,11 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { catchError, map, tap } from 'rxjs/operators';
 import { Observable } from 'rxjs/Observable';
-import { Route } from '../shared/models/route.model';
-import { PointOfSale } from '../shared/models/pointofsale.model';
-import { RoutePointOfSale } from '../shared/models/RoutePointOfSale.model';
-import { RouteUser } from '../shared/models/routeUser.model';
-import { User } from '../shared/models/user.model';
+import { Route } from '../models/route.model';
+import { PointOfSale } from '../models/pointofsale.model';
+import { RoutePointOfSale } from '../models/RoutePointOfSale.model';
+import { RouteUser } from '../models/routeUser.model';
+import { User } from '../models/user.model';
 
 @Injectable()
 export class RouteService {

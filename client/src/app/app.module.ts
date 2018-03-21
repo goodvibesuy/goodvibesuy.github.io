@@ -1,8 +1,10 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
-import { FormsModule,ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ActivatedRoute, ParamMap } from '@angular/router';
 
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 // components
 import { AppComponent } from './app.component';
@@ -26,41 +28,39 @@ import { MapaComponent } from './components/front/mapa/mapa.component';
 import { DetalleLocalComponent } from './components/front/detalle-local/detalle-local.component';
 // Configs
 import { ConfigsComponent } from './components/configs/configs.component';
-
+// Routes
 import { RoutesComponent } from './components/adm/routes/routes.component';
 import { ListComponent } from './components/adm/routes/list/list.component';
 import { RouteAdd } from './components/adm/routes/route.add/route.add.component';
 import { RouteEdit } from './components/adm/routes/route.edit/route.edit.component';
-
-// app routing 
-import { AppRoutingModule } from './app-routing.module';
+// Point of sale
+import { PosComponent } from './components/adm/pos/pos.component';
 
 // services
 import { SupplyService } from './services/supply.service';
 import { ProductsService } from './services/products.service';
 import { RouteService } from './services/route.service';
-import { TokenService} from './services/token.service';
-
+import { TokenService } from './services/token.service';
 import { UsersService } from './services/users.service';
-import { ImagesService} from './services/images.service';
-import { NgbModule} from '@ng-bootstrap/ng-bootstrap';
-
+import { ImagesService } from './services/images.service';
+import { ViewingService } from './services/viewing.service';
+import { HeaderService } from './services/header.service';
+import { PointOfSaleService } from './services/point-of-sale.service';
 
 // shared
 import { FilePicker } from './shared/components/file-picker/file-picker.component';
 import { LoginComponent } from './components/login/login.component';
 import { AuthenticateService } from './services/authenticate.service';
-import { PointOfSaleService } from './services/point-of-sale.service';
 
-import { ActivatedRoute, ParamMap } from '@angular/router';
-import { ViewingService } from './services/viewing.service';
-import { PosComponent } from './components/adm/pos/pos.component';
-import { HeaderService } from './services/header.service';
-// models
-//import { GVFile } from './shared/models/gvfile.model';
+// app routing
+import { AppRoutingModule } from './app-routing.module';
 
-import { InterceptorModule } from './auth/token.interceptor'
-
+///// Feature modules
+// alert
+import { AlertModule } from './modules/alert/alert.module';
+import { AlertService } from './modules/alert/alert.service';
+// Interceptor
+import { InterceptorModule } from './auth/token.interceptor';
 
 @NgModule({
 	declarations: [
@@ -84,34 +84,34 @@ import { InterceptorModule } from './auth/token.interceptor'
 		ListComponent,
 		RouteAdd,
 		RouteEdit,
-		// shared		
-        FilePicker,
+		// shared
+		FilePicker,
 		LoginComponent,
-		PosComponent,
-        // models
-    //    GVFile
+        PosComponent
 	],
 	imports: [
 		BrowserModule,
 		FormsModule,
 		ReactiveFormsModule,
 		HttpClientModule,
-        AppRoutingModule,
-        InterceptorModule,
-		NgbModule.forRoot()
+		AppRoutingModule,
+		InterceptorModule,
+		NgbModule.forRoot(),
+		AlertModule.forRoot()
 	],
 	providers: [
 		SupplyService,
 		ProductsService,
 		RouteService,
 		UsersService,
-        ImagesService,
-        AuthenticateService,
-        PointOfSaleService,
-        ViewingService,
-        HeaderService,
-        TokenService
+		ImagesService,
+		AuthenticateService,
+		PointOfSaleService,
+		ViewingService,
+		HeaderService,
+        TokenService,
+        AlertService
 	],
 	bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {}

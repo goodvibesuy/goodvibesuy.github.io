@@ -3,7 +3,7 @@ import { AsyncPipe } from '@angular/common';
 
 import * as _ from 'lodash';
 
-import { Product } from '../../../../shared/models/product.model';
+import { Product } from '../../../../models/product.model';
 import { ImagesService } from '../../../../services/images.service';
 import { ProductsService } from '../../../../services/products.service';
 import { ResultCode } from '../../../../../../../datatypes/result';
@@ -22,31 +22,28 @@ export class ProductsListComponent implements OnInit {
 	}
 
 	delete(id: number): void {
-        this.productsService
-            .delete(id)
-            .subscribe(
-                res => {
-                    if ( res.result == ResultCode.OK){
-                        this.loadProducts()
-                    } else {
-                        console.log("ERROR: " + res.message);
-                        alert("ERROR: " + res.message);
-                    }
-                },
-                err => {
-                    console.log("UNEXPECTED ERROR: " + err);
-                    alert(err);
-                }
-            );
+		this.productsService.delete(id).subscribe(
+			res => {
+				if (res.result == ResultCode.OK) {
+					this.loadProducts();
+				} else {
+					console.log('ERROR: ' + res.message);
+					alert('ERROR: ' + res.message);
+				}
+			},
+			err => {
+				console.log('UNEXPECTED ERROR: ' + err);
+				alert(err);
+			}
+		);
 	}
 
 	loadProducts(): void {
 		this.productsService.get().subscribe(
 			response => {
-                this.products = _
-                        .chain(response.data)
-                        .sortBy( m => m.name.toLowerCase())
-                        .value();
+				this.products = _.chain(response.data)
+					.sortBy(m => m.name.toLowerCase())
+					.value();
 			},
 			error => {}
 		);

@@ -5,7 +5,7 @@ import { catchError, map, tap } from 'rxjs/operators';
 import { Observable } from 'rxjs/Observable';
 import { of } from 'rxjs/observable/of';
 
-import { Product } from '../shared/models/product.model';
+import { Product } from '../models/product.model';
 import { Result, ResultWithData, ResultCode } from '../../../../datatypes/result'
 
 @Injectable()
