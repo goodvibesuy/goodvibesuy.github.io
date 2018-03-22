@@ -42,6 +42,7 @@ var UnitsModel = /** @class */ (function () {
                         }
                     }
                     else {
+                        con.release();
                         callBack({ result: 1, message: "OK" });
                     }
                 });
@@ -63,6 +64,7 @@ var UnitsModel = /** @class */ (function () {
                         }
                     }
                     else {
+                        con.release();
                         callBack({ result: 1, message: "OK" });
                     }
                 });
@@ -84,6 +86,7 @@ var UnitsModel = /** @class */ (function () {
                         }
                     }
                     else {
+                        con.release();
                         callBack({ result: 1, message: "OK" });
                     }
                 });

@@ -97,10 +97,7 @@ var PointsOfSaleModel = /** @class */ (function () {
             }
             else {
                 con.query("INSERT INTO pointofsale  (name, address, tel, image, coord) VALUES(?,?,?,?,POINT(?,?))", [name, address, tel, image, Number(coord.lat), Number(coord.lng)], function (err, result) {
-<<<<<<< HEAD
-=======
                     con.release();
->>>>>>> 83c2d3154248de8cc940f337f025c459dd64314c
                     if (!!err) {
                         //if (err.code === "ER_DUP_ENTRY") 
                         console.error(err);
@@ -129,10 +126,7 @@ var PointsOfSaleModel = /** @class */ (function () {
             }
             else {
                 con.query("UPDATE pointofsale  SET name = ?, address = ?, tel = ?, image = ?, coord = POINT(?,?) WHERE id = ?", [name, address, tel, image, Number(coord.lat), Number(coord.lng), id], function (err, result) {
-<<<<<<< HEAD
-=======
                     con.release();
->>>>>>> 83c2d3154248de8cc940f337f025c459dd64314c
                     if (!!err) {
                         // TODO: log error -> common/errorHandling.ts
                         // errorHandler.log(err);

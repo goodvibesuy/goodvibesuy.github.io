@@ -49,6 +49,7 @@ var SuppliesModel = /** @class */ (function () {
             else {
                 con.query('INSERT INTO supply  (name, unit, path_image) VALUES(?,?,?)', [name, idUnit, path_image], function (err, result) {
                     if (err) {
+                        con.release();
                         // sea cual sea el tipo de error => siempre (debería) tengo que liberar la conexión
                         // sino el cliente web queda esperando
                         // con.release();
@@ -62,6 +63,7 @@ var SuppliesModel = /** @class */ (function () {
                     else {
                         var idSupply = result.insertId;
                         con.query('INSERT INTO supplyPrice  (date, amount, idSupply) VALUES(NOW(),?,?)', [amount, idSupply], function (err, result) {
+                            con.release();
                             // sea cual sea el tipo de error => siempre tengo que liberar la conexión
                             // sino el cliente web queda esperando
                             // con.release();
@@ -93,6 +95,7 @@ var SuppliesModel = /** @class */ (function () {
             else {
                 con.query('UPDATE supply  SET name = ?, unit = ?, path_image = ? WHERE id = ?', [name, idUnit, path_image, id], function (err, resultClient) {
                     if (err) {
+                        con.release();
                         // sea cual sea el tipo de error => siempre tengo que liberar la conexión
                         // sino el cliente web queda esperando
                         // con.release();
@@ -105,6 +108,7 @@ var SuppliesModel = /** @class */ (function () {
                     }
                     else {
                         con.query('INSERT INTO supplyPrice  (date, amount,idSupply) VALUES(NOW(),?,?)', [amount, id], function (err, result) {
+                            con.release();
                             // sea cual sea el tipo de error => siempre tengo que liberar la conexión
                             // sino el cliente web queda esperando
                             // con.release();
@@ -138,6 +142,7 @@ var SuppliesModel = /** @class */ (function () {
                     // siempre (debería) tengo que liberar la conexión sino el cliente web queda esperando
                     // con.release();
                     if (err) {
+                        con.release();
                         if (err.code === 'ER_DUP_ENTRY') {
                             callBack({ result: -1, message: 'Error: ER_DUP_ENTRY' });
                         }
@@ -149,6 +154,7 @@ var SuppliesModel = /** @class */ (function () {
                         }
                     }
                     else {
+                        con.release();
                         callBack({ result: 1, message: 'OK' });
                     }
                 });
