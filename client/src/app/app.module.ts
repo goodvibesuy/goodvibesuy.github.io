@@ -61,6 +61,7 @@ import { AlertModule } from './modules/alert/alert.module';
 import { AlertService } from './modules/alert/alert.service';
 // Interceptor
 import { InterceptorModule } from './auth/token.interceptor';
+import { KpiService } from './services/kpi.service';
 
 @NgModule({
 	declarations: [
@@ -110,7 +111,8 @@ import { InterceptorModule } from './auth/token.interceptor';
 		ViewingService,
 		HeaderService,
         TokenService,
-        AlertService
+        AlertService,
+        KpiService
 	],
 	bootstrap: [AppComponent]
 })

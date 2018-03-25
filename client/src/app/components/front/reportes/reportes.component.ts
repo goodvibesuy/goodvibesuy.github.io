@@ -1,15 +1,290 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { KpiService } from '../../../services/kpi.service';
+import { SupplyService } from '../../../services/supply.service';
+import { Supply } from '../../../models/supply.model';
 
 @Component({
-  selector: 'app-reportes',
-  templateUrl: './reportes.component.html',
-  styleUrls: ['./reportes.component.css']
+    selector: 'app-reportes',
+    templateUrl: './reportes.component.html',
+    styleUrls: ['./reportes.component.css']
 })
 export class ReportesComponent implements OnInit {
+    private suppliesPrice: [any];
+    private supplies:Supply[];
 
-  constructor() { }
+    constructor(private router: Router,
+        private kpiService: KpiService,
+        private supplyService:SupplyService
+    ) {
 
-  ngOnInit() {
-  }
+    }
+
+    suppliesPrices(): void {
+        this.kpiService.get(5).subscribe(
+            response => {
+                this.suppliesPrice = response.data;
+                console.log(this.suppliesPrice);
+
+                var chartData = [];
+                
+                for (var i = 0; i < this.suppliesPrice.length; i++) {
+                    var newDate = new Date(this.suppliesPrice[i].date);
+                    
+
+                    chartData.push({
+                        date: newDate,
+                        visits: this.suppliesPrice[i].amount
+                    });
+                }
+                console.log(chartData);
+
+                var chart = AmCharts.makeChart("chartdiv", {
+                    "theme": "light",
+                    "type": "serial",
+                    "dataProvider": chartData,
+                    "valueAxes": [{
+                        "inside": true,
+                        "axisAlpha": 0
+                    }],
+                    "graphs": [{
+                        "id": "g1",
+                        "balloonText": "<div style='margin:5px; font-size:19px;'><span style='font-size:13px;'>[[category]]</span><br>[[value]]</div>",
+                        "bullet": "round",
+                        "bulletBorderAlpha": 1,
+                        "bulletBorderColor": "#FFFFFF",
+                        "hideBulletsCount": 50,
+                        "lineThickness": 2,
+                        "lineColor": "#fdd400",
+                        "negativeLineColor": "#67b7dc",
+                        "valueField": "visits"
+                    }],
+                    "chartScrollbar": {
+        
+                    },
+                    "chartCursor": {},
+                    "categoryField": "date",
+                    "categoryAxis": {
+                        "parseDates": true,
+                        "axisAlpha": 0,
+                        "minHorizontalGap": 55
+                    }
+                });
+
+                return chartData;
+            }
+        );
+    }
+
+    generatechartData() {
+        var chartData = [];
+        var firstDate = new Date();
+        firstDate.setDate(firstDate.getDate() - 150);
+        var visits = -40;
+        var b = 0.6;
+        for (var i = 0; i < 150; i++) {
+            var newDate = new Date(firstDate);
+            newDate.setDate(newDate.getDate() + i);
+            if (i > 80) {
+                b = 0.4;
+            }
+            visits += Math.round((Math.random() < b ? 1 : -1) * Math.random() * 10);
+
+            chartData.push({
+                date: newDate,
+                visits: visits
+            });
+        }
+        
+        return chartData;
+    }
+
+    supplyHistory(id:number):void{
+        this.kpiService.get(id).subscribe(
+            response => {
+                this.suppliesPrice = response.data;
+            }
+        );
+    }
+
+    ngOnInit() {
+        /*
+        
+                var chart = AmCharts.makeChart("chartdiv",
+                    {
+                        "type": "serial",
+                        "theme": "light",
+                        "dataProvider": [{
+                            "name": "Green Life",
+                            "points": 35654,
+                            "color": "#A9BE3F",
+                            "bullet": "images/greenLife.png"
+                        }, {
+                            "name": "Citra Trip",
+                            "points": 65456,
+                            "color": "#FCB100",
+                            "bullet": "images/citraTrip.png"
+                        }, {
+                            "name": "Citra Trip",
+                            "points": 45724,
+                            "color": "#F8FF32",
+                            "bullet": "images/citraTrip.png"
+                        }, {
+                            "name": "Sun Kiss",
+                            "points": 13654,
+                            "color": "#6E2539",
+                            "bullet": "images/sunKiss.png"
+                        }],
+                        "valueAxes": [{
+                            "maximum": 80000,
+                            "minimum": 0,
+                            "axisAlpha": 0,
+                            "dashLength": 4,
+                            "position": "left"
+                        }],
+                        "startDuration": 1,
+                        "graphs": [{
+                            "balloonText": "<span style='font-size:13px;'>[[category]]: <b>[[value]]</b></span>",
+                            "bulletOffset": 10,
+                            "bulletSize": 52,
+                            "colorField": "color",
+                            "cornerRadiusTop": 8,
+                            "customBulletField": "bullet",
+                            "fillAlphas": 0.8,
+                            "lineAlpha": 0,
+                            "type": "column",
+                            "valueField": "points"
+                        }],
+                        "marginTop": 0,
+                        "marginRight": 0,
+                        "marginLeft": 0,
+                        "marginBottom": 0,
+                        "autoMargins": false,
+                        "categoryField": "name",
+                        "categoryAxis": {
+                            "axisAlpha": 0,
+                            "gridAlpha": 0,
+                            "inside": true,
+                            "tickLength": 0
+                        },
+                        "export": {
+                            "enabled": true
+                        }
+                    });
+        
+                
+                var chartData2 = {
+                    "1997": [
+                        { "sector": "Green Life", "size": 6.1 },
+                        { "sector": "Citra Trip", "size": 20.9 },
+                        { "sector": "Paradise Dream", "size": 1.8 },
+                        { "sector": "Yellow Rolling", "size": 4.2 }],
+                    "1998": [
+                        { "sector": "Green Life", "size": 6.2 },
+                        { "sector": "Citra Trip", "size": 21.4 },
+                        { "sector": "Paradise Dream", "size": 1.9 },
+                        { "sector": "Yellow Rolling", "size": 4.2 }],
+                    "1999": [
+                        { "sector": "Green Life", "size": 5.7 },
+                        { "sector": "Citra Trip", "size": 20 },
+                        { "sector": "Paradise Dream", "size": 1.8 },
+                        { "sector": "Yellow Rolling", "size": 4.4 }]
+                };
+        
+                var texto = {
+                    "1997": "Febrero",
+                    "1998": "Marzo",
+                    "1999": "Abril"
+                }
+        
+        
+        
+        */
+
+        this.supplyService.getAll().subscribe(
+            data => {
+                this.supplies = data;
+                console.log(data);
+            }
+        )
+
+        //var chartData = this.suppliesPrices();
+
+
+
+
+
+
+
+        /*
+            
+        
+              var currentYear = 1997;
+              var chart2 = AmCharts.makeChart("chartdiv2", {
+                "type": "pie",
+                "theme": "light",
+                "labelText": "[[percents]]%",
+                "dataProvider": [],
+                "valueField": "size",
+                "titleField": "sector",
+                "startDuration": 0,
+                "innerRadius": 60,
+                "legend": {
+                  "position": "bottom"
+                },
+                "titles": [{
+                  "text": "Venta de productos"
+                }],
+                "allLabels": [{
+                  "y": "50%",
+                  "align": "center",
+                  "size": 20,
+                  "bold": true,
+                  "text": "1995",
+                  "color": "#555"
+                },
+                {
+                  "y": "55%",
+                  "align": "center",
+                  "size": 20,
+                  "bold": true,
+                  "text": "2018",
+                  "color": "#555"
+                }],
+                "listeners": [{
+                  "event": "init",
+                  "method": function (e) {
+                    var chart = e.chart;
+                    function getCurrentData() {
+                      var data = chartData2[currentYear];
+                      currentYear++;
+                      if (currentYear > 1999)
+                        currentYear = 1997;
+                      return data;
+                    }
+            
+                    function loop() {
+                      //chart.allLabels[0].text = currentYear;
+                      chart.allLabels[0].text = texto[currentYear];
+                      var data = getCurrentData();
+                      chart.animateData(data, {
+                        duration: 1000,
+                        complete: function () {
+                          setTimeout(loop, 2000);
+                        }
+                      });
+                    }
+                    loop();
+                  }
+                }],
+                "export": {
+                  "enabled": true
+                }
+              });
+        */
+
+
+    }
+
 
 }

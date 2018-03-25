@@ -1,45 +1,43 @@
 import { Result, ResultWithData, ResultCode } from '../datatypes/result';
-var MainController = require('./mainController');
-var masterDBController = require('../bd/masterConnectionsBD');
-var acl = require('../motionLibJS/serverSide/acl/motionACL');
+import { MainController } from './mainController';
 var kpisModel = require('../models/kpisModel');
 
-class KPIController {
-
+class KPIController extends MainController {
     constructor() {
-        console.log("UserController");
+        super();
+        console.log("KPI Controller");
     }
 
-    kpiDeliveryReturnEmpty(req: any, res: any): void {
-        masterDBController.verifySession(req.headers['user'], req.headers['tokenid'], req.headers['accountid'],
-            function (err: any, authError: any, response: any, dbName: any) {
-                acl.getACL().isAllowed(req.headers['user'], 'routes', 'get', function (err: any, response: any) {
-                    if (response) {
-                        kpisModel.kpiDeliveryReturnEmpty(dbName, function (response:any) {
-                            res.send(response);
-                        });
-                    } else {
-                        res.send({ result: -1, message: "messages.PERMISSION_DENIED", data: null });
-                    }
-                })
-            });
-    };
+    public suppliesPrices = (req: any, res: any): void => {
+        this.verifyAccess(req, res,
+            (dbName: string) => {
+                kpisModel.suppliesPrices(req.params.supplyId,dbName, function (response:any) {
+                    res.send(response);
+                });
+            }
+        )
+    }
 
-    sales(req: any, res: any): void {
-        masterDBController.verifySession(req.headers['user'], req.headers['tokenid'], req.headers['accountid'],
-            function (err: any, authError: any, response: any, dbName: any) {
-                acl.getACL().isAllowed(req.headers['user'], 'routes', 'get', function (err: any, response: any) {
-                    if (response) {
-                        kpisModel.sales(function (response:any) {
-                            res.send(response);
-                        });
-                    }else{
-                        res.send({ result: -1, message: "messages.PERMISSION_DENIED", data: null });
-                    }
-                })
-            });
-    };
-    
+    public kpiDeliveryReturnEmpty = (req: any, res: any): void => {
+        this.verifyAccess(req, res,
+            (dbName: string) => {
+                kpisModel.kpiDeliveryReturnEmpty(dbName, function (response:any) {
+                    res.send(response);
+                });
+            }
+        )
+    }
+
+    public sales = (req: any, res: any): void => {
+        this.verifyAccess(req, res,
+            (dbName: string) => {
+                kpisModel.sales(function (response:any) {
+                    res.send(response);
+                });
+            }
+        )
+    }
+
 }
 
 module.exports = new KPIController();

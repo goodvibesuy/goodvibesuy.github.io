@@ -6,4 +6,6 @@ router.get('/', kpisController.kpiDeliveryReturnEmpty);
 
 router.get('/sales', kpisController.sales);
 
+router.get('/suppliesPrices/:supplyId', kpisController.suppliesPrices);
+
 module.exports = router;

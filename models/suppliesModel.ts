@@ -7,6 +7,25 @@ class SuppliesModel {
     }
 
 
+    getAll(dbName: string, callBack: (r: ResultWithData<any[]>) => void): void {
+        var pool = clientDBController.getUserConnection(dbName);
+        pool.getConnection(function (err: any, con: any) {
+            if (err) {
+                con.release();
+                console.error(err);
+            } else {
+                con.query('SELECT * FROM supply', function (
+                    err: any,
+                    result: any
+                ) {
+                    if (err) throw err;
+                    con.release();
+                    callBack({ result: 1, message: 'OK', data: result });
+                });
+            }
+        });
+    };
+
     supplies(dbName: string, callBack: (r: ResultWithData<any[]>) => void): void {
         var pool = clientDBController.getUserConnection(dbName);
         pool.getConnection(function (err: any, con: any) {
@@ -19,6 +38,7 @@ class SuppliesModel {
                     result: any
                 ) {
                     if (err) throw err;
+                    con.release();
                     callBack({ result: 1, message: 'OK', data: result });
                 });
             }

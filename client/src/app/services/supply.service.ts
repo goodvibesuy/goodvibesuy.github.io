@@ -20,6 +20,10 @@ export class SupplyService {
 		return this.http.get<Supply[]>(this.suppliesUrl).pipe(map(r => (<any>r).data));
 	}
 
+    getAll(): Observable<Supply[]> {
+		return this.http.get<Supply[]>(this.suppliesUrl + "/getAll").pipe(map(r => (<any>r).data));
+	}
+
 	getUnits(): Observable<Unit[]> {
 		return this.http.get<Unit[]>(this.unitsUrl).pipe(map(r => (<any>r).data));
 	}

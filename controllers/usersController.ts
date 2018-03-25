@@ -1,29 +1,23 @@
-import { Result, ResultWithData, ResultCode } from '../datatypes/result';
-var  MainController  = require('./mainController');
 var masterDBController = require('../bd/masterConnectionsBD');
 var acl = require('../motionLibJS/serverSide/acl/motionACL');
 var userModel = require('../models/userModel');
+import {MainController} from './mainController';
 
-class UserController {
+class UserController extends MainController{
 
-    constructor() {
-        console.log("UserController");
+    constructor(){        
+        super();
     }
 
-
-    getAll(req:any,res:any): void {        
-        masterDBController.verifySession(req.headers['user'], req.headers['tokenid'], req.headers['accountid'], function (err:any, authError:any, response:any, dbName:any) {
-            acl.getACL().isAllowed(req.headers['user'], 'routes', 'get', function (err:any, response:any) {
-                if (response) {
-                    userModel.users(dbName, function (result:any) {
-                        res.send(result);
-                    });
-                } else {
-                    res.send({ result: -1, message: "messages.PERMISSION_DENIED", data: null });
-                }
-            })
-        }); 
-    };
+    public getAll = (req:any,res:any): void => { 
+        this.verifyAccess(req,res,
+            (dbName:string) =>{
+                userModel.users(dbName, function (result:any) {
+                    res.send(result);
+                });
+            }             
+        )
+    }
 }
 
 module.exports = new UserController();

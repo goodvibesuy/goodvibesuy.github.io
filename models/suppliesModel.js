@@ -5,6 +5,24 @@ var clientDBController = require('../bd/clientConnectionsBD');
 var SuppliesModel = /** @class */ (function () {
     function SuppliesModel() {
     }
+    SuppliesModel.prototype.getAll = function (dbName, callBack) {
+        var pool = clientDBController.getUserConnection(dbName);
+        pool.getConnection(function (err, con) {
+            if (err) {
+                con.release();
+                console.error(err);
+            }
+            else {
+                con.query('SELECT * FROM supply', function (err, result) {
+                    if (err)
+                        throw err;
+                    con.release();
+                    callBack({ result: 1, message: 'OK', data: result });
+                });
+            }
+        });
+    };
+    ;
     SuppliesModel.prototype.supplies = function (dbName, callBack) {
         var pool = clientDBController.getUserConnection(dbName);
         pool.getConnection(function (err, con) {
@@ -16,6 +34,7 @@ var SuppliesModel = /** @class */ (function () {
                 con.query('SELECT * FROM supply INNER JOIN supplyPrice ON id  = idSupply ORDER BY date DESC', function (err, result) {
                     if (err)
                         throw err;
+                    con.release();
                     callBack({ result: 1, message: 'OK', data: result });
                 });
             }
