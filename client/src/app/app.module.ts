@@ -5,6 +5,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { AmChartsModule } from "@amcharts/amcharts3-angular";
+
 
 // components
 import { AppComponent } from './app.component';
@@ -98,7 +100,8 @@ import { KpiService } from './services/kpi.service';
 		AppRoutingModule,
 		InterceptorModule,
 		NgbModule.forRoot(),
-		AlertModule.forRoot()
+        AlertModule.forRoot(),
+        AmChartsModule
 	],
 	providers: [
 		SupplyService,

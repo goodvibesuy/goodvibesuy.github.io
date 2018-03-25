@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { KpiService } from '../../../services/kpi.service';
 import { SupplyService } from '../../../services/supply.service';
 import { Supply } from '../../../models/supply.model';
+import { AmChartsService, AmChart } from "@amcharts/amcharts3-angular";
 
 @Component({
     selector: 'app-reportes',
@@ -11,35 +12,32 @@ import { Supply } from '../../../models/supply.model';
 })
 export class ReportesComponent implements OnInit {
     private suppliesPrice: [any];
-    private supplies:Supply[];
+    private supplies: Supply[];
+    private chart: AmChart;
+    private suppliesById:Map<number,any>;
 
     constructor(private router: Router,
         private kpiService: KpiService,
-        private supplyService:SupplyService
+        private supplyService: SupplyService,
+        private AmCharts: AmChartsService
     ) {
-
     }
 
-    suppliesPrices(): void {
-        this.kpiService.get(5).subscribe(
+    suppliesPrices(id:number): void {
+        
+        this.kpiService.get(id).subscribe(
             response => {
                 this.suppliesPrice = response.data;
-                console.log(this.suppliesPrice);
-
                 var chartData = [];
-                
+
                 for (var i = 0; i < this.suppliesPrice.length; i++) {
                     var newDate = new Date(this.suppliesPrice[i].date);
-                    
-
                     chartData.push({
                         date: newDate,
                         visits: this.suppliesPrice[i].amount
                     });
                 }
-                console.log(chartData);
-
-                var chart = AmCharts.makeChart("chartdiv", {
+                this.chart = this.AmCharts.makeChart("chartdiv", {
                     "theme": "light",
                     "type": "serial",
                     "dataProvider": chartData,
@@ -70,42 +68,33 @@ export class ReportesComponent implements OnInit {
                         "minHorizontalGap": 55
                     }
                 });
-
-                return chartData;
             }
         );
-    }
-
-    generatechartData() {
-        var chartData = [];
-        var firstDate = new Date();
-        firstDate.setDate(firstDate.getDate() - 150);
-        var visits = -40;
-        var b = 0.6;
-        for (var i = 0; i < 150; i++) {
-            var newDate = new Date(firstDate);
-            newDate.setDate(newDate.getDate() + i);
-            if (i > 80) {
-                b = 0.4;
-            }
-            visits += Math.round((Math.random() < b ? 1 : -1) * Math.random() * 10);
-
-            chartData.push({
-                date: newDate,
-                visits: visits
-            });
-        }
         
-        return chartData;
     }
 
-    supplyHistory(id:number):void{
+    supplyHistory(id: number): void {
         this.kpiService.get(id).subscribe(
             response => {
                 this.suppliesPrice = response.data;
             }
         );
+        this.suppliesPrices(id);
     }
+
+    ngAfterViewInit() {
+        /*
+        this.suppliesById = new Map<number, any>();
+        this.suppliesPrices();
+        */
+    }
+
+    ngOnDestroy() {
+        if (this.chart) {
+            this.AmCharts.destroyChart(this.chart);
+        }
+    }
+
 
     ngOnInit() {
         /*
@@ -200,20 +189,20 @@ export class ReportesComponent implements OnInit {
         
         
         */
-
+/*
+        this.supplyService.get().subscribe(
+            data => {
+                console.log(data, "**");
+            }
+        )
+*/
         this.supplyService.getAll().subscribe(
             data => {
                 this.supplies = data;
-                console.log(data);
+                console.log(data[0]);
+                this.supplyHistory(data[0].id);
             }
         )
-
-        //var chartData = this.suppliesPrices();
-
-
-
-
-
 
 
         /*
@@ -288,3 +277,15 @@ export class ReportesComponent implements OnInit {
 
 
 }
+
+
+
+
+/*
+@Component({
+  template: `<div id="chartdiv" [style.width.%]="100" [style.height.px]="500"></div>`
+})
+export class AppComponent {
+
+}
+*/

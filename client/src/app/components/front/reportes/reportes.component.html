@@ -1,15 +1,15 @@
 <br/>
-<br/>
 <ul class="nav nav-tabs" id="supplyTab" role="tablist">
     <li class="nav-item" *ngFor="let supply of supplies; index as i">
-        <a class="nav-link active" *ngIf="i == 0" data-toggle="tab" id="supply_{{i}}-tab" href="#supply_{{i}}" role="tab" aria-selected="true"
+        <a class="nav-link active" data-toggle="tab" id="supply_{{i}}-tab" *ngIf="i == 0" href="#supply_{{i}}" role="tab" aria-selected="false"
             (click)="supplyHistory(supply.id)">{{supply.name}}</a>
-        <a class="nav-link" *ngIf="i != 0" data-toggle="tab" id="supply_{{i}}-tab" href="#supply_{{i}}" role="tab" aria-selected="false"
+        <a class="nav-link" data-toggle="tab" id="supply_{{i}}-tab" *ngIf="i != 0" href="#supply_{{i}}" role="tab" aria-selected="false"
             (click)="supplyHistory(supply.id)">{{supply.name}}</a>
     </li>
 </ul>
-<div class="tab-content" id="supplyTabContent">
-    <div class="tab-pane fade" *ngFor="let supply of supplies; index as i" id="supply_{{i}}" role="tabpanel" aria-labelledby="home-tab">
+<div class="tab-content" id="supplyTabContent">    
+    <div [ngClass]="(i == 0)?'tab-pane show active':'tab-pane'" *ngFor="let supply of supplies; index as i" id="supply_{{i}}"
+        role="tabpanel" aria-labelledby="home-tab">        
         <table class="table table-striped">
             <thead class="thead-dark">
                 <tr>
@@ -26,27 +26,4 @@
         </table>
     </div>
 </div>
-
-<style>
-    #chartdiv {
-        width: 100%;
-        height: 500px;
-    }
-
-    #chartdiv2 {
-        width: 100%;
-        height: 500px;
-    }
-</style>
-
-
-
-
-<!-- Chart code -->
-<script>
-
-
-</script>
 <div id="chartdiv"></div>
-<br/>
-<div id="chartdiv2"></div>
