@@ -4,8 +4,9 @@ import { ActivatedRoute, Router } from '@angular/router';
 // service
 import { SupplyService } from '../../../../services/supply.service';
 import { ImagesService } from '../../../../services/images.service';
-// models
-import { Supply } from '../../../../models/supply.model';
+// datatypes
+import { Supply } from '../../../../../../../datatypes/supply';
+
 import { Unit } from '../../../../models/unit.model';
 import { GVFile } from '../../../../models/gvfile.model';
 

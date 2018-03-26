@@ -1,21 +1,28 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { Router } from '@angular/router';
 import { AsyncPipe } from '@angular/common';
 
 import * as _ from 'lodash';
 
-import { Product } from '../../../../models/product.model';
+// datatypes
+import { Product } from '../../../../../../../datatypes/product';
+
 import { ImagesService } from '../../../../services/images.service';
 import { ProductsService } from '../../../../services/products.service';
 import { ResultCode } from '../../../../../../../datatypes/result';
 
 @Component({
 	templateUrl: './products.list.component.html',
-	styleUrls: ['./products.list.component.css']
+	styleUrls: ['./products.list.component.scss']
 })
 export class ProductsListComponent implements OnInit {
 	private products: Product[];
 
-	constructor(private productsService: ProductsService, private imagesService: ImagesService) {}
+	constructor(
+		private productsService: ProductsService,
+		private router: Router,
+		private imagesService: ImagesService
+	) {}
 
 	ngOnInit() {
 		this.loadProducts();
@@ -39,7 +46,7 @@ export class ProductsListComponent implements OnInit {
 	}
 
 	loadProducts(): void {
-		this.productsService.get().subscribe(
+		this.productsService.getAll().subscribe(
 			response => {
 				this.products = _.chain(response.data)
 					.sortBy(m => m.name.toLowerCase())
@@ -47,6 +54,10 @@ export class ProductsListComponent implements OnInit {
 			},
 			error => {}
 		);
+	}
+
+	onProductClick(id: number): void {
+		this.router.navigate(['admin', 'productos', 'editar', id]);
 	}
 
 	getSmallImage(path: string): string {

@@ -3,8 +3,10 @@ import { AsyncPipe } from '@angular/common';
 
 import * as _ from 'lodash';
 
+// datatypes
+import { Supply } from '../../../../../../../datatypes/supply';
+
 import { SupplyService } from '../../../../services/supply.service';
-import { Supply } from '../../../../models/supply.model';
 import { Unit } from '../../../../models/unit.model';
 import { ResultCode } from '../../../../../../../datatypes/result';
 
@@ -46,18 +48,19 @@ export class SupplyListComponent implements OnInit {
 	}
 
 	private loadSupplies(): void {
-		this.supplyService.get().subscribe(
+		this.supplyService.getLatestPrices().subscribe(
 			data => {
-				this.supplies = _.chain(data)
-					.groupBy(s => s.id)
-					.map(g =>
-						_.chain(g)
-							.sortBy(s => s.date)
-							.last()
-							.value()
-					)
-					.sortBy(m => m.name.toLowerCase())
-					.value();
+                this.supplies = data;
+                // _.chain(data)
+				// 	.groupBy(s => s.id)
+				// 	.map(g =>
+				// 		_.chain(g)
+				// 			.sortBy(s => s.date)
+				// 			.last()
+				// 			.value()
+				// 	)
+				// 	.sortBy(m => m.name.toLowerCase())
+				// 	.value();
 			},
 			error => {
 				// TODO: mostrar error

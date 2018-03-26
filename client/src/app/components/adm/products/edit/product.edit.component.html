@@ -1,28 +1,84 @@
 <table class="table">
-	<tr>
-		<td>
-			<div class="card" style="margin:15px;">
-				<div class="card-header">
-					<b>Editar producto</b>
-				</div>
-				<div class="card-body">
-					<div class="form-group">
-						<span class="input-group-addon">Nombre:</span>
-						<input type="text" class="form-control" id="name" *ngIf="product" [(ngModel)]="product.name">
-					</div>
- 
-					<div class="form-group">
-						<span class="input-group-addon">Imagen:</span>
-						<img [src]="getImage()" *ngIf="product" class="small_image" />
-                        <file-picker text="Cambiar" (selected)="handleSelected($event)"></file-picker>
-                        <div *ngIf="filestring">
-                            {{filestring}}
-                        </div>
-					</div>
-					<button type="button" class="btn btn-primary" (click)="actualizar()">Actualizar</button>
-					<button type="button" class="btn btn-light" routerLink="/admin/productos">Cancelar</button>
-				</div>
-			</div>
-		</td>
-	</tr>
+  <tr>
+    <td>
+      <div class="card" style="margin:15px;">
+        <div class="card-header">
+          <b>Editar producto</b>
+        </div>
+        <div class="card-body">
+          <div class="row content_row">
+            <div class="col-md-6">
+              <div class="form-group">
+                <span class="input-group-addon">Nombre:</span>
+                <input type="text" class="form-control" id="name" *ngIf="product" [(ngModel)]="product.name">
+              </div>
+
+              <div class="form-group">
+                <span class="input-group-addon">Imagen:</span>
+                <div class="image_container">
+                  <file-picker text="Cambiar" (selected)="handleSelected($event)" class="small_edit_image_action"></file-picker>
+                  <div class="small_edit_image">
+                    <img [src]="getImage()" *ngIf="product" />
+                    <div *ngIf="filestring" class="img_stream">
+                      {{filestring}}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-6 supplies-col">
+
+              <a data-toggle="collapse" href="#collapseDetailes" role="button" aria-expanded="false" aria-controls="collapseDetailes">
+                <span *ngIf="!!product && !!supplies && !!units && !!product.supplies">
+                  Costo en insumos: {{ totalSupplyPrice() | currency:'$':true:'2.0-0' }}
+                </span>
+              </a>
+              <div class="collapse" id="collapseDetailes">
+                <div class="card card-body detalles-insumo">
+                  <div class="table-responsive">
+                    <table class="table table-striped table-responsive w-auto">
+                      <thead class="thead">
+                        <tr>
+                          <th scope="col">Nombre</th>
+                          <th scope="col">Cantidad</th>
+                          <th scope="col">Total ($)</th>
+                          <!-- <th scope="col"> ELIMINAR INSUMO RELACIONADO </th>  -->
+                        </tr>
+                      </thead>
+                      <tbody *ngIf="!!supplies && !!units">
+                        <tr *ngFor="let i of product.supplies" class="supply-row">
+                          <td>{{ filterSupply(i.idSupply).name }}</td>
+                          <td>{{ i.quantity }} {{filterUnit(i.idSupply).name}}</td>
+                          <td class="align-text-right">{{ filterSupply(i.idSupply).amount * i.quantity }}</td>
+                          <!-- <td style="text-align: center;">
+                              <a (click)="delete(i.id)">
+                                <i class="fa fa-trash-o" style="font-size: 1.7em;"></i>
+                              </a>
+                            </td> -->
+                        </tr>
+                      </tbody>
+                      <tfoot>
+                        <tr>
+                          <td></td>
+                          <td></td>
+                          <td class="strong align-text-right" *ngIf="!!product && !!supplies && !!units && !!product.supplies">
+                            {{ totalSupplyPrice() | currency:'$':true:'2.0-0' }} </td>
+                        </tr>
+                      </tfoot>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row buttons">
+            <button type="button" class="btn btn-primary" (click)="actualizar()">Actualizar</button>
+            <button type="button" class="btn btn-light" routerLink="/admin/productos">Cancelar</button>
+          </div>
+        </div>
+      </div>
+    </td>
+  </tr>
 </table>

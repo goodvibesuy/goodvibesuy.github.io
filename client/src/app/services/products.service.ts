@@ -5,7 +5,7 @@ import { catchError, map, tap } from 'rxjs/operators';
 import { Observable } from 'rxjs/Observable';
 import { of } from 'rxjs/observable/of';
 
-import { Product } from '../models/product.model';
+import { Product } from '../../../../datatypes/product';
 import { Result, ResultWithData, ResultCode } from '../../../../datatypes/result'
 
 @Injectable()
@@ -14,7 +14,11 @@ export class ProductsService {
 
 	constructor(private http: HttpClient) {}
 
-	get(): Observable<ResultWithData<Product[]>> {
+	get(id: number): Observable<ResultWithData<Product>> {
+		return this.http.get<ResultWithData<Product>>(this.PRODUCTS_URL + '/' + id);
+	}
+
+	getAll(): Observable<ResultWithData<Product[]>> {
 		return this.http.get<ResultWithData<Product[]>>(this.PRODUCTS_URL);
 	}
 

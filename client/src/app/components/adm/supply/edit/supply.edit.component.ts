@@ -2,8 +2,9 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 // service
 import { SupplyService } from '../../../../services/supply.service';
+// datatypes
+import { Supply } from '../../../../../../../datatypes/supply';
 // models
-import { Supply } from '../../../../models/supply.model';
 import { Unit } from '../../../../models/unit.model';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ImagesService } from '../../../../services/images.service';

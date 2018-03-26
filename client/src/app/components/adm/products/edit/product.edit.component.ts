@@ -4,10 +4,15 @@ import { DomSanitizer } from '@angular/platform-browser';
 // service
 import { ProductsService } from '../../../../services/products.service';
 import { ImagesService } from '../../../../services/images.service';
-// models
-import { Product } from '../../../../models/product.model';
-import { GVFile } from '../../../../models/gvfile.model';
+import { SupplyService } from '../../../../services/supply.service';
+// datatypes
+import { Product } from '../../../../../../../datatypes/product';
+import { Supply } from '../../../../../../../datatypes/supply';
 import { ResultCode } from '../../../../../../../datatypes/result';
+// models
+import { GVFile } from '../../../../models/gvfile.model';
+import { Unit } from '../../../../models/unit.model';
+import _ = require('lodash');
 
 @Component({
 	templateUrl: './product.edit.component.html',
@@ -17,6 +22,8 @@ export class ProductEditComponent implements OnInit, OnDestroy {
 	paramsSub: any;
 
 	private product: Product;
+	private units: Unit[];
+	private supplies: Supply[];
 	private imageFile: GVFile;
 
 	constructor(
@@ -24,22 +31,43 @@ export class ProductEditComponent implements OnInit, OnDestroy {
 		private router: Router,
 		private domSanitizer: DomSanitizer,
 		private productsService: ProductsService,
+		private suppliesService: SupplyService,
 		private imagesService: ImagesService
 	) {}
 
 	ngOnInit() {
 		this.paramsSub = this.activatedRoute.params.subscribe(
 			params => {
-				this.productsService.get().subscribe(res => {
+				this.productsService.get(params['id']).subscribe(res => {
 					if (res.result == ResultCode.Error) {
 						// TODO: handle error
 					} else {
-						this.product = res.data.find(s => s.id == params['id']);
+						this.product = res.data;
 					}
 				});
 			},
-			// TODO: handle error
-			error => {}
+			err => {
+				// TODO: handle error
+				console.error(err);
+			}
+		);
+		this.suppliesService.getLatestPrices().subscribe(
+			s => {
+				this.supplies = s;
+			},
+			err => {
+				// TODO: handle error
+				console.error(err);
+			}
+		);
+		this.suppliesService.getUnits().subscribe(
+			u => {
+				this.units = u;
+			},
+			err => {
+				// TODO: handle error
+				console.error(err);
+			}
 		);
 	}
 
@@ -83,5 +111,20 @@ export class ProductEditComponent implements OnInit, OnDestroy {
 			this.imageFile = file;
 			this.product.path_image = this.product.id + '_' + this.imageFile.name;
 		}
-	}
+    }
+    
+    filterSupply(idSupply: number): Supply {
+        return this.supplies.find( s => s.id == idSupply);
+    }
+
+    filterUnit(idSupply: number): Unit{
+        return this.units.find(u=> u.id == this.filterSupply(idSupply).unit);
+    }
+
+    totalSupplyPrice() : number {
+        return _.chain(this.product.supplies)
+                .map(s => s.quantity * ( this.filterSupply(s.idSupply).amount))
+                .sum()
+                .value();
+    }
 }

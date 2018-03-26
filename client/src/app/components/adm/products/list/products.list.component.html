@@ -13,11 +13,11 @@
                 </tr>
             </thead>
             <tbody>
-                <tr *ngFor="let i of products">
+                <tr *ngFor="let i of products" class="product-row" (click)="onProductClick(i.id)">
                     <td>
-                        <a href="{{'images/productos/'+ i.path_image}}" target="_blank">
+                        <!-- <a href="{{'images/productos/'+ i.path_image}}" target="_blank"> -->
                             <img src="{{'images/productos/'+ getSmallImage(i.path_image)}}"  class="small_list_image" />
-                        </a>
+                        <!-- </a> -->
                     </td>
                     <td>{{i.name}}</td>
                     <td style="text-align: center;">

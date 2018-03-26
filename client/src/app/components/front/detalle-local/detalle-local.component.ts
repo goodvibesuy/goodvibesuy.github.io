@@ -5,7 +5,7 @@ import { ActivatedRoute, ParamMap } from '@angular/router';
 import { PointOfSaleService } from '../../../services/point-of-sale.service';
 import { ProductsService } from '../../../services/products.service';
 import { ViewingService } from '../../../services/viewing.service';
-import { Product } from '../../../models/product.model';
+import { Product } from '../../../../../../datatypes/product';
 import { PointOfSale } from '../../../models/pointofsale.model';
 
 @Component({
@@ -41,7 +41,7 @@ export class DetalleLocalComponent implements OnInit {
 	}
 
 	getProducts(): void {
-		this.productService.get().subscribe(response => {
+		this.productService.getAll().subscribe(response => {
 			this.products = response.data;
 			this.productsToSend = new Array();
 			for (let p of this.products) {

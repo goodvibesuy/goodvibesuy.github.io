@@ -5,8 +5,11 @@ import { catchError, map, tap } from 'rxjs/operators';
 import { Observable } from 'rxjs/Observable';
 import { of } from 'rxjs/observable/of';
 
-import { Supply } from '../models/supply.model';
+// datatypes
+import { Supply } from '../../../../datatypes/supply';
+
 import { Unit } from '../models/unit.model';
+import _ = require('lodash');
 
 @Injectable()
 export class SupplyService {
@@ -23,6 +26,19 @@ export class SupplyService {
     getAll(): Observable<Supply[]> {
 		return this.http.get<Supply[]>(this.suppliesUrl + "/getAll").pipe(map(r => (<any>r).data));
 	}
+
+    getLatestPrices(): Observable<Supply[]> {
+        return this.get().pipe(map(r => _.chain(r)
+                                        .groupBy(s => s.id)
+                                        .map(g =>
+                                            _.chain(g)
+                                                .sortBy(s => s.date)
+                                                .last()
+                                                .value()
+                                        )
+                                        .sortBy(m => m.name.toLowerCase())
+                                        .value()));
+    }
 
 	getUnits(): Observable<Unit[]> {
 		return this.http.get<Unit[]>(this.unitsUrl).pipe(map(r => (<any>r).data));

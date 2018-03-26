@@ -1,0 +1,56 @@
+.content_row{
+    min-height: 230px;        
+}
+
+.image_container{
+    position: relative;
+}
+
+.small_edit_image img,
+.small_edit_image .img_stream{
+    max-width: 40px;
+    max-height: 100px;
+}
+
+.small_edit_image_action {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    height: 100px;
+    max-width: 40px;
+    max-height: 100px;
+    opacity: 0;
+}
+
+.small_edit_image_action:hover  {
+    opacity: 0.8;
+    background-color: white;
+    padding-top: 20px;
+    padding-left: 10px;
+}
+
+/deep/ .small_edit_image_action:hover  label {
+    background-color: #d6d6d6;
+    opacity: 1;
+}
+
+.strong{
+    font-weight: bold;
+}
+.align-text-right{
+    text-align: right;
+}
+
+.detalles-insumo{
+    font-size: 13px;
+    border: 0;
+    padding: 0;
+}
+
+.supplies-col{
+    margin-top: 30px;
+}
+
+.buttons{
+    margin-top: 20px;
+}

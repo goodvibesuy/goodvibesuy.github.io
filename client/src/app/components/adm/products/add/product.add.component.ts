@@ -4,8 +4,9 @@ import { DomSanitizer } from '@angular/platform-browser';
 // service
 import { ProductsService } from '../../../../services/products.service';
 import { ImagesService } from '../../../../services/images.service';
+// datatypes
+import { Product } from '../../../../../../../datatypes/product';
 // models
-import { Product } from '../../../../models/product.model';
 import { GVFile } from '../../../../models/gvfile.model';
 import { AlertService } from '../../../../modules/alert/alert.service';
 
