@@ -31,7 +31,8 @@
 
               <a data-toggle="collapse" href="#collapseDetailes" role="button" aria-expanded="false" aria-controls="collapseDetailes">
                 <span *ngIf="!!product && !!supplies && !!units && !!product.supplies">
-                  Costo en insumos: {{ totalSupplyPrice() | currency:'$':true:'2.0-0' }}
+                  Costo en insumos: {{ totalSupplyPrice() | currency:'$':'code':'1.0-0' }}
+                  <!-- "code", "symbol" or "symbol-narrow" -->
                 </span>
               </a>
               <div class="collapse" id="collapseDetailes">
@@ -43,19 +44,19 @@
                           <th scope="col">Nombre</th>
                           <th scope="col">Cantidad</th>
                           <th scope="col">Total ($)</th>
-                          <!-- <th scope="col"> ELIMINAR INSUMO RELACIONADO </th>  -->
+                          <th scope="col"></th> 
                         </tr>
                       </thead>
                       <tbody *ngIf="!!supplies && !!units">
-                        <tr *ngFor="let i of product.supplies" class="supply-row">
+                        <tr *ngFor="let i of sortSupplies(product.supplies)" class="supply-row">
                           <td>{{ filterSupply(i.idSupply).name }}</td>
                           <td>{{ i.quantity }} {{filterUnit(i.idSupply).name}}</td>
                           <td class="align-text-right">{{ filterSupply(i.idSupply).amount * i.quantity }}</td>
-                          <!-- <td style="text-align: center;">
-                              <a (click)="delete(i.id)">
-                                <i class="fa fa-trash-o" style="font-size: 1.7em;"></i>
+                          <td style="text-align: center;">
+                              <a (click)="deleteSupply(i.idSupply)" class="delete-product-supply">
+                                <i class="fa fa-trash-o" style="font-size: 1.2em;"></i>
                               </a>
-                            </td> -->
+                            </td>
                         </tr>
                       </tbody>
                       <tfoot>

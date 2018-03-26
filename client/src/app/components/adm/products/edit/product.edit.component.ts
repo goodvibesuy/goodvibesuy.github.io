@@ -13,6 +13,7 @@ import { ResultCode } from '../../../../../../../datatypes/result';
 import { GVFile } from '../../../../models/gvfile.model';
 import { Unit } from '../../../../models/unit.model';
 import _ = require('lodash');
+import { ProductSupply } from '../../../../../../../datatypes/productSupply';
 
 @Component({
 	templateUrl: './product.edit.component.html',
@@ -38,13 +39,7 @@ export class ProductEditComponent implements OnInit, OnDestroy {
 	ngOnInit() {
 		this.paramsSub = this.activatedRoute.params.subscribe(
 			params => {
-				this.productsService.get(params['id']).subscribe(res => {
-					if (res.result == ResultCode.Error) {
-						// TODO: handle error
-					} else {
-						this.product = res.data;
-					}
-				});
+				this.loadProduct(params['id']);
 			},
 			err => {
 				// TODO: handle error
@@ -73,6 +68,16 @@ export class ProductEditComponent implements OnInit, OnDestroy {
 
 	ngOnDestroy() {
 		this.paramsSub.unsubscribe();
+	}
+
+	loadProduct(id: number): void {
+		this.productsService.get(id).subscribe(res => {
+			if (res.result == ResultCode.Error) {
+				// TODO: handle error
+			} else {
+				this.product = res.data;
+			}
+		});
 	}
 
 	actualizar() {
@@ -111,20 +116,38 @@ export class ProductEditComponent implements OnInit, OnDestroy {
 			this.imageFile = file;
 			this.product.path_image = this.product.id + '_' + this.imageFile.name;
 		}
-    }
-    
-    filterSupply(idSupply: number): Supply {
-        return this.supplies.find( s => s.id == idSupply);
-    }
+	}
 
-    filterUnit(idSupply: number): Unit{
-        return this.units.find(u=> u.id == this.filterSupply(idSupply).unit);
-    }
-
-    totalSupplyPrice() : number {
-        return _.chain(this.product.supplies)
-                .map(s => s.quantity * ( this.filterSupply(s.idSupply).amount))
-                .sum()
+    sortSupplies(supplies: ProductSupply[]): ProductSupply[]{
+        return _.chain(supplies)
+                .sortBy(ps => _.find(this.supplies, s => s.id == ps.idSupply).name)
                 .value();
     }
+
+	filterSupply(idSupply: number): Supply {
+		return this.supplies.find(s => s.id == idSupply);
+	}
+
+	filterUnit(idSupply: number): Unit {
+		return this.units.find(u => u.id == this.filterSupply(idSupply).unit);
+	}
+
+	totalSupplyPrice(): number {
+		return _.chain(this.product.supplies)
+			.map(s => s.quantity * this.filterSupply(s.idSupply).amount)
+			.sum()
+			.value();
+	}
+
+	deleteSupply(idSupply: number) {
+		this.productsService.deleteSupply(this.product.id, idSupply).subscribe(
+			d => {
+				this.loadProduct(this.product.id);
+			},
+			err => {
+				// error handling
+				console.log(err);
+			}
+		);
+	}
 }

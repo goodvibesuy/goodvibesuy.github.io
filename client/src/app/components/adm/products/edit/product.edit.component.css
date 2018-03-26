@@ -54,3 +54,7 @@
 .buttons{
     margin-top: 20px;
 }
+
+.delete-product-supply {
+    cursor: pointer;
+}

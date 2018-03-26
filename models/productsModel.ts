@@ -166,7 +166,35 @@ class ProductModel {
                 });
             }
         });		
-	}
+    }
+
+    deleteSupply(productId: number, supplyId: number, dbName: string, callback: (r: Result) => void): void {
+        var pool = clientDBController.getUserConnection(dbName);
+        pool.getConnection(function (err: any, con: any) {
+            if (err) {
+                con.release();
+                console.error(err);
+            } else {
+                con.query('DELETE FROM product_supply WHERE idproduct = ? AND idSupply = ? ', [productId, supplyId], function(err: any, result: any) {
+                    con.release();
+                    if (!!err) {
+                        // TODO: log error -> common/errorHandling.ts
+                        // errorHandler.log(err);
+                        let errorMessage = "No se puede borrar el registro.";
+                        callback({
+                            result: ResultCode.Error,
+                            message: errorMessage
+                        });
+                    } else {
+                        callback({
+                            result: ResultCode.OK,
+                            message: 'OK'
+                        });
+                    }
+                });
+            }
+        });		
+    }
 }
 
 module.exports = new ProductModel();

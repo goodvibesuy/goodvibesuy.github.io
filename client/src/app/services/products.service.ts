@@ -6,7 +6,7 @@ import { Observable } from 'rxjs/Observable';
 import { of } from 'rxjs/observable/of';
 
 import { Product } from '../../../../datatypes/product';
-import { Result, ResultWithData, ResultCode } from '../../../../datatypes/result'
+import { Result, ResultWithData, ResultCode } from '../../../../datatypes/result';
 
 @Injectable()
 export class ProductsService {
@@ -32,6 +32,10 @@ export class ProductsService {
 
 	delete(id: number): Observable<Result> {
 		return this.http.delete<Result>(this.PRODUCTS_URL + '/' + id);
+	}
+
+	deleteSupply(idProduct: number, idSupply: number): Observable<Result> {
+		return this.http.delete<Result>(this.PRODUCTS_URL + '/' + idProduct + '/supplies/' + idSupply);
 	}
 
 	/**
