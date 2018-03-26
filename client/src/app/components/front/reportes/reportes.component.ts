@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { KpiService } from '../../../services/kpi.service';
 import { SupplyService } from '../../../services/supply.service';
-import { Supply } from '../../../models/supply.model';
+import { Supply } from '../../../../../../datatypes/supply';
 import { AmChartsService, AmChart } from "@amcharts/amcharts3-angular";
 
 @Component({
