@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { NgModule, LOCALE_ID } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, ParamMap } from '@angular/router';
@@ -115,7 +115,8 @@ import { KpiService } from './services/kpi.service';
 		HeaderService,
         TokenService,
         AlertService,
-        KpiService
+        KpiService,
+        { provide: LOCALE_ID, useValue: 'es-UY' }
 	],
 	bootstrap: [AppComponent]
 })
