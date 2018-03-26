@@ -37,16 +37,21 @@ INSERT INTO `unit` (`id`, `name`) VALUES
 --
 
 INSERT INTO `supply` (`id`, `name`, `unit`, `path_image`) VALUES
-(1, 'Edulcorate', 2, 'edulcorante.png'),
-(2, 'Limones', 1, 'limones.png'),
-(3, 'Naranja', 1, 'naranja.png'),
-(4, 'Pepino', 1, 'pepino.png'),
-(5, 'Manzana Roja', 1, 'manzana-roja.png'),
-(6, 'Pera', 1, 'pera.png'),
-(7, 'Espinaca', 1, 'espinaca.png'),
-(8, 'Apio', 1, 'apio.png'),
-(9, 'Kale', 1, 'kale.png'),
-(10, 'Manzana verde', 1, 'manzana-verde.png');
+(1, 'Apio', 1, 'apio.png'),
+(2, 'Edulcorate', 2, 'edulcorante.png'),
+(3, 'Espinaca', 1, 'espinaca.png'),
+(4, 'Jengibre', 1, 'jengibre.png'),
+(5, 'Kale', 1, 'kale.png'),
+(6, 'Lima', 1, 'lima.png'),
+(7, 'Limon', 1, 'limones.png'),
+(8, 'Manzana Roja', 1, 'manzana-roja.png'),
+(9, 'Manzana Verde', 1, 'manzana-verde.png'),
+(10, 'Menta', 1, 'menta.png'),
+(11, 'Naranja', 1, 'naranja.png'),
+(12, 'Pepino', 1, 'pepino.png'),
+(13, 'Pera', 1, 'pera.png'),
+(14, 'Remolacha', 1, 'remolacha.png'),
+(15, 'Zanahoria', 1, 'zanahoria.png');
 
 -- --------------------------------------------------------
 
@@ -55,17 +60,21 @@ INSERT INTO `supply` (`id`, `name`, `unit`, `path_image`) VALUES
 --
 
 INSERT INTO `supplyPrice` (`date`, `amount`, `idSupply`) VALUES
-('2018-02-10 21:00:43', 100, 2),
-('2018-02-10 21:02:24', 150, 3),
-('2018-02-10 21:22:57', 170, 3),
-('2018-02-11 08:48:50', 70, 4),
+('2018-02-10 21:00:43', 31, 1),
+('2018-02-10 21:02:24', 49, 2),
+('2018-02-10 21:22:57', 42, 3),
+('2018-02-11 08:48:50', 16, 4),
 ('2018-02-11 08:51:05', 75, 5),
-('2018-02-11 08:51:46', 120, 6),
-('2018-02-11 08:52:30', 150, 7),
-('2018-02-11 08:54:04', 200, 8),
-('2018-02-11 08:54:37', 120, 9),
-('2018-02-11 08:55:25', 75, 5),
-('2018-02-11 08:56:30', 100, 10);
+('2018-02-11 08:51:46', 24, 6),
+('2018-02-11 08:52:30', 34, 7),
+('2018-02-11 08:54:04', 31, 8),
+('2018-02-11 08:54:37', 37, 9),
+('2018-02-11 08:55:25', 75, 10),
+('2018-02-11 08:56:30', 40, 11),
+('2018-02-11 08:56:30', 60, 12),
+('2018-02-11 08:56:30', 57, 13),
+('2018-02-11 08:56:30', 46, 14),
+('2018-02-11 08:56:30', 50, 15);
 
 -- --------------------------------------------------------
 
@@ -88,7 +97,36 @@ INSERT INTO `product` (`id`, `name`, `path_image`) VALUES
 (1, 'Paradise Dream', 'paradiseDream.png'),
 (2, 'Citra Trip', 'citraTrip.png'),
 (3, 'Sun Kiss', 'sunKiss.png'),
-(4, 'Green Life', 'greenLife.png');
+(4, 'Green Life', 'greenLife.png'),
+(5, 'Yellow Rolling', 'yellowRolling.png');
+
+-- --------------------------------------------------------
+
+--
+-- Volcar la base de datos para la tabla `product_supply`
+--
+
+
+INSERT INTO `product_supply` (`idproduct`, `idSupply`, `quantity`) VALUES
+(1, 8, 1),
+(1, 9, 1),
+(2, 6, 2),
+(2, 11, 1),
+(3, 8, 1),
+(3, 11, 1),
+(3, 12, 1),
+(3, 14, 1),
+(3, 15, 1),
+(4, 1, 1),
+(4, 3, 1),
+(4, 5, 1),
+(4, 9, 1),
+(4, 12, 1),
+(4, 13, 1),
+(5, 4, 1),
+(5, 7, 1),
+(5, 10, 1),
+(5, 13, 1);
 
 -- --------------------------------------------------------
 
