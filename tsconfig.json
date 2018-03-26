@@ -56,8 +56,8 @@
 		// "experimentalDecorators": true,        /* Enables experimental support for ES7 decorators. */
 		// "emitDecoratorMetadata": true,         /* Enables experimental support for emitting type metadata for decorators. */
 	},
-	"include": ["./models/*.ts", "./datatypes/*.ts", "./routes/*.ts","./controllers/*.ts"],
-	"exclude": ["./node_modules", "client", "client_old", "messages", "build", "bd", "routes", "views", "motionLibJS"]
+	"include": ["./models/*.ts", "./datatypes/*.ts", "./routes/*.ts","./controllers/*.ts", "motionLibJS/serverSide/acl"],
+	"exclude": ["./node_modules", "client", "client_old", "messages", "build", "bd", "routes", "views"]
 
 	// {
 	//     "compilerOptions": {

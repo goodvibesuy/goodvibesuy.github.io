@@ -15,7 +15,7 @@ var PointsOfSaleModel = /** @class */ (function () {
                 console.error(err);
             }
             else {
-                con.query('SELECT * FROM pointofsale', function (err, result) {
+                con.query('SELECT * FROM pointofsale ORDER BY name ASC', function (err, result) {
                     con.release();
                     if (!!err) {
                         callBack({
@@ -182,5 +182,5 @@ var PointsOfSaleModel = /** @class */ (function () {
     };
     return PointsOfSaleModel;
 }());
-module.exports = new PointsOfSaleModel();
+exports.PointsOfSaleModel = PointsOfSaleModel;
 //# sourceMappingURL=pointsOfSaleModel.js.map

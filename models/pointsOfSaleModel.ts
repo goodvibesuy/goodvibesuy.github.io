@@ -5,7 +5,7 @@ var clientDBController = require('../bd/clientConnectionsBD');
 
 var mysql = require('mysql');
 
-class PointsOfSaleModel {
+export class PointsOfSaleModel {
     constructor() {
     }
 
@@ -16,7 +16,7 @@ class PointsOfSaleModel {
                 con.release();
                 console.error(err);
             } else {
-                con.query('SELECT * FROM pointofsale', function (err: any, result: any[]) {
+                con.query('SELECT * FROM pointofsale ORDER BY name ASC', function (err: any, result: any[]) {
                     con.release();
                     if (!!err) {
                         callBack({
@@ -180,5 +180,3 @@ class PointsOfSaleModel {
         });        
     }
 }
-
-module.exports = new PointsOfSaleModel();

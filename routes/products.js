@@ -1,146 +1,17 @@
 var express = require('express');
 var router = express.Router();
-var productModel = require('../models/productsModel');
-var acl = require('../motionLibJS/serverSide/acl/motionACL');
-var masterDBController = require('../bd/masterConnectionsBD');
-var messages = require('../messages/messages');
+var productsController = require('../controllers/productsController');
 
-router.get('/', function(req, res, next) {
-	masterDBController.verifySession(req.headers['user'], req.headers['tokenid'], req.headers['accountid'], function(
-		err,
-		authError,
-		response,
-		dbName
-	) {
-		acl.getACL().isAllowed(req.headers['user'], 'routes', 'get', function(err, response) {
-			if (response) {
-				productModel.getAll(dbName, function(result) {
-					res.send(result);
-				});
-			} else {
-				res.send({ result: -1, message: messages.PERMISSION_DENIED });
-			}
-		});
-	});
-});
+router.get('/', productsController.getAll);
 
-router.get('/:id', function(req, res, next) {
-	masterDBController.verifySession(req.headers['user'], req.headers['tokenid'], req.headers['accountid'], function(
-		err,
-		authError,
-		response,
-		dbName
-	) {
-		acl.getACL().isAllowed(req.headers['user'], 'routes', 'get', function(err, response) {
-			if (response) {
-				productModel.get(req.params.id, dbName, function(result) {
-					res.send(result);
-				});
-			} else {
-				res.send({ result: -1, message: messages.PERMISSION_DENIED });
-			}
-		});
-	});
-});
+router.get('/:id', productsController.get);
 
-router.post('/', function(req, res, next) {
-	masterDBController.verifySession(req.headers['user'], req.headers['tokenid'], req.headers['accountid'], function(
-		err,
-		authError,
-		response,
-		dbName
-	) {
-		acl.getACL().isAllowed(req.headers['user'], 'routes', 'get', function(err, response) {
-			if (response) {
-				productModel.add(req.body.name, req.body.path_image, dbName, function(result) {
-					if (result.result == 1) {
-						// ResultCode.OK
-						res.send(result);
-					} else {
-						// TODO: Error handling ?
-						res.send(result);
-					}
-				});
-			} else {
-				res.send({ result: -1, message: messages.PERMISSION_DENIED });
-			}
-		});
-	});
-});
+router.post('/', productsController.add);
 
-router.put('/:id', function(req, res, next) {
-	masterDBController.verifySession(req.headers['user'], req.headers['tokenid'], req.headers['accountid'], function(
-		err,
-		authError,
-		response,
-		dbName
-	) {
-		acl.getACL().isAllowed(req.headers['user'], 'routes', 'get', function(err, response) {
-			if (response) {
-				productModel.update(req.params.id, req.body.name, req.body.path_image, dbName, function(result) {
-					if (result.result == 1) {
-						// ResultCode.OK
-						res.send(result);
-					} else {
-						// TODO: Error handling ?
-						res.send(result);
-					}
-				});
-			} else {
-				res.send({ result: -1, message: messages.PERMISSION_DENIED });
-			}
-		});
-	});
-});
+router.put('/:id', productsController.update);
 
-router.delete('/:id', function(req, res, next) {
-	masterDBController.verifySession(req.headers['user'], req.headers['tokenid'], req.headers['accountid'], function(
-		err,
-		authError,
-		response,
-		dbName
-	) {
-		acl.getACL().isAllowed(req.headers['user'], 'routes', 'get', function(err, response) {
-			if (response) {
-				productModel.delete(req.params.id, dbName, function(result) {
-					if (result.result == 1) {
-						// ResultCode.OK
-						res.send(result);
-					} else {
-						// TODO: Error handling ?
-						res.send(result);
-					}
-				});
-			} else {
-				res.send({ result: -1, message: messages.PERMISSION_DENIED });
-			}
-		});
-	});
-});
+router.delete('/:id', productsController.delete);
 
-router.delete('/:idProduct/supplies/:idSupply', function(req, res, next) {
-	masterDBController.verifySession(req.headers['user'], req.headers['tokenid'], req.headers['accountid'], function(
-		err,
-		authError,
-		response,
-		dbName
-	) {
-		acl.getACL().isAllowed(req.headers['user'], 'routes', 'get', function(err, response) {
-			if (response) {
-				productModel.deleteSupply(req.params.idProduct, req.params.idSupply, dbName, function(result) {
-					if (result.result == 1) {
-						// ResultCode.OK
-						res.send(result);
-					} else {
-						// TODO: Error handling ?
-						res.send(result);
-					}
-				});
-			} else {
-				res.send({ result: -1, message: messages.PERMISSION_DENIED });
-			}
-		});
-	});
-});
+router.delete('/:idProduct/supplies/:idSupply', productsController.removeSupply);
 
 module.exports = router;

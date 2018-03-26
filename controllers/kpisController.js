@@ -17,26 +17,27 @@ var KPIController = /** @class */ (function (_super) {
     function KPIController() {
         var _this = _super.call(this) || this;
         _this.suppliesPrices = function (req, res) {
-            _this.verifyAccess(req, res, function (dbName) {
+            _this.verifyAccess(req, res, _this.resource, function (dbName) {
                 kpisModel.suppliesPrices(req.params.supplyId, dbName, function (response) {
                     res.send(response);
                 });
             });
         };
         _this.kpiDeliveryReturnEmpty = function (req, res) {
-            _this.verifyAccess(req, res, function (dbName) {
+            _this.verifyAccess(req, res, _this.resource, function (dbName) {
                 kpisModel.kpiDeliveryReturnEmpty(dbName, function (response) {
                     res.send(response);
                 });
             });
         };
         _this.sales = function (req, res) {
-            _this.verifyAccess(req, res, function (dbName) {
+            _this.verifyAccess(req, res, _this.resource, function (dbName) {
                 kpisModel.sales(function (response) {
                     res.send(response);
                 });
             });
         };
+        _this.resource = "kpi";
         console.log("KPI Controller");
         return _this;
     }

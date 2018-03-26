@@ -12,23 +12,23 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var masterDBController = require('../bd/masterConnectionsBD');
 var acl = require('../motionLibJS/serverSide/acl/motionACL');
-var userModel_1 = require("../models/userModel");
+var viewingsModel = require('../models/viewingsModel');
 var mainController_1 = require("./mainController");
-var UserController = /** @class */ (function (_super) {
-    __extends(UserController, _super);
-    function UserController() {
+var ViewingsController = /** @class */ (function (_super) {
+    __extends(ViewingsController, _super);
+    function ViewingsController() {
         var _this = _super.call(this) || this;
-        _this.getAll = function (req, res) {
-            _this.verifyAccess(req, res, "users", function (dbName) {
-                _this.userModel.users(dbName, function (result) {
+        _this.add = function (req, res) {
+            _this.verifyAccess(req, res, "viewing", function (dbName) {
+                var data = req.body.data;
+                viewingsModel.addVisit(req.headers['user'], req.body.idPointOfSale, data, dbName, function (result) {
                     res.send(result);
                 });
             });
         };
-        _this.userModel = new userModel_1.UserModel();
         return _this;
     }
-    return UserController;
+    return ViewingsController;
 }(mainController_1.MainController));
-module.exports = new UserController();
-//# sourceMappingURL=usersController.js.map
+module.exports = new ViewingsController();
+//# sourceMappingURL=viewingsController.js.map

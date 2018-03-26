@@ -174,7 +174,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   `rol_id` int(11) NOT NULL,
   `id_user_master` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=6 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -186,9 +186,11 @@ CREATE TABLE IF NOT EXISTS `viewing` (
   `idviewing` int(11) NOT NULL AUTO_INCREMENT,
   `date` datetime DEFAULT NULL,
   `idpointofsail` int(11) DEFAULT NULL,
+  `idUser` int(11) DEFAULT NULL,
   PRIMARY KEY (`idviewing`),
-  KEY `idpointofsail_idx` (`idpointofsail`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=13 ;
+  KEY `idpointofsail_idx` (`idpointofsail`),
+  KEY `idUser_idx2` (`idUser`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 

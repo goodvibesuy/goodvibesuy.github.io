@@ -20,82 +20,83 @@ var RoutesController = /** @class */ (function (_super) {
     function RoutesController() {
         var _this = _super.call(this) || this;
         _this.getAll = function (req, res) {
-            _this.verifyAccess(req, res, function (dbName) {
+            _this.verifyAccess(req, res, _this.resource, function (dbName) {
                 travelModel.getAll(dbName, function (result) {
                     res.send(result);
                 });
             });
         };
         _this.add = function (req, res) {
-            _this.verifyAccess(req, res, function (dbName) {
+            _this.verifyAccess(req, res, _this.resource, function (dbName) {
                 travelModel.add(req.body.name, dbName, function (result) {
                     res.send(result);
                 });
             });
         };
         _this.update = function (req, res) {
-            _this.verifyAccess(req, res, function (dbName) {
+            _this.verifyAccess(req, res, _this.resource, function (dbName) {
                 travelModel.update(req.body.name, req.body.idroute, dbName, function (result) {
                     res.send(result);
                 });
             });
         };
         _this.getPointsOfSales = function (req, res) {
-            _this.verifyAccess(req, res, function (dbName) {
+            _this.verifyAccess(req, res, _this.resource, function (dbName) {
                 travelModel.getPointsOfSales(req.params.idRoute, dbName, function (result) {
                     res.send(result);
                 });
             });
         };
         _this.getUsers = function (req, res) {
-            _this.verifyAccess(req, res, function (dbName) {
+            _this.verifyAccess(req, res, _this.resource, function (dbName) {
                 travelModel.getUers(req.params.idRoute, dbName, function (result) {
                     res.send(result);
                 });
             });
         };
         _this.addPointOfSale = function (req, res) {
-            _this.verifyAccess(req, res, function (dbName) {
+            _this.verifyAccess(req, res, _this.resource, function (dbName) {
                 travelModel.addPointOfSale(req.body.idRoute, req.body.idPointOfSale, dbName, function (result) {
                     res.send(result);
                 });
             });
         };
         _this.addUser = function (req, res) {
-            _this.verifyAccess(req, res, function (dbName) {
+            _this.verifyAccess(req, res, _this.resource, function (dbName) {
                 travelModel.addUser(req.body.idRoute, req.body.idUser, req.body.date, dbName, function (result) {
                     res.send(result);
                 });
             });
         };
         _this.removePointOfSale = function (req, res) {
-            _this.verifyAccess(req, res, function (dbName) {
+            _this.verifyAccess(req, res, _this.resource, function (dbName) {
                 travelModel.removePointOfSale(req.params.idRoute, req.params.idPointOfSale, dbName, function (result) {
                     res.send(result);
                 });
             });
         };
         _this.removeUser = function (req, res) {
-            _this.verifyAccess(req, res, function (dbName) {
+            _this.verifyAccess(req, res, _this.resource, function (dbName) {
                 travelModel.removeUser(req.params.idRoute, req.params.idUser, dbName, function (result) {
                     res.send(result);
                 });
             });
         };
         _this.delete = function (req, res) {
-            _this.verifyAccess(req, res, function (dbName) {
+            _this.verifyAccess(req, res, _this.resource, function (dbName) {
                 travelModel.delete(req.params.id, dbName, function (result) {
                     res.send(result);
                 });
             });
         };
         _this.reorderPointOfSale = function (req, res) {
-            _this.verifyAccess(req, res, function (dbName) {
+            _this.verifyAccess(req, res, _this.resource, function (dbName) {
                 travelModel.reorderPointOfSale(req.body.idRoute, req.body.idPointOfSale, req.body.position, req.body.newPosition, dbName, function (result) {
                     res.send(result);
                 });
             });
         };
+        _this.resource = "routes";
         return _this;
     }
     return RoutesController;

@@ -45,6 +45,9 @@ export class PosComponent implements OnInit {
 	) {}
 
 	ngOnInit() {
+        if(this.POSMarker !== undefined){
+            this.POSMarker.setMap(null);
+        }
 		this.loadPointsOfSale();
 		this.typeOfView = 1;
 		var mapProp = {
@@ -53,7 +56,8 @@ export class PosComponent implements OnInit {
 			mapTypeId: google.maps.MapTypeId.ROADMAP
 		};
 		this.map = new google.maps.Map(this.gmapElement.nativeElement, mapProp);
-	}
+    }
+    
 
 	marcar() {
 		this.geocodeAddress(this.geocoder, this.map);
@@ -91,9 +95,13 @@ export class PosComponent implements OnInit {
 		var thisPrincipal = this;
 		geocoder.geocode({ address: address }, function(results, status) {
 			if (status === 'OK') {
-				resultsMap.setCenter(results[0].geometry.location);
+                if(thisPrincipal.POSMarker !== undefined){
+                    thisPrincipal.POSMarker.setMap(null);
+                }
+                resultsMap.setCenter(results[0].geometry.location);                
 				thisPrincipal.POSMarker = new google.maps.Marker({
-					map: resultsMap,
+                    map: resultsMap,
+                    draggable: true,
 					position: results[0].geometry.location
 				});
 			} else {
@@ -145,7 +153,10 @@ export class PosComponent implements OnInit {
 		this.POSName = '';
 		this.POSAddress = '';
 		this.POSTel = '';
-		this.imagePath = '';
+        this.imagePath = '';
+        if(this.POSMarker !== undefined){
+            this.POSMarker.setMap(null);
+        }
 	}
 
 	cancelEdit() {

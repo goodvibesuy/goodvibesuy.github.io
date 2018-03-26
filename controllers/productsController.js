@@ -10,59 +10,60 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
+var masterDBController = require('../bd/masterConnectionsBD');
+var acl = require('../motionLibJS/serverSide/acl/motionACL');
+var productModel = require('../models/productsModel');
 var mainController_1 = require("./mainController");
-var pointsOfSaleModel_1 = require("../models/pointsOfSaleModel");
-var PointOfSaleController = /** @class */ (function (_super) {
-    __extends(PointOfSaleController, _super);
-    function PointOfSaleController() {
+var ProductsController = /** @class */ (function (_super) {
+    __extends(ProductsController, _super);
+    function ProductsController() {
         var _this = _super.call(this) || this;
         _this.getAll = function (req, res) {
             _this.verifyAccess(req, res, _this.resource, function (dbName) {
-                _this.pointsOfSaleModel.getAll(dbName, function (result) {
+                productModel.getAll(dbName, function (result) {
                     res.send(result);
                 });
             });
         };
-        _this.getPointOfSale = function (req, res) {
+        _this.get = function (req, res) {
             _this.verifyAccess(req, res, _this.resource, function (dbName) {
-                _this.pointsOfSaleModel.getPointOfSale(req.params.idPOS, dbName, function (result) {
-                    res.send(result);
-                });
-            });
-        };
-        _this.getFilteredByName = function (req, res) {
-            _this.verifyAccess(req, res, _this.resource, function (dbName) {
-                _this.pointsOfSaleModel.getFilteredByName(req.params.filterName, dbName, function (result) {
-                    res.send(result);
-                });
-            });
-        };
-        _this.delete = function (req, res) {
-            _this.verifyAccess(req, res, _this.resource, function (dbName) {
-                _this.pointsOfSaleModel.delete(req.params.id, dbName, function (result) {
+                productModel.get(req.params.id, dbName, function (result) {
                     res.send(result);
                 });
             });
         };
         _this.add = function (req, res) {
             _this.verifyAccess(req, res, _this.resource, function (dbName) {
-                _this.pointsOfSaleModel.add(req.body.name, req.body.address, req.body.tel, req.body.image, req.body.coords, dbName, function (result) {
+                productModel.add(req.body.name, req.body.path_image, dbName, function (result) {
                     res.send(result);
                 });
             });
         };
         _this.update = function (req, res) {
             _this.verifyAccess(req, res, _this.resource, function (dbName) {
-                _this.pointsOfSaleModel.update(req.body.id, req.body.name, req.body.address, req.body.tel, req.body.image, req.body.coord, dbName, function (result) {
+                productModel.update(req.params.id, req.body.name, req.body.path_image, dbName, function (result) {
                     res.send(result);
                 });
             });
         };
-        _this.resource = "pos";
-        _this.pointsOfSaleModel = new pointsOfSaleModel_1.PointsOfSaleModel();
+        _this.delete = function (req, res) {
+            _this.verifyAccess(req, res, _this.resource, function (dbName) {
+                productModel.delete(req.params.id, dbName, function (result) {
+                    res.send(result);
+                });
+            });
+        };
+        _this.removeSupply = function (req, res) {
+            _this.verifyAccess(req, res, _this.resource, function (dbName) {
+                productModel.deleteSupply(req.params.idProduct, req.params.idSupply, dbName, function (result) {
+                    res.send(result);
+                });
+            });
+        };
+        _this.resource = "products";
         return _this;
     }
-    return PointOfSaleController;
+    return ProductsController;
 }(mainController_1.MainController));
-module.exports = new PointOfSaleController();
-//# sourceMappingURL=pointOfSaleController.js.map
+module.exports = new ProductsController();
+//# sourceMappingURL=productsController.js.map

@@ -5,12 +5,14 @@ import {MainController} from './mainController';
 
 class SuppliesController extends MainController{
 
+    private resource:string;
     constructor(){        
         super();
+        this.resource = "supplies";
     }
 
     public getAll = (req:any,res:any): void => { 
-        this.verifyAccess(req,res,
+        this.verifyAccess(req,res,this.resource,
             (dbName:string) =>{
                 suppliesModel.getAll(dbName,function(result:any) {
                     res.send(result);
@@ -20,7 +22,7 @@ class SuppliesController extends MainController{
     }
 
     public get = (req:any,res:any): void => { 
-        this.verifyAccess(req,res,
+        this.verifyAccess(req,res,this.resource,
             (dbName:string) =>{
                 suppliesModel.supplies(dbName,function(result:any) {
                     res.send(result);
@@ -30,7 +32,7 @@ class SuppliesController extends MainController{
     }
 
     public addSupply = (req:any,res:any): void => { 
-        this.verifyAccess(req,res,
+        this.verifyAccess(req,res,this.resource,
             (dbName:string) =>{
                 suppliesModel.addSupply(req.body.name, req.body.unit, req.body.amount, req.body.path_image,dbName, function(result:any) {
                     res.send(result);
@@ -40,7 +42,7 @@ class SuppliesController extends MainController{
     }
 
     public suppliesByProduct = (req:any,res:any): void => { 
-        this.verifyAccess(req,res,
+        this.verifyAccess(req,res,this.resource,
             (dbName:string) =>{
                 suppliesModel.suppliesByProduct(req.body.idProduct, dbName,function(result:any) {
                     res.send(result);
@@ -50,7 +52,7 @@ class SuppliesController extends MainController{
     }
 
     public updateSupply = (req:any,res:any): void => { 
-        this.verifyAccess(req,res,
+        this.verifyAccess(req,res,this.resource,
             (dbName:string) =>{
                 suppliesModel.updateSupply(
                     req.params.id,
@@ -68,7 +70,7 @@ class SuppliesController extends MainController{
     }
 
     public deleteSupply = (req:any,res:any): void => { 
-        this.verifyAccess(req,res,
+        this.verifyAccess(req,res,this.resource,
             (dbName:string) =>{
                 suppliesModel.deleteSupply(req.params.id,dbName, function(result:any) {
                     res.send(result);

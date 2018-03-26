@@ -18,9 +18,9 @@ var kpis = require('./routes/kpis');
 var route = require('./routes/route');
 var images = require('./routes/images');
 
-var acl = require('./motionLibJS/serverSide/acl/motionACL');
+var NewACL = require('./motionLibJS/serverSide/acl/newACL');
 var masterDBController = require('./bd/masterConnectionsBD');
-acl.setUp(masterDBController.dbMasterConnection.connection);
+NewACL.setUp(masterDBController.dbMasterConnection.connection);
 
 
 var app = express();
