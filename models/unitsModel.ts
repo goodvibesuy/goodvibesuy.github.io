@@ -2,7 +2,7 @@ import { Result, ResultWithData, ResultCode } from '../datatypes/result';
 var masterDBController = require('../bd/masterConnectionsBD');
 var clientDBController = require('../bd/clientConnectionsBD');
 
-class UnitsModel {
+export class UnitsModel {
     constructor() {
     }
 
@@ -100,5 +100,3 @@ class UnitsModel {
         });
     }
 }
-
-module.exports = new UnitsModel();

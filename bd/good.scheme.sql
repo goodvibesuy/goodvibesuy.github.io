@@ -113,11 +113,37 @@ CREATE TABLE IF NOT EXISTS `product_supply` (
 -- Estructura de tabla para la tabla `route`
 --
 
+CREATE TABLE IF NOT EXISTS `templateRoute` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `route_pointofsale`
+--
+
+CREATE TABLE IF NOT EXISTS `templateRoute_pointofsale` (
+  `idTemplateRoute` int(11) DEFAULT NULL,
+  `idpointofsale` int(11) DEFAULT NULL,
+  `position` int(11) NOT NULL,
+  FOREIGN KEY (idTemplateRoute) REFERENCES templateRoute(id),
+  FOREIGN KEY (idpointofsale) REFERENCES pointofsale(id) 
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `route`
+--
+
 CREATE TABLE IF NOT EXISTS `route` (
   `idroute` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`idroute`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=11 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -130,7 +156,7 @@ CREATE TABLE IF NOT EXISTS `route_pointofsale` (
   `idpointofsale` int(11) DEFAULT NULL,
   `position` int(11) NOT NULL,
   KEY `idTravel_idx` (`idroute`),
-  KEY `idPointofsale_idx` (`idpointofsale`)
+  KEY `idPointofsale_idx` (`idpointofsale`) 
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -188,8 +214,8 @@ CREATE TABLE IF NOT EXISTS `viewing` (
   `idpointofsail` int(11) DEFAULT NULL,
   `idUser` int(11) DEFAULT NULL,
   PRIMARY KEY (`idviewing`),
-  KEY `idpointofsail_idx` (`idpointofsail`),
-  KEY `idUser_idx2` (`idUser`)
+  FOREIGN KEY ('idUser') REFERENCES users('id'),
+  KEY `idpointofsail_idx` (`idpointofsail`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------

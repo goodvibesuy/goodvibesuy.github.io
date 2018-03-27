@@ -95,5 +95,5 @@ var UnitsModel = /** @class */ (function () {
     };
     return UnitsModel;
 }());
-module.exports = new UnitsModel();
+exports.UnitsModel = UnitsModel;
 //# sourceMappingURL=unitsModel.js.map
