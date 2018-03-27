@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-var routesController = require('../controllers/routesController');
+var routesController = require('../controllers/templatesRoutesController');
 
 router.get('/', routesController.getAll);
 

@@ -64,6 +64,7 @@ import { AlertService } from './modules/alert/alert.service';
 // Interceptor
 import { InterceptorModule } from './auth/token.interceptor';
 import { KpiService } from './services/kpi.service';
+import { TemplatesRoutesComponent } from './components/adm/templates-routes/templates-routes.component';
 
 @NgModule({
 	declarations: [
@@ -90,7 +91,8 @@ import { KpiService } from './services/kpi.service';
 		// shared
 		FilePicker,
 		LoginComponent,
-        PosComponent
+        PosComponent,
+        TemplatesRoutesComponent
 	],
 	imports: [
 		BrowserModule,

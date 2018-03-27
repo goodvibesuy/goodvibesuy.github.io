@@ -16,6 +16,7 @@ var products = require('./routes/products');
 var viewings = require('./routes/viewings');
 var kpis = require('./routes/kpis');
 var route = require('./routes/route');
+var templateRoute = require('./routes/templateRoute');
 var images = require('./routes/images');
 
 var NewACL = require('./motionLibJS/serverSide/acl/newACL');
@@ -54,6 +55,7 @@ app.use('/api/products', products);
 app.use('/api/viewings', viewings);
 app.use('/api/kpis', kpis);
 app.use('/api/route', route);
+app.use('/api/templateRoute', templateRoute);
 app.use('/api/images', images);
 
 // catch 404 and forward to error handler
