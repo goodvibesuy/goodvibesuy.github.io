@@ -2,20 +2,27 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { PointOfSale } from '../models/pointofsale.model';
 import { Observable } from 'rxjs/Observable';
+import { catchError, map, tap } from 'rxjs/operators';
 
 @Injectable()
 export class TemplatesRoutesService {
-
-
-    routeUrl: string = '/api/route';
+    routeUrl: string = '/api/templateRoute';
     pointOfSaleUrl: string = '/api/pointOfSail';
     constructor(private http: HttpClient) { }
 
-    /*
-    get(): Observable<any> {
-        return this.http.get<Route[]>(this.routeUrl);
+    getAll(): Observable<any> {
+        return this.http.get<any[]>(this.routeUrl);
     }
 
+    add(name:string): Observable<any> {
+        return this.http.post(this.routeUrl, { name});
+    }    
+
+    delete(id: number): Observable<any> {
+        return this.http.delete(this.routeUrl + '/' + id);
+    }
+
+    /*
     agregar(route: Route): Observable<any> {
         return this.http.post(this.routeUrl, { idroute: route.idroute, name: route.name });
     }
@@ -42,20 +49,18 @@ export class TemplatesRoutesService {
         return this.http.get<PointOfSale[]>(this.routeUrl + '/pointofsales/' + idRoute).pipe(map(r => (<any>r).data));
     }
 
-    /*
-	addPointOfSale(rPOS: RoutePointOfSale): Observable<any> {
+    
+	addPointOfSale(idTemplateRoute:number,idPointOfSale:number): Observable<any> {
 		return this.http.post(this.routeUrl + '/addPointOfSale', {
-			idRoute: rPOS.idRoute,
-			idPointOfSale: rPOS.idPointOfSale
+			idTemplateRoute:idTemplateRoute,
+			idPointOfSale:idPointOfSale
 		});
 	}
-*/
+
 
     remove(idRoute: number, idPointOfSale: number): Observable<any> {
         return this.http.delete(this.routeUrl + '/removePointOfSale/' + idRoute + '/' + idPointOfSale);
     }
 
-    delete(id: number): Observable<any> {
-        return this.http.delete(this.routeUrl + '/' + id);
-    }
+    
 }

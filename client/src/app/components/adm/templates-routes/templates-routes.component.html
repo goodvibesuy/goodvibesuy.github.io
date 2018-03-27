@@ -1,5 +1,71 @@
-<div>
-    <button class="btn btn-circle add fa fa-plus" routerLink="agregar"></button>
+<div *ngIf="typeOfView == 3">
+    <form novalidate>
+        <div class="card" style="margin:15px;">
+            <div class="card-header">
+                <b>Editar recorrido</b>
+            </div>
+            <div class="card-body">
+                <div class="form-group">
+                    <span class="input-group-addon">Nombre:</span>
+                    <input type="text" class="form-control" name="name" [(ngModel)]="routeTemplateName">
+                </div>
+                <button type="button" class="btn btn-primary" (click)="nuevoTemplate()">Actualizar</button>
+                <button type="button" class="btn btn-light" routerLink="/recorridos">Cancelar</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<div class="card" style="margin:15px;" [hidden]="typeOfView !== 2" *ngIf="templateRoute">
+    <div class="card-header">
+        <b>Editar Template</b>
+    </div>
+    <div class="card-body">
+        <div class="form-group">
+            <span class="input-group-addon">Nombre:</span>
+            <input type="text" class="form-control" name="name" [(ngModel)]="templateRoute.name">
+        </div>
+        <div class="card">
+            <div class="card-header">
+                Puntos de venta
+            </div>
+            <div class="card-body">
+                <table class="table">
+                    <tr>
+                        <td style="width: 15px;"></td>
+                        <td>Nombre</td>
+                        <td>Eliminar</td>
+                    </tr>
+                    <tr *ngFor="let i of pointsOfSaleRoute">
+                        <td>
+                            <span class="fa fa-arrow-circle-up" (click)="changeOrder(i.id,i.position, i.position - 1)" *ngIf="i.position !== 1"></span>
+                            <span class="fa fa-arrow-circle-down" (click)="changeOrder(i.id,i.position,i.position + 1)" *ngIf="i.position !== pointsOfSaleRoute.length"></span>
+                        </td>
+                        <td>{{i.name}}</td>
+                        <td>
+                            <a (click)="remove(i.id)">
+                                <i class="fa fa-trash-o" style="font-size: 1.7em;"></i>
+                            </a>
+                        </td>
+                    </tr>
+                </table>
+                <span class="input-group-addon">Punto de venta:</span>
+                <select class="form-control" [(ngModel)]="POS">
+                    <option *ngFor="let pos of pointsOfSale" [ngValue]="pos.id">{{pos.name}}</option>
+                </select>
+                <button type="button" class="btn btn-primary" (click)="agregarPuntoDeVenta()">Agregar</button>
+            </div>
+        </div>
+    </div>
+    <div class="card-footer footer">
+        <button type="button" class="btn btn-danger" (click)="cancelEdit()">Cancelar</button>
+        <button type="button" class="btn btn-primary" (click)="actualizar()">Actualizar</button>
+    </div>
+</div>
+
+
+<div *ngIf="typeOfView == 1">
+    <button class="btn btn-circle add fa fa-plus" (click)="addForm()"></button>
     <table class="table table-striped">
         <thead class="thead-dark">
             <tr>
@@ -9,15 +75,15 @@
             </tr>
         </thead>
         <tbody>
-            <tr *ngFor="let i of routes">
+            <tr *ngFor="let i of templates">
                 <td>{{i.name}}</td>
                 <td style="text-align: center;">
-                    <a [routerLink]="['edit', i.idroute]">
+                    <a (click)="editForm(i.id)">
                         <i class="fa fa-edit" style="font-size: 1.7em;"></i>
                     </a>
                 </td>
                 <td>
-                    <a (click)="delete(i.idroute)">
+                    <a (click)="delete(i.id)">
                         <i class="fa fa-trash-o" style="font-size: 1.7em;"></i>
                     </a>
                 </td>

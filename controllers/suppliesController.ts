@@ -1,5 +1,3 @@
-var masterDBController = require('../bd/masterConnectionsBD');
-var acl = require('../motionLibJS/serverSide/acl/motionACL');
 var suppliesModel = require('../models/suppliesModel');
 import {MainController} from './mainController';
 

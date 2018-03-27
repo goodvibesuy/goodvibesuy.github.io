@@ -65,6 +65,7 @@ import { AlertService } from './modules/alert/alert.service';
 import { InterceptorModule } from './auth/token.interceptor';
 import { KpiService } from './services/kpi.service';
 import { TemplatesRoutesComponent } from './components/adm/templates-routes/templates-routes.component';
+import { TemplatesRoutesService } from './services/templates-routes.service';
 
 @NgModule({
 	declarations: [
@@ -108,7 +109,8 @@ import { TemplatesRoutesComponent } from './components/adm/templates-routes/temp
 	providers: [
 		SupplyService,
 		ProductsService,
-		RouteService,
+        RouteService,
+        TemplatesRoutesService,
 		UsersService,
 		ImagesService,
 		AuthenticateService,

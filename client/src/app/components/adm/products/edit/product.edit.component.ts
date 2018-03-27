@@ -12,7 +12,7 @@ import { ResultCode } from '../../../../../../../datatypes/result';
 // models
 import { GVFile } from '../../../../models/gvfile.model';
 import { Unit } from '../../../../models/unit.model';
-import _ = require('lodash');
+//import _ = require('lodash');
 import { ProductSupply } from '../../../../../../../datatypes/productSupply';
 
 @Component({
@@ -119,9 +119,12 @@ export class ProductEditComponent implements OnInit, OnDestroy {
 	}
 
     sortSupplies(supplies: ProductSupply[]): ProductSupply[]{
+        return null;
+        /*
         return _.chain(supplies)
                 .sortBy(ps => _.find(this.supplies, s => s.id == ps.idSupply).name)
                 .value();
+                */
     }
 
 	filterSupply(idSupply: number): Supply {
@@ -132,12 +135,17 @@ export class ProductEditComponent implements OnInit, OnDestroy {
 		return this.units.find(u => u.id == this.filterSupply(idSupply).unit);
 	}
 
+    totalSupplyPrice(): number {
+		return 0;
+    }
+    /*
 	totalSupplyPrice(): number {
 		return _.chain(this.product.supplies)
 			.map(s => s.quantity * this.filterSupply(s.idSupply).amount)
 			.sum()
 			.value();
-	}
+    }
+    */
 
 	deleteSupply(idSupply: number) {
 		this.productsService.deleteSupply(this.product.id, idSupply).subscribe(

@@ -10,8 +10,6 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var masterDBController = require('../bd/masterConnectionsBD');
-var acl = require('../motionLibJS/serverSide/acl/motionACL');
 var suppliesModel = require('../models/suppliesModel');
 var mainController_1 = require("./mainController");
 var SuppliesController = /** @class */ (function (_super) {

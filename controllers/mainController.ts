@@ -1,7 +1,6 @@
 var masterDBController = require('../bd/masterConnectionsBD');
 var acl = require('../motionLibJS/serverSide/acl/newACL');
 
-
 export class MainController {
     
     constructor() {

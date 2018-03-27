@@ -2,7 +2,7 @@ import { Result, ResultWithData, ResultCode } from '../datatypes/result';
 var masterDBController = require('../bd/masterConnectionsBD');
 var clientDBController = require('../bd/clientConnectionsBD');
 
-class TemplateRoutesModel {
+export class TemplateRoutesModel {
     constructor() {
     }
 
@@ -38,22 +38,24 @@ class TemplateRoutesModel {
         });
     };
 
-    addPointOfSale(idRoute: Number, idPointOfSale: Number, dbName: string, callBack: (r: ResultWithData<any[]>) => void): void {
+    addPointOfSale(idTemplateRoute: Number, idPointOfSale: Number, dbName: string, callBack: (r: ResultWithData<any[]>) => void): void {
         var pool = clientDBController.getUserConnection(dbName);
         pool.getConnection(function (err: any, con: any) {
             if (err) {
                 con.release();
                 console.error(err);
             } else {
-                con.query("SELECT position AS last FROM templateRoute_pointofsale WHERE idroute = ? order by position desc limit 1", [idRoute], function (err: any, result: any) {
-                    if (err) throw err;
-                    var lastPointOfSale = result.length == 0 ? 0 : result[0].last;
-                    con.query("INSERT INTO templateRoute_pointofsale (idroute,idpointofsale,position) VALUES (?,?,?)", [idRoute, idPointOfSale, lastPointOfSale + 1], function (err: any, result: any) {
-                        con.release();
+                con.query("SELECT position AS last FROM templateRoute_pointofsale WHERE idTemplateRoute = ? order by position desc limit 1",
+                    [idTemplateRoute], function (err: any, result: any) {
                         if (err) throw err;
-                        callBack({ result: 1, message: "OK", data: result });
+                        var lastPointOfSale = result.length == 0 ? 0 : result[0].last;
+                        con.query("INSERT INTO templateRoute_pointofsale (idTemplateRoute,idpointofsale,position) VALUES (?,?,?)",
+                            [idTemplateRoute, idPointOfSale, lastPointOfSale + 1], function (err: any, result: any) {
+                                con.release();
+                                if (err) throw err;
+                                callBack({ result: 1, message: "OK", data: result });
+                            });
                     });
-                });
             }
         });
     };
@@ -108,7 +110,7 @@ class TemplateRoutesModel {
                 con.release();
                 console.error(err);
             } else {
-                con.query("SELECT * FROM templateRoute_pointofsale INNER JOIN pointofsale as POS ON POS.id = idpointofsale WHERE idroute = ? ORDER BY position ASC", [idRoute],
+                con.query("SELECT * FROM templateRoute_pointofsale INNER JOIN pointofsale as POS ON POS.id = idpointofsale WHERE idTemplateRoute = ? ORDER BY position ASC", [idRoute],
                     function (err: any, result: any) {
                         con.release();
                         if (err) throw err;
@@ -143,14 +145,14 @@ class TemplateRoutesModel {
                 con.release();
                 console.error(err);
             } else {
-                con.query("DELETE FROM templateRoute WHERE idRoute = ?", [idRoute], function (err: any, result: any) {
+                con.query("DELETE FROM templateRoute WHERE id = ?", [idRoute], function (err: any, result: any) {
                     con.release();
 
                     if (!!err) {
                         // TODO: log error -> common/errorHandling.ts
                         // errorHandler.log(err);
                         console.error(err);
-                        let errorMessage = "";
+                        let errorMessage = err.code;
                         if (err.code === "ER_ROW_IS_REFERENCED_2") {
                             errorMessage = "No se puede borrar el registro, porque es utilizado en otra parte del sistema";
                         }
@@ -170,5 +172,3 @@ class TemplateRoutesModel {
         });
     };
 }
-
-module.exports = new TemplateRoutesModel();

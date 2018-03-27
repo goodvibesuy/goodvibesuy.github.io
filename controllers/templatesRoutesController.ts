@@ -1,19 +1,20 @@
 //https://github.com/Microsoft/TypeScript/wiki/'this'-in-TypeScript
-var masterDBController = require('../bd/masterConnectionsBD');
-var travelModel = require('../models/templatesRouteModel');
 import { MainController } from './mainController';
+import {TemplateRoutesModel} from '../models/templatesRouteModel'
 
 class TemplatesRoutesController extends MainController {
     private resource:string;
+    private templateRouteModel:TemplateRoutesModel;
     constructor() {
         super();
+        this.templateRouteModel = new TemplateRoutesModel();
         this.resource = "routes";
     }
 
     public getAll = (req: any, res: any): void => {
         this.verifyAccess(req, res,this.resource,
             (dbName: string) => {
-                travelModel.getAll(dbName, function (result: any) {
+                this.templateRouteModel.getAll(dbName, function (result: any) {
                     res.send(result);
                 });
             }
@@ -23,7 +24,7 @@ class TemplatesRoutesController extends MainController {
     public add = (req: any, res: any): void => {
         this.verifyAccess(req, res,this.resource,
             (dbName: string) => {
-                travelModel.add(req.body.name, dbName, function (result: any) {
+                this.templateRouteModel.add(req.body.name, dbName, function (result: any) {
                     res.send(result);
                 });
             }
@@ -33,7 +34,7 @@ class TemplatesRoutesController extends MainController {
     public update = (req: any, res: any): void => {
         this.verifyAccess(req, res,this.resource,
             (dbName: string) => {
-                travelModel.update(req.body.name, req.body.idroute, dbName, function (result: any) {
+                this.templateRouteModel.update(req.body.name, req.body.idroute, dbName, function (result: any) {
                     res.send(result);
                 });
             }
@@ -43,7 +44,7 @@ class TemplatesRoutesController extends MainController {
     public getPointsOfSales = (req: any, res: any): void => {
         this.verifyAccess(req, res,this.resource,
             (dbName: string) => {
-                travelModel.getPointsOfSales(req.params.idRoute, dbName, function (result: any) {
+                this.templateRouteModel.getPointsOfSales(req.params.idRoute, dbName, function (result: any) {
                     res.send(result);
                 });
             }
@@ -53,7 +54,7 @@ class TemplatesRoutesController extends MainController {
     public addPointOfSale = (req: any, res: any): void => {
         this.verifyAccess(req, res,this.resource,
             (dbName: string) => {
-                travelModel.addPointOfSale(req.body.idRoute, req.body.idPointOfSale, dbName, function (result: any) {
+                this.templateRouteModel.addPointOfSale(req.body.idRoute, req.body.idPointOfSale, dbName, function (result: any) {
                     res.send(result);
                 });
             }
@@ -63,7 +64,7 @@ class TemplatesRoutesController extends MainController {
     public removePointOfSale = (req: any, res: any): void => {
         this.verifyAccess(req, res,this.resource,
             (dbName: string) => {
-                travelModel.removePointOfSale(req.params.idRoute, req.params.idPointOfSale, dbName, function (result: any) {
+                this.templateRouteModel.removePointOfSale(req.params.idRoute, req.params.idPointOfSale, dbName, function (result: any) {
                     res.send(result);
                 });
             }
@@ -73,7 +74,7 @@ class TemplatesRoutesController extends MainController {
     public delete = (req: any, res: any): void => {
         this.verifyAccess(req, res,this.resource,
             (dbName: string) => {
-                travelModel.delete(req.params.id,dbName, function (result:any) {
+                this.templateRouteModel.delete(req.params.id,dbName, function (result:any) {
                     res.send(result);
                 });
             }
@@ -83,7 +84,7 @@ class TemplatesRoutesController extends MainController {
     public reorderPointOfSale = (req: any, res: any): void => {
         this.verifyAccess(req, res,this.resource,
             (dbName: string) => {
-                travelModel.reorderPointOfSale(req.body.idRoute, req.body.idPointOfSale, req.body.position, req.body.newPosition, dbName,
+                this.templateRouteModel.reorderPointOfSale(req.body.idRoute, req.body.idPointOfSale, req.body.position, req.body.newPosition, dbName,
                     function (result: any) {
                         res.send(result);
                     });

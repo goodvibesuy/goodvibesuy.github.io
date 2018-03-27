@@ -22,6 +22,7 @@ import { ProductEditComponent } from './components/adm/products/edit/product.edi
 import { ProductAddComponent } from './components/adm/products/add/product.add.component';
 import { LoginComponent } from './components/login/login.component';
 import { PosComponent } from './components/adm/pos/pos.component';
+import { TemplatesRoutesComponent } from './components/adm/templates-routes/templates-routes.component';
 
 const routes: Routes = [
     {
@@ -74,6 +75,10 @@ const routes: Routes = [
 	{
 		path: 'mapa',
 		component: MapaComponent
+    },
+    {
+		path: 'plantilla-recorridos',
+		component: TemplatesRoutesComponent
 	},
 	{
 		path: 'detalle-local/:id',

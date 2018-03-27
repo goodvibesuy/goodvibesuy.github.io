@@ -9,7 +9,7 @@ import { of } from 'rxjs/observable/of';
 import { Supply } from '../../../../datatypes/supply';
 
 import { Unit } from '../models/unit.model';
-import _ = require('lodash');
+//var _ = require('lodash');
 
 @Injectable()
 export class SupplyService {
@@ -28,6 +28,8 @@ export class SupplyService {
 	}
 
     getLatestPrices(): Observable<Supply[]> {
+        return this.get().pipe(map(r => (<any>r).data));
+        /*
         return this.get().pipe(map(r => _.chain(r)
                                         .groupBy(s => s.id)
                                         .map(g =>
@@ -38,6 +40,7 @@ export class SupplyService {
                                         )
                                         .sortBy(m => m.name.toLowerCase())
                                         .value()));
+                                        */
     }
 
 	getUnits(): Observable<Unit[]> {
