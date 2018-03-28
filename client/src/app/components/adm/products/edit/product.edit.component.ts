@@ -131,18 +131,13 @@ export class ProductEditComponent implements OnInit, OnDestroy {
 	filterUnit(idSupply: number): Unit {
 		return this.units.find(u => u.id == this.filterSupply(idSupply).unit);
 	}
-
-	totalSupplyPrice(): number {
-		return 0;
-	}
-	/*
+	
 	totalSupplyPrice(): number {
 		return _.chain(this.product.supplies)
 			.map(s => s.quantity * this.filterSupply(s.idSupply).amount)
 			.sum()
 			.value();
     }
-    */
 
 	deleteSupply(idSupply: number) {
 		this.productsService.deleteSupply(this.product.id, idSupply).subscribe(
