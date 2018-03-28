@@ -42,7 +42,7 @@ var TemplateRoutesModel = /** @class */ (function () {
         });
     };
     ;
-    TemplateRoutesModel.prototype.addPointOfSale = function (idRoute, idPointOfSale, dbName, callBack) {
+    TemplateRoutesModel.prototype.addPointOfSale = function (idTemplateRoute, idPointOfSale, dbName, callBack) {
         var pool = clientDBController.getUserConnection(dbName);
         pool.getConnection(function (err, con) {
             if (err) {
@@ -50,11 +50,11 @@ var TemplateRoutesModel = /** @class */ (function () {
                 console.error(err);
             }
             else {
-                con.query("SELECT position AS last FROM templateRoute_pointofsale WHERE idroute = ? order by position desc limit 1", [idRoute], function (err, result) {
+                con.query("SELECT position AS last FROM templateRoute_pointofsale WHERE idTemplateRoute = ? order by position desc limit 1", [idTemplateRoute], function (err, result) {
                     if (err)
                         throw err;
                     var lastPointOfSale = result.length == 0 ? 0 : result[0].last;
-                    con.query("INSERT INTO templateRoute_pointofsale (idroute,idpointofsale,position) VALUES (?,?,?)", [idRoute, idPointOfSale, lastPointOfSale + 1], function (err, result) {
+                    con.query("INSERT INTO templateRoute_pointofsale (idTemplateRoute,idpointofsale,position) VALUES (?,?,?)", [idTemplateRoute, idPointOfSale, lastPointOfSale + 1], function (err, result) {
                         con.release();
                         if (err)
                             throw err;

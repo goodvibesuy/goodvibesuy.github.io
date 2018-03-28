@@ -44,7 +44,7 @@ class TemplatesRoutesController extends MainController {
     public getPointsOfSales = (req: any, res: any): void => {
         this.verifyAccess(req, res,this.resource,
             (dbName: string) => {
-                this.templateRouteModel.getPointsOfSales(req.params.idRoute, dbName, function (result: any) {
+                this.templateRouteModel.getPointsOfSales(req.params.idTemplateRoute, dbName, function (result: any) {
                     res.send(result);
                 });
             }
@@ -54,7 +54,7 @@ class TemplatesRoutesController extends MainController {
     public addPointOfSale = (req: any, res: any): void => {
         this.verifyAccess(req, res,this.resource,
             (dbName: string) => {
-                this.templateRouteModel.addPointOfSale(req.body.idRoute, req.body.idPointOfSale, dbName, function (result: any) {
+                this.templateRouteModel.addPointOfSale(req.body.idTemplateRoute, req.body.idPointOfSale, dbName, function (result: any) {
                     res.send(result);
                 });
             }

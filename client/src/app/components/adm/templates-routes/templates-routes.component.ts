@@ -86,6 +86,7 @@ export class TemplatesRoutesComponent implements OnInit {
     }
 
     agregarPuntoDeVenta() {
+        console.log(this.templateRoute.id, this.POS.id);
 		this.templateRouteService.addPointOfSale(this.templateRoute.id, this.POS.id).subscribe(data => {
 			this.getPointOfSalesRoute();
 		});

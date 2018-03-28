@@ -40,14 +40,14 @@ var TemplatesRoutesController = /** @class */ (function (_super) {
         };
         _this.getPointsOfSales = function (req, res) {
             _this.verifyAccess(req, res, _this.resource, function (dbName) {
-                _this.templateRouteModel.getPointsOfSales(req.params.idRoute, dbName, function (result) {
+                _this.templateRouteModel.getPointsOfSales(req.params.idTemplateRoute, dbName, function (result) {
                     res.send(result);
                 });
             });
         };
         _this.addPointOfSale = function (req, res) {
             _this.verifyAccess(req, res, _this.resource, function (dbName) {
-                _this.templateRouteModel.addPointOfSale(req.body.idRoute, req.body.idPointOfSale, dbName, function (result) {
+                _this.templateRouteModel.addPointOfSale(req.body.idTemplateRoute, req.body.idPointOfSale, dbName, function (result) {
                     res.send(result);
                 });
             });

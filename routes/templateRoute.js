@@ -10,7 +10,7 @@ router.put('/', routesController.update);
 
 router.delete('/:id', routesController.delete);
 
-router.get('/pointofsales/:idRoute', routesController.getPointsOfSales);
+router.get('/pointofsales/:idTemplateRoute', routesController.getPointsOfSales);
 
 router.post('/addPointOfSale', routesController.addPointOfSale);
 

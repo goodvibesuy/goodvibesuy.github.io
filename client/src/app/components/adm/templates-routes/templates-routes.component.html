@@ -51,7 +51,7 @@
                 </table>
                 <span class="input-group-addon">Punto de venta:</span>
                 <select class="form-control" [(ngModel)]="POS">
-                    <option *ngFor="let pos of pointsOfSale" [ngValue]="pos.id">{{pos.name}}</option>
+                    <option *ngFor="let pos of pointsOfSale" [ngValue]="pos">{{pos.name}}</option>
                 </select>
                 <button type="button" class="btn btn-primary" (click)="agregarPuntoDeVenta()">Agregar</button>
             </div>

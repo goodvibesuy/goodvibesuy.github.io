@@ -60,7 +60,5 @@ export class TemplatesRoutesService {
 
     remove(idRoute: number, idPointOfSale: number): Observable<any> {
         return this.http.delete(this.routeUrl + '/removePointOfSale/' + idRoute + '/' + idPointOfSale);
-    }
-
-    
+    }    
 }
