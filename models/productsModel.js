@@ -1,10 +1,14 @@
 "use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
+    result["default"] = mod;
+    return result;
 }
 Object.defineProperty(exports, "__esModule", { value: true });
 var result_1 = require("../datatypes/result");
-var lodash_1 = __importDefault(require("lodash"));
+var _ = __importStar(require("lodash"));
 var masterDBController = require('../bd/masterConnectionsBD');
 var clientDBController = require('../bd/clientConnectionsBD');
 var ProductModel = /** @class */ (function () {
@@ -37,7 +41,7 @@ var ProductModel = /** @class */ (function () {
                             }
                             else {
                                 var product = productResultQry[0];
-                                product.supplies = lodash_1.default.map(suppliesResultQry, function (s) {
+                                product.supplies = _.map(suppliesResultQry, function (s) {
                                     return {
                                         idProduct: s.idproduct,
                                         idSupply: s.idSupply,

@@ -21,14 +21,21 @@ export class PosComponent implements OnInit {
 	private POSEditName: string;
 	private POSEditAddress: string;
 	private POSEditTel: string;
-	private POSEditCoord: google.maps.LatLng;
+    private POSEditCoord: google.maps.LatLng;
+    private POSEditContactName: string;
+    private POSEditRUT: string;
+    private POSEditBusinessName: string;
+
 	private POSName: string;
 	private POSAddress: string;
 	private POSTel: string;
 	//TODO cambiar por un enum
 	private typeOfView: Number;
 	private POSMarker: google.maps.Marker;
-	private POSEditMarker: google.maps.Marker;
+    private POSEditMarker: google.maps.Marker;
+    private POSContactName: string;
+    private POSRUT: string;
+    private POSBusinessName: string;
 
 	@ViewChild('gmap') gmapElement: any;
 	@ViewChild('gmapEdit') gmapEditElement: any;
@@ -119,8 +126,12 @@ export class PosComponent implements OnInit {
 		this.POSEditName = this.POSEdit.name;
 		this.POSEditAddress = this.POSEdit.address;
 		this.POSEditTel = this.POSEdit.tel;
-		this.POSEditCoord = this.POSEdit.coord;
+        this.POSEditCoord = this.POSEdit.coord;
+        this.POSEditBusinessName = this.POSEdit.businessName;
+        this.POSEditContactName = this.POSEdit.contactName;
+        this.POSEditRUT = this.POSEdit.RUT;
 
+        
 		if (this.POSEditCoord !== null && this.POSEditCoord !== undefined) {
 			var mapProp = {
 				center: new google.maps.LatLng(this.POSEditCoord.lat(), this.POSEditCoord.lng()),
@@ -169,7 +180,8 @@ export class PosComponent implements OnInit {
 
 	add() {
 		this.pointOFSaleService
-			.addPointOfSale(this.POSName, this.POSAddress, this.POSTel, this.imagePath, this.POSMarker.getPosition())
+            .addPointOfSale(this.POSName, this.POSBusinessName,this.POSContactName,this.POSRUT,
+                this.POSAddress, this.POSTel, this.imagePath, this.POSMarker.getPosition())
 			.subscribe(response => {
 				if (!!this.imageFile) {
 					this.imagesService
@@ -196,7 +208,10 @@ export class PosComponent implements OnInit {
 		this.pointOFSaleService
 			.updatePointOfSale(
 				this.POSEdit.id,
-				this.POSEditName,
+                this.POSEditName,
+                this.POSEditBusinessName,
+                this.POSEditContactName,
+                this.POSEditRUT,
 				this.POSEditAddress,
 				this.POSEditTel,
 				this.imagePath,

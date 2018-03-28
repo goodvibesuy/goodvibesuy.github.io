@@ -12,8 +12,8 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var masterDBController = require('../bd/masterConnectionsBD');
 var acl = require('../motionLibJS/serverSide/acl/motionACL');
-var viewingsModel = require('../models/viewingsModel');
 var mainController_1 = require("./mainController");
+var viewingsModel_1 = require("../models/viewingsModel");
 var ViewingsController = /** @class */ (function (_super) {
     __extends(ViewingsController, _super);
     function ViewingsController() {
@@ -21,11 +21,12 @@ var ViewingsController = /** @class */ (function (_super) {
         _this.add = function (req, res) {
             _this.verifyAccess(req, res, "viewing", function (dbName) {
                 var data = req.body.data;
-                viewingsModel.addVisit(req.headers['user'], req.body.idPointOfSale, data, dbName, function (result) {
+                _this.viewingsModel.addVisit(req.headers['user'], req.body.idPointOfSale, data, req.body.annotation, dbName, function (result) {
                     res.send(result);
                 });
             });
         };
+        _this.viewingsModel = new viewingsModel_1.ViewingsModel();
         return _this;
     }
     return ViewingsController;

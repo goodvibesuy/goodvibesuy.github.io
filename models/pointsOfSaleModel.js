@@ -88,7 +88,7 @@ var PointsOfSaleModel = /** @class */ (function () {
             }
         });
     };
-    PointsOfSaleModel.prototype.add = function (name, address, tel, image, coord, dbName, callBack) {
+    PointsOfSaleModel.prototype.add = function (name, businessName, contactName, RUT, address, tel, image, coord, dbName, callBack) {
         var pool = clientDBController.getUserConnection(dbName);
         pool.getConnection(function (err, con) {
             if (err) {
@@ -96,7 +96,7 @@ var PointsOfSaleModel = /** @class */ (function () {
                 console.error(err);
             }
             else {
-                con.query("INSERT INTO pointofsale  (name, address, tel, image, coord) VALUES(?,?,?,?,POINT(?,?))", [name, address, tel, image, Number(coord.lat), Number(coord.lng)], function (err, result) {
+                con.query("INSERT INTO pointofsale  (name,businessName,contactName,RUT, address, tel, image, coord) VALUES(?,?,?,?,?,?,?,POINT(?,?))", [name, businessName, contactName, RUT, address, tel, image, Number(coord.lat), Number(coord.lng)], function (err, result) {
                     con.release();
                     if (!!err) {
                         //if (err.code === "ER_DUP_ENTRY") 
@@ -117,7 +117,7 @@ var PointsOfSaleModel = /** @class */ (function () {
             }
         });
     };
-    PointsOfSaleModel.prototype.update = function (id, name, address, tel, image, coord, dbName, callback) {
+    PointsOfSaleModel.prototype.update = function (id, name, businessName, contactName, RUT, address, tel, image, coord, dbName, callback) {
         var pool = clientDBController.getUserConnection(dbName);
         pool.getConnection(function (err, con) {
             if (err) {
@@ -125,7 +125,7 @@ var PointsOfSaleModel = /** @class */ (function () {
                 console.error(err);
             }
             else {
-                con.query("UPDATE pointofsale  SET name = ?, address = ?, tel = ?, image = ?, coord = POINT(?,?) WHERE id = ?", [name, address, tel, image, Number(coord.lat), Number(coord.lng), id], function (err, result) {
+                con.query("UPDATE pointofsale  SET name = ?,businessName = ?,contactName = ?,RUT = ?, address = ?, tel = ?, image = ?, coord = POINT(?,?) WHERE id = ?", [name, businessName, contactName, RUT, address, tel, image, Number(coord.lat), Number(coord.lng), id], function (err, result) {
                     con.release();
                     if (!!err) {
                         // TODO: log error -> common/errorHandling.ts

@@ -5,13 +5,13 @@ import { UserModel } from './userModel';
 var masterDBController = require('../bd/masterConnectionsBD');
 var clientDBController = require('../bd/clientConnectionsBD');
 
-class ViewingsModel {
+export class ViewingsModel {
     private userModel: UserModel;
     constructor() {
         this.userModel = new UserModel();
     }
 
-    addVisit(user: string, idpointofsail: Number, data: any[], dbName: string, callBack: (r: ResultWithData<any[]>) => void): void {
+    addVisit(user: string, idpointofsail: Number, data: any[],annotation:string, dbName: string, callBack: (r: ResultWithData<any[]>) => void): void {
         this.userModel.userByUserName(user, dbName, function (result: ResultWithData<any[]>) {
             if (result.data !== undefined && result.data.length > 0) {
                 var idUser = result.data[0].id;
@@ -22,8 +22,8 @@ class ViewingsModel {
                         con.release();
                     } else {
                         con.query(
-                            "INSERT INTO viewing  (date, idpointofsail,idUser) VALUES(NOW(),?,?)",
-                            [idpointofsail,idUser],
+                            "INSERT INTO viewing  (date, idpointofsail,idUser,annotation) VALUES(NOW(),?,?,?)",
+                            [idpointofsail,idUser,annotation],
                             function (err: any, result: any) {
                                 if (err) {
                                     if (err.code === "ER_DUP_ENTRY") {
@@ -61,5 +61,3 @@ class ViewingsModel {
         });
     };
 }
-
-module.exports = new ViewingsModel();

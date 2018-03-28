@@ -7,7 +7,7 @@ var ViewingsModel = /** @class */ (function () {
     function ViewingsModel() {
         this.userModel = new userModel_1.UserModel();
     }
-    ViewingsModel.prototype.addVisit = function (user, idpointofsail, data, dbName, callBack) {
+    ViewingsModel.prototype.addVisit = function (user, idpointofsail, data, annotation, dbName, callBack) {
         this.userModel.userByUserName(user, dbName, function (result) {
             if (result.data !== undefined && result.data.length > 0) {
                 var idUser = result.data[0].id;
@@ -18,7 +18,7 @@ var ViewingsModel = /** @class */ (function () {
                         con.release();
                     }
                     else {
-                        con.query("INSERT INTO viewing  (date, idpointofsail,idUser) VALUES(NOW(),?,?)", [idpointofsail, idUser], function (err, result) {
+                        con.query("INSERT INTO viewing  (date, idpointofsail,idUser,annotation) VALUES(NOW(),?,?,?)", [idpointofsail, idUser, annotation], function (err, result) {
                             if (err) {
                                 if (err.code === "ER_DUP_ENTRY") {
                                     con.release();
@@ -53,5 +53,5 @@ var ViewingsModel = /** @class */ (function () {
     ;
     return ViewingsModel;
 }());
-module.exports = new ViewingsModel();
+exports.ViewingsModel = ViewingsModel;
 //# sourceMappingURL=viewingsModel.js.map

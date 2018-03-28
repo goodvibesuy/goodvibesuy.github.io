@@ -26,15 +26,36 @@
                         <label>{{product.name}}</label>
                     </div>
                 </div>            
-                <div class="col">
-                    <input type="number" class="detalle-input form-control" [(ngModel)]="product.typeTransaction.delivery" />
+                <div class="col" >
+                    <input type="number" style="margin:auto;" class="detalle-input form-control" [(ngModel)]="product.typeTransaction.delivery" />
                 </div>
                 <div class="col">
-                    <input type="number" class="detalle-input form-control" [(ngModel)]="product.typeTransaction.empty"/>
+                    <input type="number" style="margin:auto;" class="detalle-input form-control" [(ngModel)]="product.typeTransaction.return"/>
                 </div>
                 <div class="col">
-                    <input type="number" class="detalle-input form-control" [(ngModel)]="product.typeTransaction.return"/>
+                    <input type="number" style="margin:auto;" class="detalle-input form-control" [(ngModel)]="product.typeTransaction.empty"/>
                 </div>
+            </div>
+            <div class="row align-items-center">
+                <div class="col"></div>
+                <div class="col">{{quantity("delivery")}}</div>
+                <div class="col">{{quantity("return")}}</div>
+                <div class="col">{{quantity("empty")}}</div>
+            </div>
+            <div>
+                <input type="number" class="form-control" [(ngModel)]="annotation" id="annotation">
+            </div>
+            <div>
+                <b>Detalle de la empresa</b><br/>
+                <b>RUT: </b> {{pointOfSale.RUT}}<br/>
+                <b>Razón Social</b> {{pointOfSale.businessName}}<br/>
+                <b>Contacto</b> {{pointOfSale.contactName}}<br/>                
+                <b>Detalle a facturar</b><br/>
+                <b>Precio unitario: </b>$ {{unitePrice}}<br/>
+                <b>Cantidad de productos vendidos: </b>{{quantity("delivery") - quantity("return")}} <br/>
+                <b>IVA: </b>${{ (quantity("delivery") - quantity("return")) * unitePrice * 0.22   }}<br/>
+                <b>Sub-Total: </b>${{ (quantity("delivery") - quantity("return")) * unitePrice   }}<br/>
+                <b>Total: </b>${{ (quantity("delivery") - quantity("return")) * unitePrice * 1.22  }}
             </div>
         </div>
         <div class="filters flex d-flex justify-content-around content-center content-between">            
