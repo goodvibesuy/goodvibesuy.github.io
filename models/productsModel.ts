@@ -1,7 +1,7 @@
 import { Result, ResultWithData, ResultCode } from '../datatypes/result';
 import { Product } from '../datatypes/product';
 import { ProductSupply } from '../datatypes/productSupply';
-import _ from 'lodash';
+import * as _ from 'lodash';
 
 var masterDBController = require('../bd/masterConnectionsBD');
 var clientDBController = require('../bd/clientConnectionsBD');
