@@ -30,16 +30,17 @@ export class TemplatesRoutesService {
     update(route: Route): Observable<any> {
         return this.http.put<Route[]>(this.routeUrl, route);
     }
+    */
 
     reorderPointOfSale(idRoute: number, idPointOfSale: number, position: number, newPosition: number): Observable<any> {
-        return this.http.put<Route[]>(this.routeUrl + '/reorderPointOfSale', {
+        return this.http.put<any[]>(this.routeUrl + '/reorderPointOfSale', {
             idRoute: idRoute,
             idPointOfSale: idPointOfSale,
             position: position,
             newPosition: newPosition
         });
     }
-    */
+    
 
     getPointsOfSales(): Observable<PointOfSale[]> {
         return this.http.get<PointOfSale[]>(this.pointOfSaleUrl).pipe(map(r => (<any>r).data));

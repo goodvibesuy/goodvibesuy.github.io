@@ -12,15 +12,13 @@ import { RouteService } from '../../../services/route.service';
     styleUrls: ['./templates-routes.component.scss']
 })
 export class TemplatesRoutesComponent implements OnInit {
-
-
     private templateRoute: TemplateRoute;
-    private POS:PointOfSale;
+    private POS: PointOfSale;
     private routeTemplateName: string;
     private pointsOfSaleRoute: PointOfSale[];
     private pointsOfSale: PointOfSale[];
     private templates: any[];
-    private typeOfView: number = 1;    
+    private typeOfView: number = 1;
     constructor(
         private templateRouteService: TemplatesRoutesService,
         private routeService: RouteService,
@@ -87,7 +85,21 @@ export class TemplatesRoutesComponent implements OnInit {
 
     agregarPuntoDeVenta() {
         console.log(this.templateRoute.id, this.POS.id);
-		this.templateRouteService.addPointOfSale(this.templateRoute.id, this.POS.id).subscribe(data => {
+        this.templateRouteService.addPointOfSale(this.templateRoute.id, this.POS.id).subscribe(data => {
+            this.getPointOfSalesRoute();
+        });
+    }
+
+    changeOrder(idpointofSale: number, position: number, newposition: number) {
+        this.templateRouteService
+            .reorderPointOfSale(this.templateRoute.id, idpointofSale, position, newposition)
+            .subscribe(data => {
+                this.getPointOfSalesRoute();
+            });
+    }
+
+    remove(idPointOfSale) {
+		this.templateRouteService.remove(this.templateRoute.id, idPointOfSale).subscribe(data => {
 			this.getPointOfSalesRoute();
 		});
 	}

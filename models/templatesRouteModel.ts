@@ -67,13 +67,13 @@ export class TemplateRoutesModel {
                 con.release();
                 console.error(err);
             } else {
-                con.query("SELECT position FROM templateRoute_pointofsale WHERE idroute = ? AND idpointofsale = ?", [idRoute, idPointOfSale], function (err: any, result: any) {
+                con.query("SELECT position FROM templateRoute_pointofsale WHERE idTemplateRoute = ? AND idpointofsale = ?", [idRoute, idPointOfSale], function (err: any, result: any) {
                     if (err) throw err;
                     var positionPointOfSale = result[0].position;
 
-                    con.query("DELETE FROM templateRoute_pointofsale WHERE idroute = ? AND idpointofsale = ?", [idRoute, idPointOfSale], function (err: any, result: any) {
+                    con.query("DELETE FROM templateRoute_pointofsale WHERE idTemplateRoute = ? AND idpointofsale = ?", [idRoute, idPointOfSale], function (err: any, result: any) {
                         if (err) throw err;
-                        con.query("UPDATE templateRoute_pointofsale SET position = position -1 WHERE idroute = ? AND  position > ?",
+                        con.query("UPDATE templateRoute_pointofsale SET position = position -1 WHERE idTemplateRoute = ? AND  position > ?",
                             [idRoute, positionPointOfSale], function (err: any, result: any) {
                                 con.release();
                                 callBack({ result: 1, message: "OK", data: result });
@@ -91,9 +91,9 @@ export class TemplateRoutesModel {
                 con.release();
                 console.error(err);
             } else {
-                con.query("UPDATE templateRoute_pointofsale SET position = ? WHERE idroute = ? AND position = ?", [position, idRoute, newPosition], function (err: any, result: any) {
+                con.query("UPDATE templateRoute_pointofsale SET position = ? WHERE idTemplateRoute = ? AND position = ?", [position, idRoute, newPosition], function (err: any, result: any) {
                     if (err) throw err;
-                    con.query("UPDATE templateRoute_pointofsale SET position = ? WHERE idroute = ? AND idpointofsale = ?",
+                    con.query("UPDATE templateRoute_pointofsale SET position = ? WHERE idTemplateRoute = ? AND idpointofsale = ?",
                         [newPosition, idRoute, idPointOfSale], function (err: any, result: any) {
                             con.release();
                             callBack({ result: 1, message: "OK", data: result });
