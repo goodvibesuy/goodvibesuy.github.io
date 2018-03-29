@@ -54,7 +54,7 @@
 	border-radius: 20px;
 	margin-top: 10px;
 	margin-bottom: 10px;
-	height: 80px;
+	padding-bottom: 10px;
 	background-color: #e9ecef42;
 	cursor: pointer;
 }
@@ -73,7 +73,7 @@
 	text-align: left;	
 }
 .boxs-lista .lista-info .lista-title{
-	letter-spacing: 5px;
+	/*letter-spacing: 5px;*/
 	font-weight: bold;
 }
 .boxs-lista .lista-info  .lista-info-content label{

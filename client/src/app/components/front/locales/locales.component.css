@@ -1,16 +1,78 @@
-img{
-    max-width: 90px;
-    max-height: 60px;
+img {
+	max-width: 90px;
+	max-height: 60px;
 }
 
-.imageContainer{
-    float: left;
-    margin: 5px;
-    width: 100px;
-    text-align: center;
+.imageContainer {
+	margin: 5px;
+	text-align: center;
 }
 
-.lista-info{
-    float:left;
-    margin-left: 5px;
+.lista-info {
+	margin-left: 5px;
+}
+
+.lista-title {
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.boxs-lista{
+    min-width: 220px;
+}
+
+@media (max-width: 299px) {   
+    .imageContainer {
+		display: none;
+	}
+	.lista-info .lista-title label {
+		font-size: 11px;
+	}
+	.lista-info .lista-info-content label {
+		display: none;
+    }
+    
+    .boxs-lista{
+        margin-top: 3px;
+        margin-bottom: 3;
+        padding-bottom: 0px;
+    }
+}
+    
+@media (min-width: 300px) and (max-width: 479px) {
+	.imageContainer {
+		display: none;
+	}
+
+	.lista-info .lista-title label {
+		font-size: 12px;
+	}
+	.lista-info .lista-info-content label {
+		font-size: 10px;
+	}
+}
+@media (min-width: 480px) and (max-width:767px) {
+	.lista-info .lista-title label {
+		font-size: 13px;
+	}
+	.lista-info .lista-info-content label {
+		font-size: 11px;
+	}
+}
+
+/* Small devices (tablets, 768px and up) */
+@media (min-width: 768px) {
+	.lista-info .lista-title label {
+		font-size: 14px;
+	}
+	.lista-info .lista-info-content label {
+		font-size: 12px;
+	}
+}
+/* tablets/desktops and up ----------- */
+@media (min-width: 992px) {
+}
+/* large desktops and up ----------- */
+@media (min-width: 1200px) {
 }
