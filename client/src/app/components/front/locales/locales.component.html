@@ -2,12 +2,12 @@
     <input type="text" class="form-control" placeholder="Buscar locales..." (keyup)="filterPOS()" [(ngModel)]="filter">
 </div>
 <div class="flex flex-wrap d-flex justify-content-around content-center content-between boxs-container">
-    <div class="boxs-lista border" *ngFor="let pos of pointsOfSale" [routerLink]="['/detalle-local', pos.id]">
-        <div class="imageContainer">
+    <div class="boxs-lista border row inline-block" *ngFor="let pos of pointsOfSale" [routerLink]="['/detalle-local', pos.id]">
+        <div class="imageContainer col-auto">
             <img *ngIf="pos.image !== '' && pos.image !== null" style="width:50px;" src="images/locales/{{pos.image}}" />
             <i *ngIf="pos.image === '' || pos.image === null" class="fa fa-home" style="font-size: 2.0em;"></i>
         </div>
-        <div class="lista-info">
+        <div class="lista-info col col-sm">
             <div class="lista-title">
                 <label>{{pos.name}}</label>
             </div>
