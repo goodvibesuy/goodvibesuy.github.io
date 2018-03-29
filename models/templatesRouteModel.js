@@ -134,7 +134,7 @@ var TemplateRoutesModel = /** @class */ (function () {
                 console.error(err);
             }
             else {
-                con.query("UPDATE templateRoute SET  name = ? WHERE idroute =?", [travelName, idRoute], function (err, result) {
+                con.query("UPDATE templateRoute SET  name = ? WHERE id =?", [travelName, idRoute], function (err, result) {
                     con.release();
                     if (err)
                         throw err;

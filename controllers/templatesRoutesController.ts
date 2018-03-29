@@ -34,7 +34,7 @@ class TemplatesRoutesController extends MainController {
     public update = (req: any, res: any): void => {
         this.verifyAccess(req, res,this.resource,
             (dbName: string) => {
-                this.templateRouteModel.update(req.body.name, req.body.idroute, dbName, function (result: any) {
+                this.templateRouteModel.update(req.body.name, req.body.id, dbName, function (result: any) {
                     res.send(result);
                 });
             }
