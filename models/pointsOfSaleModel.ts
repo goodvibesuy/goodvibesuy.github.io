@@ -87,7 +87,7 @@ export class PointsOfSaleModel {
         });
     }
 
-    add(name: string, businessName:string,contactName:string,RUT:string,
+    add(name: string, businessName:string,contactName:string,RUT:string,group:number,
         address: string, tel: string, image:string, coord: any, dbName: string, callBack: (r: ResultWithData<number>) => void): void {
         var pool = clientDBController.getUserConnection(dbName);
         pool.getConnection(function (err: any, con: any) {
@@ -95,8 +95,8 @@ export class PointsOfSaleModel {
                 con.release();
                 console.error(err);
             } else {
-                con.query("INSERT INTO pointofsale  (name,businessName,contactName,RUT, address, tel, image, coord) VALUES(?,?,?,?,?,?,?,POINT(?,?))",
-                    [name, businessName,contactName,RUT,address, tel, image, Number(coord.lat), Number(coord.lng)], function (
+                con.query("INSERT INTO pointofsale  (name,businessName,contactName,RUT,idGroup, address, tel, image, coord) VALUES(?,?,?,?,?,?,?,?,POINT(?,?))",
+                    [name, businessName,contactName,RUT,group,address, tel, image, Number(coord.lat), Number(coord.lng)], function (
                         err: any,
                         result: any
                     ) {

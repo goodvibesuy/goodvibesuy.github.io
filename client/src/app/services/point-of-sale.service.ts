@@ -20,9 +20,9 @@ export class PointOfSaleService {
         return this.http.get<PointOfSale[]>(this.pointOfSaleURL + '/getPointOfSale/' + idPointOfSale);
     }
 
-    addPointOfSale(name: string, businessName: string, contactName: string, RUT: string,
+    addPointOfSale(name: string, businessName: string, contactName: string, RUT: string,group: number,
         address: string, tel: string, image: string, coords: google.maps.LatLng): Observable<any> {
-        return this.http.post(this.pointOfSaleURL, { name, businessName, contactName, RUT,address, tel, image, coords });
+        return this.http.post(this.pointOfSaleURL, { name, businessName, contactName, RUT,group,address, tel, image, coords });
     }
 
     updatePointOfSale(idPointOfSale: Number, name: string,

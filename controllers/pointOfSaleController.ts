@@ -55,7 +55,7 @@ class PointOfSaleController extends MainController {
     public add = (req: any, res: any): void => {
         this.verifyAccess(req, res, this.resource,
             (dbName: string) => {
-                this.pointsOfSaleModel.add(req.body.name, req.body.businessName,req.body.contactName,req.body.RUT,req.body.address, req.body.tel, req.body.image, req.body.coords, dbName, function (result: any) {
+                this.pointsOfSaleModel.add(req.body.name, req.body.businessName,req.body.contactName,req.body.RUT,req.body.group,req.body.address, req.body.tel, req.body.image, req.body.coords, dbName, function (result: any) {
                     res.send(result);
                 });
             }

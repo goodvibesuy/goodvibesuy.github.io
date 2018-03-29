@@ -19,7 +19,7 @@ export class DetalleLocalComponent implements OnInit {
     private pointOfSale: PointOfSale;
     private products: Product[];
     private productsToSend: any[];
-    private annotation:string;
+    private annotation:string='';
     private unitePrice:number = 69;
 
     constructor(
@@ -71,12 +71,9 @@ export class DetalleLocalComponent implements OnInit {
         });
     }
 
-    agregar(): void {
-        console.log(this.pointOfSale.id, this.productsToSend,this.annotation);
-        /*
+    agregar(): void {        
         this.viewingService.addViewing(this.pointOfSale.id, this.productsToSend,this.annotation).subscribe(response => {
             console.log(response);
         });
-        */
     }
 }

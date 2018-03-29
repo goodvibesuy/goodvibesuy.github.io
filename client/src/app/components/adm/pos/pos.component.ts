@@ -13,12 +13,14 @@ import { ImagesService } from '../../../services/images.service';
 	styleUrls: ['./pos.component.css']
 })
 export class PosComponent implements OnInit {
+    
 	private imageFile: GVFile;
 	private imagePath: string;
 
 	private pointsOfSale: PointOfSale[];
 	private POSEdit: PointOfSale;
-	private POSEditName: string;
+    private POSEditName: string;
+    private POSGroup: number = 1;
 	private POSEditAddress: string;
 	private POSEditTel: string;
     private POSEditCoord: google.maps.LatLng;
@@ -180,7 +182,7 @@ export class PosComponent implements OnInit {
 
 	add() {
 		this.pointOFSaleService
-            .addPointOfSale(this.POSName, this.POSBusinessName,this.POSContactName,this.POSRUT,
+            .addPointOfSale(this.POSName, this.POSBusinessName,this.POSContactName,this.POSRUT,this.POSGroup,
                 this.POSAddress, this.POSTel, this.imagePath, this.POSMarker.getPosition())
 			.subscribe(response => {
 				if (!!this.imageFile) {
