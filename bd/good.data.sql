@@ -1,6 +1,6 @@
 USE `good`;
 
-INSERT INTO `grouppointofsale` VALUES
+INSERT INTO `groupPointofsale` VALUES
 (1, 'Grupo 1');
 
 INSERT INTO `pointofsale` (`id`, `contactName`,`name`, `businessName`, `RUT`, `address`, `tel`, `image`, `coord`, `idGroup`) VALUES
