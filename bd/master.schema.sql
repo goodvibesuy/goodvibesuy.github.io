@@ -18,6 +18,7 @@ SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 --
 -- Base de datos: `master`
 --
+DROP DATABASE IF EXISTS `master`;
 CREATE DATABASE `master`;
 USE `master`;
 
