@@ -25,6 +25,15 @@
             <input type="text" class="form-control" id="amount" *ngIf="supply" [(ngModel)]="supply.amount">
           </div>
 
+
+          <div class="form-group">
+            <span class="input-group-addon">Proveedor:</span>
+            
+            <select class="form-control" *ngIf="supply" [(ngModel)]="supply.idProvider">
+                <option *ngFor="let provider of providers" [ngValue]="provider.id">{{provider.name}}</option>
+              </select>
+          </div>
+
           <div class="form-group">
             <span class="input-group-addon">Imagen:</span>
             <img [src]="getImage()" *ngIf="supply" class="small_image edit_supply" />

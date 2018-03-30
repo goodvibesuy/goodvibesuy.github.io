@@ -35,6 +35,7 @@ import { RoutesComponent } from './components/adm/routes/routes.component';
 import { ListComponent } from './components/adm/routes/list/list.component';
 import { RouteAdd } from './components/adm/routes/route.add/route.add.component';
 import { RouteEdit } from './components/adm/routes/route.edit/route.edit.component';
+import { TemplatesRoutesComponent } from './components/adm/templates-routes/templates-routes.component';
 // Point of sale
 import { PosComponent } from './components/adm/pos/pos.component';
 
@@ -48,6 +49,9 @@ import { ImagesService } from './services/images.service';
 import { ViewingService } from './services/viewing.service';
 import { HeaderService } from './services/header.service';
 import { PointOfSaleService } from './services/point-of-sale.service';
+import { KpiService } from './services/kpi.service';
+import { TemplatesRoutesService } from './services/templates-routes.service';
+import { ProvidersService } from './services/providers.service';
 
 // shared
 import { FilePicker } from './shared/components/file-picker/file-picker.component';
@@ -63,9 +67,6 @@ import { AlertModule } from './modules/alert/alert.module';
 import { AlertService } from './modules/alert/alert.service';
 // Interceptor
 import { InterceptorModule } from './auth/token.interceptor';
-import { KpiService } from './services/kpi.service';
-import { TemplatesRoutesComponent } from './components/adm/templates-routes/templates-routes.component';
-import { TemplatesRoutesService } from './services/templates-routes.service';
 
 @NgModule({
 	declarations: [
@@ -109,6 +110,7 @@ import { TemplatesRoutesService } from './services/templates-routes.service';
 	providers: [
 		SupplyService,
 		ProductsService,
+		ProvidersService,
         RouteService,
         TemplatesRoutesService,
 		UsersService,

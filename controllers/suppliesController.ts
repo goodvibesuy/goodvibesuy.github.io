@@ -32,7 +32,7 @@ class SuppliesController extends MainController{
     public addSupply = (req:any,res:any): void => { 
         this.verifyAccess(req,res,this.resource,
             (dbName:string) =>{
-                suppliesModel.addSupply(req.body.name, req.body.unit, req.body.amount, req.body.path_image,dbName, function(result:any) {
+                suppliesModel.addSupply(req.body.name, req.body.unit, req.body.amount, req.body.provider, req.body.path_image,dbName, function(result:any) {
                     res.send(result);
                 });
             }             
@@ -57,6 +57,7 @@ class SuppliesController extends MainController{
                     req.body.name,
                     req.body.unit,
                     req.body.amount,
+                    req.body.idProvider,
                     req.body.path_image,
                     dbName,
                     function(result:any) {

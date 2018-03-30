@@ -18,6 +18,7 @@ var kpis = require('./routes/kpis');
 var route = require('./routes/route');
 var templateRoute = require('./routes/templateRoute');
 var images = require('./routes/images');
+var images = require('./routes/providers');
 
 var NewACL = require('./motionLibJS/serverSide/acl/newACL');
 var masterDBController = require('./bd/masterConnectionsBD');
@@ -57,6 +58,7 @@ app.use('/api/kpis', kpis);
 app.use('/api/route', route);
 app.use('/api/templateRoute', templateRoute);
 app.use('/api/images', images);
+app.use('/api/providers', images);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

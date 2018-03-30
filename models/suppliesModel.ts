@@ -64,7 +64,7 @@ class SuppliesModel {
         });
     };
 
-    addSupply(name: string, idUnit: Number, amount: Number, path_image: string, dbName: string, callBack: (r: ResultWithData<any[]>) => void): void {
+    addSupply(name: string, idUnit: Number, amount: Number, provider: Number, path_image: string, dbName: string, callBack: (r: ResultWithData<any[]>) => void): void {
         var pool = clientDBController.getUserConnection(dbName);
         pool.getConnection(function (err: any, con: any) {
             if (err) {
@@ -113,7 +113,7 @@ class SuppliesModel {
         });
     };
 
-    updateSupply(id: Number, name: Number, idUnit: Number, amount: Number, path_image: string, dbName: string, callBack: (r: ResultWithData<any[]>) => void): void {
+    updateSupply(id: Number, name: Number, idUnit: Number, amount: Number, idProvider: Number, path_image: string, dbName: string, callBack: (r: ResultWithData<any[]>) => void): void {
         var pool = clientDBController.getUserConnection(dbName);
         pool.getConnection(function (err: any, con: any) {
             if (err) {
@@ -133,7 +133,7 @@ class SuppliesModel {
                             callBack({ result: -1, message: 'Error: generic' });
                         }
                     } else {
-                        con.query('INSERT INTO supplyPrice  (date, amount,idSupply) VALUES(NOW(),?,?)', [amount, id], function (
+                        con.query('INSERT INTO supplyPrice  (price_date, date, amount, idSupply, idProvider) VALUES(NOW(),NOW(),?,?,?)', [amount, id, idProvider], function (
                             err:any,
                             result:any
                         ) {

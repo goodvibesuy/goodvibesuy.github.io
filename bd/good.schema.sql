@@ -121,7 +121,10 @@ CREATE TABLE `supplyPrice` (
  `date` DATETIME NOT NULL,
  `amount` INT(11) DEFAULT NULL,
  `idSupply` INT(11) DEFAULT NULL,
- `idProvider` INT(11) NOT NULL, KEY `idSupply_idx` (`idSupply`), FOREIGN KEY (idProvider) REFERENCES `provider` (id), CONSTRAINT `idSupply` FOREIGN KEY (`idSupply`) REFERENCES `supply` (`id`) ON
+ `idProvider` INT(11) NOT NULL,
+ KEY `idSupply_idx` (`idSupply`),
+ FOREIGN KEY (idProvider) REFERENCES `provider` (id),
+ CONSTRAINT `idSupply` FOREIGN KEY (`idSupply`) REFERENCES `supply` (`id`) ON
 DELETE NO ACTION ON
 UPDATE NO ACTION
 );

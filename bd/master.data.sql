@@ -28,17 +28,18 @@ INSERT INTO `accounts` (`id`, `database_name`, `name`, `max_users`) VALUES
 --
 
 INSERT INTO `resources` (`id`, `name`) VALUES
-(4, 'menu'),
-(5, 'accounts'),
-(6, 'userConfig'),
-(7, 'usersRols'),
-(8, 'userRol'),
-(9, 'routes'),
-(10, 'pos'),
-(11, 'products'),
-(12, 'supplies'),
-(13, 'users'),
-(14, 'viewing');
+(1, 'menu'),
+(2, 'accounts'),
+(3, 'userConfig'),
+(4, 'usersRols'),
+(5, 'userRol'),
+(6, 'routes'),
+(7, 'pos'),
+(8, 'products'),
+(9, 'supplies'),
+(10, 'users'),
+(11, 'providers'),
+(12, 'viewing');
 
 -- --------------------------------------------------------
 
@@ -57,22 +58,24 @@ INSERT INTO `rols` (`id`, `name`) VALUES
 --
 
 INSERT INTO `rols_resources` (`rol_id`, `resource_id`) VALUES
+(1, 1),
+(1, 2),
+(1, 3),
 (1, 4),
 (1, 5),
 (1, 6),
-(2, 4),
-(2, 6),
 (1, 7),
 (1, 8),
-(2, 7),
-(2, 8),
 (1, 9),
-(2, 9),
 (1, 10),
 (1, 11),
 (1, 12),
-(1, 13),
-(1, 14);
+(2, 1),
+(2, 2),
+(2, 3),
+(2, 4),
+(2, 5),
+(2, 6);
 
 -- --------------------------------------------------------
 

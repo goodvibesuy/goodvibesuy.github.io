@@ -9,6 +9,8 @@ import { Unit } from '../../../../models/unit.model';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ImagesService } from '../../../../services/images.service';
 import { GVFile } from '../../../../models/gvfile.model';
+import { ProvidersService } from '../../../../services/providers.service';
+import { Provider } from '../../../../../../../datatypes/provider';
 
 @Component({
 	selector: 'app-supply-edit',
@@ -20,6 +22,7 @@ export class SupplyEditComponent implements OnInit, OnDestroy {
 	private paramsSub: any;
 
 	private supply: Supply;
+	private providers: Provider[];
 	private units: Unit[];
 	private imageFile: GVFile;
 	private category: string = 'insumos';
@@ -27,7 +30,8 @@ export class SupplyEditComponent implements OnInit, OnDestroy {
 	constructor(
 		private activatedRoute: ActivatedRoute,
 		private router: Router,
-		private supplyService: SupplyService,
+        private supplyService: SupplyService,
+        private providerService: ProvidersService,
 		private domSanitizer: DomSanitizer,
 		private imagesService: ImagesService
 	) {}
@@ -35,6 +39,10 @@ export class SupplyEditComponent implements OnInit, OnDestroy {
 	ngOnInit() {
 		this.paramsSub = this.activatedRoute.params.subscribe(
 			params => {
+				this.providerService.getAll().subscribe(data => {
+					this.providers = data.data;
+                });
+                
 				this.supplyService.get().subscribe(data => {
 					this.supply = (<Supply[]>data).find(s => s.id == params['id']);
 				});

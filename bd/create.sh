@@ -1,7 +1,7 @@
-"C:\Program Files\MySQL\MySQL Server 5.7\bin\mysql" -u root < "C:\Proyectos\GoodVibes\src\goodvibesuy\bd\good.schema.sql"
+mysql -u root < good.schema.sql
 
-"C:\Program Files\MySQL\MySQL Server 5.7\bin\mysql" -u root < "C:\Proyectos\GoodVibes\src\goodvibesuy\bd\good.data.sql"
+mysql -u root < good.data.sql
 
-"C:\Program Files\MySQL\MySQL Server 5.7\bin\mysql" -u root < "C:\Proyectos\GoodVibes\src\goodvibesuy\bd\master.schema.sql"
+mysql -u root < master.schema.sql
 
-"C:\Program Files\MySQL\MySQL Server 5.7\bin\mysql" -u root < "C:\Proyectos\GoodVibes\src\goodvibesuy\bd\master.data.sql"
+mysql -u root < master.data.sql
