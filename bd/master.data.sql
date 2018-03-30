@@ -33,7 +33,12 @@ INSERT INTO `resources` (`id`, `name`) VALUES
 (6, 'userConfig'),
 (7, 'usersRols'),
 (8, 'userRol'),
-(9, 'routes');
+(9, 'routes'),
+(10, 'pos'),
+(11, 'products'),
+(12, 'supplies'),
+(13, 'users'),
+(14, 'viewing');
 
 -- --------------------------------------------------------
 
@@ -62,7 +67,12 @@ INSERT INTO `rols_resources` (`rol_id`, `resource_id`) VALUES
 (2, 7),
 (2, 8),
 (1, 9),
-(2, 9);
+(2, 9),
+(1, 10),
+(1, 11),
+(1, 12),
+(1, 13),
+(1, 14);
 
 -- --------------------------------------------------------
 

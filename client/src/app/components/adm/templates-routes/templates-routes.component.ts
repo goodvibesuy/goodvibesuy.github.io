@@ -90,6 +90,7 @@ export class TemplatesRoutesComponent implements OnInit {
         });
     }
 
+
     changeOrder(idpointofSale: number, position: number, newposition: number) {
         this.templateRouteService
             .reorderPointOfSale(this.templateRoute.id, idpointofSale, position, newposition)
@@ -101,6 +102,12 @@ export class TemplatesRoutesComponent implements OnInit {
     remove(idPointOfSale) {
 		this.templateRouteService.remove(this.templateRoute.id, idPointOfSale).subscribe(data => {
 			this.getPointOfSalesRoute();
+		});
+    }
+    
+    actualizar() {
+		this.templateRouteService.update(this.templateRoute).subscribe(data => {
+			this.typeOfView = 1;
 		});
 	}
 }

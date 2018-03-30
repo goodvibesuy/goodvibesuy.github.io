@@ -128,7 +128,7 @@ export class TemplateRoutesModel {
                 con.release();
                 console.error(err);
             } else {
-                con.query("UPDATE templateRoute SET  name = ? WHERE idroute =?", [travelName, idRoute],
+                con.query("UPDATE templateRoute SET  name = ? WHERE id =?", [travelName, idRoute],
                     function (err: any, result: any) {
                         con.release();
                         if (err) throw err;

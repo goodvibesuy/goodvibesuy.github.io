@@ -33,7 +33,7 @@ var TemplatesRoutesController = /** @class */ (function (_super) {
         };
         _this.update = function (req, res) {
             _this.verifyAccess(req, res, _this.resource, function (dbName) {
-                _this.templateRouteModel.update(req.body.name, req.body.idroute, dbName, function (result) {
+                _this.templateRouteModel.update(req.body.name, req.body.id, dbName, function (result) {
                     res.send(result);
                 });
             });

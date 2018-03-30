@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { PointOfSale } from '../models/pointofsale.model';
 import { Observable } from 'rxjs/Observable';
 import { catchError, map, tap } from 'rxjs/operators';
+import { TemplateRoute } from '../models/TemplateRoute.model';
 
 @Injectable()
 export class TemplatesRoutesService {
@@ -26,11 +27,12 @@ export class TemplatesRoutesService {
     agregar(route: Route): Observable<any> {
         return this.http.post(this.routeUrl, { idroute: route.idroute, name: route.name });
     }
-
-    update(route: Route): Observable<any> {
-        return this.http.put<Route[]>(this.routeUrl, route);
-    }
     */
+
+    update(route: TemplateRoute): Observable<any> {
+        return this.http.put<TemplateRoute[]>(this.routeUrl, route);
+    }
+    
 
     reorderPointOfSale(idRoute: number, idPointOfSale: number, position: number, newPosition: number): Observable<any> {
         return this.http.put<any[]>(this.routeUrl + '/reorderPointOfSale', {
