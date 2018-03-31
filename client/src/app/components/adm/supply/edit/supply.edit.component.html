@@ -25,7 +25,6 @@
             <input type="text" class="form-control" id="amount" *ngIf="supply" [(ngModel)]="supply.amount">
           </div>
 
-
           <div class="form-group">
             <span class="input-group-addon">Proveedor:</span>
 
@@ -36,15 +35,8 @@
 
           <div class="form-group">
             <span class="input-group-addon">Fecha:</span>
-       <!-- <input type="date" [ngModel] ="dt | date:'yyyy-MM-dd'" (ngModelChange)="dt = $event" [value]="datee | date:'yyyy-MM-dd'">
-       <input type="date" class="form-control" id="BirthDate" name="BirthDate" 
-       *ngIf="supply" [ngModel]="supply.price_date | date:'yyyy-MM-dd'" (ngModelChange)="supply.price_date = $event"
-[value]="supply.price_date | date:'MM-dd'" #BirthDate="ngModel" required>-->
-
-            <input type="date" class="form-control" *ngIf="supply"
-            [ngModel]="supply.price_date | date:'yyyy-MM-dd'"
-            [value]="supply.price_date | date:'yyyy-MM-dd'"
-             (ngModelChange)="supply.price_date = $event">
+            <input type="date" class="form-control" *ngIf="supply" [ngModel]="supply.price_date | date:'yyyy-MM-dd'" [value]="supply.price_date | date:'yyyy-MM-dd'"
+              (ngModelChange)="supply.price_date = $event">
           </div>
 
           <div class="form-group">

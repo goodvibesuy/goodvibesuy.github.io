@@ -30,7 +30,7 @@ class SuppliesController extends MainController {
 				req.body.name,
 				req.body.unit,
 				req.body.amount,
-				req.body.priceDate,
+				req.body.price_date,
 				req.body.idProvider,
 				req.body.path_image,
 				dbName,

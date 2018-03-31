@@ -63,7 +63,7 @@ class SuppliesModel {
 		name: string,
 		idUnit: Number,
 		amount: Number,
-		price_date: Date,
+		price_date: string,
 		idProvider: Number,
 		path_image: string,
 		dbName: string,
@@ -91,7 +91,7 @@ class SuppliesModel {
 							}
 						} else {
 							var idSupply = result.insertId;
-
+                            var priceDateFormat = new Date(price_date).toISOString().slice(0, 19).replace('T', ' ');
 							con.query(
 								'INSERT INTO supplyPrice  (date, price_date, amount, idSupply, idProvider) VALUES(NOW(),?,?,?,?)',
 								[price_date, amount, idSupply, idProvider],
@@ -123,7 +123,7 @@ class SuppliesModel {
 		name: Number,
 		idUnit: Number,
 		amount: Number,
-		price_date: Date,
+		price_date: string,
 		idProvider: Number,
 		path_image: string,
 		dbName: string,
@@ -150,9 +150,10 @@ class SuppliesModel {
 								callBack({ result: -1, message: 'Error: generic' });
 							}
 						} else {
+                            var priceDateFormat = new Date(price_date).toISOString().slice(0, 19).replace('T', ' ');
 							con.query(
 								'INSERT INTO supplyPrice  (date, price_date, amount, idSupply, idProvider) VALUES(NOW(),?,?,?,?)',
-								[price_date, amount, id, idProvider],
+								[priceDateFormat, amount, id, idProvider],
 								function(err: any, result: any) {
 									con.release();
 									// sea cual sea el tipo de error => siempre tengo que liberar la conexión
