@@ -27,7 +27,7 @@ class RoutesController extends MainController {
     public add = (req: any, res: any): void => {
         this.verifyAccess(req, res, this.resource,
             (dbName: string) => {
-                this.travelModel.add(req.body.name, dbName, function (result: any) {
+                this.travelModel.add(req.body.route, dbName, function (result: any) {
                     res.send(result);
                 });
             }

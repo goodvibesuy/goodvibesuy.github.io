@@ -24,8 +24,8 @@ export class RouteService {
 		return this.http.get<Route>(this.routeUrl + "/" + id);
     }
 
-	agregar(route: RouteTable): Observable<any> {
-		return this.http.post(this.routeUrl, { idroute: route.id, name: route.name });
+	agregar(route: Route): Observable<any> {
+		return this.http.post(this.routeUrl, { route });
 	}
 
 	update(route: Route): Observable<any> {

@@ -25,21 +25,119 @@ export class TravelModel {
         });
     };
 
-    add(travelName: string, dbName: string, callBack: (r: ResultWithData<any[]>) => void): void {
+    add(route: Route, dbName: string, callBack: (r: ResultWithData<any[]>) => void): void {
+        var mainThis = this;
         var pool = clientDBController.getUserConnection(dbName);
         pool.getConnection(function (err: any, con: any) {
             if (err) {
                 con.release();
                 console.error(err);
             } else {
-                con.query("INSERT INTO route (name) VALUES (?)", [travelName], function (err: any, result: any) {
-                    con.release();
-                    if (err) throw err;
-                    callBack({ result: 1, message: "OK", data: result });
+                con.beginTransaction(function (err: any) {
+                    //year: 2018, month: 4, day: 1
+                    var d = <any>route.date;
+                    var dateRoute = d.year + "-" + (d.month + 1) + "-" + d.day;
+                    con.query("INSERT INTO route (name,date) VALUES (?,?)", [route.name, dateRoute], function (err: any, result: any) {
+                        if (err) {
+                            con.rollback(function () {
+                                con.release();
+                                callBack({ result: -1, message: "Error interno." });
+                            });
+                        } else {
+                            route.id = result.insertId;
+                            con.query("INSERT INTO route_user(idroute,iduser) VALUES(?,?) ",
+                                [route.id,route.user.id], function (err: any, result: any) {
+                                    if (err) {
+                                        con.rollback(function () {
+                                            con.release();
+                                            callBack({ result: -1, message: "Error interno." });
+                                        });
+                                    } else {
+                                        mainThis.addPointsOfSale(route.id, 0, route.pointsOfSale, callBack, con);
+                                    }
+                                });
+                        }
+                    });
+                });
+            }
+        })
+    };
+
+    update(route: Route, dbName: string, callBack: (r: ResultWithData<any[]>) => void): void {
+        var mainThis = this;
+        var pool = clientDBController.getUserConnection(dbName);
+        pool.getConnection(function (err: any, con: any) {
+            if (err) {
+                con.release();
+                console.error(err);
+            } else {
+                con.beginTransaction(function (err: any) {
+                    con.query("UPDATE route SET  name = ?, date = ? WHERE id =?",
+                        [route.name, route.date, route.id],
+                        function (err: any, result: any) {
+                            if (err) {
+                                con.rollback(function () {
+                                    con.release();
+                                    callBack({ result: -1, message: "Error interno." });
+                                });
+                            } else {
+                                con.query("UPDATE route_user SET iduser = ? WHERE idroute = ? ",
+                                    [route.user.id, route.id], function (err: any, result: any) {
+                                        if (err) {
+                                            con.rollback(function () {
+                                                con.release();
+                                                callBack({ result: -1, message: "Error interno." });
+                                            });
+                                        } else {
+                                            con.query("DELETE FROM route_pointofsale WHERE idRoute = ?",
+                                                [route.id], function (err: any, result: any) {
+                                                    if (err) {
+                                                        con.rollback(function () {
+                                                            con.release();
+                                                            callBack({ result: -1, message: "Error interno." });
+                                                        });
+                                                    } else {
+                                                        mainThis.addPointsOfSale(route.id, 0, route.pointsOfSale, callBack, con);
+                                                    }
+                                                });
+                                        }
+                                    });
+                            }
+                        });
                 });
             }
         });
     };
+
+    addPointsOfSale(idRoute: number, index: number, pointsOfSale: PointOfSale[],
+        callBack: (r: ResultWithData<any[]>) => void, con: any): void {
+        var mainThis = this;
+        con.query("INSERT  INTO route_pointofsale(idRoute,idPointofsale,position) VALUES(?,?,?) ",
+            [idRoute, pointsOfSale[index].id, index], function (err: any, result: any) {
+                if (err) {
+                    con.rollback(function () {
+                        con.release();
+                        callBack({ result: -1, message: "Error interno." });
+                    });
+                } else {
+                    if (index + 1 < pointsOfSale.length) {
+                        mainThis.addPointsOfSale(idRoute, index + 1, pointsOfSale, callBack, con);
+                    } else {
+                        con.commit(function (err: any) {
+                            if (err) {
+                                con.rollback(function () {
+                                    con.release();
+                                    callBack({ result: -1, message: "Error interno." });
+                                });
+                            }
+                            callBack({ result: 1, message: "OK", data: result });
+                            con.end();
+                        });
+                    }
+                }
+
+            });
+    }
 
     addPointOfSale(idRoute: Number, idPointOfSale: Number, dbName: string, callBack: (r: ResultWithData<any[]>) => void): void {
         var pool = clientDBController.getUserConnection(dbName);
@@ -172,82 +270,7 @@ export class TravelModel {
     }
 
 
-    //update(travelName: string, idRoute: Number, dbName: string, callBack: (r: ResultWithData<any[]>) => void): void {
-    update(route: Route, dbName: string, callBack: (r: ResultWithData<any[]>) => void): void {
-        var mainThis = this;
-        var pool = clientDBController.getUserConnection(dbName);
-        pool.getConnection(function (err: any, con: any) {
-            if (err) {
-                con.release();
-                console.error(err);
-            } else {
-                con.beginTransaction(function (err: any) {
-                    con.query("UPDATE route SET  name = ?, date = ? WHERE id =?",
-                        [route.name, route.date, route.id],
-                        function (err: any, result: any) {
-                            if (err) {
-                                con.rollback(function () {
-                                    con.release();
-                                    callBack({ result: -1, message: "Error interno." });
-                                });
-                            } else {
-                                con.query("UPDATE route_user SET iduser = ? WHERE idroute = ? ",
-                                    [route.user.id, route.id], function (err: any, result: any) {
-                                        if (err) {
-                                            con.rollback(function () {
-                                                con.release();
-                                                callBack({ result: -1, message: "Error interno." });
-                                            });
-                                        } else {
-                                            con.query("DELETE FROM route_pointofsale WHERE idRoute = ?",
-                                                [route.id], function (err: any, result: any) {
-                                                    if (err) {
-                                                        con.rollback(function () {
-                                                            con.release();
-                                                            callBack({ result: -1, message: "Error interno." });
-                                                        });
-                                                    } else {
-                                                        mainThis.addPointsOfSale(route.id,0,route.pointsOfSale,callBack,con);
-                                                    }
-                                                });
-                                        }
-                                    });
-                            }
-                        });
-                });
-            }
-        });
-    };
 
-    addPointsOfSale(idRoute: number, index: number, pointsOfSale: PointOfSale[],
-        callBack: (r: ResultWithData<any[]>) => void, con: any): void {
-        var mainThis = this;
-        con.query("INSERT  INTO route_pointofsale(idRoute,idPointofsale,position) VALUES(?,?,?) ",
-            [idRoute, pointsOfSale[index].id, index], function (err: any, result: any) {
-                if (err) {
-                    con.rollback(function () {
-                        con.release();
-                        callBack({ result: -1, message: "Error interno." });
-                    });
-                } else {
-                    if (index + 1 < pointsOfSale.length) {
-                        mainThis.addPointsOfSale(idRoute,index + 1,pointsOfSale,callBack,con);                        
-                    } else {
-                        con.commit(function (err: any) {
-                            if (err) {
-                                con.rollback(function () {
-                                    con.release();
-                                    callBack({ result: -1, message: "Error interno." });
-                                });
-                            }
-                            callBack({ result: 1, message: "OK", data: result });
-                            con.end();
-                        });
-                    }
-                }
-
-            });
-    }
 
 
     delete(idRoute: Number, dbName: string, callBack: (r: ResultWithData<any[]>) => void): void {

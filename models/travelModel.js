@@ -41,7 +41,8 @@ var TravelModel = /** @class */ (function () {
         });
     };
     ;
-    TravelModel.prototype.add = function (travelName, dbName, callBack) {
+    TravelModel.prototype.add = function (route, dbName, callBack) {
+        var mainThis = this;
         var pool = clientDBController.getUserConnection(dbName);
         pool.getConnection(function (err, con) {
             if (err) {
@@ -49,16 +50,111 @@ var TravelModel = /** @class */ (function () {
                 console.error(err);
             }
             else {
-                con.query("INSERT INTO route (name) VALUES (?)", [travelName], function (err, result) {
-                    con.release();
-                    if (err)
-                        throw err;
-                    callBack({ result: 1, message: "OK", data: result });
+                con.beginTransaction(function (err) {
+                    //year: 2018, month: 4, day: 1
+                    var d = route.date;
+                    var dateRoute = d.year + "-" + (d.month + 1) + "-" + d.day;
+                    con.query("INSERT INTO route (name,date) VALUES (?,?)", [route.name, dateRoute], function (err, result) {
+                        if (err) {
+                            con.rollback(function () {
+                                con.release();
+                                callBack({ result: -1, message: "Error interno." });
+                            });
+                        }
+                        else {
+                            route.id = result.insertId;
+                            con.query("INSERT INTO route_user(idroute,iduser) VALUES(?,?) ", [route.id, route.user.id], function (err, result) {
+                                if (err) {
+                                    con.rollback(function () {
+                                        con.release();
+                                        callBack({ result: -1, message: "Error interno." });
+                                    });
+                                }
+                                else {
+                                    mainThis.addPointsOfSale(route.id, 0, route.pointsOfSale, callBack, con);
+                                }
+                            });
+                        }
+                    });
                 });
             }
         });
     };
     ;
+    TravelModel.prototype.update = function (route, dbName, callBack) {
+        var mainThis = this;
+        var pool = clientDBController.getUserConnection(dbName);
+        pool.getConnection(function (err, con) {
+            if (err) {
+                con.release();
+                console.error(err);
+            }
+            else {
+                con.beginTransaction(function (err) {
+                    con.query("UPDATE route SET  name = ?, date = ? WHERE id =?", [route.name, route.date, route.id], function (err, result) {
+                        if (err) {
+                            con.rollback(function () {
+                                con.release();
+                                callBack({ result: -1, message: "Error interno." });
+                            });
+                        }
+                        else {
+                            con.query("UPDATE route_user SET iduser = ? WHERE idroute = ? ", [route.user.id, route.id], function (err, result) {
+                                if (err) {
+                                    con.rollback(function () {
+                                        con.release();
+                                        callBack({ result: -1, message: "Error interno." });
+                                    });
+                                }
+                                else {
+                                    con.query("DELETE FROM route_pointofsale WHERE idRoute = ?", [route.id], function (err, result) {
+                                        if (err) {
+                                            con.rollback(function () {
+                                                con.release();
+                                                callBack({ result: -1, message: "Error interno." });
+                                            });
+                                        }
+                                        else {
+                                            mainThis.addPointsOfSale(route.id, 0, route.pointsOfSale, callBack, con);
+                                        }
+                                    });
+                                }
+                            });
+                        }
+                    });
+                });
+            }
+        });
+    };
+    ;
+    TravelModel.prototype.addPointsOfSale = function (idRoute, index, pointsOfSale, callBack, con) {
+        var mainThis = this;
+        con.query("INSERT  INTO route_pointofsale(idRoute,idPointofsale,position) VALUES(?,?,?) ", [idRoute, pointsOfSale[index].id, index], function (err, result) {
+            if (err) {
+                con.rollback(function () {
+                    con.release();
+                    callBack({ result: -1, message: "Error interno." });
+                });
+            }
+            else {
+                if (index + 1 < pointsOfSale.length) {
+                    mainThis.addPointsOfSale(idRoute, index + 1, pointsOfSale, callBack, con);
+                }
+                else {
+                    con.commit(function (err) {
+                        if (err) {
+                            con.rollback(function () {
+                                con.release();
+                                callBack({ result: -1, message: "Error interno." });
+                            });
+                        }
+                        callBack({ result: 1, message: "OK", data: result });
+                        con.end();
+                    });
+                }
+            }
+        });
+    };
     TravelModel.prototype.addPointOfSale = function (idRoute, idPointOfSale, dbName, callBack) {
         var pool = clientDBController.getUserConnection(dbName);
         pool.getConnection(function (err, con) {
@@ -175,81 +271,6 @@ var TravelModel = /** @class */ (function () {
                         throw err;
                     callBack({ result: 1, message: "OK", data: result });
                 });
-            }
-        });
-    };
-    //update(travelName: string, idRoute: Number, dbName: string, callBack: (r: ResultWithData<any[]>) => void): void {
-    TravelModel.prototype.update = function (route, dbName, callBack) {
-        var mainThis = this;
-        var pool = clientDBController.getUserConnection(dbName);
-        pool.getConnection(function (err, con) {
-            if (err) {
-                con.release();
-                console.error(err);
-            }
-            else {
-                con.beginTransaction(function (err) {
-                    con.query("UPDATE route SET  name = ?, date = ? WHERE id =?", [route.name, route.date, route.id], function (err, result) {
-                        if (err) {
-                            con.rollback(function () {
-                                con.release();
-                                callBack({ result: -1, message: "Error interno." });
-                            });
-                        }
-                        else {
-                            con.query("UPDATE route_user SET iduser = ? WHERE idroute = ? ", [route.user.id, route.id], function (err, result) {
-                                if (err) {
-                                    con.rollback(function () {
-                                        con.release();
-                                        callBack({ result: -1, message: "Error interno." });
-                                    });
-                                }
-                                else {
-                                    con.query("DELETE FROM route_pointofsale WHERE idRoute = ?", [route.id], function (err, result) {
-                                        if (err) {
-                                            con.rollback(function () {
-                                                con.release();
-                                                callBack({ result: -1, message: "Error interno." });
-                                            });
-                                        }
-                                        else {
-                                            mainThis.addPointsOfSale(route.id, 0, route.pointsOfSale, callBack, con);
-                                        }
-                                    });
-                                }
-                            });
-                        }
-                    });
-                });
-            }
-        });
-    };
-    ;
-    TravelModel.prototype.addPointsOfSale = function (idRoute, index, pointsOfSale, callBack, con) {
-        var mainThis = this;
-        con.query("INSERT  INTO route_pointofsale(idRoute,idPointofsale,position) VALUES(?,?,?) ", [idRoute, pointsOfSale[index].id, index], function (err, result) {
-            if (err) {
-                con.rollback(function () {
-                    con.release();
-                    callBack({ result: -1, message: "Error interno." });
-                });
-            }
-            else {
-                if (index + 1 < pointsOfSale.length) {
-                    mainThis.addPointsOfSale(idRoute, index + 1, pointsOfSale, callBack, con);
-                }
-                else {
-                    con.commit(function (err) {
-                        if (err) {
-                            con.rollback(function () {
-                                con.release();
-                                callBack({ result: -1, message: "Error interno." });
-                            });
-                        }
-                        callBack({ result: 1, message: "OK", data: result });
-                        con.end();
-                    });
-                }
             }
         });
     };

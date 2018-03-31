@@ -28,7 +28,7 @@ var RoutesController = /** @class */ (function (_super) {
         };
         _this.add = function (req, res) {
             _this.verifyAccess(req, res, _this.resource, function (dbName) {
-                _this.travelModel.add(req.body.name, dbName, function (result) {
+                _this.travelModel.add(req.body.route, dbName, function (result) {
                     res.send(result);
                 });
             });

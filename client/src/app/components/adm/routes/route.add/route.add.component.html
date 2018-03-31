@@ -1,13 +1,73 @@
 <div class="card" style="margin:15px;">
-	<div class="card-header">
-		<b>Agregar Ruta</b>
-	</div>
-	<div class="card-body">
-		<div class="form-group">
-			<span class="input-group-addon">Nombre:</span>
-			<input type="text" class="form-control" [(ngModel)]="route.name">
-		</div>
-    <button type="button" (click)="agregar()" class="btn btn-primary">Agregar ruta</button>
-    <button type="button" class="btn btn-light" routerLink="/recorridos">Cancelar</button>
-	</div>
+    <div class="card-header">
+        <b>Agregar Ruta</b>
+    </div>
+    <div class="card-body">
+        <div class="form-group">
+            <span class="input-group-addon">Nombre:</span>
+            <input type="text" class="form-control" *ngIf="newRoute" [(ngModel)]="newRoute.name">
+            <span class="input-group-addon">Usuario:</span>
+            <select class="form-control" *ngIf="newRoute" [(ngModel)]="newRoute.user">
+                <option *ngFor="let u of users" [ngValue]="u">{{u.firstname}} {{u.lastname}}</option>
+            </select>
+            <span class="input-group-addon">Fecha:</span>
+
+            <div class="input-group">
+                <input class="form-control" placeholder="yyyy-mm-dd" name="dp" [(ngModel)]="newRoute.date" ngbDatepicker #d="ngbDatepicker">
+                <div class="input-group-btn">
+                    <button class="btn btn-outline-secondary" (click)="d.toggle()" type="button">
+                        <img src="img/calendar-icon.svg" style="width: 1.2rem; height: 1rem; cursor: pointer;" />
+                    </button>
+                </div>
+            </div>
+
+            <span class="input-group-addon">Punto de venta:</span>
+            <div class="input-group">
+                <select class="form-control" *ngIf="newRoute" [(ngModel)]="POSSelected">
+                    <option *ngFor="let pos of pointsOfSales" [ngValue]="pos">{{pos.name}}</option>
+                </select>
+                <div class="input-group-btn">
+                    <button type="button" class="btn btn-primary" (click)="agregarPuntoDeVenta()">Agregar</button>
+                </div>
+            </div>
+
+            <span class="input-group-addon">Plantilla Recorrido:</span>
+            <div class="input-group">
+                <select class="form-control" [(ngModel)]="templateSelected">
+                    <option *ngFor="let tr of templatesRoutes" [ngValue]="tr">{{tr.name}}</option>
+                </select>
+                <div class="input-group-btn">
+                    <button type="button" class="btn btn-primary" (click)="addTemplate()">Agregar</button>
+                </div>
+            </div>
+        </div>
+        <div class="card" *ngIf="newRoute">
+            <div class="card-header">
+                Puntos de venta
+            </div>
+            <div class="card-body">
+                <table class="table">
+                    <tr>
+                        <td style="width: 15px;"></td>
+                        <td>Nombre</td>
+                        <td>Eliminar</td>
+                    </tr>
+                    <tr *ngFor="let i of newRoute.pointsOfSale; index as ix">
+                        <td>
+                            <span class="fa fa-arrow-circle-up" (click)="changeOrder(i.id,ix, ix - 1)" *ngIf="ix !== 0"></span>
+                            <span class="fa fa-arrow-circle-down" (click)="changeOrder(i.id,ix,ix + 1)" *ngIf="ix + 1 < newRoute.pointsOfSale.length"></span>
+                        </td>
+                        <td>{{i.name}}</td>
+                        <td>
+                            <a (click)="remove(i.id)">
+                                <i class="fa fa-trash-o" style="font-size: 1.7em;"></i>
+                            </a>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <button type="button" (click)="agregar()" class="btn btn-primary">Agregar ruta</button>
+        <button type="button" class="btn btn-light" routerLink="/recorridos">Cancelar</button>
+    </div>
 </div>
