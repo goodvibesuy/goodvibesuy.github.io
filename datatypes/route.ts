@@ -9,6 +9,10 @@ export class Route {
     public pointsOfSale:PointOfSale[];
 
     constructor() {
+        this.id = 0;
+        this.name = "";
+        this.date = new Date();
+        this.user = new User();
         this.pointsOfSale = new Array<PointOfSale>();
     }
 
@@ -24,11 +28,19 @@ export class Route {
         this.pointsOfSale.push(POS);
     }
 
-    public removePointOfSale(idPointOfSale:number):void{
-        
+    public removePointOfSale(idPointOfSale:number):void{        
+        this.pointsOfSale = this.pointsOfSale.filter(function(val:PointOfSale){
+            return val.id != idPointOfSale;
+        });
     }
 
     public getPointsOfSale():PointOfSale[]{
         return this.pointsOfSale;
+    }
+
+    public reorderPointOfSale(position:number, newPosition:number):void{
+        var auxPOS = this.pointsOfSale[newPosition];
+        this.pointsOfSale[newPosition] =  this.pointsOfSale[position];
+        this.pointsOfSale[position] =  auxPOS;
     }
 }

@@ -35,7 +35,7 @@ export class RouteEdit implements OnInit {
     //private pointsOfSaleRoute: PointOfSale[];
     private POSSelected: PointOfSale;
     private templatesRoutes: TemplateRoute[];
-    private idTemplate: number;
+    private templateSelected: TemplateRoute;
 
     constructor(
         private activatedRoute: ActivatedRoute,
@@ -58,9 +58,11 @@ export class RouteEdit implements OnInit {
                 this.routeService.get().subscribe(response => {
                     console.log(response.data);
                     //TO DO --> Cambiar proxima linea por <RouteTable[]>
-                    var route = (<any[]>response.data).find(s => s.id == params['id']);                    
+                    var route = (<any[]>response.data).find(s => s.id == params['id']);  
+                    console.log(route);                  
                     this.currentRoute.id = route.id;
                     this.currentRoute.name = route.name;
+                    this.currentRoute.date = route.date;
 
                     this.getPointOfSalesRoute();
                     this.getUsers();
@@ -70,9 +72,9 @@ export class RouteEdit implements OnInit {
             error => { }
         );
 
-        this.routeService.getPointsOfSales().subscribe(dataPOS => {
+        this.routeService.getPointsOfSales().subscribe(dataPOS => {            
             this.pointsOfSales = <PointOfSale[]>dataPOS;
-            console.log(dataPOS);
+            this.POSSelected = this.pointsOfSales[0];
         });
     }
 
@@ -80,12 +82,13 @@ export class RouteEdit implements OnInit {
         this.templateRouteService.getAll().subscribe(
             response => {
                 this.templatesRoutes = response.data;
+                this.templateSelected = this.templatesRoutes[0];
             }
         )
     }
 
     addTemplate() {
-        this.templateRouteService.getPointsOfSalesRoute(this.idTemplate).subscribe(
+        this.templateRouteService.getPointsOfSalesRoute(this.templateSelected.id).subscribe(
             data => {
                 for(let i = 0; i < data.length ; i++){
                     this.currentRoute.addPointOfSale(data[i]);
@@ -103,17 +106,14 @@ export class RouteEdit implements OnInit {
         */
     }
 
-    actualizar() {
-        /*
-        this.routeService.update(this.route).subscribe(data => {
+    actualizar() {        
+        this.routeService.update(this.currentRoute).subscribe(data => {
             this.router.navigateByUrl('/recorridos');
-        });
-        */
+        });        
     }
 
 
     compareUser(u1:User,u2:User):boolean{
-        console.log(u1,u2);
         return u1 && u2 ? u1.id === u2.id : u1 === u2;
     }
 
@@ -144,10 +144,6 @@ export class RouteEdit implements OnInit {
     }
 
     changeOrder(idpointofSale: number, position: number, newposition: number) {
-        this.routeService
-            .reorderPointOfSale(this.currentRoute.id, idpointofSale, position, newposition)
-            .subscribe(data => {
-                this.getPointOfSalesRoute();
-            });
+        this.currentRoute.reorderPointOfSale(position,newposition);
     }
 }

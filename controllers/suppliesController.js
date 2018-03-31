@@ -32,7 +32,7 @@ var SuppliesController = /** @class */ (function (_super) {
         };
         _this.addSupply = function (req, res) {
             _this.verifyAccess(req, res, _this.resource, function (dbName) {
-                suppliesModel.addSupply(req.body.name, req.body.unit, req.body.amount, req.body.path_image, dbName, function (result) {
+                suppliesModel.addSupply(req.body.name, req.body.unit, req.body.amount, req.body.price_date, req.body.idProvider, req.body.path_image, dbName, function (result) {
                     res.send(result);
                 });
             });
@@ -46,7 +46,7 @@ var SuppliesController = /** @class */ (function (_super) {
         };
         _this.updateSupply = function (req, res) {
             _this.verifyAccess(req, res, _this.resource, function (dbName) {
-                suppliesModel.updateSupply(req.params.id, req.body.name, req.body.unit, req.body.amount, req.body.path_image, dbName, function (result) {
+                suppliesModel.updateSupply(req.params.id, req.body.name, req.body.unit, req.body.amount, req.body.price_date, req.body.idProvider, req.body.path_image, dbName, function (result) {
                     res.send(result);
                 });
             });
@@ -58,7 +58,7 @@ var SuppliesController = /** @class */ (function (_super) {
                 });
             });
         };
-        _this.resource = "supplies";
+        _this.resource = 'supplies';
         return _this;
     }
     return SuppliesController;

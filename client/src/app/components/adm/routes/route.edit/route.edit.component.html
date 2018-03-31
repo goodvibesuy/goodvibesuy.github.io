@@ -20,7 +20,7 @@
                     </button>
                 </div>
             </div>
-            
+
             <span class="input-group-addon">Punto de venta:</span>
             <div class="input-group">
                 <select class="form-control" *ngIf="currentRoute" [(ngModel)]="POSSelected">
@@ -33,8 +33,8 @@
 
             <span class="input-group-addon">Plantilla Recorrido:</span>
             <div class="input-group">
-                <select class="form-control" [(ngModel)]="idTemplate">
-                    <option *ngFor="let tr of templatesRoutes" [ngValue]="tr.id">{{tr.name}}</option>
+                <select class="form-control" [(ngModel)]="templateSelected">
+                    <option *ngFor="let tr of templatesRoutes" [ngValue]="tr">{{tr.name}}</option>
                 </select>
                 <div class="input-group-btn">
                     <button type="button" class="btn btn-primary" (click)="addTemplate()">Agregar</button>
@@ -52,10 +52,12 @@
                         <td>Nombre</td>
                         <td>Eliminar</td>
                     </tr>
-                    <tr *ngFor="let i of currentRoute.pointsOfSale">
+                    <tr *ngFor="let i of currentRoute.pointsOfSale; index as ix">
                         <td>
-                            <span class="fa fa-arrow-circle-up" (click)="changeOrder(i.id,i.position, i.position - 1)" *ngIf="i.position !== 1"></span>
-                            <span class="fa fa-arrow-circle-down" (click)="changeOrder(i.id,i.position,i.position + 1)" *ngIf="i.position !== currentRoute.pointsOfSale.length"></span>
+                            <span class="fa fa-arrow-circle-up" (click)="changeOrder(i.id,ix, ix - 1)" 
+                                *ngIf="ix !== 0"></span>
+                            <span class="fa fa-arrow-circle-down" (click)="changeOrder(i.id,ix,ix + 1)" 
+                                *ngIf="ix + 1 < currentRoute.pointsOfSale.length"></span>
                         </td>
                         <td>{{i.name}}</td>
                         <td>

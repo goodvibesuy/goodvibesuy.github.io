@@ -29,7 +29,7 @@ export class RouteService {
 	}
 
 	update(route: Route): Observable<any> {
-		return this.http.put<Route>(this.routeUrl, route);
+		return this.http.put<Route>(this.routeUrl, {route} );
 	}
 
 	reorderPointOfSale(idRoute: number, idPointOfSale: number, position: number, newPosition: number): Observable<any> {

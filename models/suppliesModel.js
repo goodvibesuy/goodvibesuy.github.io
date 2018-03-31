@@ -22,7 +22,6 @@ var SuppliesModel = /** @class */ (function () {
             }
         });
     };
-    ;
     SuppliesModel.prototype.supplies = function (dbName, callBack) {
         var pool = clientDBController.getUserConnection(dbName);
         pool.getConnection(function (err, con) {
@@ -40,7 +39,6 @@ var SuppliesModel = /** @class */ (function () {
             }
         });
     };
-    ;
     SuppliesModel.prototype.suppliesByProduct = function (idProduct, dbName, callBack) {
         var pool = clientDBController.getUserConnection(dbName);
         pool.getConnection(function (err, con) {
@@ -57,8 +55,7 @@ var SuppliesModel = /** @class */ (function () {
             }
         });
     };
-    ;
-    SuppliesModel.prototype.addSupply = function (name, idUnit, amount, path_image, dbName, callBack) {
+    SuppliesModel.prototype.addSupply = function (name, idUnit, amount, price_date, idProvider, path_image, dbName, callBack) {
         var pool = clientDBController.getUserConnection(dbName);
         pool.getConnection(function (err, con) {
             if (err) {
@@ -81,7 +78,8 @@ var SuppliesModel = /** @class */ (function () {
                     }
                     else {
                         var idSupply = result.insertId;
-                        con.query('INSERT INTO supplyPrice  (date, amount, idSupply) VALUES(NOW(),?,?)', [amount, idSupply], function (err, result) {
+                        var priceDateFormat = new Date(price_date).toISOString().slice(0, 19).replace('T', ' ');
+                        con.query('INSERT INTO supplyPrice  (date, price_date, amount, idSupply, idProvider) VALUES(NOW(),?,?,?,?)', [price_date, amount, idSupply, idProvider], function (err, result) {
                             con.release();
                             // sea cual sea el tipo de error => siempre tengo que liberar la conexión
                             // sino el cliente web queda esperando
@@ -103,8 +101,7 @@ var SuppliesModel = /** @class */ (function () {
             }
         });
     };
-    ;
-    SuppliesModel.prototype.updateSupply = function (id, name, idUnit, amount, path_image, dbName, callBack) {
+    SuppliesModel.prototype.updateSupply = function (id, name, idUnit, amount, price_date, idProvider, path_image, dbName, callBack) {
         var pool = clientDBController.getUserConnection(dbName);
         pool.getConnection(function (err, con) {
             if (err) {
@@ -126,7 +123,8 @@ var SuppliesModel = /** @class */ (function () {
                         }
                     }
                     else {
-                        con.query('INSERT INTO supplyPrice  (date, amount,idSupply) VALUES(NOW(),?,?)', [amount, id], function (err, result) {
+                        var priceDateFormat = new Date(price_date).toISOString().slice(0, 19).replace('T', ' ');
+                        con.query('INSERT INTO supplyPrice  (date, price_date, amount, idSupply, idProvider) VALUES(NOW(),?,?,?,?)', [priceDateFormat, amount, id, idProvider], function (err, result) {
                             con.release();
                             // sea cual sea el tipo de error => siempre tengo que liberar la conexión
                             // sino el cliente web queda esperando
@@ -148,7 +146,6 @@ var SuppliesModel = /** @class */ (function () {
             }
         });
     };
-    ;
     SuppliesModel.prototype.deleteSupply = function (id, dbName, callBack) {
         var pool = clientDBController.getUserConnection(dbName);
         pool.getConnection(function (err, con) {
@@ -180,7 +177,6 @@ var SuppliesModel = /** @class */ (function () {
             }
         });
     };
-    ;
     return SuppliesModel;
 }());
 module.exports = new SuppliesModel();
