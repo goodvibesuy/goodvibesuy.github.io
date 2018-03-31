@@ -5,10 +5,10 @@
     <div class="card-body">
         <div class="form-group">
             <span class="input-group-addon">Nombre:</span>
-            <input type="text" class="form-control" id="name" *ngIf="route" [(ngModel)]="route.name">
+            <input type="text" class="form-control" *ngIf="currentRoute" [(ngModel)]="currentRoute.name">
             <span class="input-group-addon">Usuario:</span>
-            <select class="form-control" [(ngModel)]="rUser.idUser">
-                <option *ngFor="let u of users" [ngValue]="u.id">{{u.firstname}} {{u.lastname}}</option>
+            <select class="form-control" *ngIf="currentRoute" [(ngModel)]="currentRoute.user">
+                <option *ngFor="let u of users" [ngValue]="u">{{u.firstname}} {{u.lastname}}</option>
             </select>
             <span class="input-group-addon">Fecha:</span>
             <input class="form-control" placeholder="yyyy-mm-dd" name="dp" [(ngModel)]="rUser.date" ngbDatepicker #d="ngbDatepicker">
@@ -18,17 +18,19 @@
                 </button>
             </div>
             <span class="input-group-addon">Punto de venta:</span>
-            <select class="form-control" [(ngModel)]="rPOS.idPointOfSale">
+
+            <select class="form-control" *ngIf="currentRoute" [(ngModel)]="rPOS.idPointOfSale">
                 <option *ngFor="let pos of pointsOfSales" [ngValue]="pos.id">{{pos.name}}</option>
             </select>
             <button type="button" class="btn btn-primary" (click)="agregarPuntoDeVenta()">Agregar</button>
+
             <span class="input-group-addon">Plantilla Recorrido:</span>
-            <select class="form-control" [(ngModel)]="rPOS.idPointOfSale">
-                <option *ngFor="let pos of pointsOfSales" [ngValue]="pos.id">{{pos.name}}</option>
+            <select class="form-control" [(ngModel)]="idTemplate">
+                <option *ngFor="let tr of templatesRoutes" [ngValue]="tr.id">{{tr.name}}</option>
             </select>
-            <button type="button" class="btn btn-primary" (click)="agregarPuntoDeVenta()">Agregar</button>
+            <button type="button" class="btn btn-primary" (click)="addTemplate()">Agregar</button>
         </div>
-        <div class="card">
+        <div class="card" *ngIf="currentRoute">
             <div class="card-header">
                 Puntos de venta
             </div>
@@ -39,7 +41,7 @@
                         <td>Nombre</td>
                         <td>Eliminar</td>
                     </tr>
-                    <tr *ngFor="let i of pointsOfSaleRoute">
+                    <tr  *ngFor="let i of currentRoute.pointsOfSale">
                         <td>
                             <span class="fa fa-arrow-circle-up" (click)="changeOrder(i.id,i.position, i.position - 1)" *ngIf="i.position !== 1"></span>
                             <span class="fa fa-arrow-circle-down" (click)="changeOrder(i.id,i.position,i.position + 1)" *ngIf="i.position !== pointsOfSaleRoute.length"></span>
@@ -54,7 +56,6 @@
                 </table>
             </div>
         </div>
-
         <!--<button type="button" class="btn btn-primary" (click)="agregarUsuario()">Agregar</button>-->
         <button type="button" class="btn btn-primary" (click)="actualizar()">Actualizar</button>
         <button type="button" class="btn btn-light" routerLink="/recorridos">Cancelar</button>

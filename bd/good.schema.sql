@@ -89,7 +89,7 @@ CREATE TABLE `product_supply` (
 -- route
 DROP TABLE IF EXISTS `route`;
 CREATE TABLE `route` (
- `idroute` INT(11) NOT NULL AUTO_INCREMENT,
+ `id` INT(11) NOT NULL AUTO_INCREMENT,
  `name` VARCHAR(45) DEFAULT NULL, PRIMARY KEY (`idroute`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -100,7 +100,7 @@ CREATE TABLE `route_pointofsale` (
  `idPointofsale` INT(11) DEFAULT NULL,
  `position` INT(11) NOT NULL, KEY `idTravel_idx` (`idroute`),
  KEY `idPointofsale_idx` (`idpointofsale`),
- FOREIGN KEY (idroute) REFERENCES route(idroute), FOREIGN KEY (idPointofsale) REFERENCES pointofsale(id)
+ FOREIGN KEY (idroute) REFERENCES route(id), FOREIGN KEY (idPointofsale) REFERENCES pointofsale(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- route_user

@@ -4,6 +4,8 @@ var routesController = require('../controllers/routesController');
 
 router.get('/', routesController.getAll);
 
+//router.get('/:id', routesController.getAll);
+
 router.post('/', routesController.add);
 
 router.put('/', routesController.update);
