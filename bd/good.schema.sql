@@ -106,7 +106,8 @@ DROP TABLE IF EXISTS `route_user`;
 CREATE TABLE `route_user` (
  `idroute` INT(11) DEFAULT NULL,
  `iduser` INT(11) DEFAULT NULL,
- `date` DATE DEFAULT NULL, KEY `iduser_idx` (`iduser`), KEY `idroute2` (`idroute`), CONSTRAINT `idroute2` FOREIGN KEY (`idroute`) REFERENCES `route` (`idroute`) ON
+ `date` DATE DEFAULT NULL, KEY `iduser_idx` (`iduser`), KEY `idroute2` (`idroute`), 
+ CONSTRAINT `idroute2` FOREIGN KEY (`idroute`) REFERENCES `route` (`idroute`) ON
 DELETE NO ACTION ON
 UPDATE NO ACTION, CONSTRAINT `iduser` FOREIGN KEY (`iduser`) REFERENCES `users` (`id`) ON
 DELETE NO ACTION ON

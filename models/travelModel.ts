@@ -2,7 +2,7 @@ import { Result, ResultWithData, ResultCode } from '../datatypes/result';
 var masterDBController = require('../bd/masterConnectionsBD');
 var clientDBController = require('../bd/clientConnectionsBD');
 
-class TravelModel {
+export class TravelModel {
     constructor() {
     }
 
@@ -219,5 +219,3 @@ class TravelModel {
         });
     };
 }
-
-module.exports = new TravelModel();

@@ -2,11 +2,13 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { catchError, map, tap } from 'rxjs/operators';
 import { Observable } from 'rxjs/Observable';
-import { Route } from '../models/route.model';
 import { PointOfSale } from '../models/pointofsale.model';
 import { RoutePointOfSale } from '../models/RoutePointOfSale.model';
 import { RouteUser } from '../models/routeUser.model';
-import { User } from '../models/user.model';
+
+import { RouteTable } from '../../../../datatypes/routeTable';
+import { User } from '../../../../datatypes/user';
+import { Route } from '../../../../datatypes/route';
 
 @Injectable()
 export class RouteService {
@@ -15,23 +17,23 @@ export class RouteService {
 	constructor(private http: HttpClient) {}
 
 	get(): Observable<any> {
-		return this.http.get<Route[]>(this.routeUrl);
+		return this.http.get<RouteTable[]>(this.routeUrl);
     }
     
     getRouteById(id:number): Observable<any> {
-		return this.http.get<Route[]>(this.routeUrl + "/" + id);
+		return this.http.get<Route>(this.routeUrl + "/" + id);
     }
 
-	agregar(route: Route): Observable<any> {
+	agregar(route: RouteTable): Observable<any> {
 		return this.http.post(this.routeUrl, { idroute: route.id, name: route.name });
 	}
 
 	update(route: Route): Observable<any> {
-		return this.http.put<Route[]>(this.routeUrl, route);
+		return this.http.put<Route>(this.routeUrl, route);
 	}
 
 	reorderPointOfSale(idRoute: number, idPointOfSale: number, position: number, newPosition: number): Observable<any> {
-		return this.http.put<Route[]>(this.routeUrl + '/reorderPointOfSale', {
+		return this.http.put<any[]>(this.routeUrl + '/reorderPointOfSale', {
 			idRoute: idRoute,
 			idPointOfSale: idPointOfSale,
 			position: position,

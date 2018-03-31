@@ -24,6 +24,16 @@ import { RouteTable } from "../../../../../../../datatypes/routeTable";
 })
 export class RouteEdit implements OnInit {
     private currentRoute: Route;
+
+    //public myform: FormGroup;
+    //public editForm: FormGroup;
+    firstName: FormControl;
+    lastName: FormControl;
+    email: FormControl;
+    password: FormControl;
+    language: FormControl;
+    editName: FormControl;
+
     private id: number;
     paramsSub: any;
     //Puntos de venta para el combo
@@ -52,7 +62,8 @@ export class RouteEdit implements OnInit {
     }
 
     ngOnInit() {
-        this.getTemplatesRoute();        
+        this.getTemplatesRoute();
+        this.editName = new FormControl('', Validators.required);
         this.paramsSub = this.activatedRoute.params.subscribe(
             params => {
                 this.routeService.get().subscribe(response => {
@@ -65,6 +76,7 @@ export class RouteEdit implements OnInit {
                     this.getPointOfSalesRoute();
                     this.getUsers();
                     this.getUsersRoute();
+                    //this.editForm = new FormGroup({ editName: this.editName });
                 });
             },
             error => { }
@@ -74,6 +86,11 @@ export class RouteEdit implements OnInit {
             this.pointsOfSales = <PointOfSale[]>dataPOS;
             console.log(dataPOS);
         });
+
+        this.createFormControls();
+        this.createForm();
+        this.createFormEditControls();
+        this.createFormEdit();
     }
 
     getTemplatesRoute() {
@@ -94,13 +111,50 @@ export class RouteEdit implements OnInit {
         )
     }
 
+    createFormControls() {
+        this.firstName = new FormControl('', Validators.required);
+        this.lastName = new FormControl('', Validators.required);
+        this.email = new FormControl('', [Validators.required, Validators.pattern('[^ @]*@[^ @]*')]);
+        this.password = new FormControl('', [Validators.required, Validators.minLength(8)]);
+        this.language = new FormControl('', Validators.required);
+    }
+
+    createForm() {
+		/*
+        this.myform = new FormGroup({
+            name: new FormGroup({
+                firstName: this.firstName,
+                lastName: this.lastName,
+            }),
+            email: this.email,
+            password: this.password,
+            language: this.language
+        });
+        */
+    }
+
+    createFormEditControls() {
+        this.editName = new FormControl('', Validators.required);
+    }
+
+    createFormEdit() {
+		/*
+        this.editForm = new FormGroup({
+            editName: this.editName
+        });
+        */
+    }
+
     remove(idPointOfSale) {
-        this.currentRoute.removePointOfSale(idPointOfSale);
-        /*
         this.routeService.remove(this.currentRoute.id, idPointOfSale).subscribe(data => {
             this.getPointOfSalesRoute();
         });
-        */
+    }
+
+    removeUser(idUser) {
+        this.routeService.removeUser(this.currentRoute.id, idUser).subscribe(data => {
+            this.getUsersRoute();
+        });
     }
 
     actualizar() {

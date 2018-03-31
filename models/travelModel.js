@@ -233,5 +233,5 @@ var TravelModel = /** @class */ (function () {
     ;
     return TravelModel;
 }());
-module.exports = new TravelModel();
+exports.TravelModel = TravelModel;
 //# sourceMappingURL=travelModel.js.map

@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 
 import { RouteService } from '../../../../services/route.service';
-import { Route as RouteModel } from '../../../../models/route.model';
+import { RouteTable } from '../../../../../../../datatypes/routeTable';
+
 import { Router } from '@angular/router';
 
 @Component({
@@ -14,7 +15,7 @@ export class ListComponent implements OnInit {
 	private userSaved: string;
 	private accountId: Number;
 
-	private routes: RouteModel[];
+	private routes: RouteTable[];
 
 	constructor(private router: Router, private routeServices: RouteService) {}
 
