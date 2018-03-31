@@ -72,7 +72,9 @@ CREATE TABLE `supply` (
  `id` INT(11) NOT NULL AUTO_INCREMENT,
  `name` VARCHAR(56) NOT NULL,
  `unit` INT(11) NOT NULL,
- `path_image` VARCHAR(128) NOT NULL, PRIMARY KEY (`id`), FOREIGN KEY (unit) REFERENCES unit(id)
+ `path_image` VARCHAR(128) NULL,
+ PRIMARY KEY (`id`),
+ FOREIGN KEY (unit) REFERENCES unit(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 

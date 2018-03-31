@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 import { RouteService } from '../../../../services/route.service';
+
 import { RouteTable } from '../../../../../../../datatypes/routeTable';
 
 import { Router } from '@angular/router';

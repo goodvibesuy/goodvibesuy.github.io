@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RouteService } from '../../../../services/route.service';
+
 import { RouteTable as RouteModel } from '../../../../../../../datatypes/routeTable'
+
 
 @Component({
   selector: 'app-route.add',

@@ -4,8 +4,10 @@ import { ActivatedRoute, Router } from '@angular/router';
 // service
 import { SupplyService } from '../../../../services/supply.service';
 import { ImagesService } from '../../../../services/images.service';
+import { ProvidersService } from '../../../../services/providers.service';
 // datatypes
 import { Supply } from '../../../../../../../datatypes/supply';
+import { Provider } from '../../../../../../../datatypes/provider';
 
 import { Unit } from '../../../../models/unit.model';
 import { GVFile } from '../../../../models/gvfile.model';
@@ -17,6 +19,7 @@ import { GVFile } from '../../../../models/gvfile.model';
 })
 export class SupplyAddComponent implements OnInit {
 	private supply: Supply;
+	private providers: Provider[];
 	private units: Unit[];
 	private imageFile: GVFile;
 	private category: string = 'insumos';
@@ -25,6 +28,7 @@ export class SupplyAddComponent implements OnInit {
 		private supplyService: SupplyService,
 		private router: Router,
 		private domSanitizer: DomSanitizer,
+        private providerService: ProvidersService,
 		private imagesService: ImagesService
 	) {
 		this.supply = <Supply>{ id: -1, name: '', unit: 1, amount: 0 };
@@ -33,7 +37,10 @@ export class SupplyAddComponent implements OnInit {
 	ngOnInit() {
 		this.supplyService.getUnits().subscribe(data => {
 			this.units = <Unit[]>data;
-		});
+        });        
+        this.providerService.getAll().subscribe(data => {
+            this.providers = data.data;
+        });        
 	}
 
 	agregar(): void {
