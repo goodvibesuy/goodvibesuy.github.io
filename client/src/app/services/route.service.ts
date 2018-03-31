@@ -16,10 +16,14 @@ export class RouteService {
 
 	get(): Observable<any> {
 		return this.http.get<Route[]>(this.routeUrl);
-	}
+    }
+    
+    getRouteById(id:number): Observable<any> {
+		return this.http.get<Route[]>(this.routeUrl + "/" + id);
+    }
 
 	agregar(route: Route): Observable<any> {
-		return this.http.post(this.routeUrl, { idroute: route.idroute, name: route.name });
+		return this.http.post(this.routeUrl, { idroute: route.id, name: route.name });
 	}
 
 	update(route: Route): Observable<any> {
