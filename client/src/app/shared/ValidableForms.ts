@@ -4,9 +4,12 @@ export class ValidableForm {
     private form: FormGroup;
     private values: any;
 
-    constructor(private fb: FormBuilder, c: { [key: string]: any }) {
-        this.form = this.fb.group(c);
+    constructor(private fb: FormBuilder) {
         this.values = {};
+    }
+
+    initForm(c: { [key: string]: any }): void {
+        this.form = this.fb.group(c);
     }
 
     isValid(): boolean {

@@ -39,7 +39,8 @@ export class SupplyEditComponent extends ValidableForm implements OnInit, OnDest
         private domSanitizer: DomSanitizer,
         private imagesService: ImagesService
     ) {
-        super(fb, {
+        super(fb)
+        super.initForm( {
             name: [null, Validators.required],
             unit: [null, Validators.required],
             idProvider: [null, Validators.required],

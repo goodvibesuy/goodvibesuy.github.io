@@ -34,13 +34,16 @@ export class SupplyAddComponent extends ValidableForm implements OnInit {
         private providerService: ProvidersService,
         private imagesService: ImagesService
     ) {
-        super(fb, {
+        super(fb);
+
+        let formGroup = {
             name: [null, Validators.required],
             unit: [null, Validators.required],
             idProvider: [null, Validators.required],
             amount: [null, Validators.required],
             price_date: [NgbDateFormatter.formatDate(new Date), Validators.required]
-        });
+        };
+        super.initForm(formGroup);
     }
 
     ngOnInit() {
@@ -56,7 +59,7 @@ export class SupplyAddComponent extends ValidableForm implements OnInit {
         if (super.isInvalid()) {
             super.showValidationErrors();
         } else {
-            var promise = this.supplyService.agregar(super.getModel<Supply>());
+            var promise = this.supplyService.agregar(super.getModel<Supply>({'price_date': NgbDateFormatter.unformatDate }));
 
             promise.subscribe(data => {
                 if (!!this.imageFile) {

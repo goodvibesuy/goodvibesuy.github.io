@@ -94,7 +94,7 @@ class SuppliesModel {
                             var priceDateFormat = new Date(price_date).toISOString().slice(0, 19).replace('T', ' ');
 							con.query(
 								'INSERT INTO supplyPrice  (date, price_date, amount, idSupply, idProvider) VALUES(NOW(),?,?,?,?)',
-								[price_date, amount, idSupply, idProvider],
+								[priceDateFormat, amount, idSupply, idProvider],
 								function(err: any, result: any) {
 									con.release();
 									// sea cual sea el tipo de error => siempre tengo que liberar la conexión

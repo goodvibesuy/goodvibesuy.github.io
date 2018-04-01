@@ -52,7 +52,7 @@ export class NgbDateFormatter {
             day: date.getDate()
         };
     }
-    public static unformatDate(ud: { year: number, month: number, date: number }) {
-        return new Date(ud.year, ud.month, ud.date);
+    public static unformatDate(ud: { year: number, month: number, day: number }) {
+        return new Date(ud.year, ud.month - 1, ud.day);
     }
 }
