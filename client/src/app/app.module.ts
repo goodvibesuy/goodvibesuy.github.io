@@ -1,12 +1,11 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule, LOCALE_ID } from '@angular/core';
+import { NgModule, LOCALE_ID, OnChanges, SimpleChanges, DoCheck, Renderer, Renderer2 } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { AmChartsModule } from "@amcharts/amcharts3-angular";
-
+import { NgbModule, NgbDateParserFormatter } from '@ng-bootstrap/ng-bootstrap';
+import { AmChartsModule } from '@amcharts/amcharts3-angular';
 
 // components
 import { AppComponent } from './app.component';
@@ -68,62 +67,68 @@ import { AlertService } from './modules/alert/alert.service';
 // Interceptor
 import { InterceptorModule } from './auth/token.interceptor';
 
+import { NgbDatepickerConfig } from '@ng-bootstrap/ng-bootstrap';
+import { CenouraInputValidation } from './shared/validation/CenouraInputValidation';
+import { NgbDateESParserFormatter } from './shared/DateParserFormatter';
+
 @NgModule({
-	declarations: [
-		AppComponent,
-		HeaderComponent,
-		DashboardComponent,
-		ProductsComponent,
-		ProductsListComponent,
-		ProductEditComponent,
-		ProductAddComponent,
-		LocalesComponent,
-		ReportesComponent,
-		SupplyComponent,
-		SupplyListComponent,
-		SupplyEditComponent,
-		SupplyAddComponent,
-		MapaComponent,
-		DetalleLocalComponent,
-		ConfigsComponent,
-		RoutesComponent,
-		ListComponent,
-		RouteAdd,
-		RouteEdit,
-		// shared
-		FilePicker,
-		LoginComponent,
+    declarations: [
+        CenouraInputValidation,
+        AppComponent,
+        HeaderComponent,
+        DashboardComponent,
+        ProductsComponent,
+        ProductsListComponent,
+        ProductEditComponent,
+        ProductAddComponent,
+        LocalesComponent,
+        ReportesComponent,
+        SupplyComponent,
+        SupplyListComponent,
+        SupplyEditComponent,
+        SupplyAddComponent,
+        MapaComponent,
+        DetalleLocalComponent,
+        ConfigsComponent,
+        RoutesComponent,
+        ListComponent,
+        RouteAdd,
+        RouteEdit,
+        // shared
+        FilePicker,
+        LoginComponent,
         PosComponent,
         TemplatesRoutesComponent
-	],
-	imports: [
-		BrowserModule,
-		FormsModule,
-		ReactiveFormsModule,
-		HttpClientModule,
-		AppRoutingModule,
-		InterceptorModule,
-		NgbModule.forRoot(),
+    ],
+    imports: [
+        BrowserModule,
+        FormsModule,
+        ReactiveFormsModule,
+        HttpClientModule,
+        AppRoutingModule,
+        InterceptorModule,
+        NgbModule.forRoot(),
         AlertModule.forRoot(),
         AmChartsModule
-	],
-	providers: [
-		SupplyService,
-		ProductsService,
-		ProvidersService,
+    ],
+    providers: [
+        SupplyService,
+        ProductsService,
+        ProvidersService,
         RouteService,
         TemplatesRoutesService,
-		UsersService,
-		ImagesService,
-		AuthenticateService,
-		PointOfSaleService,
-		ViewingService,
-		HeaderService,
+        UsersService,
+        ImagesService,
+        AuthenticateService,
+        PointOfSaleService,
+        ViewingService,
+        HeaderService,
         TokenService,
         AlertService,
         KpiService,
-        { provide: LOCALE_ID, useValue: 'es-UY' }
-	],
-	bootstrap: [AppComponent]
+        { provide: LOCALE_ID, useValue: 'es-UY' },
+        { provide: NgbDateParserFormatter, useClass: NgbDateESParserFormatter }
+    ],
+    bootstrap: [AppComponent]
 })
-export class AppModule {}
+export class AppModule { }
