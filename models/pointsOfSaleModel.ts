@@ -53,7 +53,7 @@ export class PointsOfSaleModel {
                         callBack({
                             result: ResultCode.OK,
                             message: 'OK',
-                            data: result
+                            data: result.length>0?result[0]:null
                         });
                     }
                 });

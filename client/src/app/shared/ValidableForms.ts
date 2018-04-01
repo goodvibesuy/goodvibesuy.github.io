@@ -28,7 +28,7 @@ export class ValidableForm {
         });
     }
 
-    getModel<T>(unformatter?: any): any {
+    getModel<T>(unformatter?: any): T {
         var model = <T>{};
 
         Object.keys(this.values).forEach((key) => {

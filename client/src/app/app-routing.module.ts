@@ -22,6 +22,7 @@ import { ProductEditComponent } from './components/adm/products/edit/product.edi
 import { ProductAddComponent } from './components/adm/products/add/product.add.component';
 import { LoginComponent } from './components/login/login.component';
 import { PosComponent } from './components/adm/pos/pos.component';
+import { PosListComponent } from './components/adm/pos/list/pos.list.component';
 import { PosEditComponent } from './components/adm/pos/edit/pos.edit.component';
 import { TemplatesRoutesComponent } from './components/adm/templates-routes/templates-routes.component';
 
@@ -30,7 +31,8 @@ const routes: Routes = [
         path:'admin/puntos-de-venta',
         component:PosComponent,
 		children: [
-			{ path: 'editar/:id', component: ProductEditComponent }
+			{ path: '', component: PosListComponent },
+			{ path: 'editar/:id', component: PosEditComponent }
 		]
     },
 	{
