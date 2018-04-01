@@ -20,7 +20,7 @@ import { NgbDateFormatter } from '../../../../shared/DateParserFormatter';
     styleUrls: ['./supply.add.component.css']
 })
 export class SupplyAddComponent extends ValidableForm implements OnInit {
-    private supply: Supply;
+    
     private providers: Provider[];
     private units: Unit[];
     private imageFile: GVFile;
@@ -40,8 +40,7 @@ export class SupplyAddComponent extends ValidableForm implements OnInit {
             idProvider: [null, Validators.required],
             amount: [null, Validators.required],
             price_date: [NgbDateFormatter.formatDate(new Date), Validators.required]
-        })
-
+        });
     }
 
     ngOnInit() {
@@ -54,13 +53,15 @@ export class SupplyAddComponent extends ValidableForm implements OnInit {
     }
 
     agregar(): void {
-        if (super.isValid()) {
-            var promise = this.supplyService.agregar(this.prepareSaveSupply());
+        if (super.isInvalid()) {
+            super.showValidationErrors();
+        } else {
+            var promise = this.supplyService.agregar(super.getModel<Supply>());
 
             promise.subscribe(data => {
                 if (!!this.imageFile) {
                     this.imagesService
-                        .sendImage(this.category, this.supply.path_image, this.imageFile.size, this.imageFile.data)
+                        .sendImage(this.category, this.imageFile.name, this.imageFile.size, this.imageFile.data)
                         .subscribe(
                             res => {
                                 this.router.navigateByUrl('/admin/' + this.category);
@@ -73,8 +74,6 @@ export class SupplyAddComponent extends ValidableForm implements OnInit {
                     this.router.navigateByUrl('/admin/' + this.category);
                 }
             });
-        } else {
-            super.showValidationErrors();
         }
     }
 
@@ -83,21 +82,12 @@ export class SupplyAddComponent extends ValidableForm implements OnInit {
             ? this.domSanitizer.bypassSecurityTrustUrl(
                 'data:image/' + this.imageFile.type + ';base64, ' + this.imageFile.data
             )
-            : 'images/' + this.category + '/' + this.imagesService.getSmallImage(this.supply.path_image);
+            : 'images/' + this.category + '/' + this.imagesService.getSmallImage(this.imageFile.name);
     }
 
     handleSelected(file: GVFile): void {
         if (!!file) {
             this.imageFile = file;
-            this.supply.path_image = this.imageFile.name;
         }
-    }
-
-    prepareSaveSupply(): Supply {
-        const formModel = super.getModel();
-
-        const saveSupply: Supply = Object.assign({}, this.supply);
-        saveSupply.name = formModel.name;
-        return saveSupply;
     }
 }

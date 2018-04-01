@@ -49,7 +49,10 @@ export class NgbDateFormatter {
         return {
             year: date.getFullYear(),
             month: date.getMonth() + 1,
-            day: date.getDay() + 1
+            day: date.getDate()
         };
+    }
+    public static unformatDate(ud: { year: number, month: number, date: number }) {
+        return new Date(ud.year, ud.month, ud.date);
     }
 }
