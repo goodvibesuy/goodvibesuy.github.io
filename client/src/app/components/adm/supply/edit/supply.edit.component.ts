@@ -14,17 +14,15 @@ import { Provider } from '../../../../../../../datatypes/provider';
 import { ValidableForm } from '../../../../shared/ValidableForms';
 import { FormBuilder, Validators } from '@angular/forms';
 import { NgbDateFormatter } from '../../../../shared/DateParserFormatter';
+import { Subscription } from 'rxjs';
 
 @Component({
-    selector: 'app-supply-edit',
     templateUrl: './supply.edit.component.html',
     styleUrls: ['./supply.edit.component.css']
 })
 export class SupplyEditComponent extends ValidableForm implements OnInit, OnDestroy {
-    private id: number;
-    private paramsSub: any;
+    private paramsSub: Subscription;
 
-    //private supply: Supply;
     private providers: Provider[];
     private units: Unit[];
     private imageFile: GVFile;

@@ -11,71 +11,57 @@ import { Unit } from '../../../../models/unit.model';
 import { ResultCode } from '../../../../../../../datatypes/result';
 
 @Component({
-	selector: 'app-supply-list',
-	templateUrl: './supply.list.component.html',
-	styleUrls: ['./supply.list.component.scss']
+    templateUrl: './supply.list.component.html',
+    styleUrls: ['./supply.list.component.scss']
 })
 export class SupplyListComponent implements OnInit {
-	protected supplies: Supply[];
-	protected units: Unit[];
-	private category: string = 'insumos';
+    protected supplies: Supply[];
+    protected units: Unit[];
+    private category: string = 'insumos';
 
-	constructor(private supplyService: SupplyService) {}
+    constructor(private supplyService: SupplyService) { }
 
-	ngOnInit() {
-		this.loadSupplies();
-	}
+    ngOnInit() {
+        this.loadSupplies();
+    }
 
-	getUnit(unitId: number): string {
-		return !!this.units ? this.units.find(u => u.id == unitId).name : null;
-	}
+    getUnit(unitId: number): string {
+        return !!this.units ? this.units.find(u => u.id == unitId).name : null;
+    }
 
-	delete(id: number): void {
-		this.supplyService.delete(id).subscribe(
-			res => {
-				if (res.result == ResultCode.OK) {
-					this.loadSupplies();
-				} else {
-					console.error('ERROR: ' + res.message);
-					alert('ERROR: ' + res.message);
-				}
-			},
-			err => {
-				console.error('UNEXPECTED ERROR: ' + err);
-				alert(err);
-			}
-		);
-	}
+    delete(id: number): void {
+        this.supplyService.delete(id).subscribe(
+            res => {
+                if (res.result == ResultCode.OK) {
+                    this.loadSupplies();
+                } else {
+                    console.error('ERROR: ' + res.message);
+                    alert('ERROR: ' + res.message);
+                }
+            },
+            err => {
+                console.error('UNEXPECTED ERROR: ' + err);
+                alert(err);
+            }
+        );
+    }
 
-	private loadSupplies(): void {
-		this.supplyService.getLatestPrices().subscribe(
-			data => {
-                this.supplies = data;
-                // _.chain(data)
-				// 	.groupBy(s => s.id)
-				// 	.map(g =>
-				// 		_.chain(g)
-				// 			.sortBy(s => s.date)
-				// 			.last()
-				// 			.value()
-				// 	)
-				// 	.sortBy(m => m.name.toLowerCase())
-				// 	.value();
-			},
-			error => {
-				// TODO: mostrar error
-				console.error(error);
-				alert(error);
-			}
-		);
+    private loadSupplies(): void {
+        this.supplyService.getLatestPrices().subscribe(data => { this.supplies = data; },
+            error => {
+                // TODO: mostrar error
+                console.error(error);
+                alert(error);
+            }
+        );
 
-		this.supplyService.getUnits().subscribe(
-			data => (this.units = data),
-			error => {
-				// TODO: mostrar error
-				console.error(error);
-				alert(error);
-			}
-		);
-	}
+        this.supplyService.getUnits().subscribe(
+            data => (this.units = data),
+            error => {
+                // TODO: mostrar error
+                console.error(error);
+                alert(error);
+            }
+        );
+    }
 }
