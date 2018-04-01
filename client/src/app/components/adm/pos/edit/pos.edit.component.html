@@ -1,0 +1,61 @@
+<div class="card" style="margin:15px;" [hidden]="typeOfView !== 2">
+    <div class="card-header">
+        <b>Editar Punto de venta</b>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="card tarjeta" style="width: 18rem;">
+                    <div class="card-body">
+                        <h5 class="card-title">Ubicación del Punto de venta</h5>
+                        <div #gmapEdit class="gmap"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="card tarjeta" style="width: 18rem;">
+                    <div class="card-body">
+                        <h5 class="card-title">Información del Punto de venta </h5>
+                        <div class="form-group">
+                            <span class="input-group-addon">Nombre:</span>
+                            <input type="text" class="form-control" id="POSEditName" [(ngModel)]="POSEditName">
+                        </div>
+                        <div class="form-group">
+                            <span class="input-group-addon">Nombre de contacto:</span>
+                            <input type="text" class="form-control" id="POSEditContactName" [(ngModel)]="POSEditContactName">
+                        </div>
+                        <div class="form-group">
+                            <span class="input-group-addon">RUT:</span>
+                            <input type="text" class="form-control" id="POSEditRUT" [(ngModel)]="POSEditRUT">
+                        </div>
+                        <div class="form-group">
+                            <span class="input-group-addon">Razón social</span>
+                            <input type="text" class="form-control" id="POSEditBusinessName" [(ngModel)]="POSEditBusinessName">
+                        </div>
+                        <div class="form-group">
+                            <span class="input-group-addon">Dirección:</span>
+                            <input type="text" class="form-control" id="POSEditAddress" [(ngModel)]="POSEditAddress">
+                            <button type="button" class="btn btn-light" (click)="locationEdit()">marcar</button>
+                        </div>
+                        <div class="form-group">
+                            <span class="input-group-addon">Telefono:</span>
+                            <input type="text" class="form-control" id="POSEditTel" [(ngModel)]="POSEditTel">
+                        </div>
+                        <div class="form-group">
+                            <span class="input-group-addon">Imagen:</span>
+                            <img [src]="getImage()" *ngIf="POSEdit" class="small_image" />
+                            <file-picker text="Cambiar" (selected)="handleSelected($event)"></file-picker>
+                            <div *ngIf="filestring">
+                                {{filestring}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card-footer footer">
+        <button type="button" class="btn btn-danger" (click)="cancelEdit()">Cancelar</button>
+        <button type="button" class="btn btn-primary" (click)="actualizar()">Actualizar</button>
+    </div>
+</div>

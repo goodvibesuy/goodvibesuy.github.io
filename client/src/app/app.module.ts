@@ -37,6 +37,7 @@ import { RouteEdit } from './components/adm/routes/route.edit/route.edit.compone
 import { TemplatesRoutesComponent } from './components/adm/templates-routes/templates-routes.component';
 // Point of sale
 import { PosComponent } from './components/adm/pos/pos.component';
+import { PosEditComponent } from './components/adm/pos/edit/pos.edit.component';
 
 // services
 import { SupplyService } from './services/supply.service';
