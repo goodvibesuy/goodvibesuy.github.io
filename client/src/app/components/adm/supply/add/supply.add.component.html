@@ -57,11 +57,8 @@
 
               <div class="form-group">
                 <span class="input-group-addon">Imagen:</span>
-                <img [src]="getImage()" *ngIf="supply" class="small_image add_supply" />
+                <img [src]="getImage()" class="small_image add_supply" />
                 <file-picker text="Cambiar" (selected)="handleSelected($event)"></file-picker>
-                <div *ngIf="filestring">
-                  {{filestring}}
-                </div>
               </div>
             </div>
             <div class="form-row">

@@ -40,7 +40,7 @@ export class SupplyEditComponent extends ValidableForm implements OnInit, OnDest
         private imagesService: ImagesService
     ) {
         super(fb)
-        super.initForm( {
+        super.initForm({
             name: [null, Validators.required],
             unit: [null, Validators.required],
             idProvider: [null, Validators.required],
@@ -58,7 +58,7 @@ export class SupplyEditComponent extends ValidableForm implements OnInit, OnDest
 
                 this.supplyService.getAll().subscribe(data => {
                     var supply = (<Supply[]>data).find(s => s.id == params['id']);
-                    super.setModel(supply, {'price_date': NgbDateFormatter.formatDate });
+                    super.setModel(supply, { 'price_date': NgbDateFormatter.formatDate });
                 });
 
                 this.supplyService.getUnits().subscribe(data => {
@@ -77,13 +77,16 @@ export class SupplyEditComponent extends ValidableForm implements OnInit, OnDest
         if (super.isInvalid()) {
             super.showValidationErrors();
         } else {
-            var supply = super.getModel<Supply>({'price_date': NgbDateFormatter.unformatDate });
+            var supply = super.getModel<Supply>({ 'price_date': NgbDateFormatter.unformatDate });
+            if (!!this.imageFile) {
+                supply.path_image = supply.id + '_' + this.imageFile.name;
+            }
             var promise = this.supplyService.update(supply);
 
             promise.subscribe(data => {
                 if (!!this.imageFile) {
                     this.imagesService
-                        .sendImage(this.category, 'this.supply.path_image', this.imageFile.size, this.imageFile.data)
+                        .sendImage(this.category, supply.path_image, this.imageFile.size, this.imageFile.data)
                         .subscribe(
                             res => {
                                 this.router.navigateByUrl('/admin/' + this.category);
@@ -100,17 +103,17 @@ export class SupplyEditComponent extends ValidableForm implements OnInit, OnDest
     }
 
     getImage() {
-        // return this.imageFile
-        //     ? this.domSanitizer.bypassSecurityTrustUrl(
-        //         'data:image/' + this.imageFile.type + ';base64, ' + this.imageFile.data
-        //     )
-        //     : 'images/' + this.category + '/' + this.imagesService.getSmallImage(this.supply.path_image);
+        var supply = super.getModel<Supply>({ 'price_date': NgbDateFormatter.unformatDate });
+        return this.imageFile
+            ? this.domSanitizer.bypassSecurityTrustUrl(
+                'data:image/' + this.imageFile.type + ';base64, ' + this.imageFile.data
+            )
+            : 'images/' + this.category + '/' + this.imagesService.getSmallImage(supply.path_image);
     }
 
     handleSelected(file: GVFile): void {
         if (!!file) {
             this.imageFile = file;
-            // this.supply.path_image = this.supply.id + '_' + this.imageFile.name;
         }
     }
 }

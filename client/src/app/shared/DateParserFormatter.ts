@@ -45,14 +45,14 @@ export class NgbDateESParserFormatter extends NgbDateParserFormatter {
 }
 
 export class NgbDateFormatter {
-    public static formatDate(date: Date) {
-        return {
+    public static formatDate(date: Date): { year, month, day } {
+        return !!date ? {
             year: date.getFullYear(),
             month: date.getMonth() + 1,
             day: date.getDate()
-        };
+        } : null;
     }
-    public static unformatDate(ud: { year: number, month: number, day: number }) {
-        return new Date(ud.year, ud.month - 1, ud.day);
+    public static unformatDate(ud: { year: number, month: number, day: number }): Date {
+        return !!ud ? new Date(ud.year, ud.month - 1, ud.day) : null;
     }
 }
