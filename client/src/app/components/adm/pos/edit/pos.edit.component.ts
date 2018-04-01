@@ -40,7 +40,9 @@ export class PosEditComponent extends ValidableForm implements OnInit {
 		private pointOFSaleService: PointOfSaleService,
 		private domSanitizer: DomSanitizer,
 		private imagesService: ImagesService
-	) {}
+	) {
+        super(null);
+    }
 
 	ngOnInit() {
 		this.loadPointsOfSale();
