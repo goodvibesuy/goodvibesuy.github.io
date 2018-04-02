@@ -2,7 +2,7 @@ import { Result, ResultWithData, ResultCode } from '../datatypes/result';
 var masterDBController = require('../bd/masterConnectionsBD');
 var clientDBController = require('../bd/clientConnectionsBD');
 
-class SuppliesModel {
+export class SuppliesModel {
 	constructor() {}
 
 	getAll(dbName: string, callBack: (r: ResultWithData<any[]>) => void): void {
@@ -205,5 +205,3 @@ class SuppliesModel {
 		});
 	}
 }
-
-module.exports = new SuppliesModel();

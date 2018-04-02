@@ -79,7 +79,7 @@ var SuppliesModel = /** @class */ (function () {
                     else {
                         var idSupply = result.insertId;
                         var priceDateFormat = new Date(price_date).toISOString().slice(0, 19).replace('T', ' ');
-                        con.query('INSERT INTO supplyPrice  (date, price_date, amount, idSupply, idProvider) VALUES(NOW(),?,?,?,?)', [price_date, amount, idSupply, idProvider], function (err, result) {
+                        con.query('INSERT INTO supplyPrice  (date, price_date, amount, idSupply, idProvider) VALUES(NOW(),?,?,?,?)', [priceDateFormat, amount, idSupply, idProvider], function (err, result) {
                             con.release();
                             // sea cual sea el tipo de error => siempre tengo que liberar la conexión
                             // sino el cliente web queda esperando
@@ -179,5 +179,5 @@ var SuppliesModel = /** @class */ (function () {
     };
     return SuppliesModel;
 }());
-module.exports = new SuppliesModel();
+exports.SuppliesModel = SuppliesModel;
 //# sourceMappingURL=suppliesModel.js.map

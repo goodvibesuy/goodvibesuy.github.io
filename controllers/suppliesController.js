@@ -10,7 +10,7 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var suppliesModel = require('../models/suppliesModel');
+var suppliesModel_1 = require("../models/suppliesModel");
 var mainController_1 = require("./mainController");
 var SuppliesController = /** @class */ (function (_super) {
     __extends(SuppliesController, _super);
@@ -18,47 +18,48 @@ var SuppliesController = /** @class */ (function (_super) {
         var _this = _super.call(this) || this;
         _this.getAll = function (req, res) {
             _this.verifyAccess(req, res, _this.resource, function (dbName) {
-                suppliesModel.getAll(dbName, function (result) {
+                _this.suppliesModel.getAll(dbName, function (result) {
                     res.send(result);
                 });
             });
         };
         _this.get = function (req, res) {
             _this.verifyAccess(req, res, _this.resource, function (dbName) {
-                suppliesModel.supplies(dbName, function (result) {
+                _this.suppliesModel.supplies(dbName, function (result) {
                     res.send(result);
                 });
             });
         };
         _this.addSupply = function (req, res) {
             _this.verifyAccess(req, res, _this.resource, function (dbName) {
-                suppliesModel.addSupply(req.body.name, req.body.unit, req.body.amount, req.body.price_date, req.body.idProvider, req.body.path_image, dbName, function (result) {
+                _this.suppliesModel.addSupply(req.body.name, req.body.unit, req.body.amount, req.body.price_date, req.body.idProvider, req.body.path_image, dbName, function (result) {
                     res.send(result);
                 });
             });
         };
         _this.suppliesByProduct = function (req, res) {
             _this.verifyAccess(req, res, _this.resource, function (dbName) {
-                suppliesModel.suppliesByProduct(req.body.idProduct, dbName, function (result) {
+                _this.suppliesModel.suppliesByProduct(req.body.idProduct, dbName, function (result) {
                     res.send(result);
                 });
             });
         };
         _this.updateSupply = function (req, res) {
             _this.verifyAccess(req, res, _this.resource, function (dbName) {
-                suppliesModel.updateSupply(req.params.id, req.body.name, req.body.unit, req.body.amount, req.body.price_date, req.body.idProvider, req.body.path_image, dbName, function (result) {
+                _this.suppliesModel.updateSupply(req.params.id, req.body.name, req.body.unit, req.body.amount, req.body.price_date, req.body.idProvider, req.body.path_image, dbName, function (result) {
                     res.send(result);
                 });
             });
         };
         _this.deleteSupply = function (req, res) {
             _this.verifyAccess(req, res, _this.resource, function (dbName) {
-                suppliesModel.deleteSupply(req.params.id, dbName, function (result) {
+                _this.suppliesModel.deleteSupply(req.params.id, dbName, function (result) {
                     res.send(result);
                 });
             });
         };
         _this.resource = 'supplies';
+        _this.suppliesModel = new suppliesModel_1.SuppliesModel();
         return _this;
     }
     return SuppliesController;

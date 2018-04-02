@@ -4,6 +4,7 @@ import { KpiService } from '../../../services/kpi.service';
 import { SupplyService } from '../../../services/supply.service';
 import { Supply } from '../../../../../../datatypes/supply';
 import { AmChartsService, AmChart } from "@amcharts/amcharts3-angular";
+import { SupplyTable } from '../../../../../../datatypes/supplyTable';
 
 @Component({
     selector: 'app-reportes',
@@ -12,7 +13,7 @@ import { AmChartsService, AmChart } from "@amcharts/amcharts3-angular";
 })
 export class ReportesComponent implements OnInit {
     private suppliesPrice: [any];
-    private supplies: Supply[];
+    private supplies: SupplyTable[];
     private chart: AmChart;
     private suppliesById:Map<number,any>;
 
@@ -31,7 +32,7 @@ export class ReportesComponent implements OnInit {
                 var chartData = [];
 
                 for (var i = 0; i < this.suppliesPrice.length; i++) {
-                    var newDate = new Date(this.suppliesPrice[i].date);
+                    var newDate = new Date(this.suppliesPrice[i].price_date);
                     chartData.push({
                         date: newDate,
                         visits: this.suppliesPrice[i].amount
@@ -57,8 +58,7 @@ export class ReportesComponent implements OnInit {
                         "negativeLineColor": "#67b7dc",
                         "valueField": "visits"
                     }],
-                    "chartScrollbar": {
-        
+                    "chartScrollbar": {        
                     },
                     "chartCursor": {},
                     "categoryField": "date",
@@ -189,18 +189,10 @@ export class ReportesComponent implements OnInit {
         
         
         */
-/*
-        this.supplyService.get().subscribe(
-            data => {
-                console.log(data, "**");
-            }
-        )
-*/
-        this.supplyService.getAll().subscribe(
-            data => {
-                this.supplies = data;
-                console.log(data[0]);
-                this.supplyHistory(data[0].id);
+        this.supplyService.getListSupply().subscribe(
+            response => {
+                this.supplies = response.data;
+                this.supplyHistory(response.data[0].id);
             }
         )
 

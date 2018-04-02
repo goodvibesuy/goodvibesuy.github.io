@@ -14,7 +14,7 @@ class KpisModel {
                 con.release();
                 console.error(err);
             } else {
-                con.query("SELECT * FROM supply s INNER JOIN supplyprice sp ON s.id = sp.idSupply WHERE s.id = ?",
+                con.query("SELECT * FROM supply s INNER JOIN supplyprice sp ON s.id = sp.idSupply WHERE s.id = ? ORDER BY price_date ASC ",
                     [supplyId], function (err: any, result: any) {
                         if (err) throw err;
                         con.release();
