@@ -37,6 +37,7 @@ import { RouteEdit } from './components/adm/routes/route.edit/route.edit.compone
 import { TemplatesRoutesComponent } from './components/adm/templates-routes/templates-routes.component';
 // Point of sale
 import { PosComponent } from './components/adm/pos/pos.component';
+import { PosAddComponent } from './components/adm/pos/add/pos.add.component';
 import { PosEditComponent } from './components/adm/pos/edit/pos.edit.component';
 import { PosListComponent } from './components/adm/pos/list/pos.list.component';
 
@@ -100,6 +101,7 @@ import { NgbDateESParserFormatter } from './shared/DateParserFormatter';
         FilePicker,
         LoginComponent,
         PosComponent,
+        PosAddComponent,
         PosEditComponent,
         PosListComponent,
         TemplatesRoutesComponent

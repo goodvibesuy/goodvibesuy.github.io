@@ -8,4 +8,5 @@ export interface PointOfSale {
     businessName:string;
     contactName:string;
     RUT:string;
+    idGroup: number;
 }

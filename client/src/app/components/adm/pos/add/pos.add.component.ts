@@ -1,4 +1,4 @@
-import { Component, ViewChild, OnInit, ViewContainerRef, OnDestroy } from '@angular/core';
+import { Component, ViewChild, OnInit, } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { PointOfSaleService } from '../../../../services/point-of-sale.service';
 import { PointOfSale } from '../../../../models/pointofsale.model';
@@ -7,22 +7,19 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { GVFile } from '../../../../models/gvfile.model';
 import { ImagesService } from '../../../../services/images.service';
 import { ValidableForm } from '../../../../shared/ValidableForms';
-import { Subscription } from 'rxjs';
 import { FormBuilder, Validators } from '@angular/forms';
-import { ResultCode } from '../../../../../../../datatypes/result';
 
 @Component({
-    templateUrl: './pos.edit.component.html',
-    styleUrls: ['./pos.edit.component.css']
+    templateUrl: './pos.add.component.html',
+    styleUrls: ['./pos.add.component.css']
 })
-export class PosEditComponent extends ValidableForm implements OnInit, OnDestroy {
+export class PosAddComponent extends ValidableForm implements OnInit {
 
     private imageFile: GVFile;
     private imagePath: string;
-    private paramsSub: Subscription;
 
     private marker: google.maps.Marker;
-    @ViewChild('gmapEdit') gmapEditElement: any;
+    @ViewChild('gmapEdit') gmapElement: any;
     private map: google.maps.Map;
     private geocoder = new google.maps.Geocoder();
 
@@ -47,42 +44,39 @@ export class PosEditComponent extends ValidableForm implements OnInit, OnDestroy
     }
 
     ngOnInit() {
-        this.paramsSub = this.activatedRoute.params.subscribe(
-            params => {
-                var id = params['id']
-                this.loadPointsOfSale(id, (pos) => {
-                    super.setModel(pos);
-                    this.initMap(pos.coord);
-                })
-            });
+        super.setModel<PointOfSale>(<PointOfSale>{
+            name: null,
+            address: null,
+            tel: null, 
+            businessName: null,
+            contactName: null, 
+            RUT: null,
+            idGroup: null
+        });
+
+        this.initMap();
     }
 
-    initMap(coord) {
+    initMap() {
         const defaultLat: number = -34.909664;
         const defaultLong: number = -56.163319;
 
         // define map center
         var mapProp = {
-            center: new google.maps.LatLng(!!coord ? coord.x : defaultLat, !!coord ? coord.y : defaultLat),
+            center: new google.maps.LatLng(defaultLat, defaultLat),
             zoom: 14,
             mapTypeId: google.maps.MapTypeId.ROADMAP
         };
 
         // initialize map
-        this.map = new google.maps.Map(this.gmapEditElement.nativeElement, mapProp);
+        this.map = new google.maps.Map(this.gmapElement.nativeElement, mapProp);
 
         // mark pos
-        if (!!coord) {
-            this.marker = new google.maps.Marker({
-                map: this.map,
-                draggable: true,
-                position: new google.maps.LatLng(coord.x, coord.y)
-            });
-        }
-    }
-
-    ngOnDestroy() {
-        this.paramsSub.unsubscribe();
+        this.marker = new google.maps.Marker({
+            map: this.map,
+            draggable: true,
+            position: new google.maps.LatLng(defaultLat, defaultLat)
+        });
     }
 
     findLocation() {
@@ -103,12 +97,13 @@ export class PosEditComponent extends ValidableForm implements OnInit, OnDestroy
                     thisPrincipal.marker.setPosition(results[0].geometry.location);
                 }
             } else {
+                // TODO: mostrar el mensaje un poco mejor
                 alert('Geocode was not successful for the following reason: ' + status);
             }
         });
     }
 
-    actualizar() {
+    add() {
         if (super.isInvalid()) {
             super.showValidationErrors();
         } else {
@@ -118,8 +113,7 @@ export class PosEditComponent extends ValidableForm implements OnInit, OnDestroy
             }
             pos.coord = this.marker.getPosition();
 
-            this.pointOFSaleService
-                .updatePointOfSale(pos)
+            this.pointOFSaleService.addPointOfSale(pos)
                 .subscribe(response => {
                     if (!!this.imageFile) {
                         this.imagesService
@@ -139,24 +133,6 @@ export class PosEditComponent extends ValidableForm implements OnInit, OnDestroy
                     }
                 });
         }
-    }
-
-    loadPointsOfSale(id: number, callback: (p: PointOfSale) => void): void {
-        this.pointOFSaleService.getPointOfSale(id).subscribe(
-            response => {
-                if (response.result == ResultCode.Error) {
-                    // TODO: error handling
-                    console.error(response.message);
-                    this.router.navigate(['']);
-                } else {
-                    callback(response.data);
-                }
-            },
-            error => {
-                // TODO: error handling
-                console.error(error);
-            }
-        );
     }
 
     getImage() {

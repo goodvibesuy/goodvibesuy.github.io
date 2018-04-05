@@ -24,16 +24,18 @@ CREATE TABLE `groupPointofsale` (
 -- pointofsale
 DROP TABLE IF EXISTS `pointofsale`;
 CREATE TABLE `pointofsale` (
- `id` INT(11) NOT NULL AUTO_INCREMENT,
- `name` VARCHAR(56) NOT NULL,
- `businessName` VARCHAR(56) NOT NULL,
- `RUT` VARCHAR(56) NOT NULL,
- `contactName` VARCHAR(56) NOT NULL, 
- `address` VARCHAR(256) NOT NULL,
- `tel` VARCHAR(15) NOT NULL,
- `image` VARCHAR(56) DEFAULT NULL,
- `coord` POINT NOT NULL,
- `idGroup` INT(11) NOT NULL, PRIMARY KEY (`id`), FOREIGN KEY (idGroup) REFERENCES groupPointofsale(id)
+    `id` INT(11) NOT NULL AUTO_INCREMENT,
+    `name` VARCHAR(56) NOT NULL,
+    `businessName` VARCHAR(56) NOT NULL,
+    `RUT` VARCHAR(56) NOT NULL,
+    `contactName` VARCHAR(56) NOT NULL, 
+    `address` VARCHAR(256) NOT NULL,
+    `tel` VARCHAR(15) NOT NULL,
+    `image` VARCHAR(56) DEFAULT NULL,
+    `coord` POINT NOT NULL,
+    `idGroup` INT(11) NOT NULL,
+    PRIMARY KEY (`id`),
+    FOREIGN KEY (idGroup) REFERENCES groupPointofsale(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- product

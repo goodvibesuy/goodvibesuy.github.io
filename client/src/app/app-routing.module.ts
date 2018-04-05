@@ -24,6 +24,7 @@ import { LoginComponent } from './components/login/login.component';
 import { PosComponent } from './components/adm/pos/pos.component';
 import { PosListComponent } from './components/adm/pos/list/pos.list.component';
 import { PosEditComponent } from './components/adm/pos/edit/pos.edit.component';
+import { PosAddComponent } from './components/adm/pos/add/pos.add.component';
 import { TemplatesRoutesComponent } from './components/adm/templates-routes/templates-routes.component';
 
 const routes: Routes = [
@@ -32,6 +33,7 @@ const routes: Routes = [
         component:PosComponent,
 		children: [
 			{ path: '', component: PosListComponent },
+			{ path: 'agregar', component: PosAddComponent },
 			{ path: 'editar/:id', component: PosEditComponent }
 		]
     },

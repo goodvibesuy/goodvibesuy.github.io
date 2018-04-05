@@ -10,7 +10,8 @@ export class CenouraInputValidation implements DoCheck {
     constructor(private el: ElementRef, private renderer: Renderer2) { }
 
     ngDoCheck(): void {
-        if (this.cenInputValidation.dirty) {
+
+        if (!!this.cenInputValidation && !!this.cenInputValidation.dirty) {
             if (this.cenInputValidation.valid) {
                 this.renderer.addClass(this.el.nativeElement, 'is-valid');
                 this.renderer.removeClass(this.el.nativeElement, 'is-invalid');

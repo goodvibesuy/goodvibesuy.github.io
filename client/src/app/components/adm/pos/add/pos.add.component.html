@@ -46,10 +46,9 @@
                                             <img src="https://www.google.com/images/branding/product/2x/maps_96in128dp.png" width="35px">
                                         </button>
                                     </div>
-                                    <input type="text" class="form-control" (keyup.enter)="findLocation()" [cenInputValidation]="getFormField('address')" formControlName="address">
+                                    <input type="text" class="form-control" (keyup.enter)="findLocation()" [cenInputValidation]="getFormField('address')" formControlName="address">                                    
                                     <div class="invalid-feedback" *ngIf="isFormFieldInvalid('address')">Ingrese un valor válido.</div>
                                 </div>
-
                             </div>
                             <div class="form-group">
                                 <span class="input-group-addon">Telefono:</span>
@@ -79,6 +78,6 @@
     </div>
     <div class="card-footer footer">
         <button type="button" class="btn btn-danger" routerLink="/admin/puntos-de-venta">Cancelar</button>
-        <button type="button" class="btn btn-primary" (click)="actualizar()">Actualizar</button>
+        <button type="button" class="btn btn-primary" (click)="add()">Actualizar</button>
     </div>
 </div>

@@ -23,13 +23,12 @@ export class PointOfSaleService {
         return this.http.get<ResultWithData<PointOfSale>>(this.pointOfSaleURL + '/getPointOfSale/' + idPointOfSale);
     }
 
-    addPointOfSale(name: string, businessName: string, contactName: string, RUT: string, group: number,
-        address: string, tel: string, image: string, coords: google.maps.LatLng): Observable<any> {
-        return this.http.post(this.pointOfSaleURL, { name, businessName, contactName, RUT, group, address, tel, image, coords });
+    addPointOfSale(pos: PointOfSale): Observable<any> {
+        return this.http.post(this.pointOfSaleURL, pos);
     }
 
-    updatePointOfSale(p: PointOfSale): Observable<PointOfSale> {
-        return this.http.put<PointOfSale>(this.pointOfSaleURL, p);
+    updatePointOfSale(pos: PointOfSale): Observable<PointOfSale> {
+        return this.http.put<PointOfSale>(this.pointOfSaleURL, pos);
     }
 
     deletePointOfSale(idPointOfSale: Number): Observable<any> {
