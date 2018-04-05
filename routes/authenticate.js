@@ -18,7 +18,7 @@ router.post('/login', function (req, res, next) {
                     loginresponse.accounts[0].id, function (err, authError, response, dbName) {
 
                         usersController.getUserByIdMaster(loginresponse.user.id,loginresponse.tokenId,loginresponse.user.userName,
-                                                            loginresponse.user.rolId,loginresponse.accounts[0].id,req,res);
+                                                            loginresponse.user.rolId,loginresponse.accounts[0].id,dbName,req,res);
                         /*
                         var con = clientDBController.getUserConnection(dbName);
                         console.warn("Sacar lo que manda el rol para afuera");
