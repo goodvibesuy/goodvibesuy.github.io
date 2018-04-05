@@ -3,11 +3,11 @@ export class PointOfSale {
     name: string;
     address: string;
     tel: string;
-    image:string;
-    coord:google.maps.LatLng;
-    businessName:string;
-    contactName:string;
-    RUT:string;
+    image: string;
+    coord?: { lat(): number; lng(): number; }
+    businessName: string;
+    contactName: string;
+    RUT: string;
     idGroup: number;
 
     constructor() {
@@ -16,25 +16,29 @@ export class PointOfSale {
         this.tel = "";
         this.image = "";
         this.address = "";
-    }    
+        this.businessName = '';
+        this.contactName = '';
+        this.RUT = '';
+        this.idGroup = 0;
+    }
 
-    public setId(id:number):void{
+    public setId(id: number): void {
         this.id = id;
     }
 
-    public setName(name:string):void{
+    public setName(name: string): void {
         this.name = name;
     }
 
-    public setTel(tel:string):void{
+    public setTel(tel: string): void {
         this.tel = tel;
     }
 
-    public setImage(image:string):void{
+    public setImage(image: string): void {
         this.image = image;
     }
 
-    public setAddress(address:string):void{
+    public setAddress(address: string): void {
         this.address = address;
     }
 }
