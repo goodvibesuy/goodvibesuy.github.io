@@ -81,6 +81,7 @@ export class ViewingsModel extends MainModel{
                     }
                 });            
         } else {
+            con.release();
             callBack({
                 result: ResultCode.OK,
                 message: 'OK',

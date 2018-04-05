@@ -85,6 +85,7 @@ var ViewingsModel = /** @class */ (function (_super) {
             });
         }
         else {
+            con.release();
             callBack({
                 result: result_1.ResultCode.OK,
                 message: 'OK',

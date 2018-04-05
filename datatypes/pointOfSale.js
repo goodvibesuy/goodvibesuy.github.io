@@ -7,6 +7,10 @@ var PointOfSale = /** @class */ (function () {
         this.tel = "";
         this.image = "";
         this.address = "";
+        this.businessName = '';
+        this.contactName = '';
+        this.RUT = '';
+        this.idGroup = 0;
     }
     PointOfSale.prototype.setId = function (id) {
         this.id = id;

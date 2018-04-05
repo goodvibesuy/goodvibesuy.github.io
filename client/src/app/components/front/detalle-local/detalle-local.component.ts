@@ -73,7 +73,9 @@ export class DetalleLocalComponent implements OnInit {
 
     agregar(): void {        
         this.viewingService.addViewing(this.pointOfSale.id, this.productsToSend,this.annotation).subscribe(response => {
-            console.log(response);
+            if(response.result > 0){
+                alert("Los datos se guardaron correctamente");
+            }
         });
     }
 }
