@@ -76,14 +76,15 @@ export class TravelModel extends MainModel {
                 console.error(err);
             } else {
                 con.beginTransaction(function (err: any) {
+                    var dateOnly = (route.date.toString()).split("T");                    
                     con.query("UPDATE route SET  name = ?, date = ? WHERE id =?",
-                        [route.name, route.date, route.id],
+                        [route.name, dateOnly[0], route.id],
                         function (err: any, result: any) {
                             if (err) {
                                 con.rollback(function () {
                                     console.log(err);
                                     con.release();
-                                    callBack({ result: -1, message: "Error interno." });
+                                    callBack({ result: -1, message: "Error interno. - No se pudo actualizar la ruta." });
                                 });
                             } else {
                                 con.query("UPDATE route_user SET iduser = ? WHERE idroute = ? ",
@@ -92,7 +93,7 @@ export class TravelModel extends MainModel {
                                             con.rollback(function () {
                                                 console.log(err);
                                                 con.release();
-                                                callBack({ result: -1, message: "Error interno." });
+                                                callBack({ result: -1, message: "Error interno.No se pudo actualizar el usuario de la ruta" });
                                             });
                                         } else {
                                             con.query("DELETE FROM route_pointofsale WHERE idRoute = ?",
@@ -101,7 +102,7 @@ export class TravelModel extends MainModel {
                                                         con.rollback(function () {
                                                             console.log(err);
                                                             con.release();
-                                                            callBack({ result: -1, message: "Error interno." });
+                                                            callBack({ result: -1, message: "Error interno. -  No se pudieron borrar los POS de la ruta." });
                                                         });
                                                     } else {
                                                         mainThis.addPointsOfSale(route.id, 0, route.pointsOfSale, callBack, con);

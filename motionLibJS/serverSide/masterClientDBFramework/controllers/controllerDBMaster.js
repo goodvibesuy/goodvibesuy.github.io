@@ -19,7 +19,6 @@ var ControllerDBMaster = /** @class */ (function () {
         this.dbSessions = new dbSessionsBuilder(this.dbMasterConnection);
     }
     ControllerDBMaster.prototype.getUserConnection = function (databaseName) {
-        console.log(this.connectionPool[databaseName]);
         if (this.connectionPool[databaseName] && this.connectionPool[databaseName] !== undefined) {
             console.log('usando conexion con bd cliente ya existente.');
             return this.connectionPool[databaseName];

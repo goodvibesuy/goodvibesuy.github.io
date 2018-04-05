@@ -41,6 +41,7 @@ var TravelModel = /** @class */ (function (_super) {
         var pool = this.controllerConnections.getUserConnection(dbName);
         pool.getConnection(function (err, con) {
             if (err) {
+                console.log(err);
                 con.release();
                 console.error(err);
             }
@@ -52,8 +53,9 @@ var TravelModel = /** @class */ (function (_super) {
                     con.query("INSERT INTO route (name,date) VALUES (?,?)", [route.name, dateRoute], function (err, result) {
                         if (err) {
                             con.rollback(function () {
+                                console.log(err);
                                 con.release();
-                                callBack({ result: -1, message: "Error interno." });
+                                callBack({ result: -1, message: "Error interno. - No se pudo agregar la ruta." });
                             });
                         }
                         else {
@@ -61,8 +63,9 @@ var TravelModel = /** @class */ (function (_super) {
                             con.query("INSERT INTO route_user(idroute,iduser) VALUES(?,?) ", [route.id, route.user.id], function (err, result) {
                                 if (err) {
                                     con.rollback(function () {
+                                        console.log(err);
                                         con.release();
-                                        callBack({ result: -1, message: "Error interno." });
+                                        callBack({ result: -1, message: "Error interno. - No se pudo guardar el usuario de la ruta." });
                                     });
                                 }
                                 else {
@@ -86,27 +89,32 @@ var TravelModel = /** @class */ (function (_super) {
             }
             else {
                 con.beginTransaction(function (err) {
-                    con.query("UPDATE route SET  name = ?, date = ? WHERE id =?", [route.name, route.date, route.id], function (err, result) {
+                    var dateOnly = (route.date.toString()).split("T");
+                    console.log(dateOnly);
+                    con.query("UPDATE route SET  name = ?, date = ? WHERE id =?", [route.name, dateOnly[0], route.id], function (err, result) {
                         if (err) {
                             con.rollback(function () {
+                                console.log(err);
                                 con.release();
-                                callBack({ result: -1, message: "Error interno." });
+                                callBack({ result: -1, message: "Error interno. - No se pudo actualizar la ruta." });
                             });
                         }
                         else {
                             con.query("UPDATE route_user SET iduser = ? WHERE idroute = ? ", [route.user.id, route.id], function (err, result) {
                                 if (err) {
                                     con.rollback(function () {
+                                        console.log(err);
                                         con.release();
-                                        callBack({ result: -1, message: "Error interno." });
+                                        callBack({ result: -1, message: "Error interno.No se pudo actualizar el usuario de la ruta" });
                                     });
                                 }
                                 else {
                                     con.query("DELETE FROM route_pointofsale WHERE idRoute = ?", [route.id], function (err, result) {
                                         if (err) {
                                             con.rollback(function () {
+                                                console.log(err);
                                                 con.release();
-                                                callBack({ result: -1, message: "Error interno." });
+                                                callBack({ result: -1, message: "Error interno. -  No se pudieron borrar los POS de la ruta." });
                                             });
                                         }
                                         else {
@@ -127,8 +135,9 @@ var TravelModel = /** @class */ (function (_super) {
         con.query("INSERT  INTO route_pointofsale(idRoute,idPointofsale,position) VALUES(?,?,?) ", [idRoute, pointsOfSale[index].id, index], function (err, result) {
             if (err) {
                 con.rollback(function () {
+                    console.log(err);
                     con.release();
-                    callBack({ result: -1, message: "Error interno." });
+                    callBack({ result: -1, message: "Error interno. No se pudo guardar el POS de la ruta." });
                 });
             }
             else {
@@ -139,12 +148,15 @@ var TravelModel = /** @class */ (function (_super) {
                     con.commit(function (err) {
                         if (err) {
                             con.rollback(function () {
+                                console.log(err);
                                 con.release();
-                                callBack({ result: -1, message: "Error interno." });
+                                callBack({ result: -1, message: "Error interno. No se pudo hacer commit de la ruta" });
                             });
                         }
-                        callBack({ result: 1, message: "OK", data: result });
-                        con.release();
+                        else {
+                            callBack({ result: 1, message: "OK", data: result });
+                            con.release();
+                        }
                     });
                 }
             }
