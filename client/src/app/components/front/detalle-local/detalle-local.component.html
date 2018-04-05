@@ -4,9 +4,9 @@
         <div style="clear: both;"></div>
         <div class="head-image">
             
-            <img *ngIf="pointOfSale.image !== '' && pointOfSale.image !== null" 
+            <img *ngIf="pointOfSale && pointOfSale.image !== '' && pointOfSale.image !== null" 
                  src="images/locales/{{pointOfSale.image}}" />
-            <i *ngIf="pointOfSale.image === '' || pointOfSale.image === null" class="fa fa-home" style="font-size: 3.0em;"></i>
+            <i *ngIf="pointOfSale && pointOfSale.image === '' || pointOfSale.image === null" class="fa fa-home" style="font-size: 3.0em;"></i>
         </div>
     </div>
     <div class="detalle-local-info">
