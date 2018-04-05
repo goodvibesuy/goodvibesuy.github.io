@@ -31,6 +31,7 @@ export class TravelModel extends MainModel{
         var pool = this.controllerConnections.getUserConnection(dbName);
         pool.getConnection(function (err: any, con: any) {
             if (err) {
+                console.log(err);
                 con.release();
                 console.error(err);
             } else {
@@ -41,6 +42,7 @@ export class TravelModel extends MainModel{
                     con.query("INSERT INTO route (name,date) VALUES (?,?)", [route.name, dateRoute], function (err: any, result: any) {
                         if (err) {
                             con.rollback(function () {
+                                console.log(err);
                                 con.release();
                                 callBack({ result: -1, message: "Error interno." });
                             });
@@ -50,6 +52,7 @@ export class TravelModel extends MainModel{
                                 [route.id,route.user.id], function (err: any, result: any) {
                                     if (err) {
                                         con.rollback(function () {
+                                            console.log(err);
                                             con.release();
                                             callBack({ result: -1, message: "Error interno." });
                                         });
