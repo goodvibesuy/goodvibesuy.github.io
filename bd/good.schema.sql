@@ -47,9 +47,15 @@ CREATE TABLE `product` (
 -- productprice
 DROP TABLE IF EXISTS `productprice`;
 CREATE TABLE `productprice` (
- `date` DATETIME NOT NULL,
- `amount` INT(11) DEFAULT NULL,
- `idProduct` INT(11) DEFAULT NULL, KEY `idProduct_idx` (`idProduct`), FOREIGN KEY (idProduct) REFERENCES product(id)
+    `id` INT(11) NOT NULL AUTO_INCREMENT,
+    `date` DATETIME NOT NULL,
+    `amount` INT(11) NOT NULL,
+    `idProduct` INT(11) NOT NULL,
+    `idGroupPointofsale` INT(11) NOT NULL,
+    PRIMARY KEY (`id`),
+    FOREIGN KEY (idProduct) REFERENCES product(id),
+    FOREIGN KEY (idGroupPointofsale) REFERENCES groupPointofsale(id),
+    UNIQUE KEY `id_idProduct_idGroupPointofsale` (`id`, `idProduct`, `idGroupPointofsale`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- unit
@@ -90,7 +96,8 @@ CREATE TABLE `product_supply` (
 DROP TABLE IF EXISTS `route`;
 CREATE TABLE `route` (
  `id` INT(11) NOT NULL AUTO_INCREMENT,
- `name` VARCHAR(45) DEFAULT NULL, PRIMARY KEY (`idroute`)
+ `name` VARCHAR(45) DEFAULT NULL,
+ PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- route_pointofsale
@@ -106,16 +113,14 @@ CREATE TABLE `route_pointofsale` (
 -- route_user
 DROP TABLE IF EXISTS `route_user`;
 CREATE TABLE `route_user` (
- `idroute` INT(11) DEFAULT NULL,
- `iduser` INT(11) DEFAULT NULL,
- `date` DATE DEFAULT NULL, KEY `iduser_idx` (`iduser`), KEY `idroute2` (`idroute`), 
- CONSTRAINT `idroute2` FOREIGN KEY (`idroute`) REFERENCES `route` (`idroute`) ON
-DELETE NO ACTION ON
-UPDATE NO ACTION, CONSTRAINT `iduser` FOREIGN KEY (`iduser`) REFERENCES `users` (`id`) ON
-DELETE NO ACTION ON
-UPDATE NO ACTION
+    `idroute` INT(11) NOT NULL,
+    `iduser` INT(11) NOT NULL,
+    `date` DATE NOT NULL,
+    KEY `key_iduser` (`iduser`),
+    KEY `key_idroute` (`idroute`), 
+	FOREIGN KEY (`idroute`) REFERENCES `route` (`id`),
+	FOREIGN KEY (`iduser`) REFERENCES `users` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
 
 -- supplyPrice
 DROP TABLE IF EXISTS `supplyPrice`;

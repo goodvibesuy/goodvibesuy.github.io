@@ -1,7 +1,26 @@
 USE `good`;
 
+-- Delete all data
+DELETE FROM `viewing_product`;
+DELETE FROM `viewing` ;
+DELETE FROM `product_supply`;
+DELETE FROM `supplyPrice`;
+DELETE FROM `provider`;
+DELETE FROM `supply`;
+DELETE FROM `route_user`;
+DELETE FROM  `route_pointofsale`;
+DELETE FROM `route`;
+DELETE FROM `unit`;
+DELETE FROM `product`;
+DELETE FROM `users`;
+DELETE FROM `pointofsale`;
+DELETE FROM `groupPointofsale`;
+
 INSERT INTO `groupPointofsale` VALUES
-(1, 'Grupo 1');
+(1, 'Punta del Este'),
+(2, 'Montevideo Mayoristas'),
+(3, 'Montevideo Minoristas'),
+(4, 'Promoción');
 
 INSERT INTO `pointofsale` (`id`, `contactName`,`name`, `businessName`, `RUT`, `address`, `tel`, `image`, `coord`, `idGroup`) VALUES
 (1,	'Jose Perez', 'Porto Vanilla - Punta Carretas',	'Porto Vanilla - Punta Carretas', 'RUT 123',	'Dr Hector Miranda 2361',	'11111',	'1_portovanila.png',	ST_GeomFromText('POINT(-34.9223327 -56.16135700000001)'),1),
@@ -75,7 +94,7 @@ INSERT INTO `unit` (`id`, `name`) VALUES
 (1,	'Kg'),
 (2,	'L');
 
-INSERT INTO `route` (`idroute`, `name`) VALUES
+INSERT INTO `route` (`id`, `name`) VALUES
 (6,	'Punta Carretas'),
 (8,	'Ruta de prueba '),
 (9,	'Otro'),
