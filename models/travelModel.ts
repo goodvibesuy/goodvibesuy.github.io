@@ -81,6 +81,7 @@ export class TravelModel extends MainModel {
                         function (err: any, result: any) {
                             if (err) {
                                 con.rollback(function () {
+                                    console.log(err);
                                     con.release();
                                     callBack({ result: -1, message: "Error interno." });
                                 });
@@ -89,6 +90,7 @@ export class TravelModel extends MainModel {
                                     [route.user.id, route.id], function (err: any, result: any) {
                                         if (err) {
                                             con.rollback(function () {
+                                                console.log(err);
                                                 con.release();
                                                 callBack({ result: -1, message: "Error interno." });
                                             });
@@ -97,6 +99,7 @@ export class TravelModel extends MainModel {
                                                 [route.id], function (err: any, result: any) {
                                                     if (err) {
                                                         con.rollback(function () {
+                                                            console.log(err);
                                                             con.release();
                                                             callBack({ result: -1, message: "Error interno." });
                                                         });
