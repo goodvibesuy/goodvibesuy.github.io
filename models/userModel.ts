@@ -2,7 +2,7 @@ import { Result, ResultWithData, ResultCode } from '../datatypes/result';
 var masterDBController = require('../bd/masterConnectionsBD');
 //var clientDBController = require('../bd/clientConnectionsBD');
 import {ClientConnectionsBD} from '../bd/clientConnectionsBD'
-import { ControllerDBClientsConnections } from '../motionLibJS/serverSide/masterClientDBFramework/controllers/controllerDBCLient';
+import { ControllerDBClientsConnections } from '../motionLibJS/serverSide/masterClientDBFramework/controllers/controllerDBClient';
 
 export class UserModel {
     private controllerConnections:ControllerDBClientsConnections;

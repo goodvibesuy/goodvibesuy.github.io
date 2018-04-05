@@ -2,7 +2,7 @@ var masterDBController = require('../bd/masterConnectionsBD');
 import { Result, ResultWithData, ResultCode } from '../datatypes/result';
 import { Product } from '../datatypes/product';
 import {ClientConnectionsBD} from '../bd/clientConnectionsBD'
-import { ControllerDBClientsConnections } from '../motionLibJS/serverSide/masterClientDBFramework/controllers/controllerDBCLient';
+import { ControllerDBClientsConnections } from '../motionLibJS/serverSide/masterClientDBFramework/controllers/controllerDBClient';
 import { MainModel } from './mainModel';
 
 class KpisModel extends MainModel{

@@ -1,5 +1,5 @@
 import { ClientConnectionsBD } from '../bd/clientConnectionsBD';
-import { ControllerDBClientsConnections } from '../motionLibJS/serverSide/masterClientDBFramework/controllers/controllerDBCLient';
+import { ControllerDBClientsConnections } from '../motionLibJS/serverSide/masterClientDBFramework/controllers/controllerDBClient';
 
 export class MainModel {
     protected controllerConnections: ControllerDBClientsConnections;
