@@ -1,13 +1,14 @@
 import { Result, ResultWithData, ResultCode } from '../datatypes/result';
+import { MainModel } from './mainModel';
 var masterDBController = require('../bd/masterConnectionsBD');
-var clientDBController = require('../bd/clientConnectionsBD');
 
-export class UnitsModel {
+export class UnitsModel extends MainModel{
     constructor() {
+        super();
     }
 
     getAll(dbName: string, callBack: (r: ResultWithData<any[]>) => void): void {
-        var pool = clientDBController.getUserConnection(dbName);
+        var pool = this.controllerConnections.getUserConnection(dbName);
         pool.getConnection(function (err: any, con: any) {
             if (err) {
                 con.release();
@@ -26,7 +27,7 @@ export class UnitsModel {
     };
 
     add(name: string, dbName: string, callBack: (r: ResultWithData<any[]>) => void): void {
-        var pool = clientDBController.getUserConnection(dbName);
+        var pool = this.controllerConnections.getUserConnection(dbName);
         pool.getConnection(function (err: any, con: any) {
             if (err) {
                 con.release();
@@ -51,7 +52,7 @@ export class UnitsModel {
     }
 
     update(id: Number, name: string, dbName: string, callBack: (r: ResultWithData<any[]>) => void): void {
-        var pool = clientDBController.getUserConnection(dbName);
+        var pool = this.controllerConnections.getUserConnection(dbName);
         pool.getConnection(function (err: any, con: any) {
             if (err) {
                 con.release();
@@ -76,7 +77,7 @@ export class UnitsModel {
     }
 
     delete(id: Number, dbName: string, callBack: (r: ResultWithData<any[]>) => void): void {
-        var pool = clientDBController.getUserConnection(dbName);
+        var pool = this.controllerConnections.getUserConnection(dbName);
         pool.getConnection(function (err: any, con: any) {
             if (err) {
                 con.release();

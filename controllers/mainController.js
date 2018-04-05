@@ -1,12 +1,15 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var masterDBController = require('../bd/masterConnectionsBD');
+//var masterDBController = require('../bd/masterConnectionsBD');
+var MasterConnectionsBD = require('../bd/masterConnectionsBD');
 var acl = require('../motionLibJS/serverSide/acl/newACL');
 var MainController = /** @class */ (function () {
     function MainController() {
+        //var masterConnection = MasterConnectionsBD;
+        this.masterDBController = MasterConnectionsBD.getController();
     }
     MainController.prototype.verifyAccess = function (req, res, resource, callBack) {
-        masterDBController.verifySession(req.headers['user'], req.headers['tokenid'], req.headers['accountid'], function (err, authError, response, dbName) {
+        this.masterDBController.verifySession(req.headers['user'], req.headers['tokenid'], req.headers['accountid'], function (err, authError, response, dbName) {
             acl.getACL().isAllowed(req.headers['user'], resource, 'get', function (err, response) {
                 if (response) {
                     callBack(dbName);

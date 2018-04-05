@@ -1,4 +1,14 @@
 "use strict";
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 var __importStar = (this && this.__importStar) || function (mod) {
     if (mod && mod.__esModule) return mod;
     var result = {};
@@ -10,12 +20,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var result_1 = require("../datatypes/result");
 var _ = __importStar(require("lodash"));
 var masterDBController = require('../bd/masterConnectionsBD');
-var clientDBController = require('../bd/clientConnectionsBD');
-var ProductModel = /** @class */ (function () {
+var mainModel_1 = require("./mainModel");
+var ProductModel = /** @class */ (function (_super) {
+    __extends(ProductModel, _super);
     function ProductModel() {
+        return _super.call(this) || this;
     }
     ProductModel.prototype.get = function (id, dbName, callBack) {
-        var pool = clientDBController.getUserConnection(dbName);
+        var pool = this.controllerConnections.getUserConnection(dbName);
         pool.getConnection(function (err, con) {
             if (err) {
                 con.release();
@@ -57,7 +69,7 @@ var ProductModel = /** @class */ (function () {
         });
     };
     ProductModel.prototype.getAll = function (dbName, callBack) {
-        var pool = clientDBController.getUserConnection(dbName);
+        var pool = this.controllerConnections.getUserConnection(dbName);
         pool.getConnection(function (err, con) {
             if (err) {
                 con.release();
@@ -80,7 +92,7 @@ var ProductModel = /** @class */ (function () {
         });
     };
     ProductModel.prototype.add = function (name, pathImage, dbName, callBack) {
-        var pool = clientDBController.getUserConnection(dbName);
+        var pool = this.controllerConnections.getUserConnection(dbName);
         pool.getConnection(function (err, con) {
             if (err) {
                 con.release();
@@ -110,7 +122,7 @@ var ProductModel = /** @class */ (function () {
         });
     };
     ProductModel.prototype.update = function (id, name, path_image, dbName, callback) {
-        var pool = clientDBController.getUserConnection(dbName);
+        var pool = this.controllerConnections.getUserConnection(dbName);
         pool.getConnection(function (err, con) {
             if (err) {
                 con.release();
@@ -140,7 +152,7 @@ var ProductModel = /** @class */ (function () {
     };
     ;
     ProductModel.prototype.delete = function (productId, dbName, callback) {
-        var pool = clientDBController.getUserConnection(dbName);
+        var pool = this.controllerConnections.getUserConnection(dbName);
         pool.getConnection(function (err, con) {
             if (err) {
                 con.release();
@@ -178,7 +190,7 @@ var ProductModel = /** @class */ (function () {
         });
     };
     ProductModel.prototype.deleteSupply = function (productId, supplyId, dbName, callback) {
-        var pool = clientDBController.getUserConnection(dbName);
+        var pool = this.controllerConnections.getUserConnection(dbName);
         pool.getConnection(function (err, con) {
             if (err) {
                 con.release();
@@ -207,6 +219,6 @@ var ProductModel = /** @class */ (function () {
         });
     };
     return ProductModel;
-}());
+}(mainModel_1.MainModel));
 module.exports = new ProductModel();
 //# sourceMappingURL=productsModel.js.map

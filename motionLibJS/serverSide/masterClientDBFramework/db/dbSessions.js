@@ -104,6 +104,7 @@ DBSessions.prototype.verifySession = function (user, tokenId, accountId, callbac
         return;
     }
 
+
     this.dbMasterConnection.connection.query(
         'SELECT * FROM ' + this.dbMasterConnection.databaseName +
         '.sessions WHERE user_name = ? and account_id = ?', [user, accountId],

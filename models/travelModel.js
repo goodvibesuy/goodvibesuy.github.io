@@ -1,30 +1,25 @@
 "use strict";
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 Object.defineProperty(exports, "__esModule", { value: true });
 var result_1 = require("../datatypes/result");
+var mainModel_1 = require("./mainModel");
 var masterDBController = require('../bd/masterConnectionsBD');
-var clientDBController = require('../bd/clientConnectionsBD');
-var TravelModel = /** @class */ (function () {
+var TravelModel = /** @class */ (function (_super) {
+    __extends(TravelModel, _super);
     function TravelModel() {
-        this.removeUser = function (idRoute, idUser, dbName, callBack) {
-            var pool = clientDBController.getUserConnection(dbName);
-            pool.getConnection(function (err, con) {
-                if (err) {
-                    con.release();
-                    console.error(err);
-                }
-                else {
-                    con.query("DELETE FROM route_user WHERE idroute = ? AND iduser = ? ", [idRoute, idUser], function (err, result) {
-                        con.release();
-                        if (err)
-                            throw err;
-                        callBack({ result: 1, message: "OK", data: result });
-                    });
-                }
-            });
-        };
+        return _super.call(this) || this;
     }
     TravelModel.prototype.getAll = function (dbName, callBack) {
-        var pool = clientDBController.getUserConnection(dbName);
+        var pool = this.controllerConnections.getUserConnection(dbName);
         pool.getConnection(function (err, con) {
             if (err) {
                 con.release();
@@ -43,7 +38,7 @@ var TravelModel = /** @class */ (function () {
     ;
     TravelModel.prototype.add = function (route, dbName, callBack) {
         var mainThis = this;
-        var pool = clientDBController.getUserConnection(dbName);
+        var pool = this.controllerConnections.getUserConnection(dbName);
         pool.getConnection(function (err, con) {
             if (err) {
                 con.release();
@@ -83,7 +78,7 @@ var TravelModel = /** @class */ (function () {
     ;
     TravelModel.prototype.update = function (route, dbName, callBack) {
         var mainThis = this;
-        var pool = clientDBController.getUserConnection(dbName);
+        var pool = this.controllerConnections.getUserConnection(dbName);
         pool.getConnection(function (err, con) {
             if (err) {
                 con.release();
@@ -149,14 +144,14 @@ var TravelModel = /** @class */ (function () {
                             });
                         }
                         callBack({ result: 1, message: "OK", data: result });
-                        con.end();
+                        con.release();
                     });
                 }
             }
         });
     };
     TravelModel.prototype.addPointOfSale = function (idRoute, idPointOfSale, dbName, callBack) {
-        var pool = clientDBController.getUserConnection(dbName);
+        var pool = this.controllerConnections.getUserConnection(dbName);
         pool.getConnection(function (err, con) {
             if (err) {
                 con.release();
@@ -179,7 +174,7 @@ var TravelModel = /** @class */ (function () {
     };
     ;
     TravelModel.prototype.addUser = function (idRoute, idUser, date, dbName, callBack) {
-        var pool = clientDBController.getUserConnection(dbName);
+        var pool = this.controllerConnections.getUserConnection(dbName);
         pool.getConnection(function (err, con) {
             if (err) {
                 con.release();
@@ -197,7 +192,7 @@ var TravelModel = /** @class */ (function () {
     };
     ;
     TravelModel.prototype.removePointOfSale = function (idRoute, idPointOfSale, dbName, callBack) {
-        var pool = clientDBController.getUserConnection(dbName);
+        var pool = this.controllerConnections.getUserConnection(dbName);
         pool.getConnection(function (err, con) {
             if (err) {
                 con.release();
@@ -220,8 +215,25 @@ var TravelModel = /** @class */ (function () {
             }
         });
     };
+    TravelModel.prototype.removeUser = function (idRoute, idUser, dbName, callBack) {
+        var pool = this.controllerConnections.getUserConnection(dbName);
+        pool.getConnection(function (err, con) {
+            if (err) {
+                con.release();
+                console.error(err);
+            }
+            else {
+                con.query("DELETE FROM route_user WHERE idroute = ? AND iduser = ? ", [idRoute, idUser], function (err, result) {
+                    con.release();
+                    if (err)
+                        throw err;
+                    callBack({ result: 1, message: "OK", data: result });
+                });
+            }
+        });
+    };
     TravelModel.prototype.reorderPointOfSale = function (idRoute, idPointOfSale, position, newPosition, dbName, callBack) {
-        var pool = clientDBController.getUserConnection(dbName);
+        var pool = this.controllerConnections.getUserConnection(dbName);
         pool.getConnection(function (err, con) {
             if (err) {
                 con.release();
@@ -240,7 +252,7 @@ var TravelModel = /** @class */ (function () {
         });
     };
     TravelModel.prototype.getPointsOfSales = function (idRoute, dbName, callBack) {
-        var pool = clientDBController.getUserConnection(dbName);
+        var pool = this.controllerConnections.getUserConnection(dbName);
         pool.getConnection(function (err, con) {
             if (err) {
                 con.release();
@@ -258,7 +270,7 @@ var TravelModel = /** @class */ (function () {
     };
     ;
     TravelModel.prototype.getUers = function (idRoute, dbName, callBack) {
-        var pool = clientDBController.getUserConnection(dbName);
+        var pool = this.controllerConnections.getUserConnection(dbName);
         pool.getConnection(function (err, con) {
             if (err) {
                 con.release();
@@ -275,14 +287,14 @@ var TravelModel = /** @class */ (function () {
         });
     };
     TravelModel.prototype.delete = function (idRoute, dbName, callBack) {
-        var pool = clientDBController.getUserConnection(dbName);
+        var pool = this.controllerConnections.getUserConnection(dbName);
         pool.getConnection(function (err, con) {
             if (err) {
                 con.release();
                 console.error(err);
             }
             else {
-                con.query("DELETE FROM route WHERE idRoute = ?", [idRoute], function (err, result) {
+                con.query("DELETE FROM route WHERE id = ?", [idRoute], function (err, result) {
                     con.release();
                     if (!!err) {
                         // TODO: log error -> common/errorHandling.ts
@@ -310,6 +322,6 @@ var TravelModel = /** @class */ (function () {
     };
     ;
     return TravelModel;
-}());
+}(mainModel_1.MainModel));
 exports.TravelModel = TravelModel;
 //# sourceMappingURL=travelModel.js.map

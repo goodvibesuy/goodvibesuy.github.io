@@ -1,8 +1,10 @@
 var express = require('express');
 var router = express.Router();
 
-var masterDBController = require('../bd/masterConnectionsBD');
-var clientDBController = require('../bd/clientConnectionsBD');
+var MasterConnectionsBD = require('../bd/masterConnectionsBD');
+var usersController = require('../controllers/usersController');
+
+var masterDBController = MasterConnectionsBD.getController();
 
 router.post('/login', function (req, res, next) {
     masterDBController.login(req.body.user, req.body.pass, function (err, loginresponse) {
@@ -14,8 +16,11 @@ router.post('/login', function (req, res, next) {
             if (loginresponse.result === true) {
                 masterDBController.verifySession(loginresponse.user.userName, loginresponse.tokenId,
                     loginresponse.accounts[0].id, function (err, authError, response, dbName) {
-                        var con = clientDBController.getUserConnection(dbName);
 
+                        usersController.getUserByIdMaster(loginresponse.user.id,loginresponse.tokenId,loginresponse.user.userName,
+                                                            loginresponse.user.rolId,loginresponse.accounts[0].id,req,res);
+                        /*
+                        var con = clientDBController.getUserConnection(dbName);
                         console.warn("Sacar lo que manda el rol para afuera");
                         con.query(
                             "SELECT * FROM users WHERE id_user_master = ?", [loginresponse.user.id],
@@ -32,6 +37,8 @@ router.post('/login', function (req, res, next) {
                                     }
                                 }
                             });
+
+                            */
                     });
             } else {
                 if (loginresponse.message === "User inactive") {

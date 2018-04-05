@@ -25,6 +25,13 @@ var UserController = /** @class */ (function (_super) {
                 });
             });
         };
+        _this.getUserByIdMaster = function (idMaster, tokenId, userName, rolId, accountId, req, res) {
+            _this.verifyAccess(req, res, "users", function (dbName) {
+                _this.userModel.userByIdMaster(idMaster, tokenId, userName, rolId, accountId, dbName, function (result) {
+                    res.send(result);
+                });
+            });
+        };
         _this.userModel = new userModel_1.UserModel();
         return _this;
     }

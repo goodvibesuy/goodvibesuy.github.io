@@ -1,12 +1,15 @@
 import { Result, ResultWithData, ResultCode } from '../datatypes/result';
+import { MainModel } from './mainModel';
 var masterDBController = require('../bd/masterConnectionsBD');
-var clientDBController = require('../bd/clientConnectionsBD');
 
-export class SuppliesModel {
-	constructor() {}
+
+export class SuppliesModel extends MainModel{
+	constructor() {
+        super();
+    }
 
 	getAll(dbName: string, callBack: (r: ResultWithData<any[]>) => void): void {
-		var pool = clientDBController.getUserConnection(dbName);
+		var pool = this.controllerConnections.getUserConnection(dbName);
 		pool.getConnection(function(err: any, con: any) {
 			if (err) {
 				con.release();
@@ -22,7 +25,7 @@ export class SuppliesModel {
 	}
 
 	supplies(dbName: string, callBack: (r: ResultWithData<any[]>) => void): void {
-		var pool = clientDBController.getUserConnection(dbName);
+		var pool = this.controllerConnections.getUserConnection(dbName);
 		pool.getConnection(function(err: any, con: any) {
 			if (err) {
 				con.release();
@@ -41,7 +44,7 @@ export class SuppliesModel {
 	}
 
 	suppliesByProduct(idProduct: Number, dbName: string, callBack: (r: ResultWithData<any[]>) => void): void {
-		var pool = clientDBController.getUserConnection(dbName);
+		var pool = this.controllerConnections.getUserConnection(dbName);
 		pool.getConnection(function(err: any, con: any) {
 			if (err) {
 				con.release();
@@ -69,7 +72,7 @@ export class SuppliesModel {
 		dbName: string,
 		callBack: (r: ResultWithData<any[]>) => void
 	): void {
-		var pool = clientDBController.getUserConnection(dbName);
+		var pool = this.controllerConnections.getUserConnection(dbName);
 		pool.getConnection(function(err: any, con: any) {
 			if (err) {
 				con.release();
@@ -129,7 +132,7 @@ export class SuppliesModel {
 		dbName: string,
 		callBack: (r: ResultWithData<any[]>) => void
 	): void {
-		var pool = clientDBController.getUserConnection(dbName);
+		var pool = this.controllerConnections.getUserConnection(dbName);
 		pool.getConnection(function(err: any, con: any) {
 			if (err) {
 				con.release();
@@ -178,7 +181,7 @@ export class SuppliesModel {
 	}
 
 	deleteSupply(id: Number, dbName: string, callBack: (r: ResultWithData<any[]>) => void): void {
-		var pool = clientDBController.getUserConnection(dbName);
+		var pool = this.controllerConnections.getUserConnection(dbName);
 		pool.getConnection(function(err: any, con: any) {
 			if (err) {
 				con.release();

@@ -25,6 +25,7 @@ import { PosComponent } from './components/adm/pos/pos.component';
 import { PosListComponent } from './components/adm/pos/list/pos.list.component';
 import { PosEditComponent } from './components/adm/pos/edit/pos.edit.component';
 import { TemplatesRoutesComponent } from './components/adm/templates-routes/templates-routes.component';
+import { ReporteViewingComponent } from './components/front/reporte-viewing/reporte-viewing.component';
 
 const routes: Routes = [
     {
@@ -59,7 +60,12 @@ const routes: Routes = [
 	{
 		path: 'reportes',
 		component: ReportesComponent
-	},
+    },
+    {
+		path: 'reporteVisitas',
+		component: ReporteViewingComponent
+    }
+    ,
 	{
 		path: 'admin/insumos',
 		component: SupplyComponent,

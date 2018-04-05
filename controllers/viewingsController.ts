@@ -15,7 +15,18 @@ class ViewingsController extends MainController{
         this.verifyAccess(req,res,"viewing",
             (dbName:string) =>{
                 var data = req.body.data;
-                this.viewingsModel.addVisit(req.headers['user'],req.body.idPointOfSale, data, req.body.annotation,dbName,function (result:any) {
+                var userName = req.headers['user'];
+                this.viewingsModel.addVisit(userName,req.body.idPointOfSale, data, req.body.annotation,dbName,function (result:any) {
+                    res.send(result);
+                });
+            }             
+        )
+    }
+
+    public last = (req:any,res:any): void => { 
+        this.verifyAccess(req,res,"viewing",
+            (dbName:string) =>{
+                this.viewingsModel.getLast(req.params.cantViews, dbName,function (result:any) {
                     res.send(result);
                 });
             }             

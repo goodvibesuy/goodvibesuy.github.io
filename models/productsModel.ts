@@ -4,13 +4,16 @@ import { ProductSupply } from '../datatypes/productSupply';
 import * as _ from 'lodash';
 
 var masterDBController = require('../bd/masterConnectionsBD');
-var clientDBController = require('../bd/clientConnectionsBD');
+import { MainModel } from './mainModel';
 
-class ProductModel {
-    constructor() {}
+
+class ProductModel  extends MainModel{
+    constructor() {
+        super();
+    }
 
 	get(id: number, dbName: string,callBack: (r: ResultWithData<Product>) => void): void {
-        var pool = clientDBController.getUserConnection(dbName);
+        var pool = this.controllerConnections.getUserConnection(dbName);
         pool.getConnection(function (err: any, con: any) {
             if (err) {
                 con.release();
@@ -49,7 +52,7 @@ class ProductModel {
 	}
     
 	getAll(dbName: string,callBack: (r: ResultWithData<Product[]>) => void): void {
-        var pool = clientDBController.getUserConnection(dbName);
+        var pool = this.controllerConnections.getUserConnection(dbName);
         pool.getConnection(function (err: any, con: any) {
             if (err) {
                 con.release();
@@ -71,7 +74,7 @@ class ProductModel {
 	}
 
 	add(name: string, pathImage: string, dbName: string,callBack: (r: ResultWithData<number>) => void): void {
-        var pool = clientDBController.getUserConnection(dbName);
+        var pool = this.controllerConnections.getUserConnection(dbName);
         pool.getConnection(function (err: any, con: any) {
             if (err) {
                 con.release();
@@ -103,7 +106,7 @@ class ProductModel {
     }
     
     update(id: number, name: string, path_image: string, dbName: string, callback: (r: Result) => void): void {
-        var pool = clientDBController.getUserConnection(dbName);
+        var pool = this.controllerConnections.getUserConnection(dbName);
         pool.getConnection(function (err: any, con: any) {
             if (err) {
                 con.release();
@@ -131,7 +134,7 @@ class ProductModel {
 	};
 
     delete(productId: number,dbName:string, callback: (r: Result) => void): void {
-        var pool = clientDBController.getUserConnection(dbName);
+        var pool = this.controllerConnections.getUserConnection(dbName);
         pool.getConnection(function (err: any, con: any) {
             if (err) {
                 con.release();
@@ -169,7 +172,7 @@ class ProductModel {
     }
 
     deleteSupply(productId: number, supplyId: number, dbName: string, callback: (r: Result) => void): void {
-        var pool = clientDBController.getUserConnection(dbName);
+        var pool = this.controllerConnections.getUserConnection(dbName);
         pool.getConnection(function (err: any, con: any) {
             if (err) {
                 con.release();

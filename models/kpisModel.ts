@@ -1,14 +1,18 @@
+var masterDBController = require('../bd/masterConnectionsBD');
 import { Result, ResultWithData, ResultCode } from '../datatypes/result';
 import { Product } from '../datatypes/product';
-var masterDBController = require('../bd/masterConnectionsBD');
-var clientDBController = require('../bd/clientConnectionsBD');
+import {ClientConnectionsBD} from '../bd/clientConnectionsBD'
+import { ControllerDBClientsConnections } from '../motionLibJS/serverSide/masterClientDBFramework/controllers/controllerDBCLient';
+import { MainModel } from './mainModel';
 
-class KpisModel {
+class KpisModel extends MainModel{
+    
     constructor() {
+        super();
     }
 
     suppliesPrices(supplyId: number, dbName: string, callBack: (r: ResultWithData<any[]>) => void): void {
-        var pool = clientDBController.getUserConnection(dbName);
+        var pool = this.controllerConnections.getUserConnection(dbName);
         pool.getConnection(function (err: any, con: any) {
             if (err) {
                 con.release();
@@ -25,7 +29,7 @@ class KpisModel {
     }
 
     kpiDeliveryReturnEmpty(dbName: string, callBack: (r: ResultWithData<any[]>) => void): void {
-        var pool = clientDBController.getUserConnection(dbName);
+        var pool = this.controllerConnections.getUserConnection(dbName);
         pool.getConnection(function (err: any, con: any) {
             if (err) {
                 con.release();
@@ -41,7 +45,7 @@ class KpisModel {
     };
 
     sales(dbName: string, callBack: (r: ResultWithData<any[]>) => void): void {
-        var pool = clientDBController.getUserConnection(dbName);
+        var pool = this.controllerConnections.getUserConnection(dbName);
         pool.getConnection(function (err: any, con: any) {
             if (err) {
                 con.release();

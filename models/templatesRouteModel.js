@@ -1,13 +1,25 @@
 "use strict";
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 Object.defineProperty(exports, "__esModule", { value: true });
 var result_1 = require("../datatypes/result");
+var mainModel_1 = require("./mainModel");
 var masterDBController = require('../bd/masterConnectionsBD');
-var clientDBController = require('../bd/clientConnectionsBD');
-var TemplateRoutesModel = /** @class */ (function () {
+var TemplateRoutesModel = /** @class */ (function (_super) {
+    __extends(TemplateRoutesModel, _super);
     function TemplateRoutesModel() {
+        return _super.call(this) || this;
     }
     TemplateRoutesModel.prototype.getAll = function (dbName, callBack) {
-        var pool = clientDBController.getUserConnection(dbName);
+        var pool = this.controllerConnections.getUserConnection(dbName);
         pool.getConnection(function (err, con) {
             if (err) {
                 con.release();
@@ -25,7 +37,7 @@ var TemplateRoutesModel = /** @class */ (function () {
     };
     ;
     TemplateRoutesModel.prototype.add = function (travelName, dbName, callBack) {
-        var pool = clientDBController.getUserConnection(dbName);
+        var pool = this.controllerConnections.getUserConnection(dbName);
         pool.getConnection(function (err, con) {
             if (err) {
                 con.release();
@@ -43,7 +55,7 @@ var TemplateRoutesModel = /** @class */ (function () {
     };
     ;
     TemplateRoutesModel.prototype.addPointOfSale = function (idTemplateRoute, idPointOfSale, dbName, callBack) {
-        var pool = clientDBController.getUserConnection(dbName);
+        var pool = this.controllerConnections.getUserConnection(dbName);
         pool.getConnection(function (err, con) {
             if (err) {
                 con.release();
@@ -66,7 +78,7 @@ var TemplateRoutesModel = /** @class */ (function () {
     };
     ;
     TemplateRoutesModel.prototype.removePointOfSale = function (idRoute, idPointOfSale, dbName, callBack) {
-        var pool = clientDBController.getUserConnection(dbName);
+        var pool = this.controllerConnections.getUserConnection(dbName);
         pool.getConnection(function (err, con) {
             if (err) {
                 con.release();
@@ -90,7 +102,7 @@ var TemplateRoutesModel = /** @class */ (function () {
         });
     };
     TemplateRoutesModel.prototype.reorderPointOfSale = function (idRoute, idPointOfSale, position, newPosition, dbName, callBack) {
-        var pool = clientDBController.getUserConnection(dbName);
+        var pool = this.controllerConnections.getUserConnection(dbName);
         pool.getConnection(function (err, con) {
             if (err) {
                 con.release();
@@ -109,7 +121,7 @@ var TemplateRoutesModel = /** @class */ (function () {
         });
     };
     TemplateRoutesModel.prototype.getPointsOfSales = function (idRoute, dbName, callBack) {
-        var pool = clientDBController.getUserConnection(dbName);
+        var pool = this.controllerConnections.getUserConnection(dbName);
         pool.getConnection(function (err, con) {
             if (err) {
                 con.release();
@@ -127,7 +139,7 @@ var TemplateRoutesModel = /** @class */ (function () {
     };
     ;
     TemplateRoutesModel.prototype.update = function (travelName, idRoute, dbName, callBack) {
-        var pool = clientDBController.getUserConnection(dbName);
+        var pool = this.controllerConnections.getUserConnection(dbName);
         pool.getConnection(function (err, con) {
             if (err) {
                 con.release();
@@ -145,7 +157,7 @@ var TemplateRoutesModel = /** @class */ (function () {
     };
     ;
     TemplateRoutesModel.prototype.delete = function (idRoute, dbName, callBack) {
-        var pool = clientDBController.getUserConnection(dbName);
+        var pool = this.controllerConnections.getUserConnection(dbName);
         pool.getConnection(function (err, con) {
             if (err) {
                 con.release();
@@ -180,6 +192,6 @@ var TemplateRoutesModel = /** @class */ (function () {
     };
     ;
     return TemplateRoutesModel;
-}());
+}(mainModel_1.MainModel));
 exports.TemplateRoutesModel = TemplateRoutesModel;
 //# sourceMappingURL=templatesRouteModel.js.map

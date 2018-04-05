@@ -22,7 +22,8 @@ var providers = require('./routes/providers');
 
 var NewACL = require('./motionLibJS/serverSide/acl/newACL');
 var masterDBController = require('./bd/masterConnectionsBD');
-NewACL.setUp(masterDBController.dbMasterConnection.connection);
+//NewACL.setUp(masterDBController.dbMasterConnection.connection);
+NewACL.setUp(masterDBController.getController().getMasterConnection().getConnection());
 
 
 var app = express();

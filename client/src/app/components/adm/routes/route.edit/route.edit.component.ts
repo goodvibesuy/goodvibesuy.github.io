@@ -15,6 +15,8 @@ import { TemplateRoute } from '../../../../models/TemplateRoute.model';
 import { User } from '../../../../../../../datatypes/user';
 import { Route } from "../../../../../../../datatypes/route";
 import { RouteTable } from "../../../../../../../datatypes/routeTable";
+import { ValidableForm } from '../../../../shared/ValidableForms';
+import { NgbDateFormatter } from '../../../../shared/DateParserFormatter';
 
 
 @Component({
@@ -22,7 +24,7 @@ import { RouteTable } from "../../../../../../../datatypes/routeTable";
     templateUrl: './route.edit.component.html',
     styleUrls: ['./route.edit.component.css']
 })
-export class RouteEdit implements OnInit {
+export class RouteEdit  extends ValidableForm implements OnInit {
     private currentRoute: Route;
     private id: number;
     paramsSub: any;
@@ -38,13 +40,20 @@ export class RouteEdit implements OnInit {
     private templateSelected: TemplateRoute;
 
     constructor(
+        fb: FormBuilder,
         private activatedRoute: ActivatedRoute,
         private router: Router,
         private routeService: RouteService,
         private userService: UsersService,
         private templateRouteService: TemplatesRoutesService
     ) {
+        super(fb);
         this.currentRoute = new Route();
+        super.initForm({
+            name: [null, Validators.required],
+            date: [null, Validators.required],
+            user: [null, Validators.required]
+        });
     }
 
     onSubmit() {
@@ -52,7 +61,7 @@ export class RouteEdit implements OnInit {
     }
 
     ngOnInit() {
-        this.getTemplatesRoute();        
+        this.getTemplatesRoute();
         this.paramsSub = this.activatedRoute.params.subscribe(
             params => {
                 this.routeService.get().subscribe(response => {
@@ -62,7 +71,10 @@ export class RouteEdit implements OnInit {
                     console.log(route);                  
                     this.currentRoute.id = route.id;
                     this.currentRoute.name = route.name;
-                    this.currentRoute.date = route.date;
+                    this.currentRoute.date = new Date (route.date);
+                    //super.setModel(route, { 'date': NgbDateFormatter.formatDate });
+                    super.setModel(this.currentRoute, { 'date': NgbDateFormatter.formatDate });
+                    //super.setModel(this.currentRoute);
 
                     this.getPointOfSalesRoute();
                     this.getUsers();
@@ -107,9 +119,15 @@ export class RouteEdit implements OnInit {
     }
 
     actualizar() {        
-        this.routeService.update(this.currentRoute).subscribe(data => {
-            this.router.navigateByUrl('/recorridos');
-        });        
+        if (super.isInvalid()) {
+            super.showValidationErrors();
+        } else {
+            var route = super.getModel<Route>({ 'date': NgbDateFormatter.unformatDate });
+            route.pointsOfSale = this.currentRoute.getPointsOfSale();
+            this.routeService.update(route).subscribe(data => {
+                this.router.navigateByUrl('/recorridos');
+            });
+        }                
     }
 
 

@@ -1,31 +1,31 @@
-/*
- * 
- * Copyright (C) MotionSoft Consulting S.R.L. - All Rights Reserved
- * Unauthorized copying of this file, via any medium is strictly prohibited
- * Proprietary and confidential
- * Written by Ing. Pablo Rivero <privero@motionsoft.com.uy>
- * 
-*/
-
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 var mysql = require('mysql');
-var db_config = {};
-var pool;
-
-
-function establishConnection(host, port, databaseName, user, password) {
-  db_config = {
-    connectionLimit : 30,
-    host: host,
-    port: port,
-    user: user,
-    password: password,
-    database: databaseName
-  };
-  console.log("Creando pool");
-  pool = mysql.createPool(db_config);
-  return pool;
-}
-
+var ZenouraMysqlConnection = /** @class */ (function () {
+    function ZenouraMysqlConnection() {
+        //30
+        this.connectionLimit = 5;
+        this.db_config = {};
+        this.pool = null;
+    }
+    ZenouraMysqlConnection.prototype.establishConnection = function (host, port, databaseName, user, password) {
+        if (this.pool === null) {
+            this.db_config = {
+                connectionLimit: this.connectionLimit,
+                host: host,
+                port: port,
+                user: user,
+                password: password,
+                database: databaseName
+            };
+            console.log("Creando pool");
+            this.pool = mysql.createPool(this.db_config);
+        }
+        return this.pool;
+    };
+    return ZenouraMysqlConnection;
+}());
+exports.ZenouraMysqlConnection = ZenouraMysqlConnection;
 /*
 function establishConnection(host, port, databaseName, user, password) {
   db_config = {
@@ -46,7 +46,7 @@ function establishConnection(host, port, databaseName, user, password) {
   return handleDisconnect();
 }
 
-function handleDisconnect() {  
+function handleDisconnect() {
   connection.connect(function (err) {              // The server is either down
     if (err) {                                     // or restarting (takes a while sometimes).
       console.error('error when connecting to db:', err);
@@ -66,6 +66,5 @@ function handleDisconnect() {
   });
   return connection;
 }
-*/
-
-module.exports = establishConnection;
+*/ 
+//# sourceMappingURL=mysqlConnection.js.map

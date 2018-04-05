@@ -19,6 +19,19 @@ class UserController extends MainController{
             }             
         );
     }
+
+    public getUserByIdMaster = (idMaster:number,tokenId:string,userName:string,rolId:number,accountId:number,req:any,res:any): void => { 
+        this.verifyAccess(req,res,"users",
+            (dbName:string) =>{
+                this.userModel.userByIdMaster(idMaster,tokenId,userName,rolId,accountId,dbName, function (result:any) {
+                    res.send(result);
+                });
+            }             
+        );
+    }
+
+
+
 }
 
 module.exports = new UserController();

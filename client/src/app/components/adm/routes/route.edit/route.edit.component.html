@@ -3,13 +3,25 @@
         <b>Editar recorrido</b>
     </div>
     <div class="card-body">
+
         <div class="form-group">
-            <span class="input-group-addon">Nombre:</span>
-            <input type="text" class="form-control" *ngIf="currentRoute" [(ngModel)]="currentRoute.name">
-            <span class="input-group-addon">Usuario:</span>
-            <select class="form-control" *ngIf="currentRoute" [(ngModel)]="currentRoute.user" [compareWith]="compareUser">
-                <option *ngFor="let u of users" [ngValue]="u">{{u.firstname}} {{u.lastname}}</option>
-            </select>
+            <form [formGroup]="form">
+                <span class="input-group-addon">Nombre:</span>
+                <input type="text" class="form-control" [cenInputValidation]="getFormField('name')" formControlName="name">
+                <div class="invalid-feedback" *ngIf="isFormFieldInvalid('name')">Ingrese un valor válido.</div>
+
+
+
+                <div class="form-row">
+
+                    <div class="form-group col-md-8">
+                        <span class="input-group-addon">Usuario:</span>
+                        <select class="form-control" *ngIf="currentRoute" [cenInputValidation]="getFormField('user')" [(ngModel)]="currentRoute.user"
+                            [compareWith]="compareUser" formControlName="user">
+                            <option *ngFor="let u of users" [ngValue]="u">{{u.firstname}} {{u.lastname}}</option>
+                        </select>
+                    </div>
+                    <!--
             <span class="input-group-addon">Fecha:</span>
 
             <div class="input-group">
@@ -20,26 +32,51 @@
                     </button>
                 </div>
             </div>
-
-            <span class="input-group-addon">Punto de venta:</span>
-            <div class="input-group">
-                <select class="form-control" *ngIf="currentRoute" [(ngModel)]="POSSelected">
-                    <option *ngFor="let pos of pointsOfSales" [ngValue]="pos">{{pos.name}}</option>
-                </select>
-                <div class="input-group-btn">
-                    <button type="button" class="btn btn-primary" (click)="agregarPuntoDeVenta()">Agregar</button>
+        -->
+                    <div class="form-group col-md-4">
+                        <span class="input-group-addon">Fecha:</span>
+                        <!-- start: date picker -->
+                        <div class="form-group">
+                            <div class="input-group">
+                                <input class="form-control" [cenInputValidation]="getFormField('date')" placeholder="dd/mm/yyyy"
+                                    name="dp" formControlName="date" ngbDatepicker #d="ngbDatepicker">
+                                <div class="input-group-append">
+                                    <button class="btn btn-outline-secondary" (click)="d.toggle()" type="button">
+                                        <img src="images/calendar-icon.svg" style="width: 1.2rem; height: 1rem; cursor: pointer;" />
+                                    </button>
+                                </div>
+                                <div class="invalid-feedback" *ngIf="isFormFieldInvalid('date')">Ingrese un valor válido.</div>
+                            </div>
+                        </div>
+                        <!-- end: date picker -->
+                    </div>
+                </div>
+            </form>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <span class="input-group-addon">Punto de venta:</span>
+                    <div class="input-group">
+                        <select class="form-control" *ngIf="currentRoute" [(ngModel)]="POSSelected">
+                            <option *ngFor="let pos of pointsOfSales" [ngValue]="pos">{{pos.name}}</option>
+                        </select>
+                        <div class="input-group-btn">
+                            <button type="button" class="btn btn-primary" (click)="agregarPuntoDeVenta()">Agregar</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group col-md-6">
+                    <span class="input-group-addon">Plantilla Recorrido:</span>
+                    <div class="input-group">
+                        <select class="form-control" [(ngModel)]="templateSelected">
+                            <option *ngFor="let tr of templatesRoutes" [ngValue]="tr">{{tr.name}}</option>
+                        </select>
+                        <div class="input-group-btn">
+                            <button type="button" class="btn btn-primary" (click)="addTemplate()">Agregar</button>
+                        </div>
+                    </div>
                 </div>
             </div>
 
-            <span class="input-group-addon">Plantilla Recorrido:</span>
-            <div class="input-group">
-                <select class="form-control" [(ngModel)]="templateSelected">
-                    <option *ngFor="let tr of templatesRoutes" [ngValue]="tr">{{tr.name}}</option>
-                </select>
-                <div class="input-group-btn">
-                    <button type="button" class="btn btn-primary" (click)="addTemplate()">Agregar</button>
-                </div>
-            </div>
         </div>
         <div class="card" *ngIf="currentRoute">
             <div class="card-header">
@@ -54,10 +91,8 @@
                     </tr>
                     <tr *ngFor="let i of currentRoute.pointsOfSale; index as ix">
                         <td>
-                            <span class="fa fa-arrow-circle-up" (click)="changeOrder(i.id,ix, ix - 1)" 
-                                *ngIf="ix !== 0"></span>
-                            <span class="fa fa-arrow-circle-down" (click)="changeOrder(i.id,ix,ix + 1)" 
-                                *ngIf="ix + 1 < currentRoute.pointsOfSale.length"></span>
+                            <span class="fa fa-arrow-circle-up" (click)="changeOrder(i.id,ix, ix - 1)" *ngIf="ix !== 0"></span>
+                            <span class="fa fa-arrow-circle-down" (click)="changeOrder(i.id,ix,ix + 1)" *ngIf="ix + 1 < currentRoute.pointsOfSale.length"></span>
                         </td>
                         <td>{{i.name}}</td>
                         <td>

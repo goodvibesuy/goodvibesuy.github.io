@@ -21,7 +21,15 @@ var ViewingsController = /** @class */ (function (_super) {
         _this.add = function (req, res) {
             _this.verifyAccess(req, res, "viewing", function (dbName) {
                 var data = req.body.data;
-                _this.viewingsModel.addVisit(req.headers['user'], req.body.idPointOfSale, data, req.body.annotation, dbName, function (result) {
+                var userName = req.headers['user'];
+                _this.viewingsModel.addVisit(userName, req.body.idPointOfSale, data, req.body.annotation, dbName, function (result) {
+                    res.send(result);
+                });
+            });
+        };
+        _this.last = function (req, res) {
+            _this.verifyAccess(req, res, "viewing", function (dbName) {
+                _this.viewingsModel.getLast(req.params.cantViews, dbName, function (result) {
                     res.send(result);
                 });
             });

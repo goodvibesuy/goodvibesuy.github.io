@@ -72,6 +72,7 @@ import { InterceptorModule } from './auth/token.interceptor';
 import { NgbDatepickerConfig } from '@ng-bootstrap/ng-bootstrap';
 import { CenouraInputValidation } from './shared/validation/CenouraInputValidation';
 import { NgbDateESParserFormatter } from './shared/DateParserFormatter';
+import { ReporteViewingComponent } from './components/front/reporte-viewing/reporte-viewing.component';
 
 @NgModule({
     declarations: [
@@ -102,7 +103,8 @@ import { NgbDateESParserFormatter } from './shared/DateParserFormatter';
         PosComponent,
         PosEditComponent,
         PosListComponent,
-        TemplatesRoutesComponent
+        TemplatesRoutesComponent,
+        ReporteViewingComponent
     ],
     imports: [
         BrowserModule,

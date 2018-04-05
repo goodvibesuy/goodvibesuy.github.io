@@ -1,14 +1,26 @@
 "use strict";
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 Object.defineProperty(exports, "__esModule", { value: true });
 var result_1 = require("../datatypes/result");
+var mainModel_1 = require("./mainModel");
 var masterDBController = require('../bd/masterConnectionsBD');
-var clientDBController = require('../bd/clientConnectionsBD');
 var mysql = require('mysql');
-var PointsOfSaleModel = /** @class */ (function () {
+var PointsOfSaleModel = /** @class */ (function (_super) {
+    __extends(PointsOfSaleModel, _super);
     function PointsOfSaleModel() {
+        return _super.call(this) || this;
     }
     PointsOfSaleModel.prototype.getAll = function (dbName, callBack) {
-        var pool = clientDBController.getUserConnection(dbName);
+        var pool = this.controllerConnections.getUserConnection(dbName);
         pool.getConnection(function (err, con) {
             if (err) {
                 con.release();
@@ -35,7 +47,7 @@ var PointsOfSaleModel = /** @class */ (function () {
         });
     };
     PointsOfSaleModel.prototype.getPointOfSale = function (idPointOfSale, dbName, callBack) {
-        var pool = clientDBController.getUserConnection(dbName);
+        var pool = this.controllerConnections.getUserConnection(dbName);
         pool.getConnection(function (err, con) {
             if (err) {
                 con.release();
@@ -62,7 +74,7 @@ var PointsOfSaleModel = /** @class */ (function () {
         });
     };
     PointsOfSaleModel.prototype.getFilteredByName = function (filterName, dbName, callBack) {
-        var pool = clientDBController.getUserConnection(dbName);
+        var pool = this.controllerConnections.getUserConnection(dbName);
         pool.getConnection(function (err, con) {
             if (err) {
                 con.release();
@@ -89,7 +101,7 @@ var PointsOfSaleModel = /** @class */ (function () {
         });
     };
     PointsOfSaleModel.prototype.add = function (name, businessName, contactName, RUT, group, address, tel, image, coord, dbName, callBack) {
-        var pool = clientDBController.getUserConnection(dbName);
+        var pool = this.controllerConnections.getUserConnection(dbName);
         pool.getConnection(function (err, con) {
             if (err) {
                 con.release();
@@ -118,7 +130,7 @@ var PointsOfSaleModel = /** @class */ (function () {
         });
     };
     PointsOfSaleModel.prototype.update = function (id, name, businessName, contactName, RUT, address, tel, image, coord, dbName, callback) {
-        var pool = clientDBController.getUserConnection(dbName);
+        var pool = this.controllerConnections.getUserConnection(dbName);
         pool.getConnection(function (err, con) {
             if (err) {
                 con.release();
@@ -148,7 +160,7 @@ var PointsOfSaleModel = /** @class */ (function () {
     };
     ;
     PointsOfSaleModel.prototype.delete = function (id, dbName, callback) {
-        var pool = clientDBController.getUserConnection(dbName);
+        var pool = this.controllerConnections.getUserConnection(dbName);
         pool.getConnection(function (err, con) {
             if (err) {
                 con.release();
@@ -181,6 +193,6 @@ var PointsOfSaleModel = /** @class */ (function () {
         });
     };
     return PointsOfSaleModel;
-}());
+}(mainModel_1.MainModel));
 exports.PointsOfSaleModel = PointsOfSaleModel;
 //# sourceMappingURL=pointsOfSaleModel.js.map

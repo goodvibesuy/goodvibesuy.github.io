@@ -1,16 +1,17 @@
 import { Result, ResultWithData, ResultCode } from '../datatypes/result';
 import { Product } from '../datatypes/product';
+import { MainModel } from './mainModel';
 var masterDBController = require('../bd/masterConnectionsBD');
-var clientDBController = require('../bd/clientConnectionsBD');
 
 var mysql = require('mysql');
 
-export class PointsOfSaleModel {
+export class PointsOfSaleModel extends MainModel{    
     constructor() {
+        super();    
     }
 
     getAll(dbName: string, callBack: (r: ResultWithData<any[]>) => void): void {
-        var pool = clientDBController.getUserConnection(dbName);
+        var pool = this.controllerConnections.getUserConnection(dbName);
         pool.getConnection(function (err: any, con: any) {
             if (err) {
                 con.release();
@@ -35,8 +36,8 @@ export class PointsOfSaleModel {
         });
     }
 
-    getPointOfSale( idPointOfSale: Number, dbName: string,callBack: (r: ResultWithData<any[]>) => void): void {
-        var pool = clientDBController.getUserConnection(dbName);
+    getPointOfSale(idPointOfSale: Number, dbName: string, callBack: (r: ResultWithData<any[]>) => void): void {
+        var pool = this.controllerConnections.getUserConnection(dbName);
         pool.getConnection(function (err: any, con: any) {
             if (err) {
                 con.release();
@@ -53,7 +54,7 @@ export class PointsOfSaleModel {
                         callBack({
                             result: ResultCode.OK,
                             message: 'OK',
-                            data: result.length>0?result[0]:null
+                            data: result.length > 0 ? result[0] : null
                         });
                     }
                 });
@@ -62,7 +63,7 @@ export class PointsOfSaleModel {
     }
 
     getFilteredByName(filterName: string, dbName: string, callBack: (r: ResultWithData<any[]>) => void): void {
-        var pool = clientDBController.getUserConnection(dbName);
+        var pool = this.controllerConnections.getUserConnection(dbName);
         pool.getConnection(function (err: any, con: any) {
             if (err) {
                 con.release();
@@ -87,16 +88,16 @@ export class PointsOfSaleModel {
         });
     }
 
-    add(name: string, businessName:string,contactName:string,RUT:string,group:number,
-        address: string, tel: string, image:string, coord: any, dbName: string, callBack: (r: ResultWithData<number>) => void): void {
-        var pool = clientDBController.getUserConnection(dbName);
+    add(name: string, businessName: string, contactName: string, RUT: string, group: number,
+        address: string, tel: string, image: string, coord: any, dbName: string, callBack: (r: ResultWithData<number>) => void): void {
+        var pool = this.controllerConnections.getUserConnection(dbName);
         pool.getConnection(function (err: any, con: any) {
             if (err) {
                 con.release();
                 console.error(err);
             } else {
                 con.query("INSERT INTO pointofsale  (name,businessName,contactName,RUT,idGroup, address, tel, image, coord) VALUES(?,?,?,?,?,?,?,?,POINT(?,?))",
-                    [name, businessName,contactName,RUT,group,address, tel, image, Number(coord.lat), Number(coord.lng)], function (
+                    [name, businessName, contactName, RUT, group, address, tel, image, Number(coord.lat), Number(coord.lng)], function (
                         err: any,
                         result: any
                     ) {
@@ -120,15 +121,15 @@ export class PointsOfSaleModel {
         });
     }
 
-    update(id: number, name: string, businessName:string,contactName:string,RUT:string,address: string, tel: string, image: string, coord: any,dbName:string, callback: (r: Result) => void): void {
-        var pool = clientDBController.getUserConnection(dbName);
+    update(id: number, name: string, businessName: string, contactName: string, RUT: string, address: string, tel: string, image: string, coord: any, dbName: string, callback: (r: Result) => void): void {
+        var pool = this.controllerConnections.getUserConnection(dbName);
         pool.getConnection(function (err: any, con: any) {
             if (err) {
                 con.release();
                 console.error(err);
             } else {
                 con.query("UPDATE pointofsale  SET name = ?,businessName = ?,contactName = ?,RUT = ?, address = ?, tel = ?, image = ?, coord = POINT(?,?) WHERE id = ?",
-                    [name, businessName,contactName,RUT,address, tel, image, Number(coord.lat), Number(coord.lng), id], function (err: any, result: any) {
+                    [name, businessName, contactName, RUT, address, tel, image, Number(coord.lat), Number(coord.lng), id], function (err: any, result: any) {
                         con.release();
                         if (!!err) {
                             // TODO: log error -> common/errorHandling.ts
@@ -149,8 +150,8 @@ export class PointsOfSaleModel {
         });
     };
 
-    delete(id: number,dbName:string, callback: (r: Result) => void): void {
-        var pool = clientDBController.getUserConnection(dbName);
+    delete(id: number, dbName: string, callback: (r: Result) => void): void {
+        var pool = this.controllerConnections.getUserConnection(dbName);
         pool.getConnection(function (err: any, con: any) {
             if (err) {
                 con.release();
@@ -176,8 +177,8 @@ export class PointsOfSaleModel {
                             message: 'OK'
                         });
                     }
-                });        
+                });
             }
-        });        
+        });
     }
 }

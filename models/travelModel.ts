@@ -1,16 +1,17 @@
 import { Result, ResultWithData, ResultCode } from '../datatypes/result';
 import { Route } from '../datatypes/route';
 import { PointOfSale } from '../datatypes/pointOfSale';
+import { MainModel } from './mainModel';
 var masterDBController = require('../bd/masterConnectionsBD');
-var clientDBController = require('../bd/clientConnectionsBD');
 
 
-export class TravelModel {
+export class TravelModel extends MainModel{
     constructor() {
+        super();
     }
 
     getAll(dbName: string, callBack: (r: ResultWithData<any[]>) => void): void {
-        var pool = clientDBController.getUserConnection(dbName);
+        var pool = this.controllerConnections.getUserConnection(dbName);
         pool.getConnection(function (err: any, con: any) {
             if (err) {
                 con.release();
@@ -27,7 +28,7 @@ export class TravelModel {
 
     add(route: Route, dbName: string, callBack: (r: ResultWithData<any[]>) => void): void {
         var mainThis = this;
-        var pool = clientDBController.getUserConnection(dbName);
+        var pool = this.controllerConnections.getUserConnection(dbName);
         pool.getConnection(function (err: any, con: any) {
             if (err) {
                 con.release();
@@ -65,7 +66,7 @@ export class TravelModel {
 
     update(route: Route, dbName: string, callBack: (r: ResultWithData<any[]>) => void): void {
         var mainThis = this;
-        var pool = clientDBController.getUserConnection(dbName);
+        var pool = this.controllerConnections.getUserConnection(dbName);
         pool.getConnection(function (err: any, con: any) {
             if (err) {
                 con.release();
@@ -131,7 +132,7 @@ export class TravelModel {
                                 });
                             }
                             callBack({ result: 1, message: "OK", data: result });
-                            con.end();
+                            con.release();
                         });
                     }
                 }
@@ -140,7 +141,7 @@ export class TravelModel {
     }
 
     addPointOfSale(idRoute: Number, idPointOfSale: Number, dbName: string, callBack: (r: ResultWithData<any[]>) => void): void {
-        var pool = clientDBController.getUserConnection(dbName);
+        var pool = this.controllerConnections.getUserConnection(dbName);
         pool.getConnection(function (err: any, con: any) {
             if (err) {
                 con.release();
@@ -160,7 +161,7 @@ export class TravelModel {
     };
 
     addUser(idRoute: Number, idUser: Number, date: any, dbName: string, callBack: (r: ResultWithData<any[]>) => void): void {
-        var pool = clientDBController.getUserConnection(dbName);
+        var pool = this.controllerConnections.getUserConnection(dbName);
         pool.getConnection(function (err: any, con: any) {
             if (err) {
                 con.release();
@@ -176,7 +177,8 @@ export class TravelModel {
     };
 
     removePointOfSale(idRoute: Number, idPointOfSale: Number, dbName: string, callBack: (r: ResultWithData<any[]>) => void): void {
-        var pool = clientDBController.getUserConnection(dbName);
+        var pool = this.controllerConnections.getUserConnection(dbName);
+    
         pool.getConnection(function (err: any, con: any) {
             if (err) {
                 con.release();
@@ -199,8 +201,8 @@ export class TravelModel {
         });
     }
 
-    removeUser = function (idRoute: Number, idUser: Number, dbName: string, callBack: (r: ResultWithData<any[]>) => void): void {
-        var pool = clientDBController.getUserConnection(dbName);
+    removeUser(idRoute: Number, idUser: Number, dbName: string, callBack: (r: ResultWithData<any[]>) => void): void {
+        var pool = this.controllerConnections.getUserConnection(dbName);
         pool.getConnection(function (err: any, con: any) {
             if (err) {
                 con.release();
@@ -216,7 +218,7 @@ export class TravelModel {
     }
 
     reorderPointOfSale(idRoute: Number, idPointOfSale: Number, position: Number, newPosition: Number, dbName: string, callBack: (r: ResultWithData<any[]>) => void): void {
-        var pool = clientDBController.getUserConnection(dbName);
+        var pool = this.controllerConnections.getUserConnection(dbName);
         pool.getConnection(function (err: any, con: any) {
             if (err) {
                 con.release();
@@ -235,7 +237,7 @@ export class TravelModel {
     }
 
     getPointsOfSales(idRoute: Number, dbName: string, callBack: (r: ResultWithData<any[]>) => void): void {
-        var pool = clientDBController.getUserConnection(dbName);
+        var pool = this.controllerConnections.getUserConnection(dbName);
         pool.getConnection(function (err: any, con: any) {
             if (err) {
                 con.release();
@@ -253,7 +255,7 @@ export class TravelModel {
     };
 
     getUers(idRoute: Number, dbName: string, callBack: (r: ResultWithData<any[]>) => void): void {
-        var pool = clientDBController.getUserConnection(dbName);
+        var pool = this.controllerConnections.getUserConnection(dbName);
         pool.getConnection(function (err: any, con: any) {
             if (err) {
                 con.release();
@@ -274,13 +276,13 @@ export class TravelModel {
 
 
     delete(idRoute: Number, dbName: string, callBack: (r: ResultWithData<any[]>) => void): void {
-        var pool = clientDBController.getUserConnection(dbName);
+        var pool = this.controllerConnections.getUserConnection(dbName);
         pool.getConnection(function (err: any, con: any) {
             if (err) {
                 con.release();
                 console.error(err);
             } else {
-                con.query("DELETE FROM route WHERE idRoute = ?", [idRoute], function (err: any, result: any) {
+                con.query("DELETE FROM route WHERE id = ?", [idRoute], function (err: any, result: any) {
                     con.release();
 
                     if (!!err) {

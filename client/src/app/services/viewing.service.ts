@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { HttpHeaders, HttpClient } from '@angular/common/http';
+import { LineViewingView } from '../../../../datatypes/views/lineViewingView';
 
 @Injectable()
 export class ViewingService {
@@ -9,5 +10,15 @@ export class ViewingService {
 
 	addViewing(idPointOfSale: Number, data: any,annotation:string): Observable<any> {
 		return this.http.post(this.viewingsURL, { idPointOfSale: idPointOfSale, data: data,annotation });
-	}
+    }
+    
+    lastViewings(cantViews: Number): Observable<any> {
+		return this.http.get(this.viewingsURL + "/last/" +  cantViews );
+    }
+
+    /*
+    lastViewings(cantViews: Number): Observable<LineViewingView[]> {
+		return this.http.get<LineViewingView[]>(this.viewingsURL + "/last/" +  cantViews );
+    }
+    */
 }

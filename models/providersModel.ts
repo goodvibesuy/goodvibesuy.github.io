@@ -1,15 +1,16 @@
 var masterDBController = require('../bd/masterConnectionsBD');
-var clientDBController = require('../bd/clientConnectionsBD');
 
 import { Result, ResultWithData, ResultCode } from '../datatypes/result';
 import { Provider } from '../datatypes/provider';
+import { MainModel } from './mainModel';
 
-class ProvidersModel {
+class ProvidersModel extends MainModel{
     constructor() {
+        super();
     }
 
     getAll(dbName: string, callBack: (r: ResultWithData<Provider[]>) => void): void {
-        var pool = clientDBController.getUserConnection(dbName);
+        var pool = this.controllerConnections.getUserConnection(dbName);
         pool.getConnection(function (err: any, con: any) {
             if (err) {
                 con.release();
