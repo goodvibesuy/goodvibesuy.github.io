@@ -5,7 +5,7 @@ import { MainModel } from './mainModel';
 var masterDBController = require('../bd/masterConnectionsBD');
 
 
-export class TravelModel extends MainModel{
+export class TravelModel extends MainModel {
     constructor() {
         super();
     }
@@ -44,17 +44,17 @@ export class TravelModel extends MainModel{
                             con.rollback(function () {
                                 console.log(err);
                                 con.release();
-                                callBack({ result: -1, message: "Error interno." });
+                                callBack({ result: -1, message: "Error interno. - No se pudo agregar la ruta." });
                             });
                         } else {
                             route.id = result.insertId;
                             con.query("INSERT INTO route_user(idroute,iduser) VALUES(?,?) ",
-                                [route.id,route.user.id], function (err: any, result: any) {
+                                [route.id, route.user.id], function (err: any, result: any) {
                                     if (err) {
                                         con.rollback(function () {
                                             console.log(err);
                                             con.release();
-                                            callBack({ result: -1, message: "Error interno." });
+                                            callBack({ result: -1, message: "Error interno. - No se pudo guardar el usuario de la ruta." });
                                         });
                                     } else {
                                         mainThis.addPointsOfSale(route.id, 0, route.pointsOfSale, callBack, con);
@@ -122,7 +122,7 @@ export class TravelModel extends MainModel{
                     con.rollback(function () {
                         console.log(err);
                         con.release();
-                        callBack({ result: -1, message: "Error interno." });
+                        callBack({ result: -1, message: "Error interno. No se pudo guardar el POS de la ruta." });
                     });
                 } else {
                     if (index + 1 < pointsOfSale.length) {
@@ -133,15 +133,15 @@ export class TravelModel extends MainModel{
                                 con.rollback(function () {
                                     console.log(err);
                                     con.release();
-                                    callBack({ result: -1, message: "Error interno." });
+                                    callBack({ result: -1, message: "Error interno. No se pudo hacer commit de la ruta" });
                                 });
+                            } else {
+                                callBack({ result: 1, message: "OK", data: result });
+                                con.release();
                             }
-                            callBack({ result: 1, message: "OK", data: result });
-                            con.release();
                         });
                     }
                 }
-
             });
     }
 
@@ -183,7 +183,7 @@ export class TravelModel extends MainModel{
 
     removePointOfSale(idRoute: Number, idPointOfSale: Number, dbName: string, callBack: (r: ResultWithData<any[]>) => void): void {
         var pool = this.controllerConnections.getUserConnection(dbName);
-    
+
         pool.getConnection(function (err: any, con: any) {
             if (err) {
                 con.release();
