@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { catchError, map, tap } from 'rxjs/operators';
 import { Observable } from 'rxjs/Observable';
-import { RoutePointOfSale } from '../models/RoutePointOfSale.model';
+import { RoutePointOfSale } from '../models/routePointOfSale.model';
 import { RouteUser } from '../models/routeUser.model';
 
 import { RouteTable } from '../../../../datatypes/routeTable';
