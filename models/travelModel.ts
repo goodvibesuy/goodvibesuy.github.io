@@ -120,6 +120,7 @@ export class TravelModel extends MainModel{
             [idRoute, pointsOfSale[index].id, index], function (err: any, result: any) {
                 if (err) {
                     con.rollback(function () {
+                        console.log(err);
                         con.release();
                         callBack({ result: -1, message: "Error interno." });
                     });
@@ -130,6 +131,7 @@ export class TravelModel extends MainModel{
                         con.commit(function (err: any) {
                             if (err) {
                                 con.rollback(function () {
+                                    console.log(err);
                                     con.release();
                                     callBack({ result: -1, message: "Error interno." });
                                 });
