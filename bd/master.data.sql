@@ -80,18 +80,6 @@ INSERT INTO `rols_resources` (`rol_id`, `resource_id`) VALUES
 -- --------------------------------------------------------
 
 --
--- Volcar la base de datos para la tabla `sessions`
---
-
-INSERT INTO `sessions` (`user_id`, `user_name`, `login_date`, `account_id`, `token_id`, `database_name`) VALUES
-(26, 'cosaboa', '2018-03-06 14:47:51', 2, 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoyNiwidXNlck5hbWUiOiJjb3NhYm9hIiwicm9sSWQiOjF9LCJkYXRlIjoiMjAxOC0wMy0wNlQxNzo0Nzo1MS45NjBaIiwiaWF0IjoxNTIwMzU4NDcxfQ.uRtcl3n-i96dIs8YLxPVZzhg98O2xj9rosNbYX9hjX4', 'good'),
-(27, 'cosaruin', '2018-03-06 14:59:06', 2, 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoyNywidXNlck5hbWUiOiJjb3NhcnVpbiIsInJvbElkIjoyfSwiZGF0ZSI6IjIwMTgtMDMtMDZUMTc6NTk6MDYuMzg4WiIsImlhdCI6MTUyMDM1OTE0Nn0.S9fDQ03jKKf3UZLJ6SJ0W1huNDQIpN6sdCgq0DlW9aM', 'good'),
-(25, 'jperez', '2016-08-01 16:40:16', 1, 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoyNSwidXNlck5hbWUiOiJqcGVyZXoifSwiZGF0ZSI6IjIwMTYtMDgtMDFUMTk6NDA6MTYuOTUyWiIsImlhdCI6MTQ3MDA4MDQxNn0._CA0HdBUConXQ7mX8cCiBY4B3MaQfehjqzdDKRK_gK0', 'base'),
-(1, 'prueba', '2018-01-11 11:22:35', 1, 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxLCJ1c2VyTmFtZSI6InBydWViYSJ9LCJkYXRlIjoiMjAxOC0wMS0xMVQxNDoyMjozNS4wNDBaIiwiaWF0IjoxNTE1NjgwNTU1fQ.xTM41U2Ffd-BWxBbZIS81gkcL6Z5OQkwtUwM26e-CGU', 'clim');
-
--- --------------------------------------------------------
-
---
 -- Volcar la base de datos para la tabla `users`
 --
 
@@ -99,8 +87,8 @@ INSERT INTO `users` (`rol_id`, `id`, `user_name`, `first_name`, `last_name`, `pa
 (1, 1, 'prueba', 'Pepe', 'Apellido', '7c4a8d09ca3762af61e59520943dc26494f8941b', 1),
 (1, 13, 'nuevo2', 'Andres', 'Apellido', '8cb2237d0679ca88db6464eac60da96345513964', 0),
 (1, 25, 'jperez', 'Juan', 'Perez', '8cb2237d0679ca88db6464eac60da96345513964', 1),
-(1, 26, 'cosaboa', 'cosa', 'boa', '7c4a8d09ca3762af61e59520943dc26494f8941b', 1),
-(2, 27, 'cosaruin', 'Cosa', 'Ruin', '7c4a8d09ca3762af61e59520943dc26494f8941b', 1);
+(1, 26, 'admin@goodvibes.uy', 'cosa', 'boa', '7c4a8d09ca3762af61e59520943dc26494f8941b', 1),
+(2, 27, 'repartidor@goodvibes.uy', 'Cosa', 'Ruin', '7c4a8d09ca3762af61e59520943dc26494f8941b', 1);
 
 -- --------------------------------------------------------
 
