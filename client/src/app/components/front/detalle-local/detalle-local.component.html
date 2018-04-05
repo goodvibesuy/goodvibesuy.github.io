@@ -1,4 +1,4 @@
-<div class="detalle-local border">
+<div class="detalle-local border" *ngIf="!!pointOfSale">
     <div class="detalle-local-header flex flex-wrap d-flex justify-content-around content-center content-between">
         <div style="width:100%; text-align: center;">{{pointOfSale.name}}</div>
         <div style="clear: both;"></div>
@@ -6,7 +6,7 @@
             
             <img *ngIf="pointOfSale && pointOfSale.image !== '' && pointOfSale.image !== null" 
                  src="images/locales/{{pointOfSale.image}}" />
-            <i *ngIf="pointOfSale && pointOfSale.image === '' || pointOfSale.image === null" class="fa fa-home" style="font-size: 3.0em;"></i>
+            <i *ngIf="pointOfSale && (pointOfSale.image === '' || pointOfSale.image === null)" class="fa fa-home" style="font-size: 3.0em;"></i>
         </div>
     </div>
     <div class="detalle-local-info">

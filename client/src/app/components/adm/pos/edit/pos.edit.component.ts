@@ -1,7 +1,6 @@
 import { Component, ViewChild, OnInit, ViewContainerRef, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { PointOfSaleService } from '../../../../services/point-of-sale.service';
-import { PointOfSale } from '../../../../models/pointofsale.model';
 import { } from '@types/googlemaps';
 import { DomSanitizer } from '@angular/platform-browser';
 import { GVFile } from '../../../../models/gvfile.model';
@@ -10,6 +9,7 @@ import { ValidableForm } from '../../../../shared/ValidableForms';
 import { Subscription } from 'rxjs';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ResultCode } from '../../../../../../../datatypes/result';
+import { PointOfSale } from '../../../../../../../datatypes/pointOfSale';
 
 @Component({
     templateUrl: './pos.edit.component.html',

@@ -1,11 +1,11 @@
 import { Component, ViewChild, OnInit, ViewContainerRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { PointOfSaleService } from '../../../../services/point-of-sale.service';
-import { PointOfSale } from '../../../../models/pointofsale.model';
 import { } from '@types/googlemaps';
 import { DomSanitizer } from '@angular/platform-browser';
 import { GVFile } from '../../../../models/gvfile.model';
 import { ImagesService } from '../../../../services/images.service';
+import { PointOfSale } from '../../../../../../../datatypes/pointOfSale';
 
 @Component({
     templateUrl: './pos.list.component.html',

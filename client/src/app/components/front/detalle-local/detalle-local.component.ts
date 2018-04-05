@@ -6,7 +6,7 @@ import { PointOfSaleService } from '../../../services/point-of-sale.service';
 import { ProductsService } from '../../../services/products.service';
 import { ViewingService } from '../../../services/viewing.service';
 import { Product } from '../../../../../../datatypes/product';
-import { PointOfSale } from '../../../models/pointofsale.model';
+import { PointOfSale } from '../../../../../../datatypes/pointOfSale';
 
 @Component({
     selector: 'app-detalle-local',

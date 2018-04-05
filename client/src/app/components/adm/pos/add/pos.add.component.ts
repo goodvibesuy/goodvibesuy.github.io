@@ -1,13 +1,13 @@
 import { Component, ViewChild, OnInit, } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { PointOfSaleService } from '../../../../services/point-of-sale.service';
-import { PointOfSale } from '../../../../models/pointofsale.model';
 import { } from '@types/googlemaps';
 import { DomSanitizer } from '@angular/platform-browser';
 import { GVFile } from '../../../../models/gvfile.model';
 import { ImagesService } from '../../../../services/images.service';
 import { ValidableForm } from '../../../../shared/ValidableForms';
 import { FormBuilder, Validators } from '@angular/forms';
+import { PointOfSale } from '../../../../../../../datatypes/pointOfSale';
 
 @Component({
     templateUrl: './pos.add.component.html',

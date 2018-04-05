@@ -4,7 +4,6 @@ import { ReactiveFormsModule, FormsModule, FormGroup, FormControl, Validators, F
 
 import { RouteService } from '../../../../services/route.service';
 import { UsersService } from '../../../../services/users.service';
-import { PointOfSale } from '../../../../models/pointofsale.model';
 import { RoutePointOfSale } from '../../../../models/RoutePointOfSale.model';
 import { RouteUser } from '../../../../models/routeUser.model';
 
@@ -12,6 +11,7 @@ import { TemplatesRoutesService } from '../../../../services/templates-routes.se
 import { TemplatesRoutesComponent } from '../../templates-routes/templates-routes.component';
 import { TemplateRoute } from '../../../../models/TemplateRoute.model';
 
+import { PointOfSale } from '../../../../../../../datatypes/PointOfSale';
 import { User } from '../../../../../../../datatypes/user';
 import { Route } from "../../../../../../../datatypes/route";
 import { RouteTable } from "../../../../../../../datatypes/routeTable";

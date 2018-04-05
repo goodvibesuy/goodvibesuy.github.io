@@ -1,4 +1,4 @@
-<div class="card" style="margin:15px;">
+<!-- <div class="card" style="margin:15px;">
     <div class="card-header">
         <b>Editar recorrido</b>
     </div>
@@ -17,21 +17,10 @@
                             <option *ngFor="let u of users" [ngValue]="u">{{u.firstname}} {{u.lastname}}</option>
                         </select>
                     </div>
-                    <!--
-            <span class="input-group-addon">Fecha:</span>
-
-            <div class="input-group">
-                <input class="form-control" placeholder="yyyy-mm-dd" name="dp" [(ngModel)]="currentRoute.date" ngbDatepicker #d="ngbDatepicker">
-                <div class="input-group-btn">
-                    <button class="btn btn-outline-secondary" (click)="d.toggle()" type="button">
-                        <img src="img/calendar-icon.svg" style="width: 1.2rem; height: 1rem; cursor: pointer;" />
-                    </button>
-                </div>
-            </div>
-        -->
+                   
                     <div class="form-group col-md-4">
                         <span class="input-group-addon">Fecha:</span>
-                        <!-- start: date picker -->
+                        
                         <div class="form-group">
                             <div class="input-group">
                                 <input class="form-control" [cenInputValidation]="getFormField('date')" placeholder="dd/mm/yyyy" name="dp" formControlName="date"
@@ -44,7 +33,6 @@
                                 <div class="invalid-feedback" *ngIf="isFormFieldInvalid('date')">Ingrese un valor válido.</div>
                             </div>
                         </div>
-                        <!-- end: date picker -->
                     </div>
                 </div>
 
@@ -122,4 +110,4 @@
             <button type="button" class="btn btn-light" routerLink="/recorridos">Cancelar</button>
         </form>
     </div>
-</div>
+</div> -->

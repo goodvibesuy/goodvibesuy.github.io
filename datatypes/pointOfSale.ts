@@ -1,9 +1,14 @@
 export class PointOfSale {
-	id: number;
+    id: number;
     name: string;
-    tel:string;
-    image: string;
-    address:string;
+    address: string;
+    tel: string;
+    image:string;
+    coord:google.maps.LatLng;
+    businessName:string;
+    contactName:string;
+    RUT:string;
+    idGroup: number;
 
     constructor() {
         this.id = 0;
@@ -32,5 +37,4 @@ export class PointOfSale {
     public setAddress(address:string):void{
         this.address = address;
     }
-
 }

@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { PointOfSale } from '../models/pointofsale.model';
 import { Observable } from 'rxjs/Observable';
 import { catchError, map, tap } from 'rxjs/operators';
 import { TemplateRoute } from '../models/TemplateRoute.model';
+import { PointOfSale } from '../../../../datatypes/pointOfSale';
 
 @Injectable()
 export class TemplatesRoutesService {

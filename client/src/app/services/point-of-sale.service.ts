@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { HttpHeaders, HttpClient } from '@angular/common/http';
-import { PointOfSale } from '../models/pointofsale.model';
 import { ResultWithData, ResultCode } from '../../../../datatypes/result';
 import { catchError, map, tap } from 'rxjs/operators';
 import { of } from 'rxjs/observable/of';
+import { PointOfSale } from '../../../../datatypes/pointOfSale';
 
 @Injectable()
 export class PointOfSaleService {

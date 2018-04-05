@@ -2,13 +2,13 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { catchError, map, tap } from 'rxjs/operators';
 import { Observable } from 'rxjs/Observable';
-import { PointOfSale } from '../models/pointofsale.model';
 import { RoutePointOfSale } from '../models/RoutePointOfSale.model';
 import { RouteUser } from '../models/routeUser.model';
 
 import { RouteTable } from '../../../../datatypes/routeTable';
 import { User } from '../../../../datatypes/user';
 import { Route } from '../../../../datatypes/route';
+import { PointOfSale } from '../../../../datatypes/pointOfSale';
 
 @Injectable()
 export class RouteService {
