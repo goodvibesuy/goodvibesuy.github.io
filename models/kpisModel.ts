@@ -18,7 +18,7 @@ class KpisModel extends MainModel{
                 con.release();
                 console.error(err);
             } else {
-                con.query("SELECT * FROM supply s INNER JOIN supplyprice sp ON s.id = sp.idSupply WHERE s.id = ? ORDER BY price_date ASC ",
+                con.query("SELECT * FROM supply s INNER JOIN supplyPrice sp ON s.id = sp.idSupply WHERE s.id = ? ORDER BY price_date ASC ",
                     [supplyId], function (err: any, result: any) {
                         if (err) throw err;
                         con.release();
