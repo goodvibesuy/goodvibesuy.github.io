@@ -108,18 +108,45 @@ var TravelModel = /** @class */ (function (_super) {
                                     });
                                 }
                                 else {
-                                    con.query("DELETE FROM route_pointofsale WHERE idRoute = ?", [route.id], function (err, result) {
-                                        if (err) {
-                                            con.rollback(function () {
-                                                console.log(err);
-                                                con.release();
-                                                callBack({ result: -1, message: "Error interno. -  No se pudieron borrar los POS de la ruta." });
-                                            });
-                                        }
-                                        else {
-                                            mainThis.addPointsOfSale(route.id, 0, route.pointsOfSale, callBack, con);
-                                        }
-                                    });
+                                    if (result.affectedRows === 0) {
+                                        con.query("INSERT INTO route_user(iduser,idroute)  VALUES(?,?)", [route.user.id, route.id], function (err, result) {
+                                            if (err) {
+                                                con.rollback(function () {
+                                                    console.log(err);
+                                                    con.release();
+                                                    callBack({ result: -1, message: "Error interno.No se pudo actualizar el usuario de la ruta" });
+                                                });
+                                            }
+                                            else {
+                                                con.query("DELETE FROM route_pointofsale WHERE idRoute = ?", [route.id], function (err, result) {
+                                                    if (err) {
+                                                        con.rollback(function () {
+                                                            console.log(err);
+                                                            con.release();
+                                                            callBack({ result: -1, message: "Error interno. -  No se pudieron borrar los POS de la ruta." });
+                                                        });
+                                                    }
+                                                    else {
+                                                        mainThis.addPointsOfSale(route.id, 0, route.pointsOfSale, callBack, con);
+                                                    }
+                                                });
+                                            }
+                                        });
+                                    }
+                                    else {
+                                        con.query("DELETE FROM route_pointofsale WHERE idRoute = ?", [route.id], function (err, result) {
+                                            if (err) {
+                                                con.rollback(function () {
+                                                    console.log(err);
+                                                    con.release();
+                                                    callBack({ result: -1, message: "Error interno. -  No se pudieron borrar los POS de la ruta." });
+                                                });
+                                            }
+                                            else {
+                                                mainThis.addPointsOfSale(route.id, 0, route.pointsOfSale, callBack, con);
+                                            }
+                                        });
+                                    }
                                 }
                             });
                         }
@@ -289,6 +316,23 @@ var TravelModel = /** @class */ (function (_super) {
             }
             else {
                 con.query("SELECT * FROM route_user INNER JOIN users as u ON u.id = idUser WHERE idroute = ?", [idRoute], function (err, result) {
+                    con.release();
+                    if (err)
+                        throw err;
+                    callBack({ result: 1, message: "OK", data: result });
+                });
+            }
+        });
+    };
+    TravelModel.prototype.getRoutesByUser = function (idUser, dbName, callBack) {
+        var pool = this.controllerConnections.getUserConnection(dbName);
+        pool.getConnection(function (err, con) {
+            if (err) {
+                con.release();
+                console.error(err);
+            }
+            else {
+                con.query("SELECT * FROM route_user r_u INNER JOIN route r ON r.id = r_u.idroute WHERE iduser = ?", [idUser], function (err, result) {
                     con.release();
                     if (err)
                         throw err;

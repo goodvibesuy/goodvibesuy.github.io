@@ -100,7 +100,7 @@ var PointsOfSaleModel = /** @class */ (function (_super) {
             }
         });
     };
-    PointsOfSaleModel.prototype.add = function (name, businessName, contactName, RUT, group, address, tel, image, coord, dbName, callBack) {
+    PointsOfSaleModel.prototype.add = function (name, businessName, contactName, RUT, idGroup, address, tel, image, coord, dbName, callBack) {
         var pool = this.controllerConnections.getUserConnection(dbName);
         pool.getConnection(function (err, con) {
             if (err) {
@@ -108,7 +108,7 @@ var PointsOfSaleModel = /** @class */ (function (_super) {
                 console.error(err);
             }
             else {
-                con.query("INSERT INTO pointofsale  (name,businessName,contactName,RUT,idGroup, address, tel, image, coord) VALUES(?,?,?,?,?,?,?,?,POINT(?,?))", [name, businessName, contactName, RUT, group, address, tel, image, Number(coord.lat), Number(coord.lng)], function (err, result) {
+                con.query("INSERT INTO pointofsale  (name,businessName,contactName,RUT,idGroup, address, tel, image, coord) VALUES(?,?,?,?,?,?,?,?,POINT(?,?))", [name, businessName, contactName, RUT, idGroup, address, tel, image, Number(coord.lat), Number(coord.lng)], function (err, result) {
                     con.release();
                     if (!!err) {
                         //if (err.code === "ER_DUP_ENTRY") 
@@ -129,7 +129,7 @@ var PointsOfSaleModel = /** @class */ (function (_super) {
             }
         });
     };
-    PointsOfSaleModel.prototype.update = function (id, name, businessName, contactName, RUT, address, tel, image, coord, dbName, callback) {
+    PointsOfSaleModel.prototype.update = function (id, name, businessName, contactName, RUT, idGroup, address, tel, image, coord, dbName, callback) {
         var pool = this.controllerConnections.getUserConnection(dbName);
         pool.getConnection(function (err, con) {
             if (err) {
@@ -137,7 +137,7 @@ var PointsOfSaleModel = /** @class */ (function (_super) {
                 console.error(err);
             }
             else {
-                con.query("UPDATE pointofsale  SET name = ?,businessName = ?,contactName = ?,RUT = ?, address = ?, tel = ?, image = ?, coord = POINT(?,?) WHERE id = ?", [name, businessName, contactName, RUT, address, tel, image, Number(coord.lat), Number(coord.lng), id], function (err, result) {
+                con.query("UPDATE pointofsale  SET name = ?,businessName = ?,contactName = ?,RUT = ?, idGroup = ?, address = ?, tel = ?, image = ?, coord = POINT(?,?) WHERE id = ?", [name, businessName, contactName, RUT, idGroup, address, tel, image, Number(coord.lat), Number(coord.lng), id], function (err, result) {
                     con.release();
                     if (!!err) {
                         // TODO: log error -> common/errorHandling.ts

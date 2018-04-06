@@ -46,14 +46,14 @@ var PointOfSaleController = /** @class */ (function (_super) {
         };
         _this.add = function (req, res) {
             _this.verifyAccess(req, res, _this.resource, function (dbName) {
-                _this.pointsOfSaleModel.add(req.body.name, req.body.businessName, req.body.contactName, req.body.RUT, req.body.group, req.body.address, req.body.tel, req.body.image, req.body.coord, dbName, function (result) {
+                _this.pointsOfSaleModel.add(req.body.name, req.body.businessName, req.body.contactName, req.body.RUT, req.body.idGroup, req.body.address, req.body.tel, req.body.image, req.body.coord, dbName, function (result) {
                     res.send(result);
                 });
             });
         };
         _this.update = function (req, res) {
             _this.verifyAccess(req, res, _this.resource, function (dbName) {
-                _this.pointsOfSaleModel.update(req.body.id, req.body.name, req.body.businessName, req.body.contactName, req.body.RUT, req.body.address, req.body.tel, req.body.image, req.body.coord, dbName, function (result) {
+                _this.pointsOfSaleModel.update(req.body.id, req.body.name, req.body.businessName, req.body.contactName, req.body.RUT, req.body.idGroup, req.body.address, req.body.tel, req.body.image, req.body.coord, dbName, function (result) {
                     res.send(result);
                 });
             });

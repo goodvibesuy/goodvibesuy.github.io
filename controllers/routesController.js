@@ -55,6 +55,13 @@ var RoutesController = /** @class */ (function (_super) {
                 });
             });
         };
+        _this.getRoutesByUsers = function (req, res) {
+            _this.verifyAccess(req, res, _this.resource, function (dbName) {
+                _this.travelModel.getRoutesByUser(req.params.idUser, dbName, function (result) {
+                    res.send(result);
+                });
+            });
+        };
         _this.addPointOfSale = function (req, res) {
             _this.verifyAccess(req, res, _this.resource, function (dbName) {
                 _this.travelModel.addPointOfSale(req.body.idRoute, req.body.idPointOfSale, dbName, function (result) {

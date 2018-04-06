@@ -49,6 +49,10 @@ export class RouteService {
 		return this.http.get<User[]>(this.routeUrl + '/users/' + idRoute).pipe(map(r => (<any>r).data));
 	}
 
+    getRoutesByUser(idUser: number): Observable<User[]> {
+		return this.http.get<User[]>(this.routeUrl + '/routes/' + idUser).pipe(map(r => (<any>r).data));
+	}
+
 	getPointsOfSalesRoute(idRoute: number): Observable<PointOfSale[]> {
 		return this.http.get<PointOfSale[]>(this.routeUrl + '/pointofsales/' + idRoute).pipe(map(r => (<any>r).data));
 	}
