@@ -38,7 +38,9 @@ export class ViewingView {
     public getTotalTransactionByProductByType(idProduct:number,type:"string"):number{
         var quantity = 0;
         for(let i = 0 ; i < this.lines.length ; i++){
-            quantity += this.lines[i].getTransactionByProductByType(idProduct,type)[0].quantity;
+            if(this.lines[i].getTransactionByProductByType(idProduct,type)[0] !== undefined){
+                quantity += this.lines[i].getTransactionByProductByType(idProduct,type)[0].quantity;
+            }            
         }
         return quantity;
     }

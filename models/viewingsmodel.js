@@ -101,15 +101,19 @@ var ViewingsModel = /** @class */ (function (_super) {
                 var pool = mainThis.controllerConnections.getUserConnection(dbName);
                 pool.getConnection(function (err, con) {
                     if (err) {
-                        console.error(err);
+                        console.log(err);
                         con.release();
+                        callBack({ result: -1, message: "Error interno." });
                     }
                     else {
                         con.query("INSERT INTO viewing  (date, idpointofsale,idUser,annotation) VALUES(NOW(),?,?,?)", [idpointofsail, idUser, annotation], function (err, result) {
                             if (err) {
-                                if (err.code === "ER_DUP_ENTRY") {
-                                    con.release();
-                                }
+                                console.log(err);
+                                con.release();
+                                callBack({ result: -1, message: "Error interno." });
+                                //if (err.code === "ER_DUP_ENTRY") {
+                                //    con.release();
+                                //}
                             }
                             else {
                                 var idviewing = result.insertId;
@@ -117,10 +121,11 @@ var ViewingsModel = /** @class */ (function (_super) {
                                     Object.keys(data[i].typeTransaction).forEach(function (key, index) {
                                         con.query("INSERT INTO viewing_product(idviewing,idproduct,quantity,type) VALUES(?,?,?,?)", [idviewing, data[i].id, data[i].typeTransaction[key], key], function (err, resultClient) {
                                             if (err) {
-                                                if (err.code === "ER_DUP_ENTRY") {
-                                                    con.release();
-                                                    callBack({ result: -1, message: "Error interno." });
-                                                }
+                                                //if (err.code === "ER_DUP_ENTRY") {
+                                                console.log(err);
+                                                con.release();
+                                                callBack({ result: -1, message: "Error interno." });
+                                                //}
                                             }
                                             else {
                                                 //TODO: corregir

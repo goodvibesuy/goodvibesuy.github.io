@@ -7,7 +7,7 @@ import { MainModel } from './mainModel';
 
 var masterDBController = require('../bd/masterConnectionsBD');
 
-export class ViewingsModel extends MainModel{
+export class ViewingsModel extends MainModel {
     private userModel: UserModel;
     constructor() {
         super();
@@ -61,7 +61,7 @@ export class ViewingsModel extends MainModel{
         var mainThis = this;
         if (index < lines.length) {
             con.query(
-                "SELECT * FROM viewing_product WHERE idviewing = ?", 
+                "SELECT * FROM viewing_product WHERE idviewing = ?",
                 [lines[index].getIdViewing()],
                 function (err: any, result: any) {
                     if (err) {
@@ -72,14 +72,14 @@ export class ViewingsModel extends MainModel{
                             data: result
                         });
                     } else {
-                        if(result.length > 0){
-                            for(let i = 0 ; i < result.length ; i++){
+                        if (result.length > 0) {
+                            for (let i = 0; i < result.length; i++) {
                                 lines[index].addProduct(result[i]);
                             }
                         }
                         mainThis.getProductsLine(index + 1, lines, dbName, con, callBack);
                     }
-                });            
+                });
         } else {
             con.release();
             callBack({
@@ -100,17 +100,21 @@ export class ViewingsModel extends MainModel{
                 var pool = mainThis.controllerConnections.getUserConnection(dbName);
                 pool.getConnection(function (err: any, con: any) {
                     if (err) {
-                        console.error(err);
+                        console.log(err);
                         con.release();
+                        callBack({ result: -1, message: "Error interno." });
                     } else {
                         con.query(
                             "INSERT INTO viewing  (date, idpointofsale,idUser,annotation) VALUES(NOW(),?,?,?)",
                             [idpointofsail, idUser, annotation],
                             function (err: any, result: any) {
                                 if (err) {
-                                    if (err.code === "ER_DUP_ENTRY") {
-                                        con.release();
-                                    }
+                                    console.log(err);
+                                    con.release();
+                                    callBack({ result: -1, message: "Error interno." });
+                                    //if (err.code === "ER_DUP_ENTRY") {
+                                    //    con.release();
+                                    //}
                                 } else {
                                     var idviewing = result.insertId;
                                     for (var i = 0; i < data.length; i++) {
@@ -120,10 +124,11 @@ export class ViewingsModel extends MainModel{
                                                 [idviewing, data[i].id, data[i].typeTransaction[key], key],
                                                 function (err: any, resultClient: any) {
                                                     if (err) {
-                                                        if (err.code === "ER_DUP_ENTRY") {
-                                                            con.release();
-                                                            callBack({ result: -1, message: "Error interno." });
-                                                        }
+                                                        //if (err.code === "ER_DUP_ENTRY") {
+                                                        console.log(err);
+                                                        con.release();
+                                                        callBack({ result: -1, message: "Error interno." });
+                                                        //}
                                                     }
                                                     else {
                                                         //TODO: corregir

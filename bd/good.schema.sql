@@ -147,6 +147,7 @@ CREATE TABLE `viewing` (
  `idviewing` INT(11) NOT NULL AUTO_INCREMENT,
  `date` DATETIME DEFAULT NULL,
  `idpointofsale` INT(11) DEFAULT NULL,
+ `annotation` TEXT DEFAULT NULL, 
  PRIMARY KEY (`idviewing`),
  FOREIGN KEY (idUser) REFERENCES users(id),
  FOREIGN KEY (idpointofsale) REFERENCES pointofsale(id)
