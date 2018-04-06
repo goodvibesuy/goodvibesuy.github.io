@@ -38,6 +38,7 @@ export class RouteEdit  extends ValidableForm implements OnInit {
     private POSSelected: PointOfSale;
     private templatesRoutes: TemplateRoute[];
     private templateSelected: TemplateRoute;
+    private errorNoPOS: boolean = false;
 
     constructor(
         fb: FormBuilder,
@@ -111,11 +112,6 @@ export class RouteEdit  extends ValidableForm implements OnInit {
 
     remove(idPointOfSale) {
         this.currentRoute.removePointOfSale(idPointOfSale);
-        /*
-        this.routeService.remove(this.currentRoute.id, idPointOfSale).subscribe(data => {
-            this.getPointOfSalesRoute();
-        });
-        */
     }
 
     actualizar() {        
@@ -124,9 +120,16 @@ export class RouteEdit  extends ValidableForm implements OnInit {
         } else {
             var route = super.getModel<Route>({ 'date': NgbDateFormatter.unformatDate });
             route.pointsOfSale = this.currentRoute.getPointsOfSale();
-            this.routeService.update(route).subscribe(data => {
-                this.router.navigateByUrl('/recorridos');
-            });
+            console.log(route.pointsOfSale);
+
+            if(route.pointsOfSale.length === 0){
+                this.errorNoPOS = true;
+            }else{
+                this.errorNoPOS = false;
+                this.routeService.update(route).subscribe(data => {
+                    this.router.navigateByUrl('/recorridos');
+                });
+            }
         }                
     }
 

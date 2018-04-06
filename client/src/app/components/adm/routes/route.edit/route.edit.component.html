@@ -38,8 +38,8 @@
                         <!-- start: date picker -->
                         <div class="form-group">
                             <div class="input-group">
-                                <input class="form-control" [cenInputValidation]="getFormField('date')" placeholder="dd/mm/yyyy"
-                                    name="dp" formControlName="date" ngbDatepicker #d="ngbDatepicker">
+                                <input class="form-control" [cenInputValidation]="getFormField('date')" placeholder="dd/mm/yyyy" name="dp" formControlName="date"
+                                    ngbDatepicker #d="ngbDatepicker">
                                 <div class="input-group-append">
                                     <button class="btn btn-outline-secondary" (click)="d.toggle()" type="button">
                                         <img src="images/calendar-icon.svg" style="width: 1.2rem; height: 1rem; cursor: pointer;" />
@@ -78,6 +78,13 @@
             </div>
 
         </div>
+
+        <div class="alert alert-danger alert-dismissible" *ngIf="errorNoPOS">
+            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+            <strong>No puede crear un recorrido sin puntos de venta.</strong>
+        </div>
+
+
         <div class="card" *ngIf="currentRoute">
             <div class="card-header">
                 Puntos de venta

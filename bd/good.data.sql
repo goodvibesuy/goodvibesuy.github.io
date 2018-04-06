@@ -132,10 +132,11 @@ INSERT INTO `supply` (`id`, `name`, `unit`, `path_image`) VALUES
 
 
 INSERT INTO `provider` (`name`) VALUES
-('Proveedor 1'),
-('Proveedor 2'),
-('Proveedor 3'),
-('Proveedor 4');
+('Guarino'),
+('Don juan'),
+('Don rufino'),
+('CAPORALE'),
+('Isabel Kurdzie');
 
 INSERT INTO `supplyPrice` (`date`, `price_date`, `amount`, `idSupply`, `idProvider`) VALUES
 ('2018-02-10 21:00:43', '2018-02-10 21:00:43', 31, 1,1),
