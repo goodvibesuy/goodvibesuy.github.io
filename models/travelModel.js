@@ -90,7 +90,6 @@ var TravelModel = /** @class */ (function (_super) {
             else {
                 con.beginTransaction(function (err) {
                     var dateOnly = (route.date.toString()).split("T");
-                    console.log(dateOnly);
                     con.query("UPDATE route SET  name = ?, date = ? WHERE id =?", [route.name, dateOnly[0], route.id], function (err, result) {
                         if (err) {
                             con.rollback(function () {

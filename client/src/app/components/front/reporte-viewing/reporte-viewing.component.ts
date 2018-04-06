@@ -3,7 +3,7 @@ import { ViewingService } from '../../../services/viewing.service';
 import { ProductsService } from '../../../services/products.service';
 import { Product } from '../../../../../../datatypes/product';
 import { LineViewingView } from '../../../../../../datatypes/views/lineViewingView';
-
+import {ViewingView} from '../../../../../../datatypes/views/viewingView';
 
 @Component({
     selector: 'app-reporte-viewing',
@@ -13,12 +13,13 @@ import { LineViewingView } from '../../../../../../datatypes/views/lineViewingVi
 export class ReporteViewingComponent implements OnInit {
     private viewings: any[];
     private products: any[];
-    private lines: LineViewingView[];
-    //private products: Map<number,Product>;
+    private viewingView:ViewingView;
+    //private lines: LineViewingView[];
     constructor(private viewingsService: ViewingService,
         private productsService: ProductsService
     ) {
-        this.lines = new Array<LineViewingView>();
+        this.viewingView = new ViewingView();
+        //this.lines = new Array<LineViewingView>();
         //this.products = new Map<number,Product>();
     }
 
@@ -29,13 +30,13 @@ export class ReporteViewingComponent implements OnInit {
                 this.viewingsService.lastViewings(10).subscribe(
                     response => {
                         this.viewings = response.data;
-
                         for (let i = 0; i < response.data.length; i++) {
                             let line: LineViewingView = new LineViewingView(response.data[i].date, null, 0);
                             line.setProducts(response.data[i].products);
-                            this.lines.push(line);
+                            line.setPointOfSale(response.data[i].pos);
+                            this.viewingView.addLine(line);                                                
                         }
-                        console.log(this.lines);
+                        console.log(this.viewingView.getLineWithMajorPercentReturn());
                     }
                 )
             }

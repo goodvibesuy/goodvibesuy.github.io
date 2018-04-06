@@ -15,7 +15,9 @@ export class ReportesComponent implements OnInit {
     private suppliesPrice: [any];
     private supplies: SupplyTable[];
     private chart: AmChart;
-    private suppliesById:Map<number,any>;
+    private suppliesById: Map<number, any>;
+    private error:boolean;
+    private errorMessage:string;
 
     constructor(private router: Router,
         private kpiService: KpiService,
@@ -24,53 +26,61 @@ export class ReportesComponent implements OnInit {
     ) {
     }
 
-    suppliesPrices(id:number): void {
-        
+    suppliesPrices(id: number): void {
         this.kpiService.get(id).subscribe(
             response => {
-                this.suppliesPrice = response.data;
-                var chartData = [];
+                if (response.result < 0) {
+                    this.error = true;
+                    this.errorMessage = response.message;
+                    
+                } else {
+                    this.error = false;
 
-                for (var i = 0; i < this.suppliesPrice.length; i++) {
-                    var newDate = new Date(this.suppliesPrice[i].price_date);
-                    chartData.push({
-                        date: newDate,
-                        visits: this.suppliesPrice[i].amount
+                    this.suppliesPrice = response.data;
+                    var chartData = [];
+
+                    for (var i = 0; i < this.suppliesPrice.length; i++) {
+                        var newDate = new Date(this.suppliesPrice[i].price_date);
+                        chartData.push({
+                            date: newDate,
+                            visits: this.suppliesPrice[i].amount
+                        });
+                    }
+
+                    this.chart = this.AmCharts.makeChart("chartdiv", {
+                        "theme": "light",
+                        "type": "serial",
+                        "dataProvider": chartData,
+                        "valueAxes": [{
+                            "inside": true,
+                            "axisAlpha": 0
+                        }],
+                        "graphs": [{
+                            "id": "g1",
+                            "balloonText": "<div style='margin:5px; font-size:19px;'><span style='font-size:13px;'>[[category]]</span><br>[[value]]</div>",
+                            "bullet": "round",
+                            "bulletBorderAlpha": 1,
+                            "bulletBorderColor": "#FFFFFF",
+                            "hideBulletsCount": 50,
+                            "lineThickness": 2,
+                            "lineColor": "#fdd400",
+                            "negativeLineColor": "#67b7dc",
+                            "valueField": "visits"
+                        }],
+                        "chartScrollbar": {
+                        },
+                        "chartCursor": {},
+                        "categoryField": "date",
+                        "categoryAxis": {
+                            "parseDates": true,
+                            "axisAlpha": 0,
+                            "minHorizontalGap": 55
+                        }
                     });
                 }
-                this.chart = this.AmCharts.makeChart("chartdiv", {
-                    "theme": "light",
-                    "type": "serial",
-                    "dataProvider": chartData,
-                    "valueAxes": [{
-                        "inside": true,
-                        "axisAlpha": 0
-                    }],
-                    "graphs": [{
-                        "id": "g1",
-                        "balloonText": "<div style='margin:5px; font-size:19px;'><span style='font-size:13px;'>[[category]]</span><br>[[value]]</div>",
-                        "bullet": "round",
-                        "bulletBorderAlpha": 1,
-                        "bulletBorderColor": "#FFFFFF",
-                        "hideBulletsCount": 50,
-                        "lineThickness": 2,
-                        "lineColor": "#fdd400",
-                        "negativeLineColor": "#67b7dc",
-                        "valueField": "visits"
-                    }],
-                    "chartScrollbar": {        
-                    },
-                    "chartCursor": {},
-                    "categoryField": "date",
-                    "categoryAxis": {
-                        "parseDates": true,
-                        "axisAlpha": 0,
-                        "minHorizontalGap": 55
-                    }
-                });
             }
         );
-        
+
     }
 
     supplyHistory(id: number): void {

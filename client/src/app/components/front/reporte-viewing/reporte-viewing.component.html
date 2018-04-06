@@ -1,65 +1,114 @@
-<table class="table table-striped">
-    <thead class="thead-dark">
-        <tr>
-            <th>Fecha</th>
-            <th>Punto de venta</th>
-            <th>Productos</th>
-            <th>Total</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr *ngFor="let v of viewings; index as i">
-            <td>{{v.date | date:'dd/MM/yyyy HH:mm'}}</td>
-            <td style="text-align: center;">
-                {{v.pos.name}}
-            </td>
-            <td style="text-align: center;">
-                <div class="container">
-                    <div class="row">
-                        <div *ngFor="let p of products" class="col">
-                            <div class="container">
-                                <div class="row">
-                                    <div class="col">
+<nav>
+    <div class="nav nav-tabs" id="nav-tab" role="tablist">
+        <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home"
+            aria-selected="true">Listado</a>
+        <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile"
+            aria-selected="false">Resumen</a>
+    </div>
+</nav>
+<div class="tab-content" id="nav-tabContent">
+    <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+        <table class="table table-striped">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Fecha</th>
+                    <th>Punto de venta</th>
+                    <th>Productos</th>
+                    <th>Total</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let v of viewings; index as i">
+                    <td>{{v.date | date:'dd/MM/yyyy HH:mm'}}</td>
+                    <td style="text-align: center;">
+                        {{v.pos.name}}
+                    </td>
+                    <td style="text-align: center;">
+                        <div class="container">
+                            <div class="row">
+                                <div *ngFor="let p of products" class="col">
+                                    <div class="container">
                                         <div class="row">
-                                            <i class="fa fa-arrow-up" aria-hidden="true" style="color:#00aa00;"></i>
-                                            <span style="color:#00aa00;">{{lines[i].getTransactionByProductByType(p.id,"delivery")[0].quantity}}</span>
-                                        </div>
-                                        <div class="row">
-                                            <i class="fa fa-arrow-down" aria-hidden="true" style="color:#aa0000;"></i>
-                                            <span style="color:#aa0000;">{{lines[i].getTransactionByProductByType(p.id,"return")[0].quantity}}</span>
-                                        </div>
-                                        <div class="row">
-                                            <i class="fa fa-arrow-down" aria-hidden="true" style="color:#0000ff;"></i>
-                                            <span style="color:#0000ff;">{{lines[i].getTransactionByProductByType(p.id,"empty")[0].quantity}}</span>
-                                        </div>
-                                    </div>
-                                    <div class="col">
-                                        <div class="row">
-                                            <img src="images/productos/{{p.path_image}}" width="20px" height="60px" />
+                                            <div class="col">
+                                                <div class="row">
+                                                    <i class="fa fa-arrow-up" aria-hidden="true" style="color:#00aa00;"></i>
+                                                    <span style="color:#00aa00;">{{viewingView.getLines()[i].getTransactionByProductByType(p.id,"delivery")[0].quantity}}</span>
+                                                </div>
+                                                <div class="row">
+                                                    <i class="fa fa-arrow-down" aria-hidden="true" style="color:#aa0000;"></i>
+                                                    <span style="color:#aa0000;">{{viewingView.getLines()[i].getTransactionByProductByType(p.id,"return")[0].quantity}}</span>
+                                                </div>
+                                                <div class="row">
+                                                    <i class="fa fa-arrow-down" aria-hidden="true" style="color:#0000ff;"></i>
+                                                    <span style="color:#0000ff;">{{viewingView.getLines()[i].getTransactionByProductByType(p.id,"empty")[0].quantity}}</span>
+                                                </div>
+                                            </div>
+                                            <div class="col">
+                                                <div class="row">
+                                                    <img src="images/productos/{{p.path_image}}" width="20px" height="60px" />
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
+                    </td>
+                    <td style="background-color:#CCCCCC;">
+                        <div class="container">
+                            <div class="row">
+                                <i class="fa fa-arrow-up" aria-hidden="true" style="color:#00aa00;"></i>
+                                <span style="color:#00aa00;">{{viewingView.getLines()[i].getQuantityTransactionType("delivery")}}</span>
+                            </div>
+                            <div class="row">
+                                <i class="fa fa-arrow-down" aria-hidden="true" style="color:#aa0000;"></i>
+                                <span style="color:#aa0000;">{{viewingView.getLines()[i].getQuantityTransactionType("return")}}</span>
+                            </div>
+                            <div class="row">
+                                <i class="fa fa-arrow-down" aria-hidden="true" style="color:#0000ff;"></i>
+                                <span style="color:#0000ff;">{{viewingView.getLines()[i].getQuantityTransactionType("empty")}}</span>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
+        <div class="container" style="margin-top:30px;">
+            <div class="row">
+                <div *ngFor="let p of products" class="col" style="border:#dddddd solid 1px;padding:5px;margin:2px;background-color:#eeeeee;">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col" style="margin-top:13px;margin-left:13px;">
+                                <div class="row" style="font-size:25px;">
+                                    <i class="fa fa-arrow-up" aria-hidden="true" style="color:#00aa00;"></i>
+                                    <span style="color:#00aa00;">{{viewingView.getTotalTransactionByProductByType(p.id,"delivery")}}</span>
+                                </div>
+                                <div class="row" style="font-size:25px;">
+                                    <i class="fa fa-arrow-down" aria-hidden="true" style="color:#aa0000;"></i>
+                                    <span style="color:#aa0000;">{{viewingView.getTotalTransactionByProductByType(p.id,"return")}}</span>
+                                </div>
+                                <div class="row" style="font-size:25px;">
+                                    <i class="fa fa-arrow-down" aria-hidden="true" style="color:#0000ff;"></i>
+                                    <span style="color:#0000ff;">{{viewingView.getTotalTransactionByProductByType(p.id,"empty")}}</span>
+                                </div>
+                                <div class="row" style="font-size:25px;">
+                                    <i class="fa fa-dollar" aria-hidden="true"></i>
+                                    <span>{{viewingView.getTotalTransactionByProductByType(p.id,"delivery") - viewingView.getTotalTransactionByProductByType(p.id,"return")}}</span>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="row">
+                                    <img src="images/productos/{{p.path_image}}" width="60px" height="160px" />
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </td>
-            <td style="background-color:#CCCCCC;">
-                <div class="container">
-                    <div class="row">
-                        <i class="fa fa-arrow-up" aria-hidden="true" style="color:#00aa00;"></i>
-                        <span style="color:#00aa00;">{{lines[i].getQuantityTransactionType("delivery")}}</span>
-                    </div>
-                    <div class="row">
-                        <i class="fa fa-arrow-down" aria-hidden="true" style="color:#aa0000;"></i>
-                        <span style="color:#aa0000;">{{lines[i].getQuantityTransactionType("return")}}</span>
-                    </div>
-                    <div class="row">
-                        <i class="fa fa-arrow-down" aria-hidden="true" style="color:#0000ff;"></i>
-                        <span style="color:#0000ff;">{{lines[i].getQuantityTransactionType("empty")}}</span>
-                    </div>
-                </div>
-            </td>
-        </tr>
-    </tbody>
-</table>
+            </div>
+            <div *ngIf="viewingView.getLineWithMajorPercentReturn() !== null" style="margin:20px;">
+                <b>Punto de venta con mayor porcentaje de devoluciones:</b> {{viewingView.getLineWithMajorPercentReturn().pos.name}}
+            </div>            
+        </div>
+    </div>
