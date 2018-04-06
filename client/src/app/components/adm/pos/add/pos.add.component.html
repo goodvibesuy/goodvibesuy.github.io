@@ -56,12 +56,9 @@
                                 <div class="invalid-feedback" *ngIf="isFormFieldInvalid('tel')">Ingrese un valor válido.</div>
                             </div>
                             <div class="form-group">
-                                <span class="input-group-addon">Proveedor:</span>
+                                <span class="input-group-addon">Grupo:</span>
                                 <select class="form-control" [cenInputValidation]="getFormField('idGroup')" formControlName="idGroup">
-                                    <option [ngValue]="1">Punta del Este</option>
-                                    <option [ngValue]="2">Montevideo Mayoristas</option>
-                                    <option [ngValue]="3">Montevideo Minoristas</option>
-                                    <option [ngValue]="4">Promoción</option>
+                                    <option *ngFor="let gp of groupPos" [ngValue]="gp.id">{{gp.name}}</option>
                                 </select>
                                 <div class="invalid-feedback" *ngIf="isFormFieldInvalid('idGroup')">Ingrese un valor válido.</div>
                             </div>

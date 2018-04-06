@@ -10,6 +10,8 @@ import { Subscription } from 'rxjs';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ResultCode } from '../../../../../../../datatypes/result';
 import { PointOfSale } from '../../../../../../../datatypes/pointOfSale';
+import { GroupPosService } from '../../../../services/group-pos.service';
+import { GroupPos } from '../../../../../../../datatypes/groupPos';
 
 @Component({
     templateUrl: './pos.edit.component.html',
@@ -17,6 +19,7 @@ import { PointOfSale } from '../../../../../../../datatypes/pointOfSale';
 })
 export class PosEditComponent extends ValidableForm implements OnInit, OnDestroy {
 
+    private groupPos: GroupPos[];
     private imageFile: GVFile;
     private imagePath: string;
     private paramsSub: Subscription;
@@ -31,6 +34,7 @@ export class PosEditComponent extends ValidableForm implements OnInit, OnDestroy
         private router: Router,
         private activatedRoute: ActivatedRoute,
         private pointOFSaleService: PointOfSaleService,
+        private groupPosService: GroupPosService,
         private domSanitizer: DomSanitizer,
         private imagesService: ImagesService
     ) {
@@ -55,6 +59,22 @@ export class PosEditComponent extends ValidableForm implements OnInit, OnDestroy
                     this.initMap(pos.coord);
                 })
             });
+        
+        this.groupPosService.get().subscribe(result => {
+                if(result.result == ResultCode.OK){
+                    this.groupPos = result.data;
+                } else {
+                    // TODO: error handling
+                    console.error(result.message);
+                    alert(result.message);
+                }
+            },
+            error => {
+                // TODO: error handling
+                console.error(error);
+                alert(error);
+            }
+        );
     }
 
     initMap(coord) {
