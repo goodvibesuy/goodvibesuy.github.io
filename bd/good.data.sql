@@ -85,7 +85,7 @@ INSERT INTO `users` (`id`, `user_name`, `firstname`, `lastname`, `password`, `ro
 
 INSERT INTO `product` (`id`, `name`, `path_image`) VALUES
 (1,	'Paradise Dream',	'paradiseDream.png'),
-(2,	'Citra Trip',	'2_citraTrip.png'),
+(2,	'Citra Trip',	'citraTrip.png'),
 (3,	'Sun Kiss',	'sunKiss.png'),
 (4,	'Green Life',	'greenLife.png'),
 (5,	'Yellow Rolling',	'yellow-rolling.png');
