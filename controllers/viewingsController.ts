@@ -16,7 +16,7 @@ class ViewingsController extends MainController{
             (dbName:string) =>{
                 var data = req.body.data;
                 var userName = req.headers['user'];
-                this.viewingsModel.addVisit(userName,req.body.idPointOfSale, data, req.body.annotation,dbName,function (result:any) {
+                this.viewingsModel.addVisit(userName,req.body.idPointOfSale, data, req.body.annotation,req.body.idPOS,req.body.idRoute,dbName,function (result:any) {
                     res.send(result);
                 });
             }             
@@ -32,6 +32,17 @@ class ViewingsController extends MainController{
             }             
         )
     }
+
+    public viewingByRouteAndPOS = (req:any,res:any): void => { 
+        this.verifyAccess(req,res,"viewing",
+            (dbName:string) =>{ 
+                this.viewingsModel.viewingByRouteAndPOS(req.params.idRoute,req.params.idPointOfSale, dbName,function (result:any) {
+                    res.send(result);
+                });
+            }             
+        )
+    }
+
 }
 
 module.exports = new ViewingsController();

@@ -62,6 +62,7 @@ var SuppliesModel = /** @class */ (function (_super) {
                 con.query('SELECT * FROM supply INNER JOIN product_supply ON id  = idSupply WHERE idProduct = ?', [idProduct], function (err, result) {
                     if (err)
                         throw err;
+                    con.release();
                     callBack({ result: 1, message: 'OK', data: result });
                 });
             }

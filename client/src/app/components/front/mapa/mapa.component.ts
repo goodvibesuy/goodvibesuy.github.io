@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { RouteService } from '../../../services/route.service';
 import { PointOfSale } from '../../../../../../datatypes/pointOfSale';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
     selector: 'app-mapa',
@@ -11,7 +12,10 @@ export class MapaComponent implements OnInit {
 
     private routes: any[];
     private pointsOfSale: PointOfSale[];
-    constructor(private routeService: RouteService) {
+    private currentRoute:number;
+    constructor(
+        private route: ActivatedRoute,
+        private routeService: RouteService) {
 
     }
 
@@ -23,9 +27,13 @@ export class MapaComponent implements OnInit {
                 console.log(response);
             }
         )
+
+        this.showRoute(Number(this.route.snapshot.paramMap.get('idRoute')));
     }
 
     showRoute(idRoute:number):void{
+        console.log(idRoute);
+        this.currentRoute = idRoute;
         this.routeService.getPointsOfSalesRoute(idRoute).subscribe(
             response => {
                 this.pointsOfSale = response;

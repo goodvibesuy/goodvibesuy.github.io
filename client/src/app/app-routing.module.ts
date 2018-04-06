@@ -87,6 +87,10 @@ const routes: Routes = [
 		]
 	},
 	{
+		path: 'mapa/:idRoute',
+		component: MapaComponent
+    },
+    {
 		path: 'mapa',
 		component: MapaComponent
     },
@@ -95,7 +99,7 @@ const routes: Routes = [
 		component: TemplatesRoutesComponent
 	},
 	{
-		path: 'detalle-local/:id',
+		path: 'detalle-local/:id/:idRoute',
 		component: DetalleLocalComponent
 	},
 	{

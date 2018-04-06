@@ -8,13 +8,17 @@ export class ViewingService {
 	private viewingsURL: string = '/api/viewings';
 	constructor(private http: HttpClient) {}
 
-	addViewing(idPointOfSale: Number, data: any,annotation:string): Observable<any> {
-		return this.http.post(this.viewingsURL, { idPointOfSale: idPointOfSale, data: data,annotation });
+	addViewing(idPointOfSale: Number, data: any,annotation:string,idPOS:number,idRoute): Observable<any> {
+		return this.http.post(this.viewingsURL, { idPointOfSale: idPointOfSale, data: data,annotation ,idPOS,idRoute});
     }
     
     lastViewings(cantViews: Number): Observable<any> {
 		return this.http.get(this.viewingsURL + "/last/" +  cantViews );
     }
+
+    wasVisited(idRoute: number,idPointOfSale:number): Observable<any> {
+		return this.http.get(this.viewingsURL + "/wasVisited/" +  idRoute + "/" +idPointOfSale );
+    }    
 
     /*
     lastViewings(cantViews: Number): Observable<LineViewingView[]> {

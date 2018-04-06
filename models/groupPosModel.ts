@@ -14,12 +14,14 @@ export class GroupPosModel extends MainModel{
         var pool = this.controllerConnections.getUserConnection(dbName);
         pool.getConnection(function (err: any, con: any) {
             if (err) {
+                console.log(err);
                 con.release();
                 console.error(err);
             } else {
                 con.query('SELECT * FROM grouppointofsale ORDER BY name ASC', function (err: any, result: any[]) {
                     con.release();
                     if (!!err) {
+                        console.log(err);
                         callBack({
                             result: ResultCode.Error,
                             message: 'Error'

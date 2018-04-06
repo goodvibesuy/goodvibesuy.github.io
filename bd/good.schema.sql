@@ -103,14 +103,45 @@ CREATE TABLE `route` (
  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+-- viewing
+DROP TABLE IF EXISTS `viewing`;
+CREATE TABLE `viewing` (
+ `idUser` INT(11) DEFAULT NULL,
+ `idviewing` INT(11) NOT NULL AUTO_INCREMENT,
+ `date` DATETIME DEFAULT NULL,
+ `idpointofsale` INT(11) DEFAULT NULL,
+ `annotation` TEXT DEFAULT NULL, 
+ PRIMARY KEY (`idviewing`),
+ FOREIGN KEY (idUser) REFERENCES users(id),
+ FOREIGN KEY (idpointofsale) REFERENCES pointofsale(id)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- viewing_product
+DROP TABLE IF EXISTS `viewing_product`;
+CREATE TABLE `viewing_product` (
+ `idviewing` INT(11) NOT NULL,
+ `idproduct` INT(11) NOT NULL,
+ `quantity` INT(11) DEFAULT NULL,
+ `type` ENUM('delivery','return','empty') DEFAULT NULL, KEY `idviewing_idx` (`idviewing`), KEY `fk_viewing_product_product1_idx` (`idproduct`), CONSTRAINT `fk_viewing_product_product1` FOREIGN KEY (`idproduct`) REFERENCES `product` (`id`) ON
+DELETE NO ACTION ON
+UPDATE NO ACTION,
+CONSTRAINT `idviewing` FOREIGN KEY (`idviewing`) REFERENCES `viewing` (`idviewing`) ON
+DELETE NO ACTION ON
+UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
 -- route_pointofsale
 DROP TABLE IF EXISTS `route_pointofsale`;
 CREATE TABLE `route_pointofsale` (
  `idRoute` INT(11) DEFAULT NULL,
  `idPointofsale` INT(11) DEFAULT NULL,
- `position` INT(11) NOT NULL, KEY `idTravel_idx` (`idroute`),
+ `position` INT(11) NOT NULL, 
+ `idViewing` int(11) DEFAULT NULL, 
+ KEY `idTravel_idx` (`idroute`),
  KEY `idPointofsale_idx` (`idpointofsale`),
- FOREIGN KEY (idroute) REFERENCES route(id), FOREIGN KEY (idPointofsale) REFERENCES pointofsale(id)
+ FOREIGN KEY (idroute) REFERENCES route(id), 
+ FOREIGN KEY (idPointofsale) REFERENCES pointofsale(id),
+ FOREIGN KEY (idViewing) REFERENCES viewing(idviewing)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- route_user
@@ -139,32 +170,9 @@ DELETE NO ACTION ON
 UPDATE NO ACTION
 );
 
--- viewing
-DROP TABLE IF EXISTS `viewing`;
-CREATE TABLE `viewing` (
- `idUser` INT(11) DEFAULT NULL,
- `idviewing` INT(11) NOT NULL AUTO_INCREMENT,
- `date` DATETIME DEFAULT NULL,
- `idpointofsale` INT(11) DEFAULT NULL,
- `annotation` TEXT DEFAULT NULL, 
- PRIMARY KEY (`idviewing`),
- FOREIGN KEY (idUser) REFERENCES users(id),
- FOREIGN KEY (idpointofsale) REFERENCES pointofsale(id)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
--- viewing_product
-DROP TABLE IF EXISTS `viewing_product`;
-CREATE TABLE `viewing_product` (
- `idviewing` INT(11) NOT NULL,
- `idproduct` INT(11) NOT NULL,
- `quantity` INT(11) DEFAULT NULL,
- `type` ENUM('delivery','return','empty') DEFAULT NULL, KEY `idviewing_idx` (`idviewing`), KEY `fk_viewing_product_product1_idx` (`idproduct`), CONSTRAINT `fk_viewing_product_product1` FOREIGN KEY (`idproduct`) REFERENCES `product` (`id`) ON
-DELETE NO ACTION ON
-UPDATE NO ACTION,
-CONSTRAINT `idviewing` FOREIGN KEY (`idviewing`) REFERENCES `viewing` (`idviewing`) ON
-DELETE NO ACTION ON
-UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+
 
 -- templateRoute
 DROP TABLE IF EXISTS `templateRoute`;

@@ -62,6 +62,37 @@ var ViewingsModel = /** @class */ (function (_super) {
         });
     };
     ;
+    ViewingsModel.prototype.viewingByRouteAndPOS = function (idRoute, idPointofsale, dbName, callBack) {
+        var mainThis = this;
+        var pool = this.controllerConnections.getUserConnection(dbName);
+        pool.getConnection(function (err, con) {
+            if (err) {
+                console.error(err);
+                con.release();
+            }
+            else {
+                con.query("SELECT idViewing FROM route_pointofsale WHERE idRoute = ? AND idPointofsale = ?", [idRoute, idPointofsale], function (err, result) {
+                    if (err) {
+                        con.release();
+                        callBack({
+                            result: result_1.ResultCode.Error,
+                            message: err.code,
+                            data: result
+                        });
+                    }
+                    else {
+                        con.release();
+                        callBack({
+                            result: result_1.ResultCode.OK,
+                            message: 'OK',
+                            data: result
+                        });
+                    }
+                });
+            }
+        });
+    };
+    ;
     ViewingsModel.prototype.getProductsLine = function (index, lines, dbName, con, callBack) {
         var mainThis = this;
         if (index < lines.length) {
@@ -93,7 +124,7 @@ var ViewingsModel = /** @class */ (function (_super) {
             });
         }
     };
-    ViewingsModel.prototype.addVisit = function (userName, idpointofsail, data, annotation, dbName, callBack) {
+    ViewingsModel.prototype.addVisit = function (userName, idpointofsail, data, annotation, idPOS, idRoute, dbName, callBack) {
         var mainThis = this;
         this.userModel.userByUserName(userName, dbName, function (result) {
             if (result.data !== undefined && result.data.length > 0) {
@@ -117,24 +148,38 @@ var ViewingsModel = /** @class */ (function (_super) {
                             }
                             else {
                                 var idviewing = result.insertId;
-                                for (var i = 0; i < data.length; i++) {
-                                    Object.keys(data[i].typeTransaction).forEach(function (key, index) {
-                                        con.query("INSERT INTO viewing_product(idviewing,idproduct,quantity,type) VALUES(?,?,?,?)", [idviewing, data[i].id, data[i].typeTransaction[key], key], function (err, resultClient) {
-                                            if (err) {
-                                                //if (err.code === "ER_DUP_ENTRY") {
-                                                console.log(err);
-                                                con.release();
-                                                callBack({ result: -1, message: "Error interno." });
-                                                //}
-                                            }
-                                            else {
-                                                //TODO: corregir
-                                            }
-                                        });
-                                    });
-                                }
-                                con.release();
-                                callBack({ result: 1, message: "OK" });
+                                //TODO revisar el cao en el que no se actualiza nada.
+                                con.query("UPDATE route_pointofsale  SET idViewing = ? WHERE idPointofsale = ?  AND idRoute = ?", [idviewing, idpointofsail, idRoute], function (err, result) {
+                                    if (err) {
+                                        console.log(err);
+                                        con.release();
+                                        callBack({ result: -1, message: "Error interno." });
+                                        //if (err.code === "ER_DUP_ENTRY") {
+                                        //    con.release();
+                                        //}
+                                    }
+                                    else {
+                                        //TODO REVISAR
+                                        for (var i = 0; i < data.length; i++) {
+                                            Object.keys(data[i].typeTransaction).forEach(function (key, index) {
+                                                con.query("INSERT INTO viewing_product(idviewing,idproduct,quantity,type) VALUES(?,?,?,?)", [idviewing, data[i].id, data[i].typeTransaction[key], key], function (err, resultClient) {
+                                                    if (err) {
+                                                        //if (err.code === "ER_DUP_ENTRY") {
+                                                        console.log(err);
+                                                        con.release();
+                                                        callBack({ result: -1, message: "Error interno." });
+                                                        //}
+                                                    }
+                                                    else {
+                                                        //TODO: corregir
+                                                    }
+                                                });
+                                            });
+                                        }
+                                        con.release();
+                                        callBack({ result: 1, message: "OK" });
+                                    }
+                                });
                             }
                         });
                     }

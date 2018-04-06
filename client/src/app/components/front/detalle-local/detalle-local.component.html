@@ -3,13 +3,12 @@
         <div style="width:100%; text-align: center;">{{pointOfSale.name}}</div>
         <div style="clear: both;"></div>
         <div class="head-image">
-            
-            <img *ngIf="pointOfSale && pointOfSale.image !== '' && pointOfSale.image !== null" 
-                 src="images/locales/{{pointOfSale.image}}" />
+            <img *ngIf="pointOfSale && pointOfSale.image !== '' && pointOfSale.image !== null" src="images/locales/{{pointOfSale.image}}"
+            />
             <i *ngIf="pointOfSale && (pointOfSale.image === '' || pointOfSale.image === null)" class="fa fa-home" style="font-size: 3.0em;"></i>
         </div>
     </div>
-    <div class="detalle-local-info">
+    <div class="detalle-local-info" *ngIf="!submittedSuccessfully && !wasVisited">
         <div class="container">
             <div class="row align-items-center">
                 <div class="col"></div>
@@ -25,15 +24,18 @@
                     <div class="productos-title">
                         <label>{{product.name}}</label>
                     </div>
-                </div>            
-                <div class="col" >
-                    <input type="number" style="margin:auto;" class="detalle-input form-control" [(ngModel)]="product.typeTransaction.delivery" />
                 </div>
                 <div class="col">
-                    <input type="number" style="margin:auto;" class="detalle-input form-control" [(ngModel)]="product.typeTransaction.return"/>
+                    <input type="number" style="margin:auto;" class="detalle-input form-control" [(ngModel)]="product.typeTransaction.delivery"
+                    />
                 </div>
                 <div class="col">
-                    <input type="number" style="margin:auto;" class="detalle-input form-control" [(ngModel)]="product.typeTransaction.empty"/>
+                    <input type="number" style="margin:auto;" class="detalle-input form-control" [(ngModel)]="product.typeTransaction.return"
+                    />
+                </div>
+                <div class="col">
+                    <input type="number" style="margin:auto;" class="detalle-input form-control" [(ngModel)]="product.typeTransaction.empty"
+                    />
                 </div>
             </div>
             <div class="row align-items-center">
@@ -43,24 +45,48 @@
                 <div class="col">{{quantity("empty")}}</div>
             </div>
             <div>
-                <textarea class="form-control" [(ngModel)]="annotation" id="annotation"></textarea>                
+                <textarea class="form-control" [(ngModel)]="annotation" id="annotation"></textarea>
             </div>
             <div>
-                <b>Detalle de la empresa</b><br/>
-                <b>RUT: </b> {{pointOfSale.RUT}}<br/>
-                <b>Razón Social</b> {{pointOfSale.businessName}}<br/>
-                <b>Contacto</b> {{pointOfSale.contactName}}<br/>                
-                <b>Detalle a facturar</b><br/>
-                <b>Precio unitario: </b>$ {{unitePrice}}<br/>
-                <b>Cantidad de productos vendidos: </b>{{quantity("delivery") - quantity("return")}} <br/>
-                <b>IVA: </b>${{ (quantity("delivery") - quantity("return")) * unitePrice * 0.22   }}<br/>
-                <b>Sub-Total: </b>${{ (quantity("delivery") - quantity("return")) * unitePrice   }}<br/>
-                <b>Total: </b>${{ (quantity("delivery") - quantity("return")) * unitePrice * 1.22  }}
+                <b>Detalle de la empresa</b>
+                <br/>
+                <b>RUT: </b> {{pointOfSale.RUT}}
+                <br/>
+                <b>Razón Social</b> {{pointOfSale.businessName}}
+                <br/>
+                <b>Contacto</b> {{pointOfSale.contactName}}
+                <br/>
+                <b>Detalle a facturar</b>
+                <br/>
+                <b>Precio unitario: </b>$ {{unitePrice}}
+                <br/>
+                <b>Cantidad de productos vendidos: </b>{{quantity("delivery") - quantity("return")}}
+                <br/>
+                <b>IVA: </b>${{ (quantity("delivery") - quantity("return")) * unitePrice * 0.22 }}
+                <br/>
+                <b>Sub-Total: </b>${{ (quantity("delivery") - quantity("return")) * unitePrice }}
+                <br/>
+                <b>Total: </b>${{ (quantity("delivery") - quantity("return")) * unitePrice * 1.22 }}
             </div>
         </div>
-        <div class="filters flex d-flex justify-content-around content-center content-between">            
-            <button type="button" class="btn btn-secondary btn-lg" [routerLink]="['/locales']">Cancelar</button>
+        <div class="filters flex d-flex justify-content-around content-center content-between">
+            <button type="button" class="btn btn-secondary btn-lg" routerLink="/mapa/{{currentRoute}}">Cancelar</button>
             <button type="button" (click)="agregar()" class="btn btn-success btn-lg">Agregar Visita</button>
         </div>
+    </div>
+    
+
+    <div style="margin:20px;" *ngIf="wasVisited">
+        <div class="alert alert-success">
+            <strong>La visita ya fue registrada</strong>
+        </div>
+        <a routerLink="/mapa/{{currentRoute}}">Volver al recorrido</a>
+    </div>
+
+    <div style="margin:20px;" *ngIf="submittedSuccessfully">
+        <div class="alert alert-success">
+            <strong>La visita se registro correctamente</strong>
+        </div>
+        <a routerLink="/mapa/{{currentRoute}}">Volver al recorrido</a>
     </div>
 </div>

@@ -8,6 +8,7 @@ import { ViewingService } from '../../../services/viewing.service';
 import { Product } from '../../../../../../datatypes/product';
 import { PointOfSale } from '../../../../../../datatypes/pointOfSale';
 
+
 @Component({
     selector: 'app-detalle-local',
     templateUrl: './detalle-local.component.html',
@@ -15,12 +16,15 @@ import { PointOfSale } from '../../../../../../datatypes/pointOfSale';
 })
 export class DetalleLocalComponent implements OnInit {
     private params: any;
-    private id: string;
+    private id: number;
     private pointOfSale: PointOfSale;
     private products: Product[];
     private productsToSend: any[];
     private annotation:string='';
     private unitePrice:number = 69;
+    private submittedSuccessfully: boolean = false;
+    private wasVisited: boolean = false;
+    private currentRoute:number = -1;
 
     constructor(
         private route: ActivatedRoute,
@@ -31,7 +35,17 @@ export class DetalleLocalComponent implements OnInit {
 
     ngOnInit(): void {
         this.getPointOfSale(Number(this.route.snapshot.paramMap.get('id')));
+        this.currentRoute =Number(this.route.snapshot.paramMap.get('idRoute'));
         this.getProducts();
+
+        this.viewingService.wasVisited(this.currentRoute,Number (this.route.snapshot.paramMap.get('id'))).subscribe(
+            response => {
+                if(response.result === 1){
+                    this.wasVisited = response.data[0].idViewing !== null;
+                }
+                console.log(response);
+            }
+        )
     }
 
     quantity(typeTransaction: string): number {
@@ -72,9 +86,9 @@ export class DetalleLocalComponent implements OnInit {
     }
 
     agregar(): void {        
-        this.viewingService.addViewing(this.pointOfSale.id, this.productsToSend,this.annotation).subscribe(response => {
+        this.viewingService.addViewing(this.pointOfSale.id, this.productsToSend,this.annotation,this.pointOfSale.id,this.currentRoute).subscribe(response => {
             if(response.result > 0){
-                alert("Los datos se guardaron correctamente");
+                this.submittedSuccessfully = true;
             }
         });
     }

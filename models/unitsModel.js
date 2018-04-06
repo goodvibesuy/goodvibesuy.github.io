@@ -30,6 +30,7 @@ var UnitsModel = /** @class */ (function (_super) {
                         console.log(err);
                     }
                     else {
+                        con.release();
                         if (err)
                             throw err;
                         callBack({ result: 1, message: "OK", data: result });
@@ -71,9 +72,9 @@ var UnitsModel = /** @class */ (function (_super) {
             else {
                 con.query("UPDATE unit  SET name = ? WHERE id = ?", [name, id], function (err, resultClient) {
                     if (err) {
-                        if (err.code === "ER_DUP_ENTRY") {
-                            con.release();
-                        }
+                        //if (err.code === "ER_DUP_ENTRY") {
+                        con.release();
+                        //}
                     }
                     else {
                         con.release();

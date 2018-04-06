@@ -25,7 +25,7 @@ var KpisModel = /** @class */ (function (_super) {
                 console.error(err);
             }
             else {
-                con.query("SELECT * FROM supply s INNER JOIN supplyprice sp ON s.id = sp.idSupply WHERE s.id = ? ORDER BY price_date ASC ", [supplyId], function (err, result) {
+                con.query("SELECT * FROM supply s INNER JOIN supplyPrice sp ON s.id = sp.idSupply WHERE s.id = ? ORDER BY price_date ASC ", [supplyId], function (err, result) {
                     if (err)
                         throw err;
                     con.release();

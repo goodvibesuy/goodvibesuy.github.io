@@ -56,6 +56,40 @@ export class ViewingsModel extends MainModel {
         });
     };
 
+    public viewingByRouteAndPOS(idRoute: number, idPointofsale: number, dbName: string,
+        callBack: (r: ResultWithData<any[]>) => void): void {
+        var mainThis = this;
+        var pool = this.controllerConnections.getUserConnection(dbName);
+        pool.getConnection(function (err: any, con: any) {
+            if (err) {
+                console.error(err);
+                con.release();
+            } else {
+                con.query(
+                    "SELECT idViewing FROM route_pointofsale WHERE idRoute = ? AND idPointofsale = ?",
+                    [idRoute, idPointofsale],
+                    function (err: any, result: any) {
+                        if (err) {
+                            con.release();
+                            callBack({
+                                result: ResultCode.Error,
+                                message: err.code,
+                                data: result
+                            });
+                        } else {
+                            con.release();
+                            callBack({
+                                result: ResultCode.OK,
+                                message: 'OK',
+                                data: result
+                            });
+                        }
+                    }
+                );
+            }
+        });
+    };
+
     private getProductsLine(index: number, lines: Array<LineViewingView>, dbName: string, con: any,
         callBack: (r: ResultWithData<any[]>) => void): void {
         var mainThis = this;
@@ -91,8 +125,8 @@ export class ViewingsModel extends MainModel {
     }
 
 
-    public addVisit(userName: string, idpointofsail: Number, data: any[], annotation: string, dbName: string,
-        callBack: (r: Result) => void): void {
+    public addVisit(userName: string, idpointofsail: Number, data: any[], annotation: string, idPOS: number, idRoute: number,
+        dbName: string, callBack: (r: Result) => void): void {
         var mainThis = this;
         this.userModel.userByUserName(userName, dbName, function (result: ResultWithData<any[]>) {
             if (result.data !== undefined && result.data.length > 0) {
@@ -117,28 +151,47 @@ export class ViewingsModel extends MainModel {
                                     //}
                                 } else {
                                     var idviewing = result.insertId;
-                                    for (var i = 0; i < data.length; i++) {
-                                        Object.keys(data[i].typeTransaction).forEach(function (key, index) {
-                                            con.query(
-                                                "INSERT INTO viewing_product(idviewing,idproduct,quantity,type) VALUES(?,?,?,?)",
-                                                [idviewing, data[i].id, data[i].typeTransaction[key], key],
-                                                function (err: any, resultClient: any) {
-                                                    if (err) {
-                                                        //if (err.code === "ER_DUP_ENTRY") {
-                                                        console.log(err);
-                                                        con.release();
-                                                        callBack({ result: -1, message: "Error interno." });
-                                                        //}
-                                                    }
-                                                    else {
-                                                        //TODO: corregir
-                                                    }
+                                    //TODO revisar el cao en el que no se actualiza nada.
+                                    con.query(
+                                        "UPDATE route_pointofsale  SET idViewing = ? WHERE idPointofsale = ?  AND idRoute = ?",
+                                        [idviewing, idpointofsail, idRoute],
+                                        function (err: any, result: any) {
+                                            if (err) {
+                                                console.log(err);
+                                                con.release();
+                                                callBack({ result: -1, message: "Error interno." });
+                                                //if (err.code === "ER_DUP_ENTRY") {
+                                                //    con.release();
+                                                //}
+                                            } else {
+                                                //TODO REVISAR
+                                                for (var i = 0; i < data.length; i++) {
+                                                    Object.keys(data[i].typeTransaction).forEach(function (key, index) {
+                                                        con.query(
+                                                            "INSERT INTO viewing_product(idviewing,idproduct,quantity,type) VALUES(?,?,?,?)",
+                                                            [idviewing, data[i].id, data[i].typeTransaction[key], key],
+                                                            function (err: any, resultClient: any) {
+                                                                if (err) {
+                                                                    //if (err.code === "ER_DUP_ENTRY") {
+                                                                    console.log(err);
+                                                                    con.release();
+                                                                    callBack({ result: -1, message: "Error interno." });
+                                                                    //}
+                                                                }
+                                                                else {
+                                                                    //TODO: corregir
+                                                                }
+                                                            }
+                                                        );
+                                                    });
                                                 }
-                                            );
-                                        });
-                                    }
-                                    con.release();
-                                    callBack({ result: 1, message: "OK" });
+
+
+                                                con.release();
+                                                callBack({ result: 1, message: "OK" });
+                                            }
+                                        }
+                                    );
                                 }
                             }
                         );
