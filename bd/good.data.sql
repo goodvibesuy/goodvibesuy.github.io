@@ -94,24 +94,6 @@ INSERT INTO `unit` (`id`, `name`) VALUES
 (1,	'Kg'),
 (2,	'L');
 
-INSERT INTO `route` (`id`, `name`, `date`) VALUES
-(6,	'Punta Carretas','2018-02-01'),
-(8,	'Ruta de prueba ','2018-02-01'),
-(9,	'Otro','2018-02-01'),
-(10,	'Otra ruta2','2018-02-01');
-
-INSERT INTO `route_pointofsale` (`idroute`, `idpointofsale`, `position`) VALUES
-(9, 3, 1),
-(9, 2, 3),
-(9, 1, 2),
-(10, 1, 1);
-
-INSERT INTO `route_user` (`idroute`, `iduser`, `date`) VALUES
-(9,	3,	'2018-02-01'),
-(9,	3,	'2018-02-03'),
-(10,	2,	'2018-02-01'),
-(10,	4,	'2018-02-07');
-
 
 INSERT INTO `supply` (`id`, `name`, `unit`, `path_image`) VALUES
 (1, 'Apio', 1, 'apio.png'),

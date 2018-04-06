@@ -118,7 +118,6 @@ DROP TABLE IF EXISTS `route_user`;
 CREATE TABLE `route_user` (
     `idroute` INT(11) NOT NULL,
     `iduser` INT(11) NOT NULL,
-    `date` DATE NOT NULL,
     KEY `key_iduser` (`iduser`),
     KEY `key_idroute` (`idroute`), 
 	FOREIGN KEY (`idroute`) REFERENCES `route` (`id`),
