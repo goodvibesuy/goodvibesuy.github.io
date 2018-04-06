@@ -18,7 +18,7 @@ export class GroupPosModel extends MainModel{
                 con.release();
                 console.error(err);
             } else {
-                con.query('SELECT * FROM grouppointofsale ORDER BY name ASC', function (err: any, result: any[]) {
+                con.query('SELECT * FROM groupPointofsale ORDER BY name ASC', function (err: any, result: any[]) {
                     con.release();
                     if (!!err) {
                         console.log(err);
