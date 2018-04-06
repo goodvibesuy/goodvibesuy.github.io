@@ -18,6 +18,7 @@ export class UnitsModel extends MainModel{
                     if (err) {
                         console.log(err);
                     } else {
+                        con.release();
                         if (err) throw err;
                         callBack({ result: 1, message: "OK", data: result });
                     }
@@ -63,9 +64,9 @@ export class UnitsModel extends MainModel{
                     [name, id],
                     function (err: any, resultClient: any) {
                         if (err) {
-                            if (err.code === "ER_DUP_ENTRY") {
+                            //if (err.code === "ER_DUP_ENTRY") {
                                 con.release();
-                            }
+                            //}
                         } else {
                             con.release();
                             callBack({ result: 1, message: "OK" });
