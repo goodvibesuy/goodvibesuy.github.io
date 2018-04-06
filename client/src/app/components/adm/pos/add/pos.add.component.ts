@@ -1,13 +1,20 @@
 import { Component, ViewChild, OnInit, } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { PointOfSaleService } from '../../../../services/point-of-sale.service';
-import { } from '@types/googlemaps';
-import { DomSanitizer } from '@angular/platform-browser';
-import { GVFile } from '../../../../models/gvfile.model';
-import { ImagesService } from '../../../../services/images.service';
-import { ValidableForm } from '../../../../shared/ValidableForms';
 import { FormBuilder, Validators } from '@angular/forms';
+import { DomSanitizer } from '@angular/platform-browser';
+import { } from '@types/googlemaps';
+// datatypes
 import { PointOfSale } from '../../../../../../../datatypes/pointOfSale';
+import { GroupPos } from '../../../../../../../datatypes/groupPos';
+// services
+import { PointOfSaleService } from '../../../../services/point-of-sale.service';
+import { GroupPosService } from '../../../../services/group-pos.service';
+import { ImagesService } from '../../../../services/images.service';
+// validation
+import { ValidableForm } from '../../../../shared/ValidableForms';
+// model
+import { GVFile } from '../../../../models/gvfile.model';
+import { ResultCode } from '../../../../../../../datatypes/result';
 
 @Component({
     templateUrl: './pos.add.component.html',
@@ -15,6 +22,7 @@ import { PointOfSale } from '../../../../../../../datatypes/pointOfSale';
 })
 export class PosAddComponent extends ValidableForm implements OnInit {
 
+    private groupPos: GroupPos[];
     private imageFile: GVFile;
     private imagePath: string;
 
@@ -26,9 +34,10 @@ export class PosAddComponent extends ValidableForm implements OnInit {
     constructor(
         fb: FormBuilder,
         private router: Router,
+        private domSanitizer: DomSanitizer,
         private activatedRoute: ActivatedRoute,
         private pointOFSaleService: PointOfSaleService,
-        private domSanitizer: DomSanitizer,
+        private groupPosService: GroupPosService,
         private imagesService: ImagesService
     ) {
         super(fb)
@@ -53,6 +62,22 @@ export class PosAddComponent extends ValidableForm implements OnInit {
             RUT: null,
             idGroup: null
         });
+
+        this.groupPosService.get().subscribe(result => {
+            if(result.result == ResultCode.OK){
+                this.groupPos = result.data;
+            } else {
+                // TODO: error handling
+                console.error(result.message);
+                alert(result.message);
+            }
+        },
+        error => {
+                // TODO: error handling
+                console.error(error);
+                alert(error);
+            }
+        );
 
         this.initMap();
     }

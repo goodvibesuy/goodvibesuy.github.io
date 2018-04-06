@@ -74,6 +74,7 @@ import { NgbDatepickerConfig } from '@ng-bootstrap/ng-bootstrap';
 import { CenouraInputValidation } from './shared/validation/CenouraInputValidation';
 import { NgbDateESParserFormatter } from './shared/DateParserFormatter';
 import { ReporteViewingComponent } from './components/front/reporte-viewing/reporte-viewing.component';
+import { GroupPosService } from './services/group-pos.service';
 
 @NgModule({
     declarations: [
@@ -129,6 +130,7 @@ import { ReporteViewingComponent } from './components/front/reporte-viewing/repo
         ImagesService,
         AuthenticateService,
         PointOfSaleService,
+        GroupPosService,
         ViewingService,
         HeaderService,
         TokenService,
