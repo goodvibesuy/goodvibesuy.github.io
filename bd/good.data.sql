@@ -176,35 +176,3 @@ INSERT INTO `product_supply` (`idproduct`, `idSupply`, `quantity`) VALUES
 (5, 7, 1),
 (5, 10, 1),
 (5, 13, 1);
-
-INSERT INTO `viewing` (`idviewing`, `date`, `idpointofsale`) VALUES
-(9, '2018-02-10 13:36:39', 1),
-(10, '2018-02-10 13:37:33', 1),
-(11, '2018-02-10 18:10:18', 1),
-(12, '2018-02-10 19:08:18', 1);
-
-INSERT INTO `viewing_product` (`idviewing`, `idproduct`, `quantity`, `type`) VALUES
-(9, 1, 15, 'delivery'),
-(9, 1, 0, 'return'),
-(9, 1, 0, 'empty'),
-(9, 2, 20, 'delivery'),
-(9, 2, 0, 'return'),
-(9, 2, 0, 'empty'),
-(10, 1, 20, 'delivery'),
-(10, 1, 2, 'return'),
-(10, 1, 0, 'empty'),
-(10, 2, 20, 'delivery'),
-(10, 2, 3, 'return'),
-(10, 2, 0, 'empty'),
-(12, 1, 11, 'delivery'),
-(12, 1, 3, 'return'),
-(12, 1, 8, 'empty'),
-(12, 2, 15, 'delivery'),
-(12, 2, 3, 'return'),
-(12, 2, 5, 'empty'),
-(12, 3, 14, 'delivery'),
-(12, 3, 4, 'return'),
-(12, 3, 3, 'empty'),
-(12, 4, 11, 'delivery'),
-(12, 4, 4, 'return'),
-(12, 4, 4, 'empty');
