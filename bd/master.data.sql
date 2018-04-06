@@ -39,7 +39,8 @@ INSERT INTO `resources` (`id`, `name`) VALUES
 (9, 'supplies'),
 (10, 'users'),
 (11, 'providers'),
-(12, 'viewing');
+(12, 'viewing'),
+(13, 'kpi');
 
 -- --------------------------------------------------------
 
@@ -70,6 +71,7 @@ INSERT INTO `rols_resources` (`rol_id`, `resource_id`) VALUES
 (1, 10),
 (1, 11),
 (1, 12),
+(1, 13),
 (2, 1),
 (2, 2),
 (2, 3),
