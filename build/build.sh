@@ -8,7 +8,7 @@ echo "Actualizando paquetes servidor: npm install"
 npm install
 echo ""
 echo "***************************"
-echo "Compilando TypeScrip servidor: tsc"
+echo "Compilando TypeScript servidor: tsc"
 tsc
 cd client
 echo ""
@@ -31,4 +31,11 @@ cd ..
 echo ""
 echo "***************************"
 echo "Ejecutando el forever"
+forever stopall
 forever start bin/www
+
+echo ""
+echo ""
+echo "***************************"
+echo "Instalación concluída"
+forever list
