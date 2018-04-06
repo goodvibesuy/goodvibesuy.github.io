@@ -54,7 +54,8 @@ export class SuppliesModel extends MainModel{
 					'SELECT * FROM supply INNER JOIN product_supply ON id  = idSupply WHERE idProduct = ?',
 					[idProduct],
 					function(err: any, result: any) {
-						if (err) throw err;
+                        if (err) throw err;
+                        con.release();
 						callBack({ result: 1, message: 'OK', data: result });
 					}
 				);
