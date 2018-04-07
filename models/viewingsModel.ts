@@ -14,6 +14,46 @@ export class ViewingsModel extends MainModel {
         this.userModel = new UserModel();
     }
 
+    public getViewingById(viewingId: number, dbName: string,
+        callBack: (r: ResultWithData<any[]>) => void): void {
+        var mainThis = this;
+        var pool = this.controllerConnections.getUserConnection(dbName);
+        pool.getConnection(function (err: any, con: any) {
+            if (err) {
+                console.error(err);
+                con.release();
+            } else {
+                con.query(
+                    "SELECT * FROM viewing v INNER JOIN pointofsale pos ON v.idpointofsale = pos.id WHERE idviewing = ?",
+                    [viewingId],
+                    function (err: any, result: any) {
+                        if (err) {
+                            con.release();
+                            callBack({
+                                result: ResultCode.Error,
+                                message: err.code,
+                                data: result
+                            });
+                        } else {
+                            let pos: PointOfSale = new PointOfSale();
+                            pos.address = result[0].address;
+                            pos.name = result[0].name;
+                            pos.tel = result[0].tel;
+                            pos.id = result[0].id;
+                            var line: LineViewingView = new LineViewingView(result[0].date, pos, result[0].idviewing);
+
+
+                            var linesViewings: LineViewingView[] = new Array<LineViewingView>();
+                            linesViewings.push(line);
+                            mainThis.getProductsLine(0, linesViewings, dbName, con, callBack);
+                        }
+                    }
+                );
+            }
+        });
+    }
+
+
     public getLast(cantViews: number, dbName: string,
         callBack: (r: ResultWithData<any[]>) => void): void {
         var mainThis = this;

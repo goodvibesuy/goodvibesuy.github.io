@@ -7,6 +7,8 @@ import { ProductsService } from '../../../services/products.service';
 import { ViewingService } from '../../../services/viewing.service';
 import { Product } from '../../../../../../datatypes/product';
 import { PointOfSale } from '../../../../../../datatypes/pointOfSale';
+import { ViewingView } from '../../../../../../datatypes/views/viewingView';
+import { LineViewingView } from '../../../../../../datatypes/views/lineViewingView';
 
 
 @Component({
@@ -20,11 +22,12 @@ export class DetalleLocalComponent implements OnInit {
     private pointOfSale: PointOfSale;
     private products: Product[];
     private productsToSend: any[];
-    private annotation:string='';
-    private unitePrice:number = 69;
+    private annotation: string = '';
+    private unitePrice: number = 69;
     private submittedSuccessfully: boolean = false;
     private wasVisited: boolean = false;
-    private currentRoute:number = -1;
+    private currentRoute: number = -1;
+    private viewingVisited: ViewingView;
 
     constructor(
         private route: ActivatedRoute,
@@ -34,27 +37,40 @@ export class DetalleLocalComponent implements OnInit {
     ) { }
 
     ngOnInit(): void {
+        this.viewingVisited = new ViewingView();
         this.getPointOfSale(Number(this.route.snapshot.paramMap.get('id')));
-        this.currentRoute =Number(this.route.snapshot.paramMap.get('idRoute'));
+        this.currentRoute = Number(this.route.snapshot.paramMap.get('idRoute'));
         this.getProducts();
 
-        this.viewingService.wasVisited(this.currentRoute,Number (this.route.snapshot.paramMap.get('id'))).subscribe(
+        this.viewingService.wasVisited(this.currentRoute, Number(this.route.snapshot.paramMap.get('id'))).subscribe(
             response => {
-                if(response.result === 1){
+                if (response.result === 1) {
                     this.wasVisited = response.data[0].idViewing !== null;
                 }
-                console.log(response);
+
+                if (this.wasVisited) {
+                    this.viewingService.getViewing(response.data[0].idViewing).subscribe(
+                        response => {
+                            this.viewingVisited.setDate(response.data[0].date);
+                            let line: LineViewingView = new LineViewingView(response.data[0].date, null, 0);                            
+                            line.setProducts(response.data[0].products);
+                            line.setPointOfSale(response.data[0].pos);
+                            this.viewingVisited.addLine(line);
+                            console.log(this.viewingVisited);
+                        }
+                    )
+                }
             }
         )
     }
 
     quantity(typeTransaction: string): number {
         let sum = 0;
-        if(this.productsToSend !== undefined){
-            for(let i = 0 ; i < this.productsToSend.length ; i++){
-                sum  += this.productsToSend[i].typeTransaction[typeTransaction]
+        if (this.productsToSend !== undefined) {
+            for (let i = 0; i < this.productsToSend.length; i++) {
+                sum += this.productsToSend[i].typeTransaction[typeTransaction]
             }
-        }        
+        }
         return sum;
     }
 
@@ -85,9 +101,9 @@ export class DetalleLocalComponent implements OnInit {
         });
     }
 
-    agregar(): void {        
-        this.viewingService.addViewing(this.pointOfSale.id, this.productsToSend,this.annotation,this.pointOfSale.id,this.currentRoute).subscribe(response => {
-            if(response.result > 0){
+    agregar(): void {
+        this.viewingService.addViewing(this.pointOfSale.id, this.productsToSend, this.annotation, this.pointOfSale.id, this.currentRoute).subscribe(response => {
+            if (response.result > 0) {
                 this.submittedSuccessfully = true;
             }
         });

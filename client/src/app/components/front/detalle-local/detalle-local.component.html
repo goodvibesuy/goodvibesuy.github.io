@@ -74,12 +74,24 @@
             <button type="button" (click)="agregar()" class="btn btn-success btn-lg">Agregar Visita</button>
         </div>
     </div>
-    
+
 
     <div style="margin:20px;" *ngIf="wasVisited">
         <div class="alert alert-success">
-            <strong>La visita ya fue registrada</strong>
+            <strong>La visita ya fue registrada</strong> {{viewingVisited.date}}
         </div>
+        <div class="row">
+            <div *ngFor="let product of productsToSend" class="col">
+                <div class="productos-image">
+                    <img src="images/productos/{{product.path_image}}">
+                </div>
+                <div *ngIf="viewingVisited.getLines()[0] !== undefined">
+                    {{viewingVisited.getLines()[0].getTransactionByProductByType(product.id,"delivery")[0].quantity}} - {{viewingVisited.getLines()[0].getTransactionByProductByType(product.id,"return")[0].quantity}}
+                    - {{viewingVisited.getLines()[0].getTransactionByProductByType(product.id,"empty")[0].quantity}}
+                </div>
+            </div>
+        </div>
+
         <a routerLink="/mapa/{{currentRoute}}">Volver al recorrido</a>
     </div>
 

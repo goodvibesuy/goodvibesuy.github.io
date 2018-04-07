@@ -23,6 +23,39 @@ var ViewingsModel = /** @class */ (function (_super) {
         _this.userModel = new userModel_1.UserModel();
         return _this;
     }
+    ViewingsModel.prototype.getViewingById = function (viewingId, dbName, callBack) {
+        var mainThis = this;
+        var pool = this.controllerConnections.getUserConnection(dbName);
+        pool.getConnection(function (err, con) {
+            if (err) {
+                console.error(err);
+                con.release();
+            }
+            else {
+                con.query("SELECT * FROM viewing v INNER JOIN pointofsale pos ON v.idpointofsale = pos.id WHERE idviewing = ?", [viewingId], function (err, result) {
+                    if (err) {
+                        con.release();
+                        callBack({
+                            result: result_1.ResultCode.Error,
+                            message: err.code,
+                            data: result
+                        });
+                    }
+                    else {
+                        var pos = new pointOfSale_1.PointOfSale();
+                        pos.address = result[0].address;
+                        pos.name = result[0].name;
+                        pos.tel = result[0].tel;
+                        pos.id = result[0].id;
+                        var line = new lineViewingView_1.LineViewingView(result[0].date, pos, result[0].idviewing);
+                        var linesViewings = new Array();
+                        linesViewings.push(line);
+                        mainThis.getProductsLine(0, linesViewings, dbName, con, callBack);
+                    }
+                });
+            }
+        });
+    };
     ViewingsModel.prototype.getLast = function (cantViews, dbName, callBack) {
         var mainThis = this;
         var pool = this.controllerConnections.getUserConnection(dbName);

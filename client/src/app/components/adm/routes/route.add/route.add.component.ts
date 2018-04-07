@@ -60,6 +60,17 @@ export class RouteAdd implements OnInit {
         )
     }
 
+    addTemplate() {
+        this.templateRouteService.getPointsOfSalesRoute(this.templateSelected.id).subscribe(
+            data => {
+                for(let i = 0; i < data.length ; i++){
+                    this.newRoute.addPointOfSale(data[i]);
+                }
+            }
+        )
+    }
+
+
     agregarPuntoDeVenta() {
         this.newRoute.addPointOfSale(this.POSSelected);        
     }

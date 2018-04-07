@@ -23,13 +23,15 @@ var GroupPosModel = /** @class */ (function (_super) {
         var pool = this.controllerConnections.getUserConnection(dbName);
         pool.getConnection(function (err, con) {
             if (err) {
+                console.log(err);
                 con.release();
                 console.error(err);
             }
             else {
-                con.query('SELECT * FROM grouppointofsale ORDER BY name ASC', function (err, result) {
+                con.query('SELECT * FROM groupPointofsale ORDER BY name ASC', function (err, result) {
                     con.release();
                     if (!!err) {
+                        console.log(err);
                         callBack({
                             result: result_1.ResultCode.Error,
                             message: 'Error'
