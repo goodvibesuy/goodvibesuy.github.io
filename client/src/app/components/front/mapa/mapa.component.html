@@ -21,6 +21,9 @@
     <div class="boxs-productos border" style="height: 110px;" *ngFor="let pos of pointsOfSale">
         <div class="container">
             <div class="row">
+                <div *ngIf="pos.idViewing !== null">
+                    <span class="fa fa-check" style="color: #22df22"></span>
+                </div>
                 <div class="col" style="font-size:20px;">
                     <img *ngIf="pos.image !== '' && pos.image !== null" style="width:50px;" src="images/locales/{{pos.image}}" />
                     <i *ngIf="pos.image === '' || pos.image === null" class="fa fa-home" style="font-size: 2.0em;"></i>

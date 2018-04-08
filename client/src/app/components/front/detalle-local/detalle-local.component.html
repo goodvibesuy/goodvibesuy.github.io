@@ -82,12 +82,22 @@
         </div>
         <div class="row">
             <div *ngFor="let product of productsToSend" class="col">
-                <div class="productos-image">
-                    <img src="images/productos/{{product.path_image}}">
+                <div class="productos-image" class="row text-center">
+                    <img src="images/productos/{{product.path_image}}" width="50px" height="160px" style="margin:auto;">
                 </div>
-                <div *ngIf="viewingVisited.getLines()[0] !== undefined">
-                    {{viewingVisited.getLines()[0].getTransactionByProductByType(product.id,"delivery")[0].quantity}} - {{viewingVisited.getLines()[0].getTransactionByProductByType(product.id,"return")[0].quantity}}
-                    - {{viewingVisited.getLines()[0].getTransactionByProductByType(product.id,"empty")[0].quantity}}
+                <div *ngIf="viewingVisited.getLines()[0] !== undefined" class="row" style="margin-left: 10px;margin-right: 10px;"> 
+                    <div class="col" *ngIf="viewingVisited.getLines()[0].getTransactionByProductByType(product.id,'delivery')[0] !== undefined">
+                        <i class="fa fa-arrow-up" aria-hidden="true" style="color:#00aa00;"></i>
+                        <span style="color:#00aa00;">{{viewingVisited.getLines()[0].getTransactionByProductByType(product.id,"delivery")[0].quantity}}</span>
+                    </div>
+                    <div class="col" *ngIf="viewingVisited.getLines()[0].getTransactionByProductByType(product.id,'return')[0] !== undefined">
+                        <i class="fa fa-arrow-down" aria-hidden="true" style="color:#aa0000;"></i>
+                        <span style="color:#aa0000;">{{viewingVisited.getLines()[0].getTransactionByProductByType(product.id,"return")[0].quantity}}</span>
+                    </div>
+                    <div class="col" *ngIf="viewingVisited.getLines()[0].getTransactionByProductByType(product.id,'empty')[0] !== undefined">
+                        <i class="fa fa-arrow-down" aria-hidden="true" style="color:#0000ff;"></i>
+                        <span style="color:#0000ff;">{{viewingVisited.getLines()[0].getTransactionByProductByType(product.id,"empty")[0].quantity}}</span>
+                    </div>
                 </div>
             </div>
         </div>

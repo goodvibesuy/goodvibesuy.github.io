@@ -20,7 +20,7 @@ export class MapaComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.pointsOfSale = new Array<PointOfSale>();
+        this.pointsOfSale = new Array<PointOfSale>();        
         this.routeService.getRoutesByUser(5).subscribe(
             response => {
                 this.routes = response;
@@ -31,12 +31,23 @@ export class MapaComponent implements OnInit {
         this.showRoute(Number(this.route.snapshot.paramMap.get('idRoute')));
     }
 
+    private compareViewing(a:any,b:any):number {
+        console.log(a.idViewing,b.idViewing);
+        if (a.idViewing !== null && b.idViewing === null){
+          return 1;
+        }else if (a.idViewing === null && b.last_nom !== null){
+            return -1;
+        }          
+        return 0;
+      }
+
+
     showRoute(idRoute:number):void{
-        console.log(idRoute);
         this.currentRoute = idRoute;
         this.routeService.getPointsOfSalesRoute(idRoute).subscribe(
             response => {
                 this.pointsOfSale = response;
+                this.pointsOfSale.sort(this.compareViewing);
                 console.log(response);
             }
         )

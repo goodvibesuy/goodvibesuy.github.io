@@ -101,6 +101,11 @@ const routes: Routes = [
 	{
 		path: 'detalle-local/:id/:idRoute',
 		component: DetalleLocalComponent
+    },
+    
+	{
+		path: 'detalle-local/:id',
+		component: DetalleLocalComponent
 	},
 	{
 		path: 'configs',
