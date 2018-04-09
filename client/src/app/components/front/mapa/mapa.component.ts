@@ -12,6 +12,7 @@ export class MapaComponent implements OnInit {
 
     private routes: any[];
     private pointsOfSale: PointOfSale[];
+    private finishedViewing:PointOfSale;
     private currentRoute:number;
     constructor(
         private route: ActivatedRoute,
@@ -31,6 +32,14 @@ export class MapaComponent implements OnInit {
         this.showRoute(Number(this.route.snapshot.paramMap.get('idRoute')));
     }
 
+    public getFinishedViewing(): any {
+        return this.pointsOfSale.filter(input => input.idViewing !== null);
+    }
+
+    public getUnFinishedViewing(): any {
+        return this.pointsOfSale.filter(input => input.idViewing === null);
+    }
+
     private compareViewing(a:any,b:any):number {
         console.log(a.idViewing,b.idViewing);
         if (a.idViewing !== null && b.idViewing === null){
@@ -47,7 +56,9 @@ export class MapaComponent implements OnInit {
         this.routeService.getPointsOfSalesRoute(idRoute).subscribe(
             response => {
                 this.pointsOfSale = response;
-                this.pointsOfSale.sort(this.compareViewing);
+                //this.pointsOfSale.sort(this.compareViewing);
+                this.finishedViewing = this.getFinishedViewing();
+                this.pointsOfSale = this.getUnFinishedViewing();
                 console.log(response);
             }
         )

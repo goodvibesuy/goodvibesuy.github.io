@@ -56,8 +56,9 @@ export class TravelModel extends MainModel {
                                             con.release();
                                             callBack({ result: -1, message: "Error interno. - No se pudo guardar el usuario de la ruta." });
                                         });
-                                    } else {
-                                        mainThis.addPointsOfSale(route.id, 0, route.pointsOfSale, callBack, con);
+                                    } else {                                        
+                                        //mainThis.addPointsOfSale(0, route, callBack, con);
+                                        mainThis.addProductStock(0,route,callBack,con);
                                     }
                                 });
                         }
@@ -66,6 +67,27 @@ export class TravelModel extends MainModel {
             }
         })
     };
+
+    private addProductStock(index: number, route: Route,
+        callBack: (r: ResultWithData<any[]>) => void, con: any): void {
+        var mainThis = this;
+        con.query("INSERT INTO route_stock(idRoute,idProduct,quantity) VALUES(?,?,?) ",
+            [route.id,route.stock[index].product.id,route.stock[index].quantity], function (err: any, result: any) {
+                if (err) {
+                    con.rollback(function () {
+                        console.log(err);
+                        con.release();
+                        callBack({ result: -1, message: "Error interno. No se pudo guardar el POS de la ruta." });
+                    });
+                } else {
+                    if (index + 1 < route.stock.length) {
+                        mainThis.addProductStock(index,route,callBack,con);
+                    } else {
+                        mainThis.addPointsOfSale(0,route,callBack,con);                        
+                    }
+                }
+            });
+    }
 
     update(route: Route, dbName: string, callBack: (r: ResultWithData<any[]>) => void): void {
         var mainThis = this;
@@ -115,7 +137,7 @@ export class TravelModel extends MainModel {
                                                                             callBack({ result: -1, message: "Error interno. -  No se pudieron borrar los POS de la ruta." });
                                                                         });
                                                                     } else {
-                                                                        mainThis.addPointsOfSale(route.id, 0, route.pointsOfSale, callBack, con);
+                                                                        mainThis.addPointsOfSale(0, route, callBack, con);
                                                                     }
                                                                 });
                                                         }
@@ -130,7 +152,7 @@ export class TravelModel extends MainModel {
                                                                 callBack({ result: -1, message: "Error interno. -  No se pudieron borrar los POS de la ruta." });
                                                             });
                                                         } else {
-                                                            mainThis.addPointsOfSale(route.id, 0, route.pointsOfSale, callBack, con);
+                                                            mainThis.addPointsOfSale(0, route, callBack, con);
                                                         }
                                                     });
                                             }
@@ -143,11 +165,11 @@ export class TravelModel extends MainModel {
         });
     };
 
-    addPointsOfSale(idRoute: number, index: number, pointsOfSale: PointOfSale[],
+    addPointsOfSale(index: number, route: Route,
         callBack: (r: ResultWithData<any[]>) => void, con: any): void {
         var mainThis = this;
         con.query("INSERT  INTO route_pointofsale(idRoute,idPointofsale,position) VALUES(?,?,?) ",
-            [idRoute, pointsOfSale[index].id, index], function (err: any, result: any) {
+            [route.id, route.pointsOfSale[index].id, index], function (err: any, result: any) {
                 if (err) {
                     con.rollback(function () {
                         console.log(err);
@@ -155,8 +177,8 @@ export class TravelModel extends MainModel {
                         callBack({ result: -1, message: "Error interno. No se pudo guardar el POS de la ruta." });
                     });
                 } else {
-                    if (index + 1 < pointsOfSale.length) {
-                        mainThis.addPointsOfSale(idRoute, index + 1, pointsOfSale, callBack, con);
+                    if (index + 1 < route.pointsOfSale.length) {
+                        mainThis.addPointsOfSale(index + 1, route, callBack, con);
                     } else {
                         con.commit(function (err: any) {
                             if (err) {

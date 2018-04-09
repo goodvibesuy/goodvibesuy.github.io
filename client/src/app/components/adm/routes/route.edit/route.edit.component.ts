@@ -17,6 +17,8 @@ import { Route } from "../../../../../../../datatypes/route";
 import { RouteTable } from "../../../../../../../datatypes/routeTable";
 import { ValidableForm } from '../../../../shared/ValidableForms';
 import { NgbDateFormatter } from '../../../../shared/DateParserFormatter';
+import { Product } from '../../../../../../../datatypes/product';
+import { ProductsService } from '../../../../services/products.service';
 
 
 @Component({
@@ -37,6 +39,7 @@ export class RouteEdit  extends ValidableForm implements OnInit {
     //private pointsOfSaleRoute: PointOfSale[];
     private POSSelected: PointOfSale;
     private templatesRoutes: TemplateRoute[];
+    private products:Product[];
     private templateSelected: TemplateRoute;
     private errorNoPOS: boolean = false;
 
@@ -46,7 +49,8 @@ export class RouteEdit  extends ValidableForm implements OnInit {
         private router: Router,
         private routeService: RouteService,
         private userService: UsersService,
-        private templateRouteService: TemplatesRoutesService
+        private templateRouteService: TemplatesRoutesService,
+        private productService: ProductsService
     ) {
         super(fb);
         this.currentRoute = new Route();
@@ -63,6 +67,16 @@ export class RouteEdit  extends ValidableForm implements OnInit {
 
     ngOnInit() {
         this.getTemplatesRoute();
+        this.productService.getAll().subscribe(
+            response => {
+                console.log(response);
+                if(response.result === 1){
+                    this.products = response.data;
+                }else{
+                    alert("Error al cargar los productos.");
+                }
+            }
+        )
         this.paramsSub = this.activatedRoute.params.subscribe(
             params => {
                 this.routeService.get().subscribe(response => {

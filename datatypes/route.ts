@@ -1,5 +1,6 @@
 import { User } from "./user";
 import { PointOfSale } from "./pointOfSale";
+import { Product } from "./product";
 
 export class Route {
     public id: number;
@@ -7,6 +8,7 @@ export class Route {
     public date: Date;
     public user:User;
     public pointsOfSale:PointOfSale[];
+    public stock:{product:Product,quantity:number}[];
 
     constructor() {
         this.id = 0;
@@ -14,6 +16,15 @@ export class Route {
         this.date = new Date();
         this.user = new User();
         this.pointsOfSale = new Array<PointOfSale>();
+        this.stock = new Array<{product:Product,quantity:number}>();
+    }
+
+    public addProductStock(productStock:{product:Product,quantity:number}):void{
+        this.stock.push(productStock);
+    }
+
+    public getStock():{product:Product,quantity:number}[]{
+        return this.stock;
     }
 
     public setUser(user:User):void{

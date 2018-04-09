@@ -10,6 +10,8 @@ import { Route } from '../../../../../../../datatypes/route';
 import { User } from '../../../../../../../datatypes/user';
 import { TemplateRoute } from '../../../../models/TemplateRoute.model';
 import { PointOfSale } from '../../../../../../../datatypes/pointOfSale';
+import { ProductsService } from '../../../../services/products.service';
+import { Product } from '../../../../../../../datatypes/product';
 
 @Component({
     selector: 'app-route.add',
@@ -19,19 +21,21 @@ import { PointOfSale } from '../../../../../../../datatypes/pointOfSale';
 export class RouteAdd implements OnInit {
     private newRoute: Route;
     private route: RouteModel;
-    private users:User[];
-    private templatesRoutes:TemplateRoute[];  
-    private pointsOfSales:PointOfSale[];
-    private templateSelected:TemplateRoute;
+    private users: User[];
+    private templatesRoutes: TemplateRoute[];
+    private pointsOfSales: PointOfSale[];
+    private products: Product[];
+    private templateSelected: TemplateRoute;
     private POSSelected: PointOfSale;
 
     constructor(
         private routeService: RouteService,
-        private router: Router,        
+        private router: Router,
         private userService: UsersService,
-        private templateRouteService: TemplatesRoutesService
+        private templateRouteService: TemplatesRoutesService,
+        private productService: ProductsService
     ) {
-            this.newRoute = new Route();
+        this.newRoute = new Route();
         this.route = <RouteModel>{};
     }
 
@@ -39,10 +43,23 @@ export class RouteAdd implements OnInit {
     ngOnInit() {
         this.getUsers();
         this.getTemplatesRoute();
-        this.routeService.getPointsOfSales().subscribe(dataPOS => {            
-            this.pointsOfSales = <PointOfSale[]>dataPOS;
-            this.POSSelected = this.pointsOfSales[0];
-        });
+        this.productService.getAll().subscribe(
+            response => {
+                console.log(response);
+                if (response.result === 1) {
+                    this.products = response.data;
+                    for(let i = 0 ; i < this.products.length; i++){                        
+                        this.newRoute.addProductStock({product:this.products[i],quantity:0});
+                    }
+                    this.routeService.getPointsOfSales().subscribe(dataPOS => {
+                        this.pointsOfSales = <PointOfSale[]>dataPOS;
+                        this.POSSelected = this.pointsOfSales[0];
+                    });
+                } else {
+                    alert("Error al cargar los productos.");
+                }
+            }
+        )
     }
 
     getUsers() {
@@ -63,7 +80,7 @@ export class RouteAdd implements OnInit {
     addTemplate() {
         this.templateRouteService.getPointsOfSalesRoute(this.templateSelected.id).subscribe(
             data => {
-                for(let i = 0; i < data.length ; i++){
+                for (let i = 0; i < data.length; i++) {
                     this.newRoute.addPointOfSale(data[i]);
                 }
             }
@@ -72,11 +89,11 @@ export class RouteAdd implements OnInit {
 
 
     agregarPuntoDeVenta() {
-        this.newRoute.addPointOfSale(this.POSSelected);        
+        this.newRoute.addPointOfSale(this.POSSelected);
     }
 
     changeOrder(idpointofSale: number, position: number, newposition: number) {
-        this.newRoute.reorderPointOfSale(position,newposition);
+        this.newRoute.reorderPointOfSale(position, newposition);
     }
 
     agregar(): void {

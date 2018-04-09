@@ -3,14 +3,12 @@
         <b>Editar recorrido</b>
     </div>
     <div class="card-body">
-
         <div class="form-group">
             <form [formGroup]="form">
                 <span class="input-group-addon">Nombre:</span>
                 <input type="text" class="form-control" [cenInputValidation]="getFormField('name')" formControlName="name">
                 <div class="invalid-feedback" *ngIf="isFormFieldInvalid('name')">Ingrese un valor válido.</div>
                 <div class="form-row">
-
                     <div class="form-group col-md-8">
                         <span class="input-group-addon">Usuario:</span>
                         <select class="form-control" *ngIf="currentRoute" [cenInputValidation]="getFormField('user')" [(ngModel)]="currentRoute.user"
@@ -18,18 +16,6 @@
                             <option *ngFor="let u of users" [ngValue]="u">{{u.firstname}} {{u.lastname}}</option>
                         </select>
                     </div>
-                    <!--
-            <span class="input-group-addon">Fecha:</span>
-
-            <div class="input-group">
-                <input class="form-control" placeholder="yyyy-mm-dd" name="dp" [(ngModel)]="currentRoute.date" ngbDatepicker #d="ngbDatepicker">
-                <div class="input-group-btn">
-                    <button class="btn btn-outline-secondary" (click)="d.toggle()" type="button">
-                        <img src="img/calendar-icon.svg" style="width: 1.2rem; height: 1rem; cursor: pointer;" />
-                    </button>
-                </div>
-            </div>
-        -->
                     <div class="form-group col-md-4">
                         <span class="input-group-addon">Fecha:</span>
                         <!-- start: date picker -->
@@ -46,6 +32,21 @@
                             </div>
                         </div>
                         <!-- end: date picker -->
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-col" *ngFor="let p of products" style="text-align: center">
+                        <div class="col productos-info">
+                            <div class="productos-title">
+                                <label>{{p.name}}</label>
+                            </div>
+                            <div class="productos-image" style="margin: auto;">
+                                <img src="images/productos/{{p.path_image}}" width="30px" height="80px" />
+                            </div>
+                            <div>
+                                <input type="number" style=" width:50px;" />
+                            </div>
+                        </div>
                     </div>
                 </div>
             </form>

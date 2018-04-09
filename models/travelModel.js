@@ -69,7 +69,8 @@ var TravelModel = /** @class */ (function (_super) {
                                     });
                                 }
                                 else {
-                                    mainThis.addPointsOfSale(route.id, 0, route.pointsOfSale, callBack, con);
+                                    //mainThis.addPointsOfSale(0, route, callBack, con);
+                                    mainThis.addProductStock(0, route, callBack, con);
                                 }
                             });
                         }
@@ -79,6 +80,26 @@ var TravelModel = /** @class */ (function (_super) {
         });
     };
     ;
+    TravelModel.prototype.addProductStock = function (index, route, callBack, con) {
+        var mainThis = this;
+        con.query("INSERT INTO route_stock(idRoute,idProduct,quantity) VALUES(?,?,?) ", [route.id, route.stock[index].product.id, route.stock[index].quantity], function (err, result) {
+            if (err) {
+                con.rollback(function () {
+                    console.log(err);
+                    con.release();
+                    callBack({ result: -1, message: "Error interno. No se pudo guardar el POS de la ruta." });
+                });
+            }
+            else {
+                if (index + 1 < route.stock.length) {
+                    mainThis.addProductStock(index, route, callBack, con);
+                }
+                else {
+                    mainThis.addPointsOfSale(0, route, callBack, con);
+                }
+            }
+        });
+    };
     TravelModel.prototype.update = function (route, dbName, callBack) {
         var mainThis = this;
         var pool = this.controllerConnections.getUserConnection(dbName);
@@ -156,9 +177,9 @@ var TravelModel = /** @class */ (function (_super) {
         });
     };
     ;
-    TravelModel.prototype.addPointsOfSale = function (idRoute, index, pointsOfSale, callBack, con) {
+    TravelModel.prototype.addPointsOfSale = function (index, route, callBack, con) {
         var mainThis = this;
-        con.query("INSERT  INTO route_pointofsale(idRoute,idPointofsale,position) VALUES(?,?,?) ", [idRoute, pointsOfSale[index].id, index], function (err, result) {
+        con.query("INSERT  INTO route_pointofsale(idRoute,idPointofsale,position) VALUES(?,?,?) ", [route.id, route.pointsOfSale[index].id, index], function (err, result) {
             if (err) {
                 con.rollback(function () {
                     console.log(err);
@@ -167,8 +188,8 @@ var TravelModel = /** @class */ (function (_super) {
                 });
             }
             else {
-                if (index + 1 < pointsOfSale.length) {
-                    mainThis.addPointsOfSale(idRoute, index + 1, pointsOfSale, callBack, con);
+                if (index + 1 < route.pointsOfSale.length) {
+                    mainThis.addPointsOfSale(index + 1, route, callBack, con);
                 }
                 else {
                     con.commit(function (err) {

@@ -8,7 +8,14 @@ var Route = /** @class */ (function () {
         this.date = new Date();
         this.user = new user_1.User();
         this.pointsOfSale = new Array();
+        this.stock = new Array();
     }
+    Route.prototype.addProductStock = function (productStock) {
+        this.stock.push(productStock);
+    };
+    Route.prototype.getStock = function () {
+        return this.stock;
+    };
     Route.prototype.setUser = function (user) {
         this.user = user;
     };
