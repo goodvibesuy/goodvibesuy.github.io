@@ -52,19 +52,21 @@
                 <br/>
                 <b>RUT: </b> {{pointOfSale.RUT}}
                 <br/>
-                <b>Razón Social</b> {{pointOfSale.businessName}}
+                <b>Razón Social: </b> {{pointOfSale.businessName}}
                 <br/>
-                <b>Contacto</b> {{pointOfSale.contactName}}
+                <b>Contacto: </b> {{pointOfSale.contactName}}
                 <br/>
                 <b>Detalle a facturar</b>
                 <br/>
                 <b>Precio unitario: </b>$ {{unitePrice}}
                 <br/>
+                <b>Dirección: </b> {{pointOfSale.address}}
+                <br/>
                 <b>Cantidad de productos vendidos: </b>{{quantity("delivery") - quantity("return")}}
-                <br/>
-                <b>IVA: </b>${{ (quantity("delivery") - quantity("return")) * unitePrice * 0.22 }}
-                <br/>
+                <br/>                
                 <b>Sub-Total: </b>${{ (quantity("delivery") - quantity("return")) * unitePrice }}
+                <br/>
+                <b>IVA: </b>${{ (quantity("delivery") - quantity("return")) * unitePrice * 0.22 }}                
                 <br/>
                 <b>Total: </b>${{ (quantity("delivery") - quantity("return")) * unitePrice * 1.22 }}
             </div>
