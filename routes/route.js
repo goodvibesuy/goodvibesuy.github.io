@@ -14,8 +14,13 @@ router.delete('/:id', routesController.delete);
 
 router.get('/pointofsales/:idRoute', routesController.getPointsOfSales);
 
+router.get('/stock/:idRoute', routesController.getStock);
+
+
+router.get('/routesByUser/:user', routesController.getRoutesByUser);
+
 //TODO hacer que se saque del usuario autenticado
-router.get('/routes/:idUser', routesController.getRoutesByUsers);
+router.get('/routes/:idUser', routesController.getRoutesByUserId);
 
 router.get('/users/:idRoute', routesController.getUsers);
 

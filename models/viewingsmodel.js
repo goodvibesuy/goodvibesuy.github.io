@@ -170,50 +170,31 @@ var ViewingsModel = /** @class */ (function (_super) {
                         callBack({ result: -1, message: "Error interno." });
                     }
                     else {
-                        con.query("INSERT INTO viewing  (date, idpointofsale,idUser,annotation) VALUES(NOW(),?,?,?)", [idpointofsail, idUser, annotation], function (err, result) {
-                            if (err) {
-                                console.log(err);
-                                con.release();
-                                callBack({ result: -1, message: "Error interno." });
-                                //if (err.code === "ER_DUP_ENTRY") {
-                                //    con.release();
-                                //}
-                            }
-                            else {
-                                var idviewing = result.insertId;
-                                //TODO revisar el cao en el que no se actualiza nada.
-                                con.query("UPDATE route_pointofsale  SET idViewing = ? WHERE idPointofsale = ?  AND idRoute = ?", [idviewing, idpointofsail, idRoute], function (err, result) {
-                                    if (err) {
-                                        console.log(err);
-                                        con.release();
-                                        callBack({ result: -1, message: "Error interno." });
-                                        //if (err.code === "ER_DUP_ENTRY") {
-                                        //    con.release();
-                                        //}
-                                    }
-                                    else {
-                                        //TODO REVISAR
-                                        for (var i = 0; i < data.length; i++) {
-                                            Object.keys(data[i].typeTransaction).forEach(function (key, index) {
-                                                con.query("INSERT INTO viewing_product(idviewing,idproduct,quantity,type) VALUES(?,?,?,?)", [idviewing, data[i].id, data[i].typeTransaction[key], key], function (err, resultClient) {
-                                                    if (err) {
-                                                        //if (err.code === "ER_DUP_ENTRY") {
-                                                        console.log(err);
-                                                        con.release();
-                                                        callBack({ result: -1, message: "Error interno." });
-                                                        //}
-                                                    }
-                                                    else {
-                                                        //TODO: corregir
-                                                    }
-                                                });
-                                            });
+                        con.beginTransaction(function (err) {
+                            con.query("INSERT INTO viewing  (date, idpointofsale,idUser,annotation) VALUES(NOW(),?,?,?)", [idpointofsail, idUser, annotation], function (err, result) {
+                                if (err) {
+                                    console.log(err);
+                                    con.release();
+                                    callBack({ result: -1, message: "Error interno." });
+                                    //if (err.code === "ER_DUP_ENTRY") {
+                                    //    con.release();
+                                    //}
+                                }
+                                else {
+                                    var idviewing = result.insertId;
+                                    //TODO revisar el cao en el que no se actualiza nada.
+                                    con.query("UPDATE route_pointofsale  SET idViewing = ? WHERE idPointofsale = ?  AND idRoute = ?", [idviewing, idpointofsail, idRoute], function (err, result) {
+                                        if (err) {
+                                            console.log(err);
+                                            con.release();
+                                            callBack({ result: -1, message: "Error interno." });
                                         }
-                                        con.release();
-                                        callBack({ result: 1, message: "OK" });
-                                    }
-                                });
-                            }
+                                        else {
+                                            mainThis.addViewingProducts(0, 0, ["delivery", "return", "empty"], idviewing, idRoute, data, con, callBack);
+                                        }
+                                    });
+                                }
+                            });
                         });
                     }
                 });
@@ -224,6 +205,84 @@ var ViewingsModel = /** @class */ (function (_super) {
         });
     };
     ;
+    ViewingsModel.prototype.addViewingProducts = function (index, indexTransaction, typeTransaction, idviewing, idRoute, data, con, callBack) {
+        var mainThis = this;
+        con.query("INSERT INTO viewing_product(idviewing,idproduct,quantity,type) VALUES(?,?,?,?)", [idviewing, data[index].id, data[index].typeTransaction[typeTransaction[indexTransaction]], typeTransaction[indexTransaction]], function (err, resultClient) {
+            if (err) {
+                //if (err.code === "ER_DUP_ENTRY") {
+                con.rollback(function () {
+                    console.log(err);
+                    con.release();
+                    callBack({ result: -1, message: "Error interno. No se pudo agregar el producto de visita" });
+                });
+                //}
+            }
+            else {
+                if (typeTransaction[indexTransaction] === "delivery") {
+                    con.query("UPDATE route_stock  SET quantity = quantity - ? WHERE idProduct = ?  AND idRoute = ?", [data[index].typeTransaction.delivery, data[index].id, idRoute], function (err, result) {
+                        if (err) {
+                            con.rollback(function () {
+                                console.log(err);
+                                con.release();
+                                callBack({ result: -1, message: "Error interno." });
+                            });
+                        }
+                        else {
+                            if (indexTransaction + 1 < typeTransaction.length) {
+                                mainThis.addViewingProducts(index, indexTransaction + 1, typeTransaction, idviewing, idRoute, data, con, callBack);
+                            }
+                            else {
+                                if (index + 1 < data.length) {
+                                    mainThis.addViewingProducts(index + 1, 0, typeTransaction, idviewing, idRoute, data, con, callBack);
+                                }
+                                else {
+                                    con.commit(function (err) {
+                                        if (err) {
+                                            con.rollback(function () {
+                                                console.log(err);
+                                                con.release();
+                                                callBack({ result: -1, message: "Error interno. No se pudo agregar el producto de visita" });
+                                            });
+                                        }
+                                        else {
+                                            callBack({ result: 1, message: "OK" });
+                                            con.release();
+                                        }
+                                    });
+                                }
+                            }
+                        }
+                    });
+                }
+                else {
+                    if (indexTransaction + 1 < typeTransaction.length) {
+                        mainThis.addViewingProducts(index, indexTransaction + 1, typeTransaction, idviewing, idRoute, data, con, callBack);
+                    }
+                    else {
+                        if (index + 1 < data.length) {
+                            mainThis.addViewingProducts(index + 1, 0, typeTransaction, idviewing, idRoute, data, con, callBack);
+                        }
+                        else {
+                            con.commit(function (err) {
+                                if (err) {
+                                    con.rollback(function () {
+                                        console.log(err);
+                                        con.release();
+                                        callBack({ result: -1, message: "Error interno. No se pudo agregar el producto de visita" });
+                                    });
+                                }
+                                else {
+                                    callBack({ result: 1, message: "OK" });
+                                    con.release();
+                                }
+                            });
+                        }
+                    }
+                }
+            }
+        });
+        //}
+    };
     return ViewingsModel;
 }(mainModel_1.MainModel));
 exports.ViewingsModel = ViewingsModel;

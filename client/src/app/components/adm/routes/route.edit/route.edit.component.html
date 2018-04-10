@@ -21,7 +21,8 @@
                         <!-- start: date picker -->
                         <div class="form-group">
                             <div class="input-group">
-                                <input class="form-control" [cenInputValidation]="getFormField('date')" placeholder="dd/mm/yyyy" name="dp" formControlName="date"
+                                <input class="form-control" [cenInputValidation]="getFormField('date')" placeholder="dd/mm/yyyy" 
+                                    name="dp" formControlName="date"
                                     ngbDatepicker #d="ngbDatepicker">
                                 <div class="input-group-append">
                                     <button class="btn btn-outline-secondary" (click)="d.toggle()" type="button">
@@ -35,16 +36,17 @@
                     </div>
                 </div>
                 <div class="form-row">
-                    <div class="form-col" *ngFor="let p of products" style="text-align: center">
-                        <div class="col productos-info">
+                    <div class="form-col" *ngFor="let p of currentRoute.stock" style="text-align: center">
+                        <div class="col productos-info" style="text-align: center;">
                             <div class="productos-title">
-                                <label>{{p.name}}</label>
+                                <label>{{p.product.name}}</label>
                             </div>
                             <div class="productos-image" style="margin: auto;">
-                                <img src="images/productos/{{p.path_image}}" width="30px" height="80px" />
+                                <img src="images/productos/{{p.product.path_image}}" width="30px" height="80px" />
                             </div>
                             <div>
-                                <input type="number" style=" width:50px;" />
+                                    <input type="number" style=" width:65px;" class="form-control"                                     
+                                    [(ngModel)]="p.quantity" [ngModelOptions]="{standalone: true}"/>
                             </div>
                         </div>
                     </div>

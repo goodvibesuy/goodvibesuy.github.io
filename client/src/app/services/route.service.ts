@@ -45,16 +45,27 @@ export class RouteService {
 		return this.http.get<PointOfSale[]>(this.pointOfSaleUrl).pipe(map(r => (<any>r).data));
 	}
 
+    
 	getUsersRoute(idRoute: number): Observable<User[]> {
 		return this.http.get<User[]>(this.routeUrl + '/users/' + idRoute).pipe(map(r => (<any>r).data));
 	}
 
-    getRoutesByUser(idUser: number): Observable<User[]> {
+    getRoutesByUser(user: string): Observable<User[]> {
+        console.log(user);
+		return this.http.get<User[]>(this.routeUrl + '/routesByUser/' + user).pipe(map(r => (<any>r).data));
+	}
+
+    getRoutesByUserId(idUser: number): Observable<User[]> {
 		return this.http.get<User[]>(this.routeUrl + '/routes/' + idUser).pipe(map(r => (<any>r).data));
 	}
+    
 
 	getPointsOfSalesRoute(idRoute: number): Observable<PointOfSale[]> {
 		return this.http.get<PointOfSale[]>(this.routeUrl + '/pointofsales/' + idRoute).pipe(map(r => (<any>r).data));
+	}
+
+    getStockRoute(idRoute: number): Observable<any[]> {
+		return this.http.get<any[]>(this.routeUrl + '/stock/' + idRoute).pipe(map(r => (<any>r).data));
 	}
 
 	addPointOfSale(rPOS: RoutePointOfSale): Observable<any> {

@@ -55,6 +55,16 @@ class RoutesController extends MainController {
         )
     }
 
+    public getStock = (req: any, res: any): void => {
+        this.verifyAccess(req, res, this.resource,
+            (dbName: string) => {
+                this.travelModel.getStock(req.params.idRoute, dbName, function (result: any) {
+                    res.send(result);
+                });
+            }
+        )
+    }
+
     public getUsers = (req: any, res: any): void => {
         this.verifyAccess(req, res, this.resource,
             (dbName: string) => {
@@ -65,10 +75,20 @@ class RoutesController extends MainController {
         )
     }
 
-    public getRoutesByUsers = (req: any, res: any): void => {
+    public getRoutesByUser = (req: any, res: any): void => {
         this.verifyAccess(req, res, this.resource,
             (dbName: string) => {
-                this.travelModel.getRoutesByUser(req.params.idUser, dbName, function (result: any) {
+                this.travelModel.getRoutesByUser(req.params.user, dbName, function (result: any) {
+                    res.send(result);
+                });
+            }
+        )
+    }
+
+    public getRoutesByUserId = (req: any, res: any): void => {
+        this.verifyAccess(req, res, this.resource,
+            (dbName: string) => {
+                this.travelModel.getRoutesByUserId(req.params.idUser, dbName, function (result: any) {
                     res.send(result);
                 });
             }
@@ -83,7 +103,7 @@ class RoutesController extends MainController {
                 });
             }
         )
-    }
+    }    
 
     public addUser = (req: any, res: any): void => {
         this.verifyAccess(req, res, this.resource,

@@ -48,6 +48,13 @@ var RoutesController = /** @class */ (function (_super) {
                 });
             });
         };
+        _this.getStock = function (req, res) {
+            _this.verifyAccess(req, res, _this.resource, function (dbName) {
+                _this.travelModel.getStock(req.params.idRoute, dbName, function (result) {
+                    res.send(result);
+                });
+            });
+        };
         _this.getUsers = function (req, res) {
             _this.verifyAccess(req, res, _this.resource, function (dbName) {
                 _this.travelModel.getUers(req.params.idRoute, dbName, function (result) {
@@ -55,9 +62,16 @@ var RoutesController = /** @class */ (function (_super) {
                 });
             });
         };
-        _this.getRoutesByUsers = function (req, res) {
+        _this.getRoutesByUser = function (req, res) {
             _this.verifyAccess(req, res, _this.resource, function (dbName) {
-                _this.travelModel.getRoutesByUser(req.params.idUser, dbName, function (result) {
+                _this.travelModel.getRoutesByUser(req.params.user, dbName, function (result) {
+                    res.send(result);
+                });
+            });
+        };
+        _this.getRoutesByUserId = function (req, res) {
+            _this.verifyAccess(req, res, _this.resource, function (dbName) {
+                _this.travelModel.getRoutesByUserId(req.params.idUser, dbName, function (result) {
                     res.send(result);
                 });
             });

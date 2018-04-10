@@ -170,10 +170,6 @@ DELETE NO ACTION ON
 UPDATE NO ACTION
 );
 
-
-
-
-
 -- templateRoute
 DROP TABLE IF EXISTS `templateRoute`;
 CREATE TABLE `templateRoute` (
@@ -190,3 +186,12 @@ CREATE TABLE `templateRoute_pointofsale` (
  FOREIGN KEY (idpointofsale) REFERENCES pointofsale(id) 
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+DROP TABLE IF EXISTS `route_stock`;
+CREATE TABLE `route_stock` (
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `idRoute` int(11) DEFAULT NULL,
+  `idProduct` int(11) DEFAULT NULL,
+  `quantity` int(11) DEFAULT NULL,
+  FOREIGN KEY (`idRoute`) REFERENCES `route` (`id`),
+  FOREIGN KEY (idProduct) REFERENCES product(id)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;

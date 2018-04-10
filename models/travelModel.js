@@ -70,7 +70,7 @@ var TravelModel = /** @class */ (function (_super) {
                                 }
                                 else {
                                     //mainThis.addPointsOfSale(0, route, callBack, con);
-                                    mainThis.addProductStock(0, route, callBack, con);
+                                    mainThis.addUpdateProductStock(0, route, callBack, con);
                                 }
                             });
                         }
@@ -80,9 +80,9 @@ var TravelModel = /** @class */ (function (_super) {
         });
     };
     ;
-    TravelModel.prototype.addProductStock = function (index, route, callBack, con) {
+    TravelModel.prototype.addUpdateProductStock = function (index, route, callBack, con) {
         var mainThis = this;
-        con.query("INSERT INTO route_stock(idRoute,idProduct,quantity) VALUES(?,?,?) ", [route.id, route.stock[index].product.id, route.stock[index].quantity], function (err, result) {
+        con.query("UPDATE route_stock SET quantity = ? WHERE idRoute =? && idProduct = ?", [route.stock[index].quantity, route.id, route.stock[index].product.id], function (err, result) {
             if (err) {
                 con.rollback(function () {
                     console.log(err);
@@ -91,11 +91,32 @@ var TravelModel = /** @class */ (function (_super) {
                 });
             }
             else {
-                if (index + 1 < route.stock.length) {
-                    mainThis.addProductStock(index, route, callBack, con);
+                if (result.affectedRows === 1) {
+                    if (index + 1 < route.stock.length) {
+                        mainThis.addUpdateProductStock(index + 1, route, callBack, con);
+                    }
+                    else {
+                        mainThis.addPointsOfSale(0, route, callBack, con);
+                    }
                 }
                 else {
-                    mainThis.addPointsOfSale(0, route, callBack, con);
+                    con.query("INSERT INTO route_stock(idRoute,idProduct,quantity) VALUES(?,?,?) ", [route.id, route.stock[index].product.id, route.stock[index].quantity], function (err, result) {
+                        if (err) {
+                            con.rollback(function () {
+                                console.log(err);
+                                con.release();
+                                callBack({ result: -1, message: "Error interno. No se pudo guardar el POS de la ruta." });
+                            });
+                        }
+                        else {
+                            if (index + 1 < route.stock.length) {
+                                mainThis.addUpdateProductStock(index + 1, route, callBack, con);
+                            }
+                            else {
+                                mainThis.addPointsOfSale(0, route, callBack, con);
+                            }
+                        }
+                    });
                 }
             }
         });
@@ -148,7 +169,7 @@ var TravelModel = /** @class */ (function (_super) {
                                                         });
                                                     }
                                                     else {
-                                                        mainThis.addPointsOfSale(route.id, 0, route.pointsOfSale, callBack, con);
+                                                        mainThis.addPointsOfSale(0, route, callBack, con);
                                                     }
                                                 });
                                             }
@@ -164,7 +185,7 @@ var TravelModel = /** @class */ (function (_super) {
                                                 });
                                             }
                                             else {
-                                                mainThis.addPointsOfSale(route.id, 0, route.pointsOfSale, callBack, con);
+                                                mainThis.addUpdateProductStock(0, route, callBack, con);
                                             }
                                         });
                                     }
@@ -328,6 +349,29 @@ var TravelModel = /** @class */ (function (_super) {
         });
     };
     ;
+    TravelModel.prototype.getStock = function (idRoute, dbName, callBack) {
+        var pool = this.controllerConnections.getUserConnection(dbName);
+        pool.getConnection(function (err, con) {
+            if (err) {
+                con.release();
+                console.error(err);
+            }
+            else {
+                con.query("SELECT * FROM route_stock as rs INNER JOIN product as p ON p.id = idProduct WHERE idroute = ?", [idRoute], function (err, result) {
+                    con.release();
+                    if (err)
+                        throw err;
+                    var stock = new Array();
+                    for (var i = 0; i < result.length; i++) {
+                        var product = { id: result[i].idProduct, name: result[i].name, path_image: result[i].path_image };
+                        stock.push({ product: product, quantity: result[i].quantity });
+                    }
+                    callBack({ result: 1, message: "OK", data: stock });
+                });
+            }
+        });
+    };
+    ;
     TravelModel.prototype.getUers = function (idRoute, dbName, callBack) {
         var pool = this.controllerConnections.getUserConnection(dbName);
         pool.getConnection(function (err, con) {
@@ -345,7 +389,7 @@ var TravelModel = /** @class */ (function (_super) {
             }
         });
     };
-    TravelModel.prototype.getRoutesByUser = function (idUser, dbName, callBack) {
+    TravelModel.prototype.getRoutesByUserId = function (userId, dbName, callBack) {
         var pool = this.controllerConnections.getUserConnection(dbName);
         pool.getConnection(function (err, con) {
             if (err) {
@@ -353,11 +397,34 @@ var TravelModel = /** @class */ (function (_super) {
                 console.error(err);
             }
             else {
-                con.query("SELECT * FROM route_user r_u INNER JOIN route r ON r.id = r_u.idroute WHERE iduser = ?", [idUser], function (err, result) {
+                con.query("SELECT * FROM route_user r_u INNER JOIN route r ON r.id = r_u.idroute WHERE iduser = ?", [userId], function (err, result) {
                     con.release();
                     if (err)
                         throw err;
                     callBack({ result: 1, message: "OK", data: result });
+                });
+            }
+        });
+    };
+    TravelModel.prototype.getRoutesByUser = function (user, dbName, callBack) {
+        var pool = this.controllerConnections.getUserConnection(dbName);
+        pool.getConnection(function (err, con) {
+            if (err) {
+                con.release();
+                console.error(err);
+            }
+            else {
+                con.query("SELECT * FROM users WHERE user_name = ?", [user], function (err, result) {
+                    if (err) {
+                        con.release();
+                        console.error(err);
+                    }
+                    con.query("SELECT * FROM route_user r_u INNER JOIN route r ON r.id = r_u.idroute WHERE iduser = ?", [result.id], function (err, result) {
+                        con.release();
+                        if (err)
+                            throw err;
+                        callBack({ result: 1, message: "OK", data: result });
+                    });
                 });
             }
         });

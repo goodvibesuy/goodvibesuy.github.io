@@ -2,6 +2,7 @@ import { Result, ResultWithData, ResultCode } from '../datatypes/result';
 import { Route } from '../datatypes/route';
 import { PointOfSale } from '../datatypes/pointOfSale';
 import { MainModel } from './mainModel';
+import { Product } from '../datatypes/product';
 var masterDBController = require('../bd/masterConnectionsBD');
 
 
@@ -56,9 +57,9 @@ export class TravelModel extends MainModel {
                                             con.release();
                                             callBack({ result: -1, message: "Error interno. - No se pudo guardar el usuario de la ruta." });
                                         });
-                                    } else {                                        
+                                    } else {
                                         //mainThis.addPointsOfSale(0, route, callBack, con);
-                                        mainThis.addProductStock(0,route,callBack,con);
+                                        mainThis.addUpdateProductStock(0, route, callBack, con);
                                     }
                                 });
                         }
@@ -68,11 +69,11 @@ export class TravelModel extends MainModel {
         })
     };
 
-    private addProductStock(index: number, route: Route,
+    private addUpdateProductStock(index: number, route: Route,
         callBack: (r: ResultWithData<any[]>) => void, con: any): void {
         var mainThis = this;
-        con.query("INSERT INTO route_stock(idRoute,idProduct,quantity) VALUES(?,?,?) ",
-            [route.id,route.stock[index].product.id,route.stock[index].quantity], function (err: any, result: any) {
+        con.query("UPDATE route_stock SET quantity = ? WHERE idRoute =? && idProduct = ?",
+            [route.stock[index].quantity, route.id, route.stock[index].product.id], function (err: any, result: any) {
                 if (err) {
                     con.rollback(function () {
                         console.log(err);
@@ -80,10 +81,29 @@ export class TravelModel extends MainModel {
                         callBack({ result: -1, message: "Error interno. No se pudo guardar el POS de la ruta." });
                     });
                 } else {
-                    if (index + 1 < route.stock.length) {
-                        mainThis.addProductStock(index,route,callBack,con);
+                    if (result.affectedRows === 1) {
+                        if (index + 1 < route.stock.length) {
+                            mainThis.addUpdateProductStock(index + 1, route, callBack, con);
+                        } else {
+                            mainThis.addPointsOfSale(0, route, callBack, con);
+                        }
                     } else {
-                        mainThis.addPointsOfSale(0,route,callBack,con);                        
+                        con.query("INSERT INTO route_stock(idRoute,idProduct,quantity) VALUES(?,?,?) ",
+                            [route.id, route.stock[index].product.id, route.stock[index].quantity], function (err: any, result: any) {
+                                if (err) {
+                                    con.rollback(function () {
+                                        console.log(err);
+                                        con.release();
+                                        callBack({ result: -1, message: "Error interno. No se pudo guardar el POS de la ruta." });
+                                    });
+                                } else {
+                                    if (index + 1 < route.stock.length) {
+                                        mainThis.addUpdateProductStock(index + 1, route, callBack, con);
+                                    } else {
+                                        mainThis.addPointsOfSale(0, route, callBack, con);
+                                    }
+                                }
+                            });
                     }
                 }
             });
@@ -152,7 +172,7 @@ export class TravelModel extends MainModel {
                                                                 callBack({ result: -1, message: "Error interno. -  No se pudieron borrar los POS de la ruta." });
                                                             });
                                                         } else {
-                                                            mainThis.addPointsOfSale(0, route, callBack, con);
+                                                            mainThis.addUpdateProductStock(0, route, callBack, con);
                                                         }
                                                     });
                                             }
@@ -308,8 +328,32 @@ export class TravelModel extends MainModel {
                     });
             }
         });
+    };
+
+    getStock(idRoute: Number, dbName: string, callBack: (r: ResultWithData<any[]>) => void): void {
+        var pool = this.controllerConnections.getUserConnection(dbName);
+        pool.getConnection(function (err: any, con: any) {
+            if (err) {
+                con.release();
+                console.error(err);
+            } else {
+                con.query("SELECT * FROM route_stock as rs INNER JOIN product as p ON p.id = idProduct WHERE idroute = ?", [idRoute],
+                    function (err: any, result: any) {
+                        con.release();
+                        if (err) throw err;
+                        var stock = new Array<{ product: Product, quantity: number }>();
+                        for (let i = 0; i < result.length; i++) {
+                            let product = <Product>{ id: result[i].idProduct, name: result[i].name, path_image: result[i].path_image };
+                            stock.push({ product: product, quantity: result[i].quantity });
+                        }
+                        callBack({ result: 1, message: "OK", data: stock });
+                    });
+            }
+        });
 
     };
+
+
 
     getUers(idRoute: Number, dbName: string, callBack: (r: ResultWithData<any[]>) => void): void {
         var pool = this.controllerConnections.getUserConnection(dbName);
@@ -328,18 +372,43 @@ export class TravelModel extends MainModel {
         });
     }
 
-    getRoutesByUser(idUser: Number, dbName: string, callBack: (r: ResultWithData<any[]>) => void): void {
+
+    getRoutesByUserId(userId: number, dbName: string, callBack: (r: ResultWithData<any[]>) => void): void {
         var pool = this.controllerConnections.getUserConnection(dbName);
         pool.getConnection(function (err: any, con: any) {
             if (err) {
                 con.release();
                 console.error(err);
             } else {
-                con.query("SELECT * FROM route_user r_u INNER JOIN route r ON r.id = r_u.idroute WHERE iduser = ?", [idUser],
+                con.query("SELECT * FROM route_user r_u INNER JOIN route r ON r.id = r_u.idroute WHERE iduser = ?", [userId],
                     function (err: any, result: any) {
                         con.release();
                         if (err) throw err;
                         callBack({ result: 1, message: "OK", data: result });
+                    });
+            }
+        });
+    }
+
+    getRoutesByUser(user: string, dbName: string, callBack: (r: ResultWithData<any[]>) => void): void {
+        var pool = this.controllerConnections.getUserConnection(dbName);
+        pool.getConnection(function (err: any, con: any) {
+            if (err) {
+                con.release();
+                console.error(err);
+            } else {
+                con.query("SELECT * FROM users WHERE user_name = ?", [user],
+                    function (err: any, result: any) {
+                        if (err) {
+                            con.release();
+                            console.error(err);
+                        }
+                        con.query("SELECT * FROM route_user r_u INNER JOIN route r ON r.id = r_u.idroute WHERE iduser = ?", [result.id],
+                            function (err: any, result: any) {
+                                con.release();
+                                if (err) throw err;
+                                callBack({ result: 1, message: "OK", data: result });
+                            });
                     });
             }
         });

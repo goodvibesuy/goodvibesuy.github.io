@@ -57,9 +57,10 @@ export class RouteEdit  extends ValidableForm implements OnInit {
         super.initForm({
             name: [null, Validators.required],
             date: [null, Validators.required],
-            user: [null, Validators.required]
+            user: [null, Validators.required],
+            
         });
-    }
+    };
 
     onSubmit() {
         console.log("aa");
@@ -94,6 +95,7 @@ export class RouteEdit  extends ValidableForm implements OnInit {
                     this.getPointOfSalesRoute();
                     this.getUsers();
                     this.getUsersRoute();
+                    this.getStockRoute();
                 });
             },
             error => { }
@@ -134,6 +136,7 @@ export class RouteEdit  extends ValidableForm implements OnInit {
         } else {
             var route = super.getModel<Route>({ 'date': NgbDateFormatter.unformatDate });
             route.pointsOfSale = this.currentRoute.getPointsOfSale();
+            route.stock = this.currentRoute.getStock();
             console.log(route.pointsOfSale);
 
             if(route.pointsOfSale.length === 0){
@@ -164,6 +167,15 @@ export class RouteEdit  extends ValidableForm implements OnInit {
         this.routeService.getPointsOfSalesRoute(this.currentRoute.id).subscribe(
             data => {
                 this.currentRoute.pointsOfSale = data;                
+            }
+        );
+    }
+
+    getStockRoute(){
+        this.routeService.getStockRoute(this.currentRoute.id).subscribe(
+            response => {
+                this.currentRoute.stock = response;
+                console.log(response);
             }
         );
     }
