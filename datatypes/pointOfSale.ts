@@ -9,6 +9,8 @@ export class PointOfSale {
     contactName: string;
     RUT: string;
     idGroup: number;
+    //TODO sacar
+    idViewing:number;
 
     constructor() {
         this.id = 0;
@@ -20,6 +22,7 @@ export class PointOfSale {
         this.contactName = '';
         this.RUT = '';
         this.idGroup = 0;
+        this.idViewing = 0;
     }
 
     public setId(id: number): void {
