@@ -23,7 +23,7 @@ export class DetalleLocalComponent implements OnInit {
     private products: Product[];
     private productsToSend: any[];
     private annotation: string = '';
-    private unitePrice: number = 69;
+    private unitePrice: number = 64;
     private submittedSuccessfully: boolean = false;
     private wasVisited: boolean = false;
     private currentRoute: number = -1;
