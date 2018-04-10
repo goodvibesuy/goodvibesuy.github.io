@@ -11,6 +11,7 @@ var PointOfSale = /** @class */ (function () {
         this.contactName = '';
         this.RUT = '';
         this.idGroup = 0;
+        this.idViewing = 0;
     }
     PointOfSale.prototype.setId = function (id) {
         this.id = id;

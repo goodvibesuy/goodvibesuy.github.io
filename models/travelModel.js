@@ -160,34 +160,40 @@ var TravelModel = /** @class */ (function (_super) {
                                                 });
                                             }
                                             else {
-                                                con.query("DELETE FROM route_pointofsale WHERE idRoute = ?", [route.id], function (err, result) {
-                                                    if (err) {
-                                                        con.rollback(function () {
-                                                            console.log(err);
-                                                            con.release();
-                                                            callBack({ result: -1, message: "Error interno. -  No se pudieron borrar los POS de la ruta." });
-                                                        });
-                                                    }
-                                                    else {
-                                                        mainThis.addPointsOfSale(0, route, callBack, con);
-                                                    }
-                                                });
+                                                mainThis.addUpdateProductStock(0, route, callBack, con);
+                                                /*
+                                                con.query("DELETE FROM route_pointofsale WHERE idRoute = ?",
+                                                    [route.id], function (err: any, result: any) {
+                                                        if (err) {
+                                                            con.rollback(function () {
+                                                                console.log(err);
+                                                                con.release();
+                                                                callBack({ result: -1, message: "Error interno. -  No se pudieron borrar los POS de la ruta." });
+                                                            });
+                                                        } else {
+                                                            mainThis.addUpdateProductStock(0, route, callBack, con);
+                                                        }
+                                                    });
+                                                    */
                                             }
                                         });
                                     }
                                     else {
-                                        con.query("DELETE FROM route_pointofsale WHERE idRoute = ?", [route.id], function (err, result) {
-                                            if (err) {
-                                                con.rollback(function () {
-                                                    console.log(err);
-                                                    con.release();
-                                                    callBack({ result: -1, message: "Error interno. -  No se pudieron borrar los POS de la ruta." });
-                                                });
-                                            }
-                                            else {
-                                                mainThis.addUpdateProductStock(0, route, callBack, con);
-                                            }
-                                        });
+                                        mainThis.addUpdateProductStock(0, route, callBack, con);
+                                        /*
+                                        con.query("DELETE FROM route_pointofsale WHERE idRoute = ?",
+                                            [route.id], function (err: any, result: any) {
+                                                if (err) {
+                                                    con.rollback(function () {
+                                                        console.log(err);
+                                                        con.release();
+                                                        callBack({ result: -1, message: "Error interno. -  No se pudieron borrar los POS de la ruta." });
+                                                    });
+                                                } else {
+                                                    mainThis.addUpdateProductStock(0, route, callBack, con);
+                                                }
+                                            });
+                                            */
                                     }
                                 }
                             });
@@ -200,32 +206,65 @@ var TravelModel = /** @class */ (function (_super) {
     ;
     TravelModel.prototype.addPointsOfSale = function (index, route, callBack, con) {
         var mainThis = this;
-        con.query("INSERT  INTO route_pointofsale(idRoute,idPointofsale,position) VALUES(?,?,?) ", [route.id, route.pointsOfSale[index].id, index], function (err, result) {
+        con.query("UPDATE route_pointofsale SET position = ? WHERE idRoute = ? AND idPointofsale = ? ", [index, route.id, route.pointsOfSale[index].id], function (err, result) {
             if (err) {
                 con.rollback(function () {
                     console.log(err);
                     con.release();
-                    callBack({ result: -1, message: "Error interno. No se pudo guardar el POS de la ruta." });
+                    callBack({ result: -1, message: "Error interno. No se pudo actualizar el POS de la ruta." });
                 });
             }
             else {
-                if (index + 1 < route.pointsOfSale.length) {
-                    mainThis.addPointsOfSale(index + 1, route, callBack, con);
-                }
-                else {
-                    con.commit(function (err) {
+                if (result.affectedRows === 0) {
+                    con.query("INSERT  INTO route_pointofsale(idRoute,idPointofsale,position) VALUES(?,?,?) ", [route.id, route.pointsOfSale[index].id, index], function (err, result) {
                         if (err) {
                             con.rollback(function () {
                                 console.log(err);
                                 con.release();
-                                callBack({ result: -1, message: "Error interno. No se pudo hacer commit de la ruta" });
+                                callBack({ result: -1, message: "Error interno. No se pudo guardar el POS de la ruta." });
                             });
                         }
                         else {
-                            callBack({ result: 1, message: "OK", data: result });
-                            con.release();
+                            if (index + 1 < route.pointsOfSale.length) {
+                                mainThis.addPointsOfSale(index + 1, route, callBack, con);
+                            }
+                            else {
+                                con.commit(function (err) {
+                                    if (err) {
+                                        con.rollback(function () {
+                                            console.log(err);
+                                            con.release();
+                                            callBack({ result: -1, message: "Error interno. No se pudo hacer commit de la ruta" });
+                                        });
+                                    }
+                                    else {
+                                        callBack({ result: 1, message: "OK", data: result });
+                                        con.release();
+                                    }
+                                });
+                            }
                         }
                     });
+                }
+                else {
+                    if (index + 1 < route.pointsOfSale.length) {
+                        mainThis.addPointsOfSale(index + 1, route, callBack, con);
+                    }
+                    else {
+                        con.commit(function (err) {
+                            if (err) {
+                                con.rollback(function () {
+                                    console.log(err);
+                                    con.release();
+                                    callBack({ result: -1, message: "Error interno. No se pudo hacer commit de la ruta" });
+                                });
+                            }
+                            else {
+                                callBack({ result: 1, message: "OK", data: result });
+                                con.release();
+                            }
+                        });
+                    }
                 }
             }
         });

@@ -192,6 +192,7 @@ CREATE TABLE `route_stock` (
   `idRoute` int(11) DEFAULT NULL,
   `idProduct` int(11) DEFAULT NULL,
   `quantity` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`),
   FOREIGN KEY (`idRoute`) REFERENCES `route` (`id`),
   FOREIGN KEY (idProduct) REFERENCES product(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
