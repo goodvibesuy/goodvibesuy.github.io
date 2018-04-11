@@ -51,7 +51,7 @@ DROP TABLE IF EXISTS `productprice`;
 CREATE TABLE `productprice` (
     `id` INT(11) NOT NULL AUTO_INCREMENT,
     `date` DATETIME NOT NULL,
-    `amount` INT(11) NOT NULL,
+    `amount` FLOAT(11) NOT NULL,
     `idProduct` INT(11) NOT NULL,
     `idGroupPointofsale` INT(11) NOT NULL,
     PRIMARY KEY (`id`),
@@ -59,6 +59,9 @@ CREATE TABLE `productprice` (
     FOREIGN KEY (idGroupPointofsale) REFERENCES groupPointofsale(id),
     UNIQUE KEY `id_idProduct_idGroupPointofsale` (`id`, `idProduct`, `idGroupPointofsale`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+/*ALTER TABLE `productprice` CHANGE `amount` `amount` FLOAT(11) NOT NULL;*/
+
 
 -- unit
 DROP TABLE IF EXISTS `unit`;

@@ -54,6 +54,14 @@ export class ViewingsModel extends MainModel {
     }
 
 
+    
+
+    public viewingsByRoute(idRoute: number, dbName: string,
+        callBack: (r: ResultWithData<any[]>) => void): void {
+        
+    };
+
+
     public getLast(cantViews: number, dbName: string,
         callBack: (r: ResultWithData<any[]>) => void): void {
         var mainThis = this;

@@ -22,6 +22,10 @@ export class ViewingService {
 		return this.http.get(this.viewingsURL + "/last/" +  cantViews );
     }
 
+    getViewingsByRoute(idRoute: Number): Observable<any> {
+		return this.http.get(this.viewingsURL + "/viewingsByRoute/" +  idRoute );
+    }
+
     wasVisited(idRoute: number,idPointOfSale:number): Observable<any> {
 		return this.http.get(this.viewingsURL + "/wasVisited/" +  idRoute + "/" +idPointOfSale );
     }    

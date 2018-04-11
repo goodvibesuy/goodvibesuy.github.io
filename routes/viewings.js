@@ -4,6 +4,8 @@ var viewingsController = require('../controllers/viewingsController')
 
 router.get('/last/:cantViews', viewingsController.last);
 
+router.get('/viewingsByRoute/:idRoute', viewingsController.viewingsByRoute);
+
 router.get('/:idViewing', viewingsController.getViewingById);
 
 router.post('/', viewingsController.add);

@@ -33,6 +33,17 @@ class ViewingsController extends MainController{
         )
     }
 
+    public viewingsByRoute = (req:any,res:any): void => { 
+        this.verifyAccess(req,res,"viewing",
+            (dbName:string) =>{
+                this.viewingsModel.viewingsByRoute(req.params.idRoute, dbName,function (result:any) {
+                    res.send(result);
+                });
+            }             
+        )
+    }
+    
+
     public getViewingById = (req:any,res:any): void => { 
         this.verifyAccess(req,res,"viewing",
             (dbName:string) =>{
