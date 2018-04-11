@@ -34,6 +34,13 @@ var ViewingsController = /** @class */ (function (_super) {
                 });
             });
         };
+        _this.viewingsByRoute = function (req, res) {
+            _this.verifyAccess(req, res, "viewing", function (dbName) {
+                _this.viewingsModel.viewingsByRoute(req.params.idRoute, dbName, function (result) {
+                    res.send(result);
+                });
+            });
+        };
         _this.getViewingById = function (req, res) {
             _this.verifyAccess(req, res, "viewing", function (dbName) {
                 _this.viewingsModel.getViewingById(req.params.idViewing, dbName, function (result) {

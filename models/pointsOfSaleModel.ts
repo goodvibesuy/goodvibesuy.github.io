@@ -69,7 +69,7 @@ export class PointsOfSaleModel extends MainModel{
                 con.release();
                 console.error(err);
             } else {
-                con.query("SELECT * FROM pointofsale WHERE name LIKE ?", ["%" + filterName + "%"], function (err: any, result: any[]) {
+                con.query("SELECT * FROM pointofsale WHERE name LIKE ? ORDER BY name ASC", ["%" + filterName + "%"], function (err: any, result: any[]) {
                     con.release();
                     if (!!err) {
                         callBack({

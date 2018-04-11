@@ -81,7 +81,7 @@ var PointsOfSaleModel = /** @class */ (function (_super) {
                 console.error(err);
             }
             else {
-                con.query("SELECT * FROM pointofsale WHERE name LIKE ?", ["%" + filterName + "%"], function (err, result) {
+                con.query("SELECT * FROM pointofsale WHERE name LIKE ? ORDER BY name ASC", ["%" + filterName + "%"], function (err, result) {
                     con.release();
                     if (!!err) {
                         callBack({

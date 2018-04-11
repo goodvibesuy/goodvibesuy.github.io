@@ -15,6 +15,7 @@ export class PosListComponent implements OnInit {
 
     private imageFile: GVFile;
     private imagePath: string;
+    private filter:string;
 
     private pointsOfSale: PointOfSale[];
     private POSEdit: PointOfSale;
@@ -164,4 +165,18 @@ export class PosListComponent implements OnInit {
             this.imagePath = (this.POSEdit ? this.POSEdit.id + '_' : '') + this.imageFile.name;
         }
     }
+
+    filterPOS(): void {
+		if (this.filter !== '') {
+			this.pointOFSaleService.getFilteredByName(this.filter).subscribe(data => {
+				if (data.result === -1) {
+					this.router.navigate(['']);
+				} else {
+					this.pointsOfSale = data.data;
+				}
+			});
+		} else {
+			this.loadPointsOfSale();
+		}
+	}
 }

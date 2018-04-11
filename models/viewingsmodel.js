@@ -56,6 +56,9 @@ var ViewingsModel = /** @class */ (function (_super) {
             }
         });
     };
+    ViewingsModel.prototype.viewingsByRoute = function (idRoute, dbName, callBack) {
+    };
+    ;
     ViewingsModel.prototype.getLast = function (cantViews, dbName, callBack) {
         var mainThis = this;
         var pool = this.controllerConnections.getUserConnection(dbName);
