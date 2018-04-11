@@ -168,6 +168,11 @@ export class ProductModel extends MainModel {
             if (err) {
                 con.release();
                 console.error(err);
+                callBack({
+                    result: ResultCode.Error,
+                    message: err.code,
+                    data:null
+                });
             } else {
                 con.query("SELECT * FROM pointofsale WHERE id = ?", [idPOS],
                     function (err: any, result: any) {
@@ -182,8 +187,9 @@ export class ProductModel extends MainModel {
                                 data:null
                             });
                         } else {
-                            con.query("SELECT * FROM productprice WHERE idGroupPointofsale = ? AND idProduct = ?",
-                                [result[0].idGroupPointofsale, idProduct],
+                            console.log(result[0].idGroup, idProduct);
+                            con.query("SELECT * FROM productprice WHERE idGroupPointofsale = ? AND idProduct = ? ORDER BY date DESC LIMIT 1",
+                                [result[0].idGroup, idProduct],
                                 function (err: any, result2: any) {
                                     if (!!err) {
                                         // TODO: log error -> common/errorHandling.ts
@@ -196,6 +202,7 @@ export class ProductModel extends MainModel {
                                             data:null
                                         });
                                     } else {
+                                        con.release();
                                         callBack({ result: ResultCode.OK, message: 'OK', data: result2 });
                                     }
                                 });

@@ -182,6 +182,11 @@ var ProductModel = /** @class */ (function (_super) {
             if (err) {
                 con.release();
                 console.error(err);
+                callBack({
+                    result: result_1.ResultCode.Error,
+                    message: err.code,
+                    data: null
+                });
             }
             else {
                 con.query("SELECT * FROM pointofsale WHERE id = ?", [idPOS], function (err, result) {
@@ -197,7 +202,8 @@ var ProductModel = /** @class */ (function (_super) {
                         });
                     }
                     else {
-                        con.query("SELECT * FROM productprice WHERE idGroupPointofsale = ? AND idProduct = ?", [result[0].idGroupPointofsale, idProduct], function (err, result2) {
+                        console.log(result[0].idGroup, idProduct);
+                        con.query("SELECT * FROM productprice WHERE idGroupPointofsale = ? AND idProduct = ? ORDER BY date DESC LIMIT 1", [result[0].idGroup, idProduct], function (err, result2) {
                             if (!!err) {
                                 // TODO: log error -> common/errorHandling.ts
                                 // errorHandler.log(err);
@@ -210,6 +216,7 @@ var ProductModel = /** @class */ (function (_super) {
                                 });
                             }
                             else {
+                                con.release();
                                 callBack({ result: result_1.ResultCode.OK, message: 'OK', data: result2 });
                             }
                         });
