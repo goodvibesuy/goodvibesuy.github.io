@@ -4,6 +4,7 @@ import { PointOfSale } from '../../../../../../datatypes/pointOfSale';
 import { ActivatedRoute } from '@angular/router';
 import { ProductsService } from '../../../services/products.service';
 import { Product } from '../../../../../../datatypes/product';
+import { AuthenticateService } from '../../../services/authenticate.service';
 
 @Component({
     selector: 'app-mapa',
@@ -16,26 +17,33 @@ export class MapaComponent implements OnInit {
     private pointsOfSale: PointOfSale[];
     private finishedViewing: PointOfSale;
     private currentRoute: number;
-    public stock:{product:Product,quantity:number}[];
+    public stock: { product: Product, quantity: number }[];
 
     constructor(
         private route: ActivatedRoute,
-        private routeService: RouteService
+        private routeService: RouteService,
+        private authenticateService: AuthenticateService
     ) {
-        this.stock = new Array<{product:Product,quantity:number}>();
+        this.stock = new Array<{ product: Product, quantity: number }>();
     }
 
     ngOnInit() {
-        this.pointsOfSale = new Array<PointOfSale>();        
-        let userSaved = localStorage.getItem('user');
-        this.routeService.getRoutesByUserId(5).subscribe(
+        this.authenticateService.verifyToken().subscribe(
             response => {
-                this.routes = response;
-                console.log(response);
-            }
-        )
-
-        this.showRoute(Number(this.route.snapshot.paramMap.get('idRoute')));
+                if (!response.result) {
+                    alert("Su sesion ha expirado o no tiene privilegios para esta operacion.");
+                } else {
+                    this.pointsOfSale = new Array<PointOfSale>();
+                    let userSaved = localStorage.getItem('user');
+                    this.routeService.getRoutesByUserId(5).subscribe(
+                        response => {
+                            this.routes = response;
+                            console.log(response);
+                        }
+                    );
+                    this.showRoute(Number(this.route.snapshot.paramMap.get('idRoute')));
+                }
+            });
     }
 
     public getFinishedViewing(): any {

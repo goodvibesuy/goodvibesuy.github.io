@@ -6,9 +6,11 @@ router.get('/', productsController.getAll);
 
 router.get('/:id', productsController.get);
 
+router.get('/priceByProductByPOS/:idProduct/:idPOS', productsController.priceByProductByPOS);
+
 router.post('/', productsController.add);
 
-router.put('/:id', productsController.update);
+router.put('/', productsController.update);
 
 router.delete('/:id', productsController.delete);
 

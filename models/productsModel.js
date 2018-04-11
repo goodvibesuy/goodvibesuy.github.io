@@ -121,7 +121,8 @@ var ProductModel = /** @class */ (function (_super) {
             }
         });
     };
-    ProductModel.prototype.update = function (id, name, path_image, dbName, callback) {
+    ProductModel.prototype.update = function (product, dbName, callback) {
+        var mainThis = this;
         var pool = this.controllerConnections.getUserConnection(dbName);
         pool.getConnection(function (err, con) {
             if (err) {
@@ -129,28 +130,94 @@ var ProductModel = /** @class */ (function (_super) {
                 console.error(err);
             }
             else {
-                con.query("UPDATE product  SET name = ?, path_image = ? WHERE id = ?", [name, path_image, id], function (err, result) {
-                    con.release();
+                con.query("UPDATE product  SET name = ?, path_image = ? WHERE id = ?", [product.name, product.path_image, product.id], function (err, result) {
                     if (!!err) {
                         // TODO: log error -> common/errorHandling.ts
                         // errorHandler.log(err);
                         console.error(err);
+                        con.release();
                         callback({
                             result: result_1.ResultCode.Error,
                             message: err.code
                         });
                     }
                     else {
-                        callback({
-                            result: result_1.ResultCode.OK,
-                            message: 'OK'
-                        });
+                        mainThis.updatePricesProduct(0, product, callback, con);
                     }
                 });
             }
         });
     };
     ;
+    ProductModel.prototype.updatePricesProduct = function (index, product, callback, con) {
+        var mainThis = this;
+        con.query("INSERT INTO productprice(date,amount,idProduct,idGroupPointofsale) VALUES (NOW(),?,?,?)", [product.prices[index].price, product.id, product.prices[index].idProvicer], function (err, result) {
+            if (!!err) {
+                // TODO: log error -> common/errorHandling.ts
+                // errorHandler.log(err);
+                console.error(err);
+                con.release();
+                callback({
+                    result: result_1.ResultCode.Error,
+                    message: err.code
+                });
+            }
+            else {
+                if (index + 1 < product.prices.length) {
+                    mainThis.updatePricesProduct(index + 1, product, callback, con);
+                }
+                else {
+                    con.release();
+                    callback({
+                        result: result_1.ResultCode.OK,
+                        message: 'OK'
+                    });
+                }
+            }
+        });
+    };
+    ProductModel.prototype.priceByProductByPOS = function (idProduct, idPOS, dbName, callBack) {
+        var pool = this.controllerConnections.getUserConnection(dbName);
+        pool.getConnection(function (err, con) {
+            if (err) {
+                con.release();
+                console.error(err);
+            }
+            else {
+                con.query("SELECT * FROM pointofsale WHERE id = ?", [idPOS], function (err, result) {
+                    if (!!err) {
+                        // TODO: log error -> common/errorHandling.ts
+                        // errorHandler.log(err);
+                        console.error(err);
+                        con.release();
+                        callBack({
+                            result: result_1.ResultCode.Error,
+                            message: err.code,
+                            data: null
+                        });
+                    }
+                    else {
+                        con.query("SELECT * FROM productprice WHERE idGroupPointofsale = ? AND idProduct = ?", [result[0].idGroupPointofsale, idProduct], function (err, result2) {
+                            if (!!err) {
+                                // TODO: log error -> common/errorHandling.ts
+                                // errorHandler.log(err);
+                                console.error(err);
+                                con.release();
+                                callBack({
+                                    result: result_1.ResultCode.Error,
+                                    message: err.code,
+                                    data: null
+                                });
+                            }
+                            else {
+                                callBack({ result: result_1.ResultCode.OK, message: 'OK', data: result2 });
+                            }
+                        });
+                    }
+                });
+            }
+        });
+    };
     ProductModel.prototype.delete = function (productId, dbName, callback) {
         var pool = this.controllerConnections.getUserConnection(dbName);
         pool.getConnection(function (err, con) {
@@ -220,5 +287,5 @@ var ProductModel = /** @class */ (function (_super) {
     };
     return ProductModel;
 }(mainModel_1.MainModel));
-module.exports = new ProductModel();
+exports.ProductModel = ProductModel;
 //# sourceMappingURL=productsModel.js.map

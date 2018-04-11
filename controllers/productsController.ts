@@ -1,19 +1,21 @@
 var masterDBController = require('../bd/masterConnectionsBD');
 var acl = require('../motionLibJS/serverSide/acl/motionACL');
-var productModel = require('../models/productsModel');
 import { MainController } from './mainController';
+import {ProductModel} from '../models/productsModel'
 
 class ProductsController extends MainController {
     private resource:string;
+    private productModel:ProductModel;
     constructor() {
         super();
         this.resource = "products";
+        this.productModel = new ProductModel();
     }
 
     public getAll = (req: any, res: any): void => {
         this.verifyAccess(req, res,this.resource,
             (dbName: string) => {
-                productModel.getAll(dbName, function (result: any) {
+                this.productModel.getAll(dbName, function (result: any) {
                     res.send(result);
                 });
             }
@@ -23,17 +25,29 @@ class ProductsController extends MainController {
     public get = (req: any, res: any): void => {
         this.verifyAccess(req, res,this.resource,
             (dbName: string) => {
-                productModel.get(req.params.id, dbName, function (result: any) {
+                this.productModel.get(req.params.id, dbName, function (result: any) {
                     res.send(result);
                 });
             }
         )
     }
 
+
+    public priceByProductByPOS = (req:any,res:any):void =>{
+        this.verifyAccess(req, res,this.resource,
+            (dbName: string) => {
+                this.productModel.priceByProductByPOS(req.params.idProduct,req.params.idPOS,dbName,function (result: any) {
+                    res.send(result);
+                });
+            }
+        )
+    }
+    
+
     public add = (req: any, res: any): void => {
         this.verifyAccess(req, res,this.resource,
             (dbName: string) => {
-                productModel.add(req.body.name, req.body.path_image, dbName, function (result: any) {
+                this.productModel.add(req.body.name, req.body.path_image, dbName, function (result: any) {
                     res.send(result);
                 });
             }
@@ -43,7 +57,7 @@ class ProductsController extends MainController {
     public update = (req: any, res: any): void => {
         this.verifyAccess(req, res,this.resource,
             (dbName: string) => {
-                productModel.update(req.params.id, req.body.name, req.body.path_image, dbName, function (result: any) {
+                this.productModel.update(req.body.product, dbName, function (result: any) {
                     res.send(result);
                 });
             }
@@ -53,7 +67,7 @@ class ProductsController extends MainController {
     public delete = (req: any, res: any): void => {
         this.verifyAccess(req, res,this.resource,
             (dbName: string) => {
-                productModel.delete(req.params.id, dbName, function (result: any) {
+                this.productModel.delete(req.params.id, dbName, function (result: any) {
                     res.send(result);
                 });
             }
@@ -63,7 +77,7 @@ class ProductsController extends MainController {
     public removeSupply = (req: any, res: any): void => {
         this.verifyAccess(req, res,this.resource,
             (dbName: string) => {
-                productModel.deleteSupply(req.params.idProduct, req.params.idSupply, dbName, function (result:any) {                    
+                this.productModel.deleteSupply(req.params.idProduct, req.params.idSupply, dbName, function (result:any) {                    
                     res.send(result);                    
                 });
             }

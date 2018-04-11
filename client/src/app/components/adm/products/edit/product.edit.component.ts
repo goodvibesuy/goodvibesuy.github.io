@@ -14,6 +14,8 @@ import { GVFile } from '../../../../models/gvfile.model';
 import { Unit } from '../../../../models/unit.model';
 import * as _ from 'lodash';
 import { ProductSupply } from '../../../../../../../datatypes/productSupply';
+import { GroupPosService } from '../../../../services/group-pos.service';
+import { GroupPos } from '../../../../../../../datatypes/groupPos';
 
 @Component({
 	templateUrl: './product.edit.component.html',
@@ -25,7 +27,8 @@ export class ProductEditComponent implements OnInit, OnDestroy {
 	private product: Product;
 	private units: Unit[];
 	private supplies: Supply[];
-	private imageFile: GVFile;
+    private imageFile: GVFile;
+    private groupPOS:GroupPos[];
 
 	constructor(
 		private activatedRoute: ActivatedRoute,
@@ -33,7 +36,8 @@ export class ProductEditComponent implements OnInit, OnDestroy {
 		private domSanitizer: DomSanitizer,
 		private productsService: ProductsService,
 		private suppliesService: SupplyService,
-		private imagesService: ImagesService
+        private imagesService: ImagesService,
+        private groupPosService: GroupPosService
 	) {}
 
 	ngOnInit() {
@@ -64,7 +68,8 @@ export class ProductEditComponent implements OnInit, OnDestroy {
 				console.error(err);
 			}
 		);
-	}
+    }
+    
 
 	ngOnDestroy() {
 		this.paramsSub.unsubscribe();
@@ -75,16 +80,38 @@ export class ProductEditComponent implements OnInit, OnDestroy {
 			if (res.result == ResultCode.Error) {
 				// TODO: handle error
 			} else {
-				this.product = res.data;
+                this.product = res.data;
+                this.product.prices = new Array<{idProvicer:number,price:number}>();
+
+                
+                this.groupPosService.get().subscribe(result => {
+                    if(result.result == ResultCode.OK){
+                        this.groupPOS = result.data;
+                        for (let gPOS = 0; gPOS < this.groupPOS.length; gPOS++){
+                            this.product.prices.push({idProvicer:this.groupPOS[gPOS].id,price:0});
+                        }
+                    } else {
+                        // TODO: error handling
+                        console.error(result.message);
+                        alert(result.message);
+                    }
+                },
+                error => {
+                    // TODO: error handling
+                    console.error(error);
+                    alert(error);
+                }
+            );
+
+
+
 			}
 		});
 	}
 
 	actualizar() {
 		const category: string = 'productos';
-
 		var promise = this.productsService.update(this.product);
-
 		promise.subscribe(data => {
 			if (!!this.imageFile) {
 				this.imagesService

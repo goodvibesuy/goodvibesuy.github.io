@@ -18,12 +18,16 @@ export class ProductsService {
 		return this.http.get<ResultWithData<Product>>(this.PRODUCTS_URL + '/' + id);
 	}
 
+    getPriceByProductByPOS(idProduct: number,idPOS:number ): Observable<ResultWithData<Product>> {
+		return this.http.get<ResultWithData<Product>>(this.PRODUCTS_URL + '/priceByProductByPOS/' + idProduct + '/' + idPOS);
+	}
+
 	getAll(): Observable<ResultWithData<Product[]>> {
 		return this.http.get<ResultWithData<Product[]>>(this.PRODUCTS_URL);
 	}
 
 	update(product: Product): Observable<any> {
-		return this.http.put<Product[]>(this.PRODUCTS_URL + '/' + product.id, product);
+		return this.http.put<Product[]>(this.PRODUCTS_URL, {product});
 	}
 
 	agregar(Product: Product): Observable<any> {
