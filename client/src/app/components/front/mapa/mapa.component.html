@@ -21,8 +21,24 @@
         <div class="row">
             <div class="col">
                 <span>
-                    Puntos de venta pendientes.
+                    Stock del recorrido.
                 </span>
+                <div class="row">
+                    <div *ngFor="let s of stock" class="col">
+                        {{s.quantity}}
+                        <img src="images/productos/{{s.product.path_image}}" width="15px" height="40px" />
+                    </div>
+                </div>
+                <span *ngIf="finishedViewing !== undefined && pointsOfSale.length !== undefined && pointsOfSale.length!== 0">
+                    Porcentajer realizado {{ finishedViewing.length / (pointsOfSale.length + finishedViewing.length) * 100 }}%
+                </span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <b>
+                    Puntos de venta pendientes.
+                </b>
                 <div class="boxs-productos border" style="padding: 10px;" *ngFor="let pos of pointsOfSale">
                     <div class="container">
                         <div class="row">
@@ -46,17 +62,9 @@
                 </div>
             </div>
             <div class="col">
-                <span>
-                    Stock del recorrido.
-                </span>
-                <div class="row">
-                    <div *ngFor="let s of stock" class="col">
-                        {{s.quantity}} <img src="images/productos/{{s.product.path_image}}" width="15px" height="40px" />
-                    </div>
-                </div>
-                <span *ngIf="finishedViewing !== undefined && pointsOfSale.length !== undefined && pointsOfSale.length!== 0">
-                    Porcentajer realizado {{ finishedViewing.length / (pointsOfSale.length + finishedViewing.length) * 100 }}%
-                </span>
+                <b>
+                    Puntos de venta visitados.
+                </b>
                 <div class="boxs-productos border" style="padding: 10px" *ngFor="let pos of finishedViewing">
                     <div class="container">
                         <a class="row" href="/#/detalle-local/{{pos.id}}/{{currentRoute}}">
