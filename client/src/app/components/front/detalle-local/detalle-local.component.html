@@ -58,15 +58,17 @@
                 <br/>
                 <b>Detalle a facturar</b>
                 <br/>
-                <b>Precio unitario: </b>$ {{unitePrice}}
+                <b>Precio unitario:</b>         $
+                <input type="number" class="detalle-input form-control" [(ngModel)]="unitePrice" style="width: 70px;" />
+
                 <br/>
                 <b>Dirección: </b> {{pointOfSale.address}}
                 <br/>
                 <b>Cantidad de productos vendidos: </b>{{quantity("delivery") - quantity("return")}}
-                <br/>                
+                <br/>
                 <b>Sub-Total: </b>${{ (quantity("delivery") - quantity("return")) * unitePrice }}
                 <br/>
-                <b>IVA: </b>${{ (quantity("delivery") - quantity("return")) * unitePrice * 0.22 }}                
+                <b>IVA: </b>${{ (quantity("delivery") - quantity("return")) * unitePrice * 0.22 }}
                 <br/>
                 <b>Total: </b>${{ (quantity("delivery") - quantity("return")) * unitePrice * 1.22 }}
             </div>
@@ -87,7 +89,7 @@
                 <div class="productos-image" class="row text-center">
                     <img src="images/productos/{{product.path_image}}" width="50px" height="160px" style="margin:auto;">
                 </div>
-                <div *ngIf="viewingVisited.getLines()[0] !== undefined" class="row" style="margin-left: 10px;margin-right: 10px;"> 
+                <div *ngIf="viewingVisited.getLines()[0] !== undefined" class="row" style="margin-left: 10px;margin-right: 10px;">
                     <div class="col" *ngIf="viewingVisited.getLines()[0].getTransactionByProductByType(product.id,'delivery')[0] !== undefined">
                         <i class="fa fa-arrow-up" aria-hidden="true" style="color:#00aa00;"></i>
                         <span style="color:#00aa00;">{{viewingVisited.getLines()[0].getTransactionByProductByType(product.id,"delivery")[0].quantity}}</span>
