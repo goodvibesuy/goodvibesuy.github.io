@@ -26,7 +26,7 @@ export class ViewingView {
         var line:LineViewingView = null;
         var percent = 0;
         for(let i = 0 ; i < this.lines.length ; i++){
-            var percentLine = this.lines[i].getQuantityTransactionType("delivery") / this.lines[i].getQuantityTransactionType("return");
+            var percentLine =  this.lines[i].getQuantityTransactionType("return") / this.lines[i].getQuantityTransactionType("delivery");
             if(percentLine > percent){
                 percent = percentLine;
                 line = this.lines[i];
