@@ -53,14 +53,55 @@ export class ViewingsModel extends MainModel {
         });
     }
 
-
-    
-
     public viewingsByRoute(idRoute: number, dbName: string,
         callBack: (r: ResultWithData<any[]>) => void): void {
         
     };
 
+
+    public viewingsBetween(sourceYear:number,sourceMonth:number,sourceDay:number,lastYear:number,lastMonth:number,lastDay:number, dbName: string,
+        callBack: (r: ResultWithData<any[]>) => void): void {
+            var mainThis = this;
+            var pool = this.controllerConnections.getUserConnection(dbName);
+            pool.getConnection(function (err: any, con: any) {
+                if (err) {
+                    console.error(err);
+                    con.release();
+                } else {
+                    con.query(
+                        "SELECT * FROM viewing v INNER JOIN pointofsale pos ON v.idpointofsale = pos.id WHERE v.date > ? AND v.date < ?  ORDER BY v.date DESC", 
+                        [sourceYear + "-" + sourceMonth + "-" + sourceDay,lastYear + "-" + lastMonth + "-" + lastDay],
+                        function (err: any, result: any) {
+                            if (err) {
+                                console.log(err);
+                                con.release();
+                                callBack({
+                                    result: ResultCode.Error,
+                                    message: err.code,
+                                    data: result
+                                });
+                            } else {
+    
+                                var viewings = result;
+                                var linesViewings: LineViewingView[] = new Array<LineViewingView>();
+                                if (viewings.length > 0) {
+                                    for (let i = 0; i < viewings.length; i++) {
+                                        let pos: PointOfSale = new PointOfSale();
+                                        pos.address = viewings[i].address;
+                                        pos.name = viewings[i].name;
+                                        pos.tel = viewings[i].tel;
+                                        pos.id = viewings[i].id;
+                                        var line: LineViewingView = new LineViewingView(viewings[i].date, pos, viewings[i].idviewing);
+                                        linesViewings.push(line);
+                                    }
+                                }
+                                mainThis.getProductsLine(0, linesViewings, dbName, con, callBack);
+                            }
+                        }
+                    );
+                }
+            });
+    };
 
     public getLast(cantViews: number, dbName: string,
         callBack: (r: ResultWithData<any[]>) => void): void {

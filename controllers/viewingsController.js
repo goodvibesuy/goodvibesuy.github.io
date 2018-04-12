@@ -34,6 +34,13 @@ var ViewingsController = /** @class */ (function (_super) {
                 });
             });
         };
+        _this.viewingsBetween = function (req, res) {
+            _this.verifyAccess(req, res, "viewing", function (dbName) {
+                _this.viewingsModel.viewingsBetween(req.params.sourceYear, req.params.sourceMonth, req.params.sourceDay, req.params.lastYear, req.params.lastMonth, req.params.lastDay, dbName, function (result) {
+                    res.send(result);
+                });
+            });
+        };
         _this.viewingsByRoute = function (req, res) {
             _this.verifyAccess(req, res, "viewing", function (dbName) {
                 _this.viewingsModel.viewingsByRoute(req.params.idRoute, dbName, function (result) {

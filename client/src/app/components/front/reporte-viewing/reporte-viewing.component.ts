@@ -3,7 +3,8 @@ import { ViewingService } from '../../../services/viewing.service';
 import { ProductsService } from '../../../services/products.service';
 import { Product } from '../../../../../../datatypes/product';
 import { LineViewingView } from '../../../../../../datatypes/views/lineViewingView';
-import {ViewingView} from '../../../../../../datatypes/views/viewingView';
+import { ViewingView } from '../../../../../../datatypes/views/viewingView';
+import { NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
     selector: 'app-reporte-viewing',
@@ -13,7 +14,9 @@ import {ViewingView} from '../../../../../../datatypes/views/viewingView';
 export class ReporteViewingComponent implements OnInit {
     private viewings: any[];
     private products: any[];
-    private viewingView:ViewingView;
+    private viewingView: ViewingView;
+    private sourceDate: NgbDateStruct;
+    private lastDate: NgbDateStruct;
     //private lines: LineViewingView[];
     constructor(private viewingsService: ViewingService,
         private productsService: ProductsService
@@ -23,18 +26,37 @@ export class ReporteViewingComponent implements OnInit {
         //this.products = new Map<number,Product>();
     }
 
+    search() {
+        this.viewingsService.viewingsBetween(this.sourceDate, this.lastDate).subscribe(
+            response => {
+                this.viewings = response.data;
+                for (let i = 0; i < response.data.length; i++) {
+                    let line: LineViewingView = new LineViewingView(response.data[i].date, null, 0);
+                    line.setProducts(response.data[i].products);
+                    line.setPointOfSale(response.data[i].pos);
+                    this.viewingView.addLine(line);
+                }
+            }
+        )
+        console.log(this.sourceDate);
+    }
+
     ngOnInit() {
+        let now = new Date();
+        this.sourceDate = { year: now.getFullYear(), month: now.getMonth() + 1, day: now.getDate() };
+        this.lastDate = { year: now.getFullYear(), month: now.getMonth() + 1, day: now.getDate() + 1 };
+
         this.productsService.getAll().subscribe(
             responseProducts => {
-                this.products = responseProducts.data;                
-                this.viewingsService.lastViewings(10).subscribe(
+                this.products = responseProducts.data;
+                this.viewingsService.viewingsBetween(this.sourceDate, this.lastDate).subscribe(
                     response => {
                         this.viewings = response.data;
                         for (let i = 0; i < response.data.length; i++) {
                             let line: LineViewingView = new LineViewingView(response.data[i].date, null, 0);
                             line.setProducts(response.data[i].products);
                             line.setPointOfSale(response.data[i].pos);
-                            this.viewingView.addLine(line);                                                
+                            this.viewingView.addLine(line);
                         }
                         console.log(this.viewingView.getLineWithMajorPercentReturn());
                     }

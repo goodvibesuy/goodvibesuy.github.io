@@ -59,6 +59,46 @@ var ViewingsModel = /** @class */ (function (_super) {
     ViewingsModel.prototype.viewingsByRoute = function (idRoute, dbName, callBack) {
     };
     ;
+    ViewingsModel.prototype.viewingsBetween = function (sourceYear, sourceMonth, sourceDay, lastYear, lastMonth, lastDay, dbName, callBack) {
+        var mainThis = this;
+        var pool = this.controllerConnections.getUserConnection(dbName);
+        pool.getConnection(function (err, con) {
+            if (err) {
+                console.error(err);
+                con.release();
+            }
+            else {
+                con.query("SELECT * FROM viewing v INNER JOIN pointofsale pos ON v.idpointofsale = pos.id WHERE v.date > ? AND v.date < ?  ORDER BY v.date DESC", [sourceYear + "-" + sourceMonth + "-" + sourceDay, lastYear + "-" + lastMonth + "-" + lastDay], function (err, result) {
+                    if (err) {
+                        console.log(err);
+                        con.release();
+                        callBack({
+                            result: result_1.ResultCode.Error,
+                            message: err.code,
+                            data: result
+                        });
+                    }
+                    else {
+                        var viewings = result;
+                        var linesViewings = new Array();
+                        if (viewings.length > 0) {
+                            for (var i = 0; i < viewings.length; i++) {
+                                var pos = new pointOfSale_1.PointOfSale();
+                                pos.address = viewings[i].address;
+                                pos.name = viewings[i].name;
+                                pos.tel = viewings[i].tel;
+                                pos.id = viewings[i].id;
+                                var line = new lineViewingView_1.LineViewingView(viewings[i].date, pos, viewings[i].idviewing);
+                                linesViewings.push(line);
+                            }
+                        }
+                        mainThis.getProductsLine(0, linesViewings, dbName, con, callBack);
+                    }
+                });
+            }
+        });
+    };
+    ;
     ViewingsModel.prototype.getLast = function (cantViews, dbName, callBack) {
         var mainThis = this;
         var pool = this.controllerConnections.getUserConnection(dbName);

@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { HttpHeaders, HttpClient } from '@angular/common/http';
+import {URLSearchParams} from '@angular/http';
 import { LineViewingView } from '../../../../datatypes/views/lineViewingView';
+import { NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 
 @Injectable()
 export class ViewingService {
@@ -20,6 +22,12 @@ export class ViewingService {
 
     lastViewings(cantViews: Number): Observable<any> {
 		return this.http.get(this.viewingsURL + "/last/" +  cantViews );
+    }
+
+    viewingsBetween(sourceDate:NgbDateStruct,lastDate:NgbDateStruct):Observable<any>{
+        let stringSource = sourceDate.year + "/" + sourceDate.month + "/" + sourceDate.day;
+        let stringLast = lastDate.year + "/" + lastDate.month + "/" + lastDate.day;
+        return this.http.get(this.viewingsURL + "/viewingsBetween/"+ stringSource + "/" + stringLast );
     }
 
     getViewingsByRoute(idRoute: Number): Observable<any> {
