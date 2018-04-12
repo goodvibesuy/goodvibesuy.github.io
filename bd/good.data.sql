@@ -77,6 +77,44 @@ INSERT INTO `pointofsale` (`id`, `contactName`,`name`, `businessName`, `RUT`, `a
 (54,	'Jose Perez', 'frog 7','frog 7',	 'RUT 123','cavia 3058, montevideo',	'',	'',	ST_GeomFromText('POINT(-34.913515468915456 -56.15120058836061)'),1),
 (55,	'Jose Perez', 'frog 11',	'frog 11',	 'RUT 123','gabriel pereira 2984',	'',	'',	ST_GeomFromText('POINT(-34.9055281 -56.15177790000001)'),1);
 
+
+
+INSERT INTO `pointofsale` (`contactName`,`name`, `businessName`, `RUT`, `address`,`idGroup`) VALUES
+("contacto", "conf. nuevo pocitos","nuevo pocitos s.a","210234400013","26 de marzo 3415",1),
+("contacto","Corener shop","padestar sa","215146230015",	"Ramón massini 3348",1),
+("contacto","deli shop",	"PIMENTON SRL",	"217162200010",	"benito blanco 908",1),
+("contacto","el horno de juan",	"buena onda s.a",	"213593430012",	"Marti 3391 esq Chucarro",1),
+("contacto","el ingrediente secreto",	"alejandra farias",	"217398610018",	"26 de marzo. 3285",1),
+("contacto","Espacio Gourmet",	"Alejandra muñoz",	"217291490015",	"26 de marzo 1305",1),
+("contacto","FONTANES",	"dranto sa",	"217603750017",	"rivera 3652",1),
+("contacto","gracia",	"t3m srl",	"217924790013",	"26 de marzo esq guayaqui",1),
+("contacto","la cosecha",	"c.rostani y g. astorga",	"218067170019",	"benito blanco esq buxareo",1),
+("contacto","la nona",	"il forno srl",	"217313750014",	"benito blanco 1097 esq guayaqui",1),
+("contacto","LA VACA AZUL",	"decaatro oval srl",	"218042200011",	"berro 1376/02",1),
+("contacto","lutini",	"FIFEMPAO SRL",	"218126050010",	"CHANA 2112",1),
+("contacto","MANOLA ROTICERIA",	"Claudia moreira",	"217895110013",	"Gabriel péreira 3212",1),
+("contacto","Miguel Gentile exoticos",	"exoticos srl",	"216613660012",	"Av. Brasil 2598",1),
+("contacto","OLIVA Y NUEZ",	"maRia m. vean dominguez",	"216613000012",	"g. pereira 2761",1),
+("contacto","pastus & co",	"pastus & co srl",	"218076440015",	"coronel alegre y gestido",1),
+("contacto","PITA Y OLIVA",	"rodrigo del campo terra",	"217717870011",	"Pablo galarza 3629",1),
+("contacto","porto vanila (wtc)",	"deboril sa",	"214867730016",	"luis bonavita 1294 (wtc)",1),
+("contacto","SHISHA",	"bali uruguayo srl",	"217574850012",	"marco bruto 1300",1),
+("contacto","SUPER BERRO",	"ripab srl",	"216276100017",	"berro 1216",1),
+("contacto","tandem",	"tandem uruguay srl",	"218081520013",	"constituyente 2039",1),
+("contacto","TERRUÑO",	"mariana guerrero",	"217795050019",	"rivera 3432",1),
+("contacto","the lab pocitos",	"trading investment group srl",	"217689270019",	"luis a. de herrera 1057",1),
+("contacto","TONYS",	"maria barrios granat","111","Bartolito Mitre 2848",1)
+
+
+
+
+
+
+
+
+
+
+
 INSERT INTO `users` (`id`, `user_name`, `firstname`, `lastname`, `password`, `rol_id`, `id_user_master`) VALUES
 (2,	'cabecacorada',	'Juan',	'Perez',	'123456',	1,	0),
 (3,	'olho',	'Juan',	'Gonzales',	'123456',	1,	0),

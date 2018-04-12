@@ -76,7 +76,7 @@ var ProductModel = /** @class */ (function (_super) {
                 console.error(err);
             }
             else {
-                con.query('SELECT * FROM product', function (err, result) {
+                con.query('SELECT * FROM product ORDER BY displayOrder ASC', function (err, result) {
                     con.release();
                     if (!!err) {
                         // TODO: log error

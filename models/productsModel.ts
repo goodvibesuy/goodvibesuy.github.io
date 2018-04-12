@@ -59,7 +59,7 @@ export class ProductModel extends MainModel {
                 con.release();
                 console.error(err);
             } else {
-                con.query('SELECT * FROM product', function (err: any, result: Product[]) {
+                con.query('SELECT * FROM product ORDER BY displayOrder ASC', function (err: any, result: Product[]) {
                     con.release();
                     if (!!err) {
                         // TODO: log error

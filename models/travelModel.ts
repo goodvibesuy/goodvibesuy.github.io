@@ -374,7 +374,7 @@ export class TravelModel extends MainModel {
                 con.release();
                 console.error(err);
             } else {
-                con.query("SELECT * FROM route_stock as rs INNER JOIN product as p ON p.id = idProduct WHERE idroute = ?", [idRoute],
+                con.query("SELECT * FROM route_stock as rs INNER JOIN product as p ON p.id = idProduct WHERE idroute = ? ORDER BY displayOrder ASC", [idRoute],
                     function (err: any, result: any) {
                         con.release();
                         if (err) throw err;

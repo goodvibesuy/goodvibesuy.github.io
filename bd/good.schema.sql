@@ -30,9 +30,9 @@ CREATE TABLE `pointofsale` (
     `RUT` VARCHAR(56) NOT NULL,
     `contactName` VARCHAR(56) NOT NULL, 
     `address` VARCHAR(256) NOT NULL,
-    `tel` VARCHAR(15) NOT NULL,
+    `tel` VARCHAR(15) DEFAULT NULL,
     `image` VARCHAR(56) DEFAULT NULL,
-    `coord` POINT NOT NULL,
+    `coord` POINT DEFAULT NULL,
     `idGroup` INT(11) NOT NULL,
     PRIMARY KEY (`id`),
     FOREIGN KEY (idGroup) REFERENCES groupPointofsale(id)
@@ -43,8 +43,11 @@ DROP TABLE IF EXISTS `product`;
 CREATE TABLE `product` (
  `id` INT(11) NOT NULL AUTO_INCREMENT,
  `name` VARCHAR(56) NOT NULL,
+ `displayOrder` INT(11) NOT NULL AUTO_INCREMENT,
  `path_image` VARCHAR(128) NOT NULL, PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--ALTER TABLE `product` ADD `displayOrder` INT(5) NOT NULL AFTER `path_image`;
 
 -- productprice
 DROP TABLE IF EXISTS `productprice`;
@@ -62,6 +65,9 @@ CREATE TABLE `productprice` (
 
 /*ALTER TABLE `productprice` CHANGE `amount` `amount` FLOAT(11) NOT NULL;*/
 
+    `tel` VARCHAR(15) DEFAULT NOT NULL,
+    `image` VARCHAR(56) DEFAULT NULL,
+    `coord` POINT DEFAULT NULL,
 
 -- unit
 DROP TABLE IF EXISTS `unit`;
