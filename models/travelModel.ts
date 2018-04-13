@@ -168,23 +168,26 @@ export class TravelModel extends MainModel {
     removePointsOfSale(index: number, route: Route,
         callBack: (r: ResultWithData<any[]>) => void, con: any): void {
         var mainThis = this;
-        con.query("DELETE FROM route_pointofsale WHERE idRoute = ? AND idPointofsale = ? ",
-            [route.id, route.pointsOfSaleToRemove[index].id], function (err: any, result: any) {
-                if (err) {
-                    con.rollback(function () {
-                        console.log(err);
-                        con.release();
-                        callBack({ result: -1, message: "Error interno. No se pudo actualizar el POS de la ruta." });
-                    });
-                } else {
-                    if (index + 1 < route.pointsOfSaleToRemove.length) {
-                        mainThis.removePointsOfSale(index + 1, route, callBack, con);
+        if (route.pointsOfSaleToRemove.length > 0) {
+            con.query("DELETE FROM route_pointofsale WHERE idRoute = ? AND idPointofsale = ? ",
+                [route.id, route.pointsOfSaleToRemove[index].id], function (err: any, result: any) {
+                    if (err) {
+                        con.rollback(function () {
+                            console.log(err);
+                            con.release();
+                            callBack({ result: -1, message: "Error interno. No se pudo actualizar el POS de la ruta." });
+                        });
                     } else {
-                        mainThis.addPointsOfSale(0,route,callBack,con);
+                        if (index + 1 < route.pointsOfSaleToRemove.length) {
+                            mainThis.removePointsOfSale(index + 1, route, callBack, con);
+                        } else {
+                            mainThis.addPointsOfSale(0, route, callBack, con);
+                        }
                     }
-
-                }
-            });
+                });
+        } else {
+            mainThis.addPointsOfSale(0, route, callBack, con);
+        }
     }
 
     addPointsOfSale(index: number, route: Route,
@@ -249,7 +252,7 @@ export class TravelModel extends MainModel {
                                             });
                                         } else {
                                             con.release();
-                                            callBack({ result: 1, message: "OK" });                                            
+                                            callBack({ result: 1, message: "OK" });
                                         }
                                     });
                                 }
