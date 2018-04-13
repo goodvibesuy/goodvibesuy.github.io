@@ -49,6 +49,8 @@ export class ReporteViewingComponent implements OnInit {
         this.productsService.getAll().subscribe(
             responseProducts => {
                 this.products = responseProducts.data;
+                this.search();
+                /*
                 this.viewingsService.viewingsBetween(this.sourceDate, this.lastDate).subscribe(
                     response => {
                         this.viewings = response.data;
@@ -61,6 +63,7 @@ export class ReporteViewingComponent implements OnInit {
                         console.log(this.viewingView.getLineWithMajorPercentReturn());
                     }
                 )
+                */
             }
         );
     }

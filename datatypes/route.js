@@ -8,6 +8,7 @@ var Route = /** @class */ (function () {
         this.date = new Date();
         this.user = new user_1.User();
         this.pointsOfSale = new Array();
+        this.pointsOfSaleToRemove = new Array();
         this.stock = new Array();
     }
     Route.prototype.addProductStock = function (productStock) {
@@ -24,14 +25,23 @@ var Route = /** @class */ (function () {
     };
     Route.prototype.addPointOfSale = function (POS) {
         this.pointsOfSale.push(POS);
+        this.pointsOfSaleToRemove = this.pointsOfSaleToRemove.filter(function (val) {
+            return val.id != POS.id;
+        });
     };
     Route.prototype.removePointOfSale = function (idPointOfSale) {
+        this.pointsOfSaleToRemove.push(this.pointsOfSale.filter(function (val) {
+            return val.id == idPointOfSale;
+        })[0]);
         this.pointsOfSale = this.pointsOfSale.filter(function (val) {
             return val.id != idPointOfSale;
         });
     };
     Route.prototype.getPointsOfSale = function () {
         return this.pointsOfSale;
+    };
+    Route.prototype.getPointsOfSaleToRemove = function () {
+        return this.pointsOfSaleToRemove;
     };
     Route.prototype.reorderPointOfSale = function (position, newPosition) {
         var auxPOS = this.pointsOfSale[newPosition];

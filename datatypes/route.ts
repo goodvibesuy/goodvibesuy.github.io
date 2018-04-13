@@ -8,6 +8,7 @@ export class Route {
     public date: Date;
     public user:User;
     public pointsOfSale:PointOfSale[];
+    public pointsOfSaleToRemove:PointOfSale[];
     public stock:{product:Product,quantity:number}[];
 
     constructor() {
@@ -16,6 +17,7 @@ export class Route {
         this.date = new Date();
         this.user = new User();
         this.pointsOfSale = new Array<PointOfSale>();
+        this.pointsOfSaleToRemove = new Array<PointOfSale>();
         this.stock = new Array<{product:Product,quantity:number}>();
     }
 
@@ -37,9 +39,15 @@ export class Route {
 
     public addPointOfSale(POS:PointOfSale):void{
         this.pointsOfSale.push(POS);
+        this.pointsOfSaleToRemove = this.pointsOfSaleToRemove.filter(function(val:PointOfSale){
+            return val.id != POS.id;
+        });
     }
 
-    public removePointOfSale(idPointOfSale:number):void{        
+    public removePointOfSale(idPointOfSale:number):void{
+        this.pointsOfSaleToRemove.push(this.pointsOfSale.filter(function(val:PointOfSale){
+            return val.id == idPointOfSale;
+        })[0]);
         this.pointsOfSale = this.pointsOfSale.filter(function(val:PointOfSale){
             return val.id != idPointOfSale;
         });
@@ -47,6 +55,10 @@ export class Route {
 
     public getPointsOfSale():PointOfSale[]{
         return this.pointsOfSale;
+    }
+
+    public getPointsOfSaleToRemove():PointOfSale[]{
+        return this.pointsOfSaleToRemove;
     }
 
     public reorderPointOfSale(position:number, newPosition:number):void{
