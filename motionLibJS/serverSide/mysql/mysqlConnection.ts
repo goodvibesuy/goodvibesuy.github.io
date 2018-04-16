@@ -3,7 +3,7 @@ var mysql = require('mysql');
 
 export class ZenouraMysqlConnection {
     //30
-    private connectionLimit: number = 3;
+    private connectionLimit: number = 20;
     private pool: any;
     private db_config = {};
     constructor() {

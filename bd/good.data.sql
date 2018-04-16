@@ -105,8 +105,45 @@ INSERT INTO `pointofsale` (`contactName`,`name`, `businessName`, `RUT`, `address
 ("contacto","the lab pocitos",	"trading investment group srl",	"217689270019",	"luis a. de herrera 1057",1),
 ("contacto","TONYS",	"maria barrios granat","111","Bartolito Mitre 2848",1)
 
+INSERT INTO `pointofsale` (`contactName`,`name`, `businessName`, `RUT`, `address`,`idGroup`) VALUES
+("contacto","ancap costanera (terminal)","ruta 10 srl",	"214952730017",	"rambla costanera (ciudad de la costa)",1),
+("contacto","CARRASCO BEER house",	"RAFAEL RAMOS Y OTROS",	"217839340017",	"Carlos Federico Saez 6433 esq arocena",1),
+("contacto","el gran pez",	"el gran pez srl",	"216845650016",	"san ramon, m. 220 solar 5",1),
+("contacto","el naranjo MAM",	"nelson gabriel martinez",	"214634020015",	"jose l. terra 2220 loc 49/50 (mam)",1),
+("contacto","ESSO rivera y propios",	"nyr ltda rut" ,	"211753840012",	"rivera y propios",1),
+("contacto","frog 10",	"ussel s.a",	"214214350013",	"gabriela mistral 2201",1),
+("contacto","frog 12",	"ussel s.a",	"214214350013",	"Blvd. Artigas 3750 esq. Ramón Márquez",1),
+("contacto","frog 15",	"ussel s.a",	"214214350013",	"constituyente 1788",1),
+("contacto","frog 16",	"ussel s.a",	"214214350013",	"8 de Octubre 3929 esq. Lindoro Forteza",1),
+("contacto","frog 18",	"ussel s.a",	"214214350013",	"Salvador Ferrer Serra 2023 esq Defensa",1),
+("contacto","frog 2",	"ussel s.a",	"214214350013",	"Líbano 1428 y Ciudad de París",1),
+("contacto","isla café",	"coralik s.a",	"215459960017",	"arocena 1551",1),
+("contacto","jardin cervecero",	"del monte coppola",	"218070750012",	"rivera esq perez bultrer",1),
+("contacto","lutini",	"FIFEMPAO SRL",	"218126050010",	"CHANA 2112",1),,
+("contacto","porto vanila (carrasco)",	"conamil s.a",	"214214670018",	"Av Alfredo Arocena",1),
+("contacto","porto vanila general paz",	"conamil s.a",	"214214670018",	"general paz",1),
+("contacto","poto vanila portones shop",	"conamil s.a",	"214214670018",	"Portones Shopping",1);
 
 
+
+INSERT INTO `pointofsale` (`contactName`,`name`, `businessName`, `RUT`, `address`,`idGroup`) VALUES
+("contacto", "AROMAS Y SABORES",	"claudia reino",	"214990180010",	"casinoni 1469" , 1),
+("contacto", "BOCA FRIA CENTRO",	"silvia yañez y norma rodriguez",	"217880660012",	"constituyente 1851 esq yaro" , 1),
+("contacto",  "BOCADITOS SRL",	"bocaditos srl"	,"213375290014",	"angel salvo 149", 1),
+("contacto",  "CONFITERIA MONTES",	"montalvar ltda",	"215905060017",	"SAN JOSE Y PARAGUAY", 1),
+("contacto",  "de la rivera",	"lorena esquivel",	"217860100011",	"rivera y arenal grande", 1),
+("contacto",  "EL POPULAR","...","...",			,"br españa frente al hombu", 1),
+("contacto",  "FROG 15",	"ussel s.a",	"214214350013",	"constituyente 1788", 1),
+("contacto",  "FROG 19",	"ussel s.a",	"214214350013",	"Ing. Luis Ponce 1486 esq. Pouey", 1),
+("contacto",  "FROG 9",	"ussel s.a",	"214214350013",	"Gonzalo Ramirez 1345 y Ejido", 1),
+("contacto",  "FROG 13",	"ussel s.a",	"214214350013",	"Carlos Quijano 1309 esq. San José", 1),
+("contacto",  "LUTINI",	"FIFEMPAO SRL",	"218126050010",	"CHANA 2112", 1),
+("contacto",  "OSO PARDO OBLIGADO",	"oso pardo srl",	"218032790010",	"obligado 1317", 1),
+("contacto",  "OSO PARDO SALTERAIN",	"oso pardo srl",	"218032790010",	"salterain 1316", 1),
+("contacto",  "SHELTER PATIO CERVECERO",	"prolupulo SRL",	"217780060013",	"Andresito Guacurari 1806", 1),
+("contacto",  "su market",	"lyon ary berniger macknight",	"217782400016",	"Luis ponce 1501", 1),
+("contacto",  "super avril",	"fabricio abbate",	"180160930019",	"Avelino Miranda 2603", 1),
+("contacto", "WYE WORKS",	"wye works srl",	"216296470014",	"Bulevar General Artigas 252 (club golf)" , 1)
 
 
 
