@@ -20,7 +20,7 @@ INSERT INTO `groupPointofsale` VALUES
 (1, 'Punta del Este'),
 (2, 'Montevideo Mayoristas'),
 (3, 'Montevideo Minoristas'),
-(4, 'Promoción');
+(4, 'Promocion');
 
 INSERT INTO `pointofsale` (`id`, `contactName`,`name`, `businessName`, `RUT`, `address`, `tel`, `image`, `coord`, `idGroup`) VALUES
 (1,	'Jose Perez', 'Porto Vanilla - Punta Carretas',	'Porto Vanilla - Punta Carretas', 'RUT 123',	'Dr Hector Miranda 2361',	'11111',	'1_portovanila.png',	ST_GeomFromText('POINT(-34.9223327 -56.16135700000001)'),1),
@@ -78,21 +78,20 @@ INSERT INTO `pointofsale` (`id`, `contactName`,`name`, `businessName`, `RUT`, `a
 (55,	'Jose Perez', 'frog 11',	'frog 11',	 'RUT 123','gabriel pereira 2984',	'',	'',	ST_GeomFromText('POINT(-34.9055281 -56.15177790000001)'),1);
 
 
-
 INSERT INTO `pointofsale` (`contactName`,`name`, `businessName`, `RUT`, `address`,`idGroup`) VALUES
 ("contacto", "conf. nuevo pocitos","nuevo pocitos s.a","210234400013","26 de marzo 3415",1),
-("contacto","Corener shop","padestar sa","215146230015",	"Ramón massini 3348",1),
+("contacto","Corener shop","padestar sa","215146230015",	"Ramon massini 3348",1),
 ("contacto","deli shop",	"PIMENTON SRL",	"217162200010",	"benito blanco 908",1),
 ("contacto","el horno de juan",	"buena onda s.a",	"213593430012",	"Marti 3391 esq Chucarro",1),
 ("contacto","el ingrediente secreto",	"alejandra farias",	"217398610018",	"26 de marzo. 3285",1),
-("contacto","Espacio Gourmet",	"Alejandra muñoz",	"217291490015",	"26 de marzo 1305",1),
+("contacto","Espacio Gourmet",	"Alejandra munhoz",	"217291490015",	"26 de marzo 1305",1),
 ("contacto","FONTANES",	"dranto sa",	"217603750017",	"rivera 3652",1),
 ("contacto","gracia",	"t3m srl",	"217924790013",	"26 de marzo esq guayaqui",1),
 ("contacto","la cosecha",	"c.rostani y g. astorga",	"218067170019",	"benito blanco esq buxareo",1),
 ("contacto","la nona",	"il forno srl",	"217313750014",	"benito blanco 1097 esq guayaqui",1),
 ("contacto","LA VACA AZUL",	"decaatro oval srl",	"218042200011",	"berro 1376/02",1),
 ("contacto","lutini",	"FIFEMPAO SRL",	"218126050010",	"CHANA 2112",1),
-("contacto","MANOLA ROTICERIA",	"Claudia moreira",	"217895110013",	"Gabriel péreira 3212",1),
+("contacto","MANOLA ROTICERIA",	"Claudia moreira",	"217895110013",	"Gabriel pereira 3212",1),
 ("contacto","Miguel Gentile exoticos",	"exoticos srl",	"216613660012",	"Av. Brasil 2598",1),
 ("contacto","OLIVA Y NUEZ",	"maRia m. vean dominguez",	"216613000012",	"g. pereira 2761",1),
 ("contacto","pastus & co",	"pastus & co srl",	"218076440015",	"coronel alegre y gestido",1),
@@ -101,9 +100,10 @@ INSERT INTO `pointofsale` (`contactName`,`name`, `businessName`, `RUT`, `address
 ("contacto","SHISHA",	"bali uruguayo srl",	"217574850012",	"marco bruto 1300",1),
 ("contacto","SUPER BERRO",	"ripab srl",	"216276100017",	"berro 1216",1),
 ("contacto","tandem",	"tandem uruguay srl",	"218081520013",	"constituyente 2039",1),
-("contacto","TERRUÑO",	"mariana guerrero",	"217795050019",	"rivera 3432",1),
+("contacto","TERRUnhO",	"mariana guerrero",	"217795050019",	"rivera 3432",1),
 ("contacto","the lab pocitos",	"trading investment group srl",	"217689270019",	"luis a. de herrera 1057",1),
-("contacto","TONYS",	"maria barrios granat","111","Bartolito Mitre 2848",1)
+("contacto","TONYS",	"maria barrios granat","111","Bartolito Mitre 2848",1);
+
 
 INSERT INTO `pointofsale` (`contactName`,`name`, `businessName`, `RUT`, `address`,`idGroup`) VALUES
 ("contacto","ancap costanera (terminal)","ruta 10 srl",	"214952730017",	"rambla costanera (ciudad de la costa)",1),
@@ -112,14 +112,14 @@ INSERT INTO `pointofsale` (`contactName`,`name`, `businessName`, `RUT`, `address
 ("contacto","el naranjo MAM",	"nelson gabriel martinez",	"214634020015",	"jose l. terra 2220 loc 49/50 (mam)",1),
 ("contacto","ESSO rivera y propios",	"nyr ltda rut" ,	"211753840012",	"rivera y propios",1),
 ("contacto","frog 10",	"ussel s.a",	"214214350013",	"gabriela mistral 2201",1),
-("contacto","frog 12",	"ussel s.a",	"214214350013",	"Blvd. Artigas 3750 esq. Ramón Márquez",1),
+("contacto","frog 12",	"ussel s.a",	"214214350013",	"Blvd. Artigas 3750 esq. Ramon Marquez",1),
 ("contacto","frog 15",	"ussel s.a",	"214214350013",	"constituyente 1788",1),
 ("contacto","frog 16",	"ussel s.a",	"214214350013",	"8 de Octubre 3929 esq. Lindoro Forteza",1),
 ("contacto","frog 18",	"ussel s.a",	"214214350013",	"Salvador Ferrer Serra 2023 esq Defensa",1),
-("contacto","frog 2",	"ussel s.a",	"214214350013",	"Líbano 1428 y Ciudad de París",1),
-("contacto","isla café",	"coralik s.a",	"215459960017",	"arocena 1551",1),
+("contacto","frog 2",	"ussel s.a",	"214214350013",	"Libano 1428 y Ciudad de Paris",1),
+("contacto","isla cafe",	"coralik s.a",	"215459960017",	"arocena 1551",1),
 ("contacto","jardin cervecero",	"del monte coppola",	"218070750012",	"rivera esq perez bultrer",1),
-("contacto","lutini",	"FIFEMPAO SRL",	"218126050010",	"CHANA 2112",1),,
+("contacto","lutini",	"FIFEMPAO SRL",	"218126050010",	"CHANA 2112",1),
 ("contacto","porto vanila (carrasco)",	"conamil s.a",	"214214670018",	"Av Alfredo Arocena",1),
 ("contacto","porto vanila general paz",	"conamil s.a",	"214214670018",	"general paz",1),
 ("contacto","poto vanila portones shop",	"conamil s.a",	"214214670018",	"Portones Shopping",1);
@@ -128,22 +128,22 @@ INSERT INTO `pointofsale` (`contactName`,`name`, `businessName`, `RUT`, `address
 
 INSERT INTO `pointofsale` (`contactName`,`name`, `businessName`, `RUT`, `address`,`idGroup`) VALUES
 ("contacto", "AROMAS Y SABORES",	"claudia reino",	"214990180010",	"casinoni 1469" , 1),
-("contacto", "BOCA FRIA CENTRO",	"silvia yañez y norma rodriguez",	"217880660012",	"constituyente 1851 esq yaro" , 1),
+("contacto", "BOCA FRIA CENTRO",	"silvia yanhez y norma rodriguez",	"217880660012",	"constituyente 1851 esq yaro" , 1),
 ("contacto",  "BOCADITOS SRL",	"bocaditos srl"	,"213375290014",	"angel salvo 149", 1),
 ("contacto",  "CONFITERIA MONTES",	"montalvar ltda",	"215905060017",	"SAN JOSE Y PARAGUAY", 1),
 ("contacto",  "de la rivera",	"lorena esquivel",	"217860100011",	"rivera y arenal grande", 1),
-("contacto",  "EL POPULAR","...","...",			,"br españa frente al hombu", 1),
+("contacto",  "EL POPULAR","...","...","br espanha frente al hombu", 1),
 ("contacto",  "FROG 15",	"ussel s.a",	"214214350013",	"constituyente 1788", 1),
 ("contacto",  "FROG 19",	"ussel s.a",	"214214350013",	"Ing. Luis Ponce 1486 esq. Pouey", 1),
 ("contacto",  "FROG 9",	"ussel s.a",	"214214350013",	"Gonzalo Ramirez 1345 y Ejido", 1),
-("contacto",  "FROG 13",	"ussel s.a",	"214214350013",	"Carlos Quijano 1309 esq. San José", 1),
+("contacto",  "FROG 13",	"ussel s.a",	"214214350013",	"Carlos Quijano 1309 esq. San Jose", 1),
 ("contacto",  "LUTINI",	"FIFEMPAO SRL",	"218126050010",	"CHANA 2112", 1),
 ("contacto",  "OSO PARDO OBLIGADO",	"oso pardo srl",	"218032790010",	"obligado 1317", 1),
 ("contacto",  "OSO PARDO SALTERAIN",	"oso pardo srl",	"218032790010",	"salterain 1316", 1),
 ("contacto",  "SHELTER PATIO CERVECERO",	"prolupulo SRL",	"217780060013",	"Andresito Guacurari 1806", 1),
 ("contacto",  "su market",	"lyon ary berniger macknight",	"217782400016",	"Luis ponce 1501", 1),
 ("contacto",  "super avril",	"fabricio abbate",	"180160930019",	"Avelino Miranda 2603", 1),
-("contacto", "WYE WORKS",	"wye works srl",	"216296470014",	"Bulevar General Artigas 252 (club golf)" , 1)
+("contacto", "WYE WORKS",	"wye works srl",	"216296470014",	"Bulevar General Artigas 252 (club golf)" , 1);
 
 
 
@@ -151,12 +151,11 @@ INSERT INTO `pointofsale` (`contactName`,`name`, `businessName`, `RUT`, `address
 
 
 
-
-INSERT INTO `users` (`id`, `user_name`, `firstname`, `lastname`, `password`, `rol_id`, `id_user_master`) VALUES
-(2,	'cabecacorada',	'Juan',	'Perez',	'123456',	1,	0),
-(3,	'olho',	'Juan',	'Gonzales',	'123456',	1,	0),
-(4,	'admin@goodvibes.uy',	'Admin',	'Admin',	'7c4a8d09ca3762af61e59520943dc2',	1,	26),
-(5,	'repartidor@goodvibes.uy',	'Repartidor',	'Repartidor',	'7c4a8d09ca3762af61e59520943dc2',	2,	27);
+INSERT INTO `users` (`user_name`, `firstname`, `lastname`, `password`, `rol_id`, `id_user_master`) VALUES
+(	'cabecacorada',	'Juan',	'Perez',	'123456',	1,	0),
+(	'olho',	'Juan',	'Gonzales',	'123456',	1,	0),
+(	'admin@goodvibes.uy',	'Admin',	'Admin',	'7c4a8d09ca3762af61e59520943dc2',	1,	26),
+(	'repartidor@goodvibes.uy',	'Repartidor',	'Repartidor',	'7c4a8d09ca3762af61e59520943dc2',	2,	27);
 
 INSERT INTO `product` (`id`, `name`, `path_image`) VALUES
 (1,	'Paradise Dream',	'paradiseDream.png'),
