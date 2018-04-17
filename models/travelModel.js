@@ -456,7 +456,7 @@ var TravelModel = /** @class */ (function (_super) {
                 console.error(err);
             }
             else {
-                con.query("SELECT * FROM route_user r_u INNER JOIN route r ON r.id = r_u.idroute WHERE iduser = ?", [userId], function (err, result) {
+                con.query("SELECT * FROM route_user r_u INNER JOIN route r ON r.id = r_u.idroute WHERE iduser = ? ORDER BY r.date DESC", [userId], function (err, result) {
                     con.release();
                     if (err)
                         throw err;

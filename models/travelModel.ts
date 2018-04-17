@@ -435,7 +435,7 @@ export class TravelModel extends MainModel {
                 con.release();
                 console.error(err);
             } else {
-                con.query("SELECT * FROM route_user r_u INNER JOIN route r ON r.id = r_u.idroute WHERE iduser = ?", [userId],
+                con.query("SELECT * FROM route_user r_u INNER JOIN route r ON r.id = r_u.idroute WHERE iduser = ? ORDER BY r.date DESC", [userId],
                     function (err: any, result: any) {
                         con.release();
                         if (err) throw err;
