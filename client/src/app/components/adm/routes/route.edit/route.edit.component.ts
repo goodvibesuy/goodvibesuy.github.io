@@ -144,7 +144,12 @@ export class RouteEdit  extends ValidableForm implements OnInit {
             }else{
                 this.errorNoPOS = false;
                 this.routeService.update(route).subscribe(data => {
-                    this.router.navigateByUrl('/recorridos');
+
+                    if(data.result > 0){
+                        this.router.navigateByUrl('/recorridos');
+                    }else{
+                        alert(data.message);
+                    }                    
                 });
             }
         }                

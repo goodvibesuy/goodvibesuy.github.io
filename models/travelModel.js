@@ -26,7 +26,7 @@ var TravelModel = /** @class */ (function (_super) {
                 console.error(err);
             }
             else {
-                con.query("SELECT * FROM route", function (err, result) {
+                con.query("SELECT * FROM route ORDER BY date DESC", function (err, result) {
                     con.release();
                     if (err)
                         throw err;
@@ -207,79 +207,87 @@ var TravelModel = /** @class */ (function (_super) {
     };
     TravelModel.prototype.addPointsOfSale = function (index, route, callBack, con) {
         var mainThis = this;
-        con.query("UPDATE route_pointofsale SET position = ? WHERE idRoute = ? AND idPointofsale = ? ", [index, route.id, route.pointsOfSale[index].id], function (err, result1) {
-            if (err) {
-                con.rollback(function () {
-                    console.log(err);
-                    con.release();
-                    callBack({ result: -1, message: "Error interno. No se pudo actualizar el POS de la ruta." });
-                });
-            }
-            else {
-                if (result1.affectedRows === 0) {
-                    con.query("INSERT  INTO route_pointofsale(idRoute,idPointofsale,position) VALUES(?,?,?) ", [route.id, route.pointsOfSale[index].id, index], function (err, result2) {
-                        if (err) {
-                            con.rollback(function () {
-                                console.log(err);
-                                con.release();
-                                callBack({ result: -1, message: "Error interno. No se pudo guardar el POS de la ruta." });
-                            });
-                        }
-                        else {
-                            if (index + 1 < route.pointsOfSale.length) {
-                                mainThis.addPointsOfSale(index + 1, route, callBack, con);
-                            }
-                            else {
-                                con.commit(function (err) {
-                                    if (err) {
-                                        con.rollback(function () {
-                                            console.log(err);
-                                            con.release();
-                                            callBack({ result: -1, message: "Error interno. No se pudo hacer commit de la ruta" });
-                                        });
-                                    }
-                                    else {
-                                        con.release();
-                                        callBack({ result: 1, message: "OK" });
-                                    }
-                                });
-                            }
-                        }
+        if (route.pointsOfSale.length > 0) {
+            con.query("UPDATE route_pointofsale SET position = ? WHERE idRoute = ? AND idPointofsale = ? ", [index, route.id, route.pointsOfSale[index].id], function (err, result1) {
+                if (err) {
+                    con.rollback(function () {
+                        console.log(err);
+                        con.release();
+                        callBack({ result: -1, message: "Error interno. No se pudo actualizar el POS de la ruta." });
                     });
                 }
                 else {
-                    if (index + 1 < route.pointsOfSale.length) {
-                        mainThis.addPointsOfSale(index + 1, route, callBack, con);
-                    }
-                    else {
-                        con.commit(function (err) {
+                    if (result1.affectedRows === 0) {
+                        con.query("INSERT  INTO route_pointofsale(idRoute,idPointofsale,position) VALUES(?,?,?) ", [route.id, route.pointsOfSale[index].id, index], function (err, result2) {
                             if (err) {
                                 con.rollback(function () {
                                     console.log(err);
                                     con.release();
-                                    callBack({ result: -1, message: "Error interno. No se pudo hacer commit de la ruta" });
+                                    callBack({ result: -1, message: "Error interno. No se pudo guardar el POS de la ruta." });
                                 });
                             }
                             else {
-                                con.commit(function (err) {
-                                    if (err) {
-                                        con.rollback(function () {
-                                            console.log(err);
+                                if (index + 1 < route.pointsOfSale.length) {
+                                    mainThis.addPointsOfSale(index + 1, route, callBack, con);
+                                }
+                                else {
+                                    con.commit(function (err) {
+                                        if (err) {
+                                            con.rollback(function () {
+                                                console.log(err);
+                                                con.release();
+                                                callBack({ result: -1, message: "Error interno. No se pudo hacer commit de la ruta" });
+                                            });
+                                        }
+                                        else {
                                             con.release();
-                                            callBack({ result: -1, message: "Error interno. No se pudo hacer commit de la ruta" });
-                                        });
-                                    }
-                                    else {
-                                        con.release();
-                                        callBack({ result: 1, message: "OK" });
-                                    }
-                                });
+                                            callBack({ result: 1, message: "OK" });
+                                        }
+                                    });
+                                }
                             }
                         });
                     }
+                    else {
+                        if (index + 1 < route.pointsOfSale.length) {
+                            mainThis.addPointsOfSale(index + 1, route, callBack, con);
+                        }
+                        else {
+                            con.commit(function (err) {
+                                if (err) {
+                                    con.rollback(function () {
+                                        console.log(err);
+                                        con.release();
+                                        callBack({ result: -1, message: "Error interno. No se pudo hacer commit de la ruta" });
+                                    });
+                                }
+                                else {
+                                    con.commit(function (err) {
+                                        if (err) {
+                                            con.rollback(function () {
+                                                console.log(err);
+                                                con.release();
+                                                callBack({ result: -1, message: "Error interno. No se pudo hacer commit de la ruta" });
+                                            });
+                                        }
+                                        else {
+                                            con.release();
+                                            callBack({ result: 1, message: "OK" });
+                                        }
+                                    });
+                                }
+                            });
+                        }
+                    }
                 }
-            }
-        });
+            });
+        }
+        else {
+            con.rollback(function () {
+                con.release();
+                callBack({ result: -1, message: "Error interno. No se puede agregar un POS vacio." });
+            });
+        }
     };
     TravelModel.prototype.addPointOfSale = function (idRoute, idPointOfSale, dbName, callBack) {
         var pool = this.controllerConnections.getUserConnection(dbName);
