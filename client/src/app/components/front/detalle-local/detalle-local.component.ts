@@ -77,11 +77,16 @@ export class DetalleLocalComponent implements OnInit {
     quantity(typeTransaction: string): number {
         let sum = 0;
         if (this.productsToSend !== undefined) {
-            for (let i = 0; i < this.productsToSend.length; i++) {
+            for (let i = 0; i < this.productsToSend.length; i++) {                
                 sum += this.productsToSend[i].typeTransaction[typeTransaction]
             }
         }
         return sum;
+    }
+
+    getProductQuantityById(idProduct:number):any{
+        let p = this.productsToSend.filter(input => input.id === idProduct)[0];
+        return p.typeTransaction.delivery - p.typeTransaction.return;
     }
 
     getPointOfSale(id: Number): void {

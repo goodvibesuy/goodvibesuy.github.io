@@ -4,7 +4,7 @@ var mysql = require('mysql');
 var ZenouraMysqlConnection = /** @class */ (function () {
     function ZenouraMysqlConnection() {
         //30
-        this.connectionLimit = 3;
+        this.connectionLimit = 20;
         this.db_config = {};
         this.pool = null;
     }

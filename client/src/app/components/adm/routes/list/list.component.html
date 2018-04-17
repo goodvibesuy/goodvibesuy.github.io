@@ -3,6 +3,7 @@
     <table class="table table-striped">
         <thead class="thead-dark">
             <tr>
+                <th>Fecha</th>
                 <th>Nombre</th>
                 <th>Editar</th>
                 <th>Eliminar</th>
@@ -10,6 +11,7 @@
         </thead>
         <tbody>
             <tr *ngFor="let i of routes">
+                <td>{{i.date}}</td>
                 <td>{{i.name}}</td>
                 <td style="text-align: center;">
                     <a [routerLink]="['edit', i.id]">

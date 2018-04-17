@@ -48,8 +48,8 @@ export class RouteAdd implements OnInit {
                 console.log(response);
                 if (response.result === 1) {
                     this.products = response.data;
-                    for(let i = 0 ; i < this.products.length; i++){                        
-                        this.newRoute.addProductStock({product:this.products[i],quantity:0});
+                    for (let i = 0; i < this.products.length; i++) {
+                        this.newRoute.addProductStock({ product: this.products[i], quantity: 0 });
                     }
                     this.routeService.getPointsOfSales().subscribe(dataPOS => {
                         this.pointsOfSales = <PointOfSale[]>dataPOS;
@@ -99,7 +99,11 @@ export class RouteAdd implements OnInit {
     agregar(): void {
         this.routeService.agregar(this.newRoute)
             .subscribe(data => {
-                this.router.navigateByUrl('/recorridos');
+                if (data.result > 0) {
+                    this.router.navigateByUrl('/recorridos');
+                } else {
+                    alert(data.message);
+                }
             });
     }
 }

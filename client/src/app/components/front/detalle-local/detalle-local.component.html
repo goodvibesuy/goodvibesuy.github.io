@@ -84,19 +84,23 @@
 
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col">Cantidad de productos vendidos</div>
-                        <div class="col">{{quantity("delivery") - quantity("return")}}</div>
+                    <div *ngFor="let p of products" class="row">
+                        <div class="col">
+                            {{p.name}} ({{getProductQuantityById(p.id)}})
+                        </div>
+                        <div class="col">
+                           ${{getProductQuantityById(p.id) *  unitePrice}}                    
+                        </div>
                     </div>
-                    <div class="row">
+                    <div class="row" style="background-color: #cccccc;">
                         <div class="col">Sub-Total</div>
                         <div class="col">${{ (quantity("delivery") - quantity("return")) * unitePrice }}</div>
                     </div>
-                    <div class="row">
+                    <div class="row" style="background-color: #cccccc;">
                         <div class="col">IVA</div>
                         <div class="col">${{ (quantity("delivery") - quantity("return")) * unitePrice * 0.22 }}</div>
                     </div>
-                    <div class="row">
+                    <div class="row" style="background-color: #cccccc;">
                         <div class="col">Total</div>
                         <div class="col">${{ (quantity("delivery") - quantity("return")) * unitePrice * 1.22 }}</div>
                     </div>

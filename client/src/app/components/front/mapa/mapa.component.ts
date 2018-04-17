@@ -70,6 +70,7 @@ export class MapaComponent implements OnInit {
         this.routeService.getPointsOfSalesRoute(idRoute).subscribe(
             response => {
                 this.pointsOfSale = response;
+                console.log(response);
                 //this.pointsOfSale.sort(this.compareViewing);
                 this.finishedViewing = this.getFinishedViewing();
                 this.pointsOfSale = this.getUnFinishedViewing();
