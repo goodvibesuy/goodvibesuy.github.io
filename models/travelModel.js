@@ -44,6 +44,7 @@ var TravelModel = /** @class */ (function (_super) {
                 console.log(err);
                 con.release();
                 console.error(err);
+                callBack({ result: -1, message: "Error interno. - No se pudo agregar la ruta." });
             }
             else {
                 con.beginTransaction(function (err) {
@@ -130,6 +131,7 @@ var TravelModel = /** @class */ (function (_super) {
             if (err) {
                 con.release();
                 console.error(err);
+                callBack({ result: -1, message: "Error interno." });
             }
             else {
                 con.beginTransaction(function (err) {
@@ -237,8 +239,8 @@ var TravelModel = /** @class */ (function (_super) {
                                         });
                                     }
                                     else {
-                                        callBack({ result: 1, message: "OK" });
                                         con.release();
+                                        callBack({ result: 1, message: "OK" });
                                     }
                                 });
                             }
@@ -486,28 +488,71 @@ var TravelModel = /** @class */ (function (_super) {
                 console.error(err);
             }
             else {
-                con.query("DELETE FROM route WHERE id = ?", [idRoute], function (err, result) {
-                    con.release();
-                    if (!!err) {
-                        // TODO: log error -> common/errorHandling.ts
-                        // errorHandler.log(err);
-                        console.error(err);
-                        var errorMessage = "";
-                        if (err.code === "ER_ROW_IS_REFERENCED_2") {
-                            errorMessage = "No se puede borrar el registro, porque es utilizado en otra parte del sistema";
+                con.beginTransaction(function (err) {
+                    con.query("DELETE FROM route_pointofsale WHERE idRoute = ?", [idRoute], function (err, result) {
+                        if (err) {
+                            con.rollback(function () {
+                                console.log(err);
+                                con.release();
+                                callBack({ result: -1, message: "Error interno. - No se pudo borrar asociacion ruta pos." });
+                            });
                         }
-                        callBack({
-                            result: result_1.ResultCode.Error,
-                            message: errorMessage
-                        });
-                    }
-                    else {
-                        callBack({
-                            result: result_1.ResultCode.OK,
-                            message: 'OK'
-                        });
-                    }
-                    //if (err) throw err;
+                        else {
+                            con.query("DELETE FROM route_stock WHERE idRoute = ?", [idRoute], function (err, result) {
+                                if (err) {
+                                    con.rollback(function () {
+                                        console.log(err);
+                                        con.release();
+                                        callBack({ result: -1, message: "Error interno. - No se pudo borrar asociacion ruta stock." });
+                                    });
+                                }
+                                else {
+                                    con.query("DELETE FROM route_user WHERE idRoute = ?", [idRoute], function (err, result) {
+                                        if (err) {
+                                            con.rollback(function () {
+                                                console.log(err);
+                                                con.release();
+                                                callBack({ result: -1, message: "Error interno. - No se pudo borrar asociacion ruta usuario." });
+                                            });
+                                        }
+                                        else {
+                                            con.query("DELETE FROM route WHERE id = ?", [idRoute], function (err, result) {
+                                                if (!!err) {
+                                                    // TODO: log error -> common/errorHandling.ts
+                                                    // errorHandler.log(err);
+                                                    console.error(err);
+                                                    var errorMessage = "";
+                                                    if (err.code === "ER_ROW_IS_REFERENCED_2") {
+                                                        errorMessage = "No se puede borrar el registro, porque es utilizado en otra parte del sistema";
+                                                    }
+                                                    callBack({
+                                                        result: result_1.ResultCode.Error,
+                                                        message: errorMessage
+                                                    });
+                                                }
+                                                else {
+                                                    con.commit(function (err) {
+                                                        if (err) {
+                                                            con.rollback(function () {
+                                                                console.log(err);
+                                                                con.release();
+                                                                callBack({ result: -1, message: "Error interno. No se pudo hacer commit de la ruta" });
+                                                            });
+                                                        }
+                                                        else {
+                                                            con.release();
+                                                            callBack({ result: 1, message: "La ruta se ha borrado correctamente" });
+                                                        }
+                                                    });
+                                                }
+                                                //if (err) throw err;
+                                            });
+                                        }
+                                    });
+                                }
+                            });
+                        }
+                    });
                 });
             }
         });
