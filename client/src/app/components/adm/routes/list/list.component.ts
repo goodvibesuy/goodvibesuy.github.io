@@ -21,14 +21,22 @@ export class ListComponent implements OnInit {
 	constructor(private router: Router, private routeServices: RouteService) {}
 
 	ngOnInit() {
-		this.loadSupplies();
+		this.loadRoutes();
 	}
 
-	delete(id: number): void {
-		this.routeServices.delete(id).subscribe(data => this.loadSupplies());
+	delete(id: number): void {        
+		this.routeServices.delete(id).subscribe(
+            data => {                
+                if(data.result < 0){
+                    alert(data.message);
+                }else{
+                    this.loadRoutes();
+                }                
+            }            
+        );
 	}
 
-	loadSupplies(): void {
+	loadRoutes(): void {
 		this.routeServices.get().subscribe(
 			data => {
 				console.log(data);
