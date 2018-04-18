@@ -45,8 +45,15 @@ export class ClientModel extends MainModel{
                 con.release();
                 console.error(err);
             } else {
-                con.query("INSERT INTO client  (names,lastnames,address,phone) VALUES(?,?,?,?)",
-                    [client.names,client.lastnames,client.address,client.phone], function (err: any,result: any) {
+                var lat:number = 0
+                var lng:number = 0
+                if(client.coord !== undefined && client.coord !== null){
+                    lat = Number(client.coord.lat);
+                    lng = Number(client.coord.lng);
+                }
+
+                con.query("INSERT INTO client  (names,lastnames,address,phone,coord) VALUES(?,?,?,?,POINT(?,?))",
+                    [client.names,client.lastnames,client.address,client.phone, lat, lng], function (err: any,result: any) {
                         con.release();
                         if (!!err) {
                             //if (err.code === "ER_DUP_ENTRY") 

@@ -4,4 +4,5 @@ export interface Client {
     lastnames:string;
     address:string;    
     phone:string;
+    coord?: { lat(): number; lng(): number; };
 }

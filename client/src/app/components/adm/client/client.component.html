@@ -59,7 +59,7 @@
             <th>Apellidos</th>
             <th>Direción</th>
             <th>Tel</th>
-            <th>Editar</th>
+            <th>Ir</th>
             <th>Eliminar</th>
         </tr>
     </thead>
@@ -72,8 +72,8 @@
                 
             </td>
             <td>
-                <a [routerLink]="['editar', c.id]">
-                    <i class="fa fa-edit" style="font-size: 1.7em;"></i>
+                <a *ngIf="c.coord !== null" href="https://www.google.com/maps/dir/?api=1&destination={{c.coord.x}},{{c.coord.y}}&travelmode=driving">                    
+                    <span class="fa fa-map" style="margin-left:5px;font-size: 1.5em;color:#555;"></span>
                 </a>
             </td>
             <td>

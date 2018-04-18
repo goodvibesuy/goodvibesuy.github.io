@@ -107,9 +107,14 @@ export class ClientComponent extends ValidableForm implements OnInit {
             super.showValidationErrors();
         } else {
             var cli = super.getModel<Client>();
+            cli.coord = this.marker.getPosition();
             this.clientService.addClient(cli)
                 .subscribe(response => {
-                    console.log(response);
+                    if(response.result > 0){
+                        this.getClients();
+                    }else{
+                        alert(response.message);
+                    }                    
                 });
         }
     }
