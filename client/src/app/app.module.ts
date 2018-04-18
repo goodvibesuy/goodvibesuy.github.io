@@ -54,6 +54,7 @@ import { PointOfSaleService } from './services/point-of-sale.service';
 import { KpiService } from './services/kpi.service';
 import { TemplatesRoutesService } from './services/templates-routes.service';
 import { ProvidersService } from './services/providers.service';
+import { UnitsConversorService } from './services/units-conversor.service';
 
 // shared
 import { FilePicker } from './shared/components/file-picker/file-picker.component';
@@ -140,6 +141,7 @@ import { ClientService } from './services/client.service';
         TokenService,
         AlertService,
         KpiService,
+        UnitsConversorService,
         { provide: LOCALE_ID, useValue: 'es-UY' },
         { provide: NgbDateParserFormatter, useClass: NgbDateESParserFormatter }
     ],
