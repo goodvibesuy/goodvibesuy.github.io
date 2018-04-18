@@ -1,3 +1,4 @@
+<link rel="stylesheet" type="text/css" href="https://valor-software.com/ng2-dragula/assets/css/dragula.min.css">
 <div class="card" style="margin:15px;">
     <div class="card-header">
         <b>Editar recorrido</b>
@@ -89,25 +90,30 @@
             <div class="card-header">
                 Puntos de venta
             </div>
+            
             <div class="card-body">
                 <table class="table">
-                    <tr>
-                        <td style="width: 15px;"></td>
-                        <td>Nombre</td>
-                        <td>Eliminar</td>
-                    </tr>
-                    <tr *ngFor="let i of currentRoute.pointsOfSale; index as ix">
-                        <td>
-                            <span class="fa fa-arrow-circle-up" (click)="changeOrder(i.id,ix, ix - 1)" *ngIf="ix !== 0"></span>
-                            <span class="fa fa-arrow-circle-down" (click)="changeOrder(i.id,ix,ix + 1)" *ngIf="ix + 1 < currentRoute.pointsOfSale.length"></span>
-                        </td>
-                        <td>{{i.name}}</td>
-                        <td>
-                            <a (click)="remove(i.id)">
-                                <i class="fa fa-trash-o" style="font-size: 1.7em;"></i>
-                            </a>
-                        </td>
-                    </tr>
+                    <thead>
+                        <tr>
+                            <th style="width: 15px;"></th>
+                            <th>Nombre</th>
+                            <th>Eliminar</th>
+                        </tr>
+                    </thead>
+                    <tbody  [dragula]='"bag-one"'  [dragulaModel]='currentRoute.pointsOfSale'>
+                        <tr *ngFor="let i of currentRoute.pointsOfSale; index as ix">
+                            <td style="cursor:move; background-color: whitesmoke;" >
+                                <span class="fa fa-arrow-circle-up" style="cursor:pointer" (click)="changeOrder(i.id,ix, ix - 1)" *ngIf="ix !== 0"></span>
+                                <span class="fa fa-arrow-circle-down" style="cursor:pointer" (click)="changeOrder(i.id,ix,ix + 1)" *ngIf="ix + 1 < currentRoute.pointsOfSale.length"></span>
+                            </td>
+                            <td>{{i.name}}</td>
+                            <td>
+                                <a (click)="remove(i.id)">
+                                    <i class="fa fa-trash-o" style="font-size: 1.7em;"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    </tbody>
                 </table>
             </div>
         </div>

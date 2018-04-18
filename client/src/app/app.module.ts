@@ -71,6 +71,8 @@ import { AlertService } from './modules/alert/alert.service';
 // Interceptor
 import { InterceptorModule } from './auth/token.interceptor';
 
+import {DragulaModule, DragulaService} from 'ng2-dragula/ng2-dragula';
+
 import { NgbDatepickerConfig } from '@ng-bootstrap/ng-bootstrap';
 import { CenouraInputValidation } from './shared/validation/CenouraInputValidation';
 import { NgbDateESParserFormatter } from './shared/DateParserFormatter';
@@ -119,7 +121,8 @@ import { GroupPosService } from './services/group-pos.service';
         InterceptorModule,
         NgbModule.forRoot(),
         AlertModule.forRoot(),
-        AmChartsModule
+        AmChartsModule,
+        DragulaModule
     ],
     providers: [
         SupplyService,
@@ -129,6 +132,13 @@ import { GroupPosService } from './services/group-pos.service';
         TemplatesRoutesService,
         UsersService,
         ImagesService,
+
+
+        DragulaService,
+
+
+
+        
         AuthenticateService,
         PointOfSaleService,
         GroupPosService,
