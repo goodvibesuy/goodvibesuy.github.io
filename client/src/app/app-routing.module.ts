@@ -27,6 +27,7 @@ import { PosEditComponent } from './components/adm/pos/edit/pos.edit.component';
 import { PosAddComponent } from './components/adm/pos/add/pos.add.component';
 import { TemplatesRoutesComponent } from './components/adm/templates-routes/templates-routes.component';
 import { ReporteViewingComponent } from './components/front/reporte-viewing/reporte-viewing.component';
+import { ClientComponent } from './components/adm/client/client.component';
 
 const routes: Routes = [
     {
@@ -38,6 +39,11 @@ const routes: Routes = [
 			{ path: 'editar/:id', component: PosEditComponent }
 		]
     },
+    {
+        path:'admin/client',
+        component:ClientComponent
+    }
+    ,
 	{
 		path: '',
 		component: LoginComponent

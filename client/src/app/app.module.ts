@@ -75,6 +75,8 @@ import { CenouraInputValidation } from './shared/validation/CenouraInputValidati
 import { NgbDateESParserFormatter } from './shared/DateParserFormatter';
 import { ReporteViewingComponent } from './components/front/reporte-viewing/reporte-viewing.component';
 import { GroupPosService } from './services/group-pos.service';
+import { ClientComponent } from './components/adm/client/client.component';
+import { ClientService } from './services/client.service';
 
 @NgModule({
     declarations: [
@@ -107,7 +109,8 @@ import { GroupPosService } from './services/group-pos.service';
         PosEditComponent,
         PosListComponent,
         TemplatesRoutesComponent,
-        ReporteViewingComponent
+        ReporteViewingComponent,
+        ClientComponent
     ],
     imports: [
         BrowserModule,
@@ -125,6 +128,7 @@ import { GroupPosService } from './services/group-pos.service';
         ProductsService,
         ProvidersService,
         RouteService,
+        ClientService,
         TemplatesRoutesService,
         UsersService,
         ImagesService,
