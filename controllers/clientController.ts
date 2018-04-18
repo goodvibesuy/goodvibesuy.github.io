@@ -1,6 +1,6 @@
 import { Result, ResultWithData, ResultCode } from '../datatypes/result';
 import { MainController } from './mainController';
-import { ClientModel } from '../models/ClientModel';
+import { ClientModel } from '../models/clientModel';
 
 class ClientController extends MainController {
 
