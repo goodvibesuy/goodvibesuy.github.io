@@ -2,6 +2,17 @@ DROP DATABASE IF EXISTS `good`;
 CREATE DATABASE `good`;
 USE `good`;
 
+
+CREATE TABLE `client` (
+  `id` int(11) NOT NULL,
+  `names` varchar(56) NOT NULL,
+  `lastnames` varchar(56) NOT NULL,
+  `address` varchar(68) NOT NULL,
+  `phone` varchar(68) NOT NULL,
+  `coord` point DEFAULT NULL, 
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
 -- users
 DROP TABLE IF EXISTS `users`;
 CREATE TABLE `users` (

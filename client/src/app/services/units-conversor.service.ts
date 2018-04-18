@@ -1,5 +1,6 @@
 import { Injectable } from "@angular/core";
-import _ = require("lodash");
+//import _ = require("lodash");
+import * as _ from 'lodash';
 import { Unit } from "../models/unit.model";
 
 @Injectable()
