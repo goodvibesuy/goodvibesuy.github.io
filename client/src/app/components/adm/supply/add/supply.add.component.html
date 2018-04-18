@@ -17,6 +17,8 @@
                 <span class="input-group-addon">Unidad:</span>
                 <select class="form-control" [cenInputValidation]="getFormField('unit')" formControlName="unit">
                   <option *ngFor="let unit of units" [ngValue]="unit.id">{{unit.name}}</option>
+                  <hr>
+                  <option *ngFor="let cUnit of convertibleUnits" [ngValue]="cUnit.idUnit">{{cUnit.name}} ({{cUnit.value}} Kg)</option>
                 </select>
                 <div class="invalid-feedback" *ngIf="isFormFieldInvalid('unit')">Ingrese un valor válido.</div>
               </div>

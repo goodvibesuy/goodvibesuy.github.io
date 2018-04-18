@@ -15,6 +15,7 @@ import { ValidableForm } from '../../../../shared/ValidableForms';
 import { FormBuilder, Validators } from '@angular/forms';
 import { NgbDateFormatter } from '../../../../shared/DateParserFormatter';
 import { Subscription } from 'rxjs';
+import { UnitsConversorService, UnitsConvertion, Units } from '../../../../services/units-conversor.service';
 
 @Component({
     templateUrl: './supply.edit.component.html',
@@ -27,6 +28,7 @@ export class SupplyEditComponent extends ValidableForm implements OnInit, OnDest
     private units: Unit[];
     private imageFile: GVFile;
     private category: string = 'insumos';
+    private convertibleUnits: UnitsConvertion[];
 
     constructor(
         fb: FormBuilder,
@@ -35,7 +37,8 @@ export class SupplyEditComponent extends ValidableForm implements OnInit, OnDest
         private supplyService: SupplyService,
         private providerService: ProvidersService,
         private domSanitizer: DomSanitizer,
-        private imagesService: ImagesService
+        private imagesService: ImagesService,
+        private unitsConversorService: UnitsConversorService
     ) {
         super(fb)
         super.initForm({
@@ -48,6 +51,8 @@ export class SupplyEditComponent extends ValidableForm implements OnInit, OnDest
     }
 
     ngOnInit() {
+        this.convertibleUnits = this.unitsConversorService.getConvertibleUnits();
+
         this.paramsSub = this.activatedRoute.params.subscribe(
             params => {
                 this.providerService.getAll().subscribe(data => {
@@ -76,6 +81,11 @@ export class SupplyEditComponent extends ValidableForm implements OnInit, OnDest
             super.showValidationErrors();
         } else {
             var supply = super.getModel<Supply>({ 'price_date': NgbDateFormatter.unformatDate });
+
+            // Convertir el precio de la unidad X a Kg
+            supply.amount = this.unitsConversorService.convertTo(supply.unit, supply.amount, Units.Kg);
+            supply.unit = Units.Kg;
+
             if (!!this.imageFile) {
                 supply.path_image = supply.id + '_' + this.imageFile.name;
             }
@@ -100,16 +110,41 @@ export class SupplyEditComponent extends ValidableForm implements OnInit, OnDest
         }
     }
 
-    getImage() {
+    protected existUnitsConversions(idUnit: number): boolean {
+        let exists: boolean = false;
+
+        var unitsLoaded = !!this.units && (!!this.units.find(u => u.id == idUnit) || !!this.convertibleUnits.find(cu => cu.idUnit == idUnit));
+        if (unitsLoaded) {
+            var idUnit = this.units.find(u => u.id == idUnit) ? this.units.find(u => u.id == idUnit).id : null ||
+                this.convertibleUnits.find(cu => cu.idUnit == idUnit) ? this.convertibleUnits.find(cu => cu.idUnit == idUnit).idUnit : null;
+
+            exists = this.unitsConversorService.existUnitsConversions(idUnit);
+        }
+        return exists;
+    }
+
+    protected calculateUnitsConversions(idUnit: number, value: number): UnitsConvertion[] {
+        let conversions: UnitsConvertion[] = [];
+
+        if (this.existUnitsConversions(idUnit)) {
+            var idUnit = this.units.find(u => u.id == idUnit) ? this.units.find(u => u.id == idUnit).id : null ||
+                this.convertibleUnits.find(cu => cu.idUnit == idUnit) ? this.convertibleUnits.find(cu => cu.idUnit == idUnit).idUnit : null;
+
+            conversions = this.unitsConversorService.calculateUnitsConversions(idUnit, value);
+        }
+        return conversions;
+    }
+
+    protected getImage() {
         var supply = super.getModel<Supply>({ 'price_date': NgbDateFormatter.unformatDate });
-        return this.imageFile
+        return !!this.imageFile
             ? this.domSanitizer.bypassSecurityTrustUrl(
                 'data:image/' + this.imageFile.type + ';base64, ' + this.imageFile.data
             )
             : 'images/' + this.category + '/' + this.imagesService.getSmallImage(supply.path_image);
     }
 
-    handleSelected(file: GVFile): void {
+    protected handleSelected(file: GVFile): void {
         if (!!file) {
             this.imageFile = file;
         }

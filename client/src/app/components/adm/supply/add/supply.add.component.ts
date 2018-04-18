@@ -14,6 +14,7 @@ import { Unit } from '../../../../models/unit.model';
 import { GVFile } from '../../../../models/gvfile.model';
 import { ValidableForm } from '../../../../shared/ValidableForms';
 import { NgbDateFormatter } from '../../../../shared/DateParserFormatter';
+import { UnitsConversorService, UnitsConvertion, Units } from '../../../../services/units-conversor.service';
 
 @Component({
     templateUrl: './supply.add.component.html',
@@ -25,6 +26,7 @@ export class SupplyAddComponent extends ValidableForm implements OnInit {
     private units: Unit[];
     private imageFile: GVFile;
     private category: string = 'insumos';
+     private convertibleUnits: UnitsConvertion[];
 
     constructor(
         fb: FormBuilder,
@@ -32,7 +34,8 @@ export class SupplyAddComponent extends ValidableForm implements OnInit {
         private domSanitizer: DomSanitizer,
         private supplyService: SupplyService,
         private providerService: ProvidersService,
-        private imagesService: ImagesService
+        private imagesService: ImagesService,        
+         private unitsConversorService: UnitsConversorService
     ) {
         super(fb);
 
@@ -53,13 +56,20 @@ export class SupplyAddComponent extends ValidableForm implements OnInit {
         this.providerService.getAll().subscribe(data => {
             this.providers = data.data;
         });
+        this.convertibleUnits = this.unitsConversorService.getConvertibleUnits();
     }
 
     agregar(): void {
         if (super.isInvalid()) {
             super.showValidationErrors();
         } else {
-            var promise = this.supplyService.agregar(super.getModel<Supply>({'price_date': NgbDateFormatter.unformatDate }));
+            var supply = super.getModel<Supply>({'price_date': NgbDateFormatter.unformatDate });
+            
+            // Convertir el precio de la unidad X a Kg
+            supply.amount = this.unitsConversorService.convertTo(supply.unit, supply.amount, Units.Kg);
+            supply.unit = Units.Kg;
+
+            var promise = this.supplyService.agregar(supply);
 
             promise.subscribe(data => {
                 if (!!this.imageFile) {
@@ -81,11 +91,13 @@ export class SupplyAddComponent extends ValidableForm implements OnInit {
     }
 
     getImage() {
-        return this.imageFile
+        var supply = super.getModel<Supply>({ 'price_date': NgbDateFormatter.unformatDate });
+
+        return !!this.imageFile
             ? this.domSanitizer.bypassSecurityTrustUrl(
                 'data:image/' + this.imageFile.type + ';base64, ' + this.imageFile.data
             )
-            : 'images/' + this.category + '/' + this.imagesService.getSmallImage(this.imageFile.name);
+            : 'images/' + this.category + '/' + this.imagesService.getSmallImage(supply.path_image);
     }
 
     handleSelected(file: GVFile): void {
