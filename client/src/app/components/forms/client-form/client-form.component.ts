@@ -25,7 +25,6 @@ export class ClientFormComponent extends ValidableForm implements OnInit {
     ) {        
         super(fb);
 
-        console.log(this.titleForm);
         super.initForm({
             names: [null, Validators.required],
             address: [null, Validators.required],
@@ -36,6 +35,7 @@ export class ClientFormComponent extends ValidableForm implements OnInit {
     }
 
     ngOnInit() {
+        console.log(this.titleForm);
         this.initMap({ x: -34.909664, y: -56.163319 });        
     }
 
