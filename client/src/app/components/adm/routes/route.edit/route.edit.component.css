@@ -1,0 +1,26 @@
+div.card-body table.table tr td {
+    vertical-align: middle;
+}
+
+tr td.gu-orderable {
+    cursor: move;
+    background-color: whitesmoke;
+}
+
+tr.gu-mirror {
+    background-color: #f9f1d9;
+    border: 1px solid #b9a567;
+    border-top: 1px solid #b9a567;
+    border-bottom: 1px solid #b9a567;
+}
+
+tr.gu-mirror td {
+    visibility: hidden;
+}
+
+tr.gu-mirror td.gu-label{
+    display: block;
+    visibility: visible;
+    padding-left: 20px !important;
+
+}
