@@ -11,7 +11,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var mainController_1 = require("./mainController");
-var ClientModel_1 = require("../models/ClientModel");
+var clientModel_1 = require("../models/clientModel");
 var ClientController = /** @class */ (function (_super) {
     __extends(ClientController, _super);
     function ClientController() {
@@ -38,7 +38,7 @@ var ClientController = /** @class */ (function (_super) {
             });
         };
         _this.resource = "pos";
-        _this.clientModel = new ClientModel_1.ClientModel();
+        _this.clientModel = new clientModel_1.ClientModel();
         return _this;
     }
     return ClientController;

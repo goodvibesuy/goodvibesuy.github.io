@@ -2,9 +2,9 @@ DROP DATABASE IF EXISTS `good`;
 CREATE DATABASE `good`;
 USE `good`;
 
-
+DROP TABLE IF EXISTS `client`;
 CREATE TABLE `client` (
-  `id` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `names` varchar(56) NOT NULL,
   `lastnames` varchar(56) NOT NULL,
   `address` varchar(68) NOT NULL,

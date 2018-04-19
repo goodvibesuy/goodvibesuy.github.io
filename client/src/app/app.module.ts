@@ -78,6 +78,7 @@ import { ReporteViewingComponent } from './components/front/reporte-viewing/repo
 import { GroupPosService } from './services/group-pos.service';
 import { ClientComponent } from './components/adm/client/client.component';
 import { ClientService } from './services/client.service';
+import { ClientFormComponent } from './components/forms/client-form/client-form.component';
 
 @NgModule({
     declarations: [
@@ -111,7 +112,8 @@ import { ClientService } from './services/client.service';
         PosListComponent,
         TemplatesRoutesComponent,
         ReporteViewingComponent,
-        ClientComponent
+        ClientComponent,
+        ClientFormComponent
     ],
     imports: [
         BrowserModule,

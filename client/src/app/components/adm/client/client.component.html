@@ -1,57 +1,5 @@
-<div id="formAdd" class="card">
-    <div class="card-header">Agregar Cliente</div>
-    <div class="card-body">
-        <div class="row">
-            <div class="col-sm-6">
-                <div class="card tarjeta">
-                    <div class="card-body">
-                        <h5 class="card-title">Ubicación del cliente</h5>
-                        <div #gmapClient class="gmap"></div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-sm-6">
-                <div class="card tarjeta">
-                    <form [formGroup]="form">
-                        <div class="card-body">
-                            <h5 class="card-title">Información del Punto de venta </h5>
-                            <div class="form-group">
-                                <span class="input-group-addon">Nombres:</span>
-                                <input type="text" class="form-control" [cenInputValidation]="getFormField('names')" formControlName="names">
-                            </div>
-                            <div class="form-group">
-                                <span class="input-group-addon">Apellidos:</span>
-                                <input type="text" class="form-control" [cenInputValidation]="getFormField('lastnames')" formControlName="lastnames">
-                            </div>
-                            <div class="form-group">
-                                <span class="input-group-addon">Dirección:</span>
-                                <div class="input-group">
-                                    <div class="input-group-prepend">
-                                        <button type="button" class="btn btn-light" (click)="findLocation()" style="background-clip: padding-box; border: 1px solid #ced4da; border-radius: .25rem;border-top-right-radius: 0;border-bottom-right-radius: 0; padding:0;">
-                                            <img src="https://www.google.com/images/branding/product/2x/maps_96in128dp.png" width="35px">
-                                        </button>
-                                    </div>
-                                    <input type="text" class="form-control" (keyup.enter)="findLocation()" [cenInputValidation]="getFormField('address')" formControlName="address">
-                                    <div class="invalid-feedback" *ngIf="isFormFieldInvalid('address')">Ingrese un valor válido.</div>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <span class="input-group-addon">Telefono:</span>
-                                <input type="text" class="form-control" [cenInputValidation]="getFormField('phone')" formControlName="phone">
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="card-footer footer">
-        <button type="button" class="btn btn-danger" (click)="cancelAdd()">Cancelar</button>
-        <button type="button" class="btn btn-primary" (click)="add()">Agregar</button>
-    </div>
-</div>
-
-
+<app-client-form [titleForm]="Agregar"></app-client-form>
+<!--
 <table class="table table-striped">
     <thead class="thead-dark">
         <tr>
@@ -69,7 +17,7 @@
             <td>{{c.lastnames}}</td>
             <td>{{c.address}}</td>
             <td>
-                
+                {{c.phone}}
             </td>
             <td>
                 <a *ngIf="c.coord !== null" href="https://www.google.com/maps/dir/?api=1&destination={{c.coord.x}},{{c.coord.y}}&travelmode=driving">                    
@@ -84,3 +32,4 @@
         </tr>
     </tbody>
 </table>
+-->
