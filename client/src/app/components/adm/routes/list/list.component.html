@@ -11,7 +11,7 @@
         </thead>
         <tbody>
             <tr *ngFor="let i of routes">
-                <td>{{i.date}}</td>
+                <td>{{i.date | date:'shortDate':'':'es-UY'}}</td>
                 <td>{{i.name}}</td>
                 <td style="text-align: center;">
                     <a [routerLink]="['edit', i.id]">
@@ -26,4 +26,4 @@
             </tr>
         </tbody>
     </table>
-</div>
+</div> 
