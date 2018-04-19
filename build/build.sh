@@ -22,7 +22,7 @@ tsc
 echo ""
 echo "***************************"
 echo "Compilando angular: ng build"
-ng build
+ng build --locale es-UY 
 echo ""
 echo "***************************"
 echo "Actualizando imagenes cp de images a client"
@@ -37,5 +37,5 @@ forever start bin/www
 echo ""
 echo ""
 echo "***************************"
-echo "Instalación concluída"
+echo "Instalaciï¿½n concluï¿½da"
 forever list
