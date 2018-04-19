@@ -4,6 +4,7 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { ValidableForm } from '../../../shared/ValidableForms';
 import { Router } from '@angular/router';
 import { ClientService } from '../../../services/client.service';
+import { ClientComponent } from '../../adm/client/client.component';
 
 @Component({
     selector: 'app-client-form',
@@ -19,12 +20,12 @@ export class ClientFormComponent extends ValidableForm implements OnInit {
     private clients: Array<Client>;
 
     @Input() titleForm: string;
+    @Input() parentComponent: ClientComponent;
     constructor(fb: FormBuilder,
         private router: Router,
         private clientService: ClientService
     ) {        
         super(fb);
-
         super.initForm({
             names: [null, Validators.required],
             address: [null, Validators.required],
@@ -36,6 +37,7 @@ export class ClientFormComponent extends ValidableForm implements OnInit {
 
     ngOnInit() {
         console.log(this.titleForm);
+        console.log(this.parentComponent);
         this.initMap({ x: -34.909664, y: -56.163319 });        
     }
 
@@ -95,7 +97,7 @@ export class ClientFormComponent extends ValidableForm implements OnInit {
             this.clientService.addClient(cli)
                 .subscribe(response => {
                     if(response.result > 0){
-                        alert("El cliente se agrego correctamente");
+                        this.parentComponent.getClients();                        
                     }else{
                         alert(response.message);
                     }                    
