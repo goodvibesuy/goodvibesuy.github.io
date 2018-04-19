@@ -59,7 +59,8 @@ export class ViewingsModel extends MainModel {
     };
 
 
-    public viewingsBetween(sourceYear:number,sourceMonth:number,sourceDay:number,lastYear:number,lastMonth:number,lastDay:number, dbName: string,
+    public viewingsBetween(sourceYear:number,sourceMonth:number,sourceDay:number,lastYear:number,lastMonth:number,lastDay:number, idPos:number,
+        dbName: string,
         callBack: (r: ResultWithData<any[]>) => void): void {
             var mainThis = this;
             var pool = this.controllerConnections.getUserConnection(dbName);
@@ -69,8 +70,8 @@ export class ViewingsModel extends MainModel {
                     con.release();
                 } else {
                     con.query(
-                        "SELECT * FROM viewing v INNER JOIN pointofsale pos ON v.idpointofsale = pos.id WHERE v.date > ? AND v.date < ?  ORDER BY v.date DESC", 
-                        [sourceYear + "-" + sourceMonth + "-" + sourceDay,lastYear + "-" + lastMonth + "-" + lastDay],
+                        "SELECT * FROM viewing v INNER JOIN pointofsale pos ON v.idpointofsale = pos.id WHERE v.date > ? AND v.date < ? AND pos.id = ? ORDER BY v.date DESC", 
+                        [sourceYear + "-" + sourceMonth + "-" + sourceDay,lastYear + "-" + lastMonth + "-" + lastDay,idPos],
                         function (err: any, result: any) {
                             if (err) {
                                 console.log(err);

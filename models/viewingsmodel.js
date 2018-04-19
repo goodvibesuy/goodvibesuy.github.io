@@ -59,7 +59,7 @@ var ViewingsModel = /** @class */ (function (_super) {
     ViewingsModel.prototype.viewingsByRoute = function (idRoute, dbName, callBack) {
     };
     ;
-    ViewingsModel.prototype.viewingsBetween = function (sourceYear, sourceMonth, sourceDay, lastYear, lastMonth, lastDay, dbName, callBack) {
+    ViewingsModel.prototype.viewingsBetween = function (sourceYear, sourceMonth, sourceDay, lastYear, lastMonth, lastDay, idPos, dbName, callBack) {
         var mainThis = this;
         var pool = this.controllerConnections.getUserConnection(dbName);
         pool.getConnection(function (err, con) {
@@ -68,7 +68,7 @@ var ViewingsModel = /** @class */ (function (_super) {
                 con.release();
             }
             else {
-                con.query("SELECT * FROM viewing v INNER JOIN pointofsale pos ON v.idpointofsale = pos.id WHERE v.date > ? AND v.date < ?  ORDER BY v.date DESC", [sourceYear + "-" + sourceMonth + "-" + sourceDay, lastYear + "-" + lastMonth + "-" + lastDay], function (err, result) {
+                con.query("SELECT * FROM viewing v INNER JOIN pointofsale pos ON v.idpointofsale = pos.id WHERE v.date > ? AND v.date < ? AND pos.id = ? ORDER BY v.date DESC", [sourceYear + "-" + sourceMonth + "-" + sourceDay, lastYear + "-" + lastMonth + "-" + lastDay, idPos], function (err, result) {
                     if (err) {
                         console.log(err);
                         con.release();

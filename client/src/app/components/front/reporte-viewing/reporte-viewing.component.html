@@ -28,6 +28,14 @@
         </div>
     </div>
     <div class="form-group col-2">
+        <span class="input-group-addon">Punto de venta:</span>
+        <div class="form-group">
+            <div class="input-group">
+                <input type="text" [(ngModel)]="posId" />
+            </div>
+        </div>
+    </div>
+    <div class="form-group col-2">
         <button class="form-control" (click)=search()  style="margin-top: 25px;">Buscar</button>
     </div>
 </div>

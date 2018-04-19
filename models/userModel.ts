@@ -66,13 +66,17 @@ export class UserModel {
                 con.query(
                     "SELECT * FROM users WHERE id_user_master = ?", [idMaster],
                     function (err:any, userResult:any) {
+                        con.release();
                         if (err) {
                             console.error(now.toString(), " => ", err);
+                            callBack({
+                                result: false,  message: "Fallo la autenticacion."
+                            });
                         } else {
                             if (userResult.length > 0) {
                                 callBack({
                                     result: true, tokenId , user: userName,rolId, accountId, message: ""
-                                })                                
+                                });
                             }
                         }
                     });

@@ -67,8 +67,12 @@ var UserModel = /** @class */ (function () {
             else {
                 console.warn("Sacar lo que manda el rol para afuera");
                 con.query("SELECT * FROM users WHERE id_user_master = ?", [idMaster], function (err, userResult) {
+                    con.release();
                     if (err) {
                         console.error(now.toString(), " => ", err);
+                        callBack({
+                            result: false, message: "Fallo la autenticacion."
+                        });
                     }
                     else {
                         if (userResult.length > 0) {

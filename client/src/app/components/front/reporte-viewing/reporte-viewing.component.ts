@@ -17,6 +17,7 @@ export class ReporteViewingComponent implements OnInit {
     private viewingView: ViewingView;
     private sourceDate: NgbDateStruct;
     private lastDate: NgbDateStruct;
+    private posId:number;
     //private lines: LineViewingView[];
     constructor(private viewingsService: ViewingService,
         private productsService: ProductsService
@@ -27,7 +28,7 @@ export class ReporteViewingComponent implements OnInit {
     }
 
     search() {
-        this.viewingsService.viewingsBetween(this.sourceDate, this.lastDate).subscribe(
+        this.viewingsService.viewingsBetween(this.sourceDate, this.lastDate, this.posId).subscribe(
             response => {
                 this.viewings = response.data;
                 for (let i = 0; i < response.data.length; i++) {
