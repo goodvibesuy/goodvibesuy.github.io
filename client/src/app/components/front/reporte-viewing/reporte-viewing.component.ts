@@ -32,13 +32,14 @@ export class ReporteViewingComponent implements OnInit {
         private posService:PointOfSaleService,
         private productsService: ProductsService
     ) {
-        this.viewingView = new ViewingView();
+        
         
     }
 
     search() {
         this.viewingsService.viewingsBetween(this.sourceDate, this.lastDate, this.posId).subscribe(
             response => {
+                this.viewingView = new ViewingView();
                 this.viewings = response.data;
                 for (let i = 0; i < response.data.length; i++) {
                     let line: LineViewingView = new LineViewingView(response.data[i].date, null, 0);
