@@ -69,9 +69,14 @@ export class ViewingsModel extends MainModel {
                     console.error(err);
                     con.release();
                 } else {
+
+                    let filterIdPos = "";
+                    if (idPos !== 0){
+                        filterIdPos = "AND pos.id = ?";
+                    }
                     con.query(
-                        "SELECT * FROM viewing v INNER JOIN pointofsale pos ON v.idpointofsale = pos.id WHERE v.date > ? AND v.date < ? AND pos.id = ? ORDER BY v.date DESC", 
-                        [sourceYear + "-" + sourceMonth + "-" + sourceDay,lastYear + "-" + lastMonth + "-" + lastDay,idPos],
+                        "SELECT * FROM viewing v INNER JOIN pointofsale pos ON v.idpointofsale = pos.id WHERE v.date > ? AND v.date < ? " + filterIdPos + " ORDER BY v.date DESC", 
+                        [sourceYear + "-" + sourceMonth + "-" + sourceDay,lastYear + "-" + lastMonth + "-" + lastDay + " 23:59",idPos],
                         function (err: any, result: any) {
                             if (err) {
                                 console.log(err);

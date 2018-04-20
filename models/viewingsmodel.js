@@ -68,7 +68,11 @@ var ViewingsModel = /** @class */ (function (_super) {
                 con.release();
             }
             else {
-                con.query("SELECT * FROM viewing v INNER JOIN pointofsale pos ON v.idpointofsale = pos.id WHERE v.date > ? AND v.date < ? AND pos.id = ? ORDER BY v.date DESC", [sourceYear + "-" + sourceMonth + "-" + sourceDay, lastYear + "-" + lastMonth + "-" + lastDay, idPos], function (err, result) {
+                var filterIdPos = "";
+                if (idPos !== 0) {
+                    filterIdPos = "AND pos.id = ?";
+                }
+                con.query("SELECT * FROM viewing v INNER JOIN pointofsale pos ON v.idpointofsale = pos.id WHERE v.date > ? AND v.date < ? " + filterIdPos + " ORDER BY v.date DESC", [sourceYear + "-" + sourceMonth + "-" + sourceDay, lastYear + "-" + lastMonth + "-" + lastDay + " 23:59", idPos], function (err, result) {
                     if (err) {
                         console.log(err);
                         con.release();

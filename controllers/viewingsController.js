@@ -36,7 +36,7 @@ var ViewingsController = /** @class */ (function (_super) {
         };
         _this.viewingsBetween = function (req, res) {
             _this.verifyAccess(req, res, "viewing", function (dbName) {
-                _this.viewingsModel.viewingsBetween(req.params.sourceYear, req.params.sourceMonth, req.params.sourceDay, req.params.lastYear, req.params.lastMonth, req.params.lastDay, req.params.idPos, dbName, function (result) {
+                _this.viewingsModel.viewingsBetween(req.params.sourceYear, req.params.sourceMonth, req.params.sourceDay, req.params.lastYear, req.params.lastMonth, req.params.lastDay, Number(req.params.idPos), dbName, function (result) {
                     res.send(result);
                 });
             });

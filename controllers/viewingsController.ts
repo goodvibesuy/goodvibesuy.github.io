@@ -37,7 +37,7 @@ class ViewingsController extends MainController{
         this.verifyAccess(req,res,"viewing",
             (dbName:string) =>{
                 this.viewingsModel.viewingsBetween(req.params.sourceYear,req.params.sourceMonth,req.params.sourceDay,
-                    req.params.lastYear,req.params.lastMonth,req.params.lastDay,req.params.idPos, dbName,function (result:any) {
+                    req.params.lastYear,req.params.lastMonth,req.params.lastDay,Number(req.params.idPos), dbName,function (result:any) {
                     res.send(result);
                 });
             }             

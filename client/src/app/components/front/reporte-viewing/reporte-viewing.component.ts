@@ -1,10 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ViewingService } from '../../../services/viewing.service';
 import { ProductsService } from '../../../services/products.service';
 import { Product } from '../../../../../../datatypes/product';
 import { LineViewingView } from '../../../../../../datatypes/views/lineViewingView';
 import { ViewingView } from '../../../../../../datatypes/views/viewingView';
-import { NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
+import { NgbDateStruct, NgbTypeahead } from '@ng-bootstrap/ng-bootstrap';
+import { PointOfSaleService } from '../../../services/point-of-sale.service';
+import { PointOfSale } from '../../../../../../datatypes/pointOfSale';
+import { Subject } from 'rxjs';
+import { Observable } from 'rxjs/Observable';
 
 @Component({
     selector: 'app-reporte-viewing',
@@ -12,19 +16,24 @@ import { NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
     styleUrls: ['./reporte-viewing.component.scss']
 })
 export class ReporteViewingComponent implements OnInit {
+
+    @ViewChild('instancePOS') instancePOS: NgbTypeahead;
+    focus$ = new Subject<string>();
+    click$ = new Subject<string>();
+
     private viewings: any[];
     private products: any[];
+    private pointsOfSale: PointOfSale[];
     private viewingView: ViewingView;
     private sourceDate: NgbDateStruct;
     private lastDate: NgbDateStruct;
-    private posId:number;
-    //private lines: LineViewingView[];
+    private posId:number = 0;
     constructor(private viewingsService: ViewingService,
+        private posService:PointOfSaleService,
         private productsService: ProductsService
     ) {
         this.viewingView = new ViewingView();
-        //this.lines = new Array<LineViewingView>();
-        //this.products = new Map<number,Product>();
+        
     }
 
     search() {
@@ -38,34 +47,39 @@ export class ReporteViewingComponent implements OnInit {
                     this.viewingView.addLine(line);
                 }
             }
-        )
-        console.log(this.sourceDate);
+        );
     }
 
     ngOnInit() {
+        this.pointsOfSale = new Array<PointOfSale>();
         let now = new Date();
         this.sourceDate = { year: now.getFullYear(), month: now.getMonth() + 1, day: now.getDate() };
         this.lastDate = { year: now.getFullYear(), month: now.getMonth() + 1, day: now.getDate() + 1 };
 
+        this.posService.get().subscribe(
+            response => {
+                console.log(response);
+                this.pointsOfSale = response.data;
+            }
+        );
+
         this.productsService.getAll().subscribe(
             responseProducts => {
                 this.products = responseProducts.data;
-                this.search();
-                /*
-                this.viewingsService.viewingsBetween(this.sourceDate, this.lastDate).subscribe(
-                    response => {
-                        this.viewings = response.data;
-                        for (let i = 0; i < response.data.length; i++) {
-                            let line: LineViewingView = new LineViewingView(response.data[i].date, null, 0);
-                            line.setProducts(response.data[i].products);
-                            line.setPointOfSale(response.data[i].pos);
-                            this.viewingView.addLine(line);
-                        }
-                        console.log(this.viewingView.getLineWithMajorPercentReturn());
-                    }
-                )
-                */
+                this.search();                
             }
         );
     }
+
+    
+    searchPOS = (text$: Observable<string>) =>
+    {
+        console.log("--" , text$);
+    text$
+      .debounceTime(200)
+      .distinctUntilChanged()
+      .map(term => term.length < 2 ? []
+        : this.pointsOfSale.filter(v => v.name.toLowerCase().indexOf(term.toLowerCase()) > -1).slice(0, 10));
+      } 
+
 }
