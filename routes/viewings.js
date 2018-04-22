@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 var viewingsController = require('../controllers/viewingsController')
 
-router.get('/last/:cantViews', viewingsController.last);
+//router.get('/last/:cantViews', viewingsController.last);
 
 
 router.get('/viewingsBetween/:sourceYear/:sourceMonth/:sourceDay/:lastYear/:lastMonth/:lastDay/:idPos/:idProduct', viewingsController.viewingsBetween);
