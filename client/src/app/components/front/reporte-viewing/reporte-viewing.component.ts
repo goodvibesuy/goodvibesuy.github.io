@@ -22,7 +22,7 @@ export class ReporteViewingComponent implements OnInit {
     click$ = new Subject<string>();
 
     private viewings: any[];
-    private products: any[];
+    private products: Product[];
     private pointsOfSale: PointOfSale[];
     private viewingView: ViewingView;
     private sourceDate: NgbDateStruct;
@@ -70,6 +70,25 @@ export class ReporteViewingComponent implements OnInit {
                 this.search();                
             }
         );
+    }
+
+    totalSales():number{
+        let total = 0;        
+        for(let i = 0 ; i < this.products.length ; i++){
+            let idProduct = this.products[i].id;
+            total += this.viewingView.getTotalTransactionByProductByType(idProduct,"delivery") - 
+                    this.viewingView.getTotalTransactionByProductByType(idProduct,"return");
+        }
+        return total;
+    }
+
+    totalReturns():number{
+        let total = 0;        
+        for(let i = 0 ; i < this.products.length ; i++){
+            let idProduct = this.products[i].id;
+            total += this.viewingView.getTotalTransactionByProductByType(idProduct,"return");
+        }
+        return total;
     }
 
     

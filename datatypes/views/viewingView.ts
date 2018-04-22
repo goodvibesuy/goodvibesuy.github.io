@@ -35,7 +35,7 @@ export class ViewingView {
         return line;        
     }
 
-    public getTotalTransactionByProductByType(idProduct:number,type:"string"):number{
+    public getTotalTransactionByProductByType(idProduct:number,type:string):number{
         var quantity = 0;
         for(let i = 0 ; i < this.lines.length ; i++){
             if(this.lines[i].getTransactionByProductByType(idProduct,type)[0] !== undefined){

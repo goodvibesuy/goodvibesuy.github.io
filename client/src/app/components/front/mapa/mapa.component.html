@@ -43,7 +43,7 @@
                                 </div>
                             </div>
                             <span *ngIf="finishedViewing !== undefined && pointsOfSale.length !== undefined && pointsOfSale.length!== 0">
-                                Porcentajer realizado {{ finishedViewing.length / (pointsOfSale.length + finishedViewing.length) * 100 }}%
+                                Porcentajer realizado {{ (finishedViewing.length / (pointsOfSale.length + finishedViewing.length) * 100 ).toFixed(1) }}%
                             </span>
                         </div>
                     </div>
