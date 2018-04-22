@@ -23,6 +23,7 @@ class ViewingsController extends MainController{
         )
     }
 
+    /*
     public last = (req:any,res:any): void => { 
         this.verifyAccess(req,res,"viewing",
             (dbName:string) =>{
@@ -32,12 +33,14 @@ class ViewingsController extends MainController{
             }             
         )
     }
+    */
 
     public viewingsBetween = (req:any,res:any): void => { 
         this.verifyAccess(req,res,"viewing",
             (dbName:string) =>{
                 this.viewingsModel.viewingsBetween(req.params.sourceYear,req.params.sourceMonth,req.params.sourceDay,
-                    req.params.lastYear,req.params.lastMonth,req.params.lastDay,Number(req.params.idPos), dbName,function (result:any) {
+                    req.params.lastYear,req.params.lastMonth,req.params.lastDay,Number(req.params.idPos),Number(req.params.idProduct),
+                    dbName,function (result:any) {
                     res.send(result);
                 });
             }             

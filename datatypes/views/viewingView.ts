@@ -1,54 +1,68 @@
-import {PointOfSale} from '../pointOfSale';
-import {LineViewingView} from "./lineViewingView";
+import { PointOfSale } from '../pointOfSale';
+import { LineViewingView } from "./lineViewingView";
 
 export class ViewingView {
     private date: Date;
-    private pos:PointOfSale;
-    private lines:LineViewingView[];
+    private pos: PointOfSale;
+    private lines: LineViewingView[];
 
     constructor() {
         this.lines = new Array<LineViewingView>();
     }
 
-    public setDate(date:Date):void{
+    public setDate(date: Date): void {
         this.date = date;
     }
 
-    public getDate():Date{
+    public getDate(): Date {
         return this.date;
     }
 
-    public addLine(line:LineViewingView):void{
+    public addLine(line: LineViewingView): void {
         this.lines.push(line);
     }
 
-    public getLineWithMajorPercentReturn():LineViewingView{
-        var line:LineViewingView = null;
+    public getLineWithMajorPercentReturn(): LineViewingView {
+        var line: LineViewingView = null;
         var percent = 0;
-        for(let i = 0 ; i < this.lines.length ; i++){
-            var percentLine =  this.lines[i].getQuantityTransactionType("return") / this.lines[i].getQuantityTransactionType("delivery");
-            if(percentLine > percent){
+        for (let i = 0; i < this.lines.length; i++) {
+            var percentLine = this.lines[i].getQuantityTransactionType("return") / this.lines[i].getQuantityTransactionType("delivery");
+            if (percentLine > percent) {
                 percent = percentLine;
                 line = this.lines[i];
-            }            
+            }
         }
-        return line;        
+        return line;
     }
 
-    public getTotalTransactionByProductByType(idProduct:number,type:string):number{
+    public getTotalTransactionByProductByType(idProduct: number, type: string): number {
         var quantity = 0;
-        for(let i = 0 ; i < this.lines.length ; i++){
-            if(this.lines[i].getTransactionByProductByType(idProduct,type)[0] !== undefined){
-                quantity += this.lines[i].getTransactionByProductByType(idProduct,type)[0].quantity;
-            }            
+        for (let i = 0; i < this.lines.length; i++) {
+            if (this.lines[i].getTransactionByProductByType(idProduct, type)[0] !== undefined) {
+                quantity += this.lines[i].getTransactionByProductByType(idProduct, type)[0].quantity;
+            }
+        }
+        return quantity;
+    }
+
+
+    public getTotalTransactionByPOSByType(idPOS: number, type: string): number {
+        var quantity = 0;
+        let lines = this.getLinesByPOS(idPOS);        
+        for (let i = 0; i < lines.length; i++) {
+            quantity += lines[i].getQuantityTransactionType(type);
         }
         return quantity;
     }
 
     //viewingView.getLines()[i].getTransactionByProductByType(p.id,"delivery")[0].quantity
 
-    public getLines():LineViewingView[]{
+    public getLines(): LineViewingView[] {
         return this.lines;
+    }
+
+    public getLinesByPOS(idPOS: number): LineViewingView[] {
+        return this.lines.filter(input => input.getPointOfSale().id === idPOS);
     }
 
 }

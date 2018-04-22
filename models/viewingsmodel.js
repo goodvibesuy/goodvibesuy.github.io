@@ -24,6 +24,7 @@ var ViewingsModel = /** @class */ (function (_super) {
         return _this;
     }
     ViewingsModel.prototype.getViewingById = function (viewingId, dbName, callBack) {
+        console.warn("Revisar porque esta puesto idProducto en 0 siempre");
         var mainThis = this;
         var pool = this.controllerConnections.getUserConnection(dbName);
         pool.getConnection(function (err, con) {
@@ -50,7 +51,7 @@ var ViewingsModel = /** @class */ (function (_super) {
                         var line = new lineViewingView_1.LineViewingView(result[0].date, pos, result[0].idviewing);
                         var linesViewings = new Array();
                         linesViewings.push(line);
-                        mainThis.getProductsLine(0, linesViewings, dbName, con, callBack);
+                        mainThis.getProductsLine(0, linesViewings, 0, dbName, con, callBack);
                     }
                 });
             }
@@ -59,7 +60,7 @@ var ViewingsModel = /** @class */ (function (_super) {
     ViewingsModel.prototype.viewingsByRoute = function (idRoute, dbName, callBack) {
     };
     ;
-    ViewingsModel.prototype.viewingsBetween = function (sourceYear, sourceMonth, sourceDay, lastYear, lastMonth, lastDay, idPos, dbName, callBack) {
+    ViewingsModel.prototype.viewingsBetween = function (sourceYear, sourceMonth, sourceDay, lastYear, lastMonth, lastDay, idPos, idProduct, dbName, callBack) {
         var mainThis = this;
         var pool = this.controllerConnections.getUserConnection(dbName);
         pool.getConnection(function (err, con) {
@@ -68,11 +69,11 @@ var ViewingsModel = /** @class */ (function (_super) {
                 con.release();
             }
             else {
-                var filterIdPos = "";
+                var filters = "";
                 if (idPos !== 0) {
-                    filterIdPos = "AND pos.id = ?";
+                    filters = "AND pos.id = ?";
                 }
-                con.query("SELECT * FROM viewing v INNER JOIN pointofsale pos ON v.idpointofsale = pos.id WHERE v.date > ? AND v.date < ? " + filterIdPos + " ORDER BY v.date DESC", [sourceYear + "-" + sourceMonth + "-" + sourceDay, lastYear + "-" + lastMonth + "-" + lastDay + " 23:59", idPos], function (err, result) {
+                con.query("SELECT * FROM viewing v INNER JOIN pointofsale pos ON v.idpointofsale = pos.id WHERE v.date > ? AND v.date < ? " + filters + " ORDER BY v.date DESC", [sourceYear + "-" + sourceMonth + "-" + sourceDay, lastYear + "-" + lastMonth + "-" + lastDay + " 23:59", idPos], function (err, result) {
                     if (err) {
                         console.log(err);
                         con.release();
@@ -96,52 +97,56 @@ var ViewingsModel = /** @class */ (function (_super) {
                                 linesViewings.push(line);
                             }
                         }
-                        mainThis.getProductsLine(0, linesViewings, dbName, con, callBack);
+                        mainThis.getProductsLine(0, linesViewings, idProduct, dbName, con, callBack);
                     }
                 });
             }
         });
     };
     ;
-    ViewingsModel.prototype.getLast = function (cantViews, dbName, callBack) {
+    /*
+    public getLast(cantViews: number, dbName: string,
+        callBack: (r: ResultWithData<any[]>) => void): void {
         var mainThis = this;
         var pool = this.controllerConnections.getUserConnection(dbName);
-        pool.getConnection(function (err, con) {
+        pool.getConnection(function (err: any, con: any) {
             if (err) {
                 console.error(err);
                 con.release();
-            }
-            else {
-                con.query("SELECT * FROM viewing v INNER JOIN pointofsale pos ON v.idpointofsale = pos.id ORDER BY v.date DESC LIMIT 10", [cantViews], function (err, result) {
-                    if (err) {
-                        con.release();
-                        callBack({
-                            result: result_1.ResultCode.Error,
-                            message: err.code,
-                            data: result
-                        });
-                    }
-                    else {
-                        var viewings = result;
-                        var linesViewings = new Array();
-                        if (viewings.length > 0) {
-                            for (var i = 0; i < viewings.length; i++) {
-                                var pos = new pointOfSale_1.PointOfSale();
-                                pos.address = viewings[i].address;
-                                pos.name = viewings[i].name;
-                                pos.tel = viewings[i].tel;
-                                pos.id = viewings[i].id;
-                                var line = new lineViewingView_1.LineViewingView(viewings[i].date, pos, viewings[i].idviewing);
-                                linesViewings.push(line);
+            } else {
+                con.query(
+                    "SELECT * FROM viewing v INNER JOIN pointofsale pos ON v.idpointofsale = pos.id ORDER BY v.date DESC LIMIT 10", [cantViews],
+                    function (err: any, result: any) {
+                        if (err) {
+                            con.release();
+                            callBack({
+                                result: ResultCode.Error,
+                                message: err.code,
+                                data: result
+                            });
+                        } else {
+
+                            var viewings = result;
+                            var linesViewings: LineViewingView[] = new Array<LineViewingView>();
+                            if (viewings.length > 0) {
+                                for (let i = 0; i < viewings.length; i++) {
+                                    let pos: PointOfSale = new PointOfSale();
+                                    pos.address = viewings[i].address;
+                                    pos.name = viewings[i].name;
+                                    pos.tel = viewings[i].tel;
+                                    pos.id = viewings[i].id;
+                                    var line: LineViewingView = new LineViewingView(viewings[i].date, pos, viewings[i].idviewing);
+                                    linesViewings.push(line);
+                                }
                             }
+                            mainThis.getProductsLine(0, linesViewings, dbName, con, callBack);
                         }
-                        mainThis.getProductsLine(0, linesViewings, dbName, con, callBack);
                     }
-                });
+                );
             }
         });
     };
-    ;
+    */
     ViewingsModel.prototype.viewingByRouteAndPOS = function (idRoute, idPointofsale, dbName, callBack) {
         var mainThis = this;
         var pool = this.controllerConnections.getUserConnection(dbName);
@@ -173,10 +178,17 @@ var ViewingsModel = /** @class */ (function (_super) {
         });
     };
     ;
-    ViewingsModel.prototype.getProductsLine = function (index, lines, dbName, con, callBack) {
+    ViewingsModel.prototype.getProductsLine = function (index, lines, idProduct, dbName, con, callBack) {
         var mainThis = this;
         if (index < lines.length) {
-            con.query("SELECT * FROM viewing_product WHERE idviewing = ?", [lines[index].getIdViewing()], function (err, result) {
+            var queryParameters = new Array();
+            queryParameters.push(lines[index].getIdViewing());
+            var filters = "";
+            if (idProduct !== 0) {
+                filters = "AND idproduct = ?";
+                queryParameters.push(idProduct);
+            }
+            con.query("SELECT * FROM viewing_product WHERE idviewing = ? " + filters, queryParameters, function (err, result) {
                 if (err) {
                     con.release();
                     callBack({
@@ -191,7 +203,7 @@ var ViewingsModel = /** @class */ (function (_super) {
                             lines[index].addProduct(result[i]);
                         }
                     }
-                    mainThis.getProductsLine(index + 1, lines, dbName, con, callBack);
+                    mainThis.getProductsLine(index + 1, lines, idProduct, dbName, con, callBack);
                 }
             });
         }

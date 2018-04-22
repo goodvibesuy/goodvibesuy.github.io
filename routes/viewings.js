@@ -5,7 +5,7 @@ var viewingsController = require('../controllers/viewingsController')
 router.get('/last/:cantViews', viewingsController.last);
 
 
-router.get('/viewingsBetween/:sourceYear/:sourceMonth/:sourceDay/:lastYear/:lastMonth/:lastDay/:idPos', viewingsController.viewingsBetween);
+router.get('/viewingsBetween/:sourceYear/:sourceMonth/:sourceDay/:lastYear/:lastMonth/:lastDay/:idPos/:idProduct', viewingsController.viewingsBetween);
 
 router.get('/viewingsByRoute/:idRoute', viewingsController.viewingsByRoute);
 

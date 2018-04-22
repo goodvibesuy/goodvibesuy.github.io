@@ -24,10 +24,10 @@ export class ViewingService {
 		return this.http.get(this.viewingsURL + "/last/" +  cantViews );
     }
 
-    viewingsBetween(sourceDate:NgbDateStruct,lastDate:NgbDateStruct,idPos:number):Observable<any>{
+    viewingsBetween(sourceDate:NgbDateStruct,lastDate:NgbDateStruct,idPos:number,idProduct:number):Observable<any>{
         let stringSource = sourceDate.year + "/" + sourceDate.month + "/" + sourceDate.day;
         let stringLast = lastDate.year + "/" + lastDate.month + "/" + lastDate.day;
-        return this.http.get(this.viewingsURL + "/viewingsBetween/"+ stringSource + "/" + stringLast + "/" + idPos );
+        return this.http.get(this.viewingsURL + "/viewingsBetween/"+ stringSource + "/" + stringLast + "/" + idPos + "/" + idProduct );
     }
 
     getViewingsByRoute(idRoute: Number): Observable<any> {
