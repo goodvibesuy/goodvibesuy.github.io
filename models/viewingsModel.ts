@@ -72,14 +72,32 @@ export class ViewingsModel extends MainModel {
                 console.error(err);
                 con.release();
             } else {
-
+                let queryParameters: any[] = new Array();
                 let filters = "";
-                if (idPos !== 0) {
-                    filters = "AND pos.id = ?";
+                let haveDate:boolean = (Number(sourceYear) !== 0 && Number(sourceMonth) !== 0 && Number(sourceDay) !== 0);
+
+                if(haveDate){
+                    filters += "v.date > ? AND v.date < ?";
+                    queryParameters.push(sourceYear + "-" + sourceMonth + "-" + sourceDay);
+                    queryParameters.push(lastYear + "-" + lastMonth + "-" + lastDay + " 23:59");
                 }
+
+                if (idPos !== 0) {
+                    if(haveDate){
+                        filters += "AND pos.id = ?";
+                    }else{
+                        filters += " pos.id = ?";
+                    }                    
+                    queryParameters.push(idPos);
+                }
+
+                if(queryParameters.length > 0){
+                    filters = " WHERE " + filters;
+                }
+
                 con.query(
-                    "SELECT * FROM viewing v INNER JOIN pointofsale pos ON v.idpointofsale = pos.id WHERE v.date > ? AND v.date < ? " + filters + " ORDER BY v.date DESC",
-                    [sourceYear + "-" + sourceMonth + "-" + sourceDay, lastYear + "-" + lastMonth + "-" + lastDay + " 23:59", idPos],
+                    "SELECT * FROM viewing v INNER JOIN pointofsale pos ON v.idpointofsale = pos.id " + filters + " ORDER BY v.date DESC",
+                    queryParameters,
                     function (err: any, result: any) {
                         if (err) {
                             console.log(err);

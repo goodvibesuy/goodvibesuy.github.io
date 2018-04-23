@@ -29,6 +29,8 @@ export class ReporteViewingComponent implements OnInit {
     private lastDate: NgbDateStruct;
     private posId:number = 0;
     private idProduct:number = 0;
+    private useDates:boolean = true;
+
     constructor(private viewingsService: ViewingService,
         private posService:PointOfSaleService,
         private productsService: ProductsService
@@ -38,7 +40,14 @@ export class ReporteViewingComponent implements OnInit {
     }
 
     search() {
-        this.viewingsService.viewingsBetween(this.sourceDate, this.lastDate, this.posId, this.idProduct).subscribe(
+        let sourceDate:NgbDateStruct = this.sourceDate;
+        let lastDate:NgbDateStruct = this.lastDate;
+        if(!this.useDates){
+            sourceDate = null;
+            lastDate = null;
+        }       
+
+        this.viewingsService.viewingsBetween(sourceDate, lastDate, this.posId, this.idProduct).subscribe(
             response => {
                 this.viewingView = new ViewingView();
                 this.viewings = response.data;
@@ -92,7 +101,7 @@ export class ReporteViewingComponent implements OnInit {
         return total;
     }
 
-    
+
 
     
     searchPOS = (text$: Observable<string>) =>

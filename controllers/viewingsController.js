@@ -27,13 +27,17 @@ var ViewingsController = /** @class */ (function (_super) {
                 });
             });
         };
-        _this.last = function (req, res) {
-            _this.verifyAccess(req, res, "viewing", function (dbName) {
-                _this.viewingsModel.getLast(req.params.cantViews, dbName, function (result) {
-                    res.send(result);
-                });
-            });
-        };
+        /*
+        public last = (req:any,res:any): void => {
+            this.verifyAccess(req,res,"viewing",
+                (dbName:string) =>{
+                    this.viewingsModel.getLast(req.params.cantViews, dbName,function (result:any) {
+                        res.send(result);
+                    });
+                }
+            )
+        }
+        */
         _this.viewingsBetween = function (req, res) {
             _this.verifyAccess(req, res, "viewing", function (dbName) {
                 _this.viewingsModel.viewingsBetween(req.params.sourceYear, req.params.sourceMonth, req.params.sourceDay, req.params.lastYear, req.params.lastMonth, req.params.lastDay, Number(req.params.idPos), Number(req.params.idProduct), dbName, function (result) {

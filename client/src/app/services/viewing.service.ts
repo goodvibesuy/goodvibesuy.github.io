@@ -25,8 +25,19 @@ export class ViewingService {
     }
 
     viewingsBetween(sourceDate:NgbDateStruct,lastDate:NgbDateStruct,idPos:number,idProduct:number):Observable<any>{
-        let stringSource = sourceDate.year + "/" + sourceDate.month + "/" + sourceDate.day;
-        let stringLast = lastDate.year + "/" + lastDate.month + "/" + lastDate.day;
+        let stringSource:string;
+        let stringLast:string;
+        console.info(sourceDate,lastDate);
+        if(sourceDate === null){
+            stringSource = "0/0/0";
+        }else{
+            stringSource = sourceDate.year + "/" + sourceDate.month + "/" + sourceDate.day;
+        }
+        if(sourceDate === null){
+            stringLast = "0/0/0";
+        }else{
+            stringLast = lastDate.year + "/" + lastDate.month + "/" + lastDate.day;
+        }        
         return this.http.get(this.viewingsURL + "/viewingsBetween/"+ stringSource + "/" + stringLast + "/" + idPos + "/" + idProduct );
     }
 
