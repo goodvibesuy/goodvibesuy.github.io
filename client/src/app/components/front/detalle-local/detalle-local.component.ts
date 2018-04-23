@@ -36,9 +36,17 @@ export class DetalleLocalComponent implements OnInit {
         private viewingService: ViewingService
     ) { }
 
+    saveData():void{        
+        localStorage.setItem("productsToSend",JSON.stringify(this.productsToSend));
+    }
+
     ngOnInit(): void {
+
+        console.log(JSON.parse( localStorage.getItem("productsToSend")));
+
         this.viewingVisited = new ViewingView();
-        this.getPointOfSale(Number(this.route.snapshot.paramMap.get('id')));
+        this.getPointOfSale(Number(this.route.snapshot.paramMap.get('id'))); 
+
 
         this.productService.getPriceByProductByPOS(2,Number(this.route.snapshot.paramMap.get('id'))).subscribe(
             response => {
@@ -98,28 +106,39 @@ export class DetalleLocalComponent implements OnInit {
     }
 
     getProducts(): void {
-        this.productService.getAll().subscribe(response => {
-            this.products = response.data;
-            this.productsToSend = new Array();
-            for (let p of this.products) {
-                let product: any = {};
-                product.id = p.id;
-                product.name = p.name;
-                product.path_image = p.path_image;
-                product.typeTransaction = {};
-                product.typeTransaction.delivery = 0;
-                product.typeTransaction.return = 0;
-                product.typeTransaction.empty = 0;
-                this.productsToSend.push(product);
-            }
-            console.log(this.productsToSend);
-        });
+        if (typeof(Storage) !== "undefined") {            
+            console.log(localStorage.getItem("productsToSend"));
+            if(JSON.parse(localStorage.getItem("productsToSend")) === undefined || JSON.parse(localStorage.getItem("productsToSend")) === null){                
+                this.productService.getAll().subscribe(response => {
+                    this.products = response.data;
+                    this.productsToSend = new Array();
+                    for (let p of this.products) {
+                        let product: any = {};
+                        product.id = p.id;
+                        product.name = p.name;
+                        product.path_image = p.path_image;
+                        product.typeTransaction = {};
+                        product.typeTransaction.delivery = 0;
+                        product.typeTransaction.return = 0;
+                        product.typeTransaction.empty = 0;
+                        this.productsToSend.push(product);
+                    }
+                    localStorage.setItem("productsToSend",JSON.stringify(this.productsToSend));
+                });                
+            }else{                
+                this.productsToSend = JSON.parse(localStorage.getItem("productsToSend"));
+            }   
+                 
+        } else {
+            alert("Su navegador no soporta almacenamiento local");
+        }
     }
 
     agregar(): void {
         this.viewingService.addViewing(this.pointOfSale.id, this.productsToSend, this.annotation, this.pointOfSale.id, this.currentRoute).subscribe(response => {
             if (response.result > 0) {
                 this.submittedSuccessfully = true;
+                localStorage.setItem("productsToSend",JSON.stringify(null));
             }
         });
     }

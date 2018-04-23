@@ -63,7 +63,7 @@
                                             <div class="productos-title">
                                                 <label>{{pos.name}}</label>
                                             </div>
-                                            <a href="https://www.google.com/maps/dir/?api=1&destination={{pos.coord.x}},{{pos.coord.y}}&travelmode=driving">
+                                            <a *ngIf="pos.coord != null" href="https://www.google.com/maps/dir/?api=1&destination={{pos.coord.x}},{{pos.coord.y}}&travelmode=driving">
                                                 <!--<a href="comgooglemaps://?daddr=-34.923443,-56.159779&directionsmode=driving">-->
                                                 <span class="fa fa-map" style="margin-left:5px;font-size: 1.5em;color:#555;"></span>
                                             </a>
