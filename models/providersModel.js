@@ -25,7 +25,25 @@ var ProvidersModel = /** @class */ (function (_super) {
                 console.error(err);
             }
             else {
-                con.query('SELECT * FROM provider', function (err, result) {
+                con.query('SELECT * FROM provider ORDER BY name ASC', function (err, result) {
+                    if (err)
+                        throw err;
+                    con.release();
+                    callBack({ result: 1, message: 'OK', data: result });
+                });
+            }
+        });
+    };
+    ;
+    ProvidersModel.prototype.add = function (name, dbName, callBack) {
+        var pool = this.controllerConnections.getUserConnection(dbName);
+        pool.getConnection(function (err, con) {
+            if (err) {
+                con.release();
+                console.error(err);
+            }
+            else {
+                con.query('INSERT INTO provider (name) VALUES(?)', [name], function (err, result) {
                     if (err)
                         throw err;
                     con.release();

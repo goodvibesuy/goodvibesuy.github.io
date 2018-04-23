@@ -18,6 +18,17 @@ class ProvidersController extends MainController{
             }             
         )
     }
+
+    public add = (req:any,res:any): void => { 
+        this.verifyAccess(req,res,this.resource,
+            (dbName:string) =>{
+                providersModel.add(req.body.name,dbName,function(result:any) {
+                    res.send(result);
+                });
+            }             
+        )
+    }
+
 }
 
 module.exports = new ProvidersController();

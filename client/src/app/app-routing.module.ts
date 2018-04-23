@@ -1,7 +1,6 @@
 
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-
 import { DashboardComponent } from './components/front/dashboard/dashboard.component';
 import { LocalesComponent } from './components/front/locales/locales.component';
 import { ReportesComponent } from './components/front/reportes/reportes.component';
@@ -28,6 +27,7 @@ import { PosAddComponent } from './components/adm/pos/add/pos.add.component';
 import { TemplatesRoutesComponent } from './components/adm/templates-routes/templates-routes.component';
 import { ReporteViewingComponent } from './components/front/reporte-viewing/reporte-viewing.component';
 import { ClientComponent } from './components/adm/client/client.component';
+import { ProviderComponent } from './components/adm/provider/provider.component';
 
 const routes: Routes = [
     {
@@ -64,6 +64,10 @@ const routes: Routes = [
 	{
 		path: 'locales',
 		component: LocalesComponent
+    },
+    {
+		path: 'proveedores',
+		component: ProviderComponent
 	},
 	{
 		path: 'reportes',

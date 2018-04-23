@@ -16,7 +16,7 @@ class ProvidersModel extends MainModel{
                 con.release();
                 console.error(err);
             } else {
-                con.query('SELECT * FROM provider', function (
+                con.query('SELECT * FROM provider ORDER BY name ASC', function (
                     err: any,
                     result: any
                 ) {
@@ -27,6 +27,26 @@ class ProvidersModel extends MainModel{
             }
         });
     };
+
+    add(name:string,dbName: string, callBack: (r: ResultWithData<Provider[]>) => void): void {
+        var pool = this.controllerConnections.getUserConnection(dbName);
+        pool.getConnection(function (err: any, con: any) {
+            if (err) {
+                con.release();
+                console.error(err);
+            } else {
+                con.query('INSERT INTO provider (name) VALUES(?)',[name] ,function (
+                    err: any,
+                    result: any
+                ) {
+                    if (err) throw err;
+                    con.release();
+                    callBack({ result: 1, message: 'OK', data: result });
+                });
+            }
+        });
+    };
+
 }
 
 module.exports = new ProvidersModel();

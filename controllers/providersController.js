@@ -23,6 +23,13 @@ var ProvidersController = /** @class */ (function (_super) {
                 });
             });
         };
+        _this.add = function (req, res) {
+            _this.verifyAccess(req, res, _this.resource, function (dbName) {
+                providersModel.add(req.body.name, dbName, function (result) {
+                    res.send(result);
+                });
+            });
+        };
         _this.resource = "providers";
         return _this;
     }

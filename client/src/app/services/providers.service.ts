@@ -18,6 +18,10 @@ export class ProvidersService {
 		return this.http.get<ResultWithData<Provider[]>>(this.PROVIDERS_URL + '/getAll');
 	}
 
+    add(name:string): Observable<ResultWithData<Provider[]>> {
+		return this.http.post<ResultWithData<Provider[]>>(this.PROVIDERS_URL ,{name});
+	}
+
 	/**
 	 * Handle Http operation that failed.
 	 * Let the app continue.
