@@ -30,13 +30,12 @@ export class ReporteViewingComponent implements OnInit {
     private posId:number = 0;
     private idProduct:number = 0;
     private useDates:boolean = true;
+    private shareSales:any[];
 
     constructor(private viewingsService: ViewingService,
         private posService:PointOfSaleService,
         private productsService: ProductsService
-    ) {
-        
-        
+    ) {        
     }
 
     search() {
@@ -49,6 +48,7 @@ export class ReporteViewingComponent implements OnInit {
 
         this.viewingsService.viewingsBetween(sourceDate, lastDate, this.posId, this.idProduct).subscribe(
             response => {
+                this.shareSales = new Array();
                 this.viewingView = new ViewingView();
                 this.viewings = response.data;
                 for (let i = 0; i < response.data.length; i++) {
@@ -57,6 +57,14 @@ export class ReporteViewingComponent implements OnInit {
                     line.setPointOfSale(response.data[i].pos);
                     this.viewingView.addLine(line);
                 }
+
+                for(let i=0 ; i < this.products.length; i++){
+                    this.shareSales.push({"productName":this.products[i].name,"sales":
+                    this.viewingView.getTotalTransactionByProductByType(this.products[i].id,"delivery") -
+                     this.viewingView.getTotalTransactionByProductByType(this.products[i].id,"return")
+                    });
+                }              
+                console.log(this.shareSales);  
             }
         );
     }

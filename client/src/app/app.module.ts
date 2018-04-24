@@ -82,6 +82,7 @@ import { ClientComponent } from './components/adm/client/client.component';
 import { ClientService } from './services/client.service';
 import { ClientFormComponent } from './components/forms/client-form/client-form.component';
 import { ProviderComponent } from './components/adm/provider/provider.component';
+import { PieChartComponent } from './components/charts/pie-chart/pie-chart.component';
 
 @NgModule({
     declarations: [
@@ -117,7 +118,8 @@ import { ProviderComponent } from './components/adm/provider/provider.component'
         ReporteViewingComponent,
         ClientComponent,
         ClientFormComponent,
-        ProviderComponent
+        ProviderComponent,
+        PieChartComponent
     ],
     imports: [
         BrowserModule,
