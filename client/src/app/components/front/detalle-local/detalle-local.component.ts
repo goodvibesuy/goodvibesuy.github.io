@@ -110,33 +110,36 @@ export class DetalleLocalComponent implements OnInit {
         });
     }
 
-    getProducts(): void {
-        if (typeof(Storage) !== "undefined") {            
-            console.log(localStorage.getItem("productsToSend"));
-            if(JSON.parse(localStorage.getItem("productsToSend")) === undefined || JSON.parse(localStorage.getItem("productsToSend")) === null){                
-                this.productService.getAll().subscribe(response => {
-                    this.products = response.data;
-                    this.productsToSend = new Array();
-                    for (let p of this.products) {
-                        let product: any = {};
-                        product.id = p.id;
-                        product.name = p.name;
-                        product.path_image = p.path_image;
-                        product.typeTransaction = {};
-                        product.typeTransaction.delivery = 0;
-                        product.typeTransaction.return = 0;
-                        product.typeTransaction.empty = 0;
-                        this.productsToSend.push(product);
-                    }
-                    localStorage.setItem("productsToSend",JSON.stringify(this.productsToSend));
-                });                
-            }else{                
-                this.productsToSend = JSON.parse(localStorage.getItem("productsToSend"));
-            }   
-                 
-        } else {
-            alert("Su navegador no soporta almacenamiento local");
-        }
+    getProducts(): void {        
+        this.productService.getAll().subscribe(response => {
+            this.products = response.data;
+
+            if (typeof(Storage) !== "undefined") {            
+                console.log(localStorage.getItem("productsToSend"));
+                if(JSON.parse(localStorage.getItem("productsToSend")) === undefined || JSON.parse(localStorage.getItem("productsToSend")) === null){                
+                
+                        this.productsToSend = new Array();
+                        for (let p of this.products) {
+                            let product: any = {};
+                            product.id = p.id;
+                            product.name = p.name;
+                            product.path_image = p.path_image;
+                            product.typeTransaction = {};
+                            product.typeTransaction.delivery = 0;
+                            product.typeTransaction.return = 0;
+                            product.typeTransaction.empty = 0;
+                            this.productsToSend.push(product);
+                        }
+                        localStorage.setItem("productsToSend",JSON.stringify(this.productsToSend));
+                                
+                }else{                
+                    this.productsToSend = JSON.parse(localStorage.getItem("productsToSend"));
+                }   
+                    
+            } else {
+                alert("Su navegador no soporta almacenamiento local");
+            }
+        }); 
     }
 
     agregar(): void {
