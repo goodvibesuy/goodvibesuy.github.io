@@ -31,11 +31,13 @@ export class ReporteViewingComponent implements OnInit {
     private idProduct:number = 0;
     private useDates:boolean = true;
     private shareSales:any[];
+    private ocultarDetalles: boolean;
 
     constructor(private viewingsService: ViewingService,
         private posService:PointOfSaleService,
         private productsService: ProductsService
     ) {        
+        this.ocultarDetalles = window.innerWidth < 400;
     }
 
     search() {

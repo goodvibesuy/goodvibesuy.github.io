@@ -71,47 +71,18 @@
                 <tr>
                     <th>Fecha</th>
                     <th>Punto de venta</th>
-                    <th class="d-none d-sm-block">Productos</th>
-                    <th>Total</th>
+                    <th>Total 
+                        <a (click)="ocultarDetalles=!ocultarDetalles">
+                            <label style="cursor: pointer;white-space: nowrap;">({{ocultarDetalles?'+':'-'}}info)</label>
+                        </a>
+                    </th>
+                    <th [ngClass]="{'d-none': ocultarDetalles}">Productos</th>
                 </tr>
             </thead>
             <tbody>
                 <tr *ngFor="let v of viewings; index as i">
                     <td>{{v.date | date:'dd/MM/yyyy HH:mm'}}Hs</td>
-                    <td style="text-align: center;">
-                        {{v.pos.name}}
-                    </td>
-                    <td style="text-align: center;" class="d-none d-sm-block">
-                        <div class="container">
-                            <div class="row">
-                                <div *ngFor="let p of products" class="col">
-                                    <div class="container">
-                                        <div class="row">
-                                            <div class="col">
-                                                <div class="row" *ngIf="viewingView.getLines()[i].getTransactionByProductByType(p.id,'delivery')[0] !== undefined">
-                                                    <i class="fa fa-arrow-up" aria-hidden="true" style="color:#00aa00;"></i>
-                                                    <span style="color:#00aa00;">{{viewingView.getLines()[i].getTransactionByProductByType(p.id,"delivery")[0].quantity}}</span>
-                                                </div>
-                                                <div class="row" *ngIf="viewingView.getLines()[i].getTransactionByProductByType(p.id,'return')[0] !== undefined">
-                                                    <i class="fa fa-arrow-down" aria-hidden="true" style="color:#aa0000;"></i>
-                                                    <span style="color:#aa0000;">{{viewingView.getLines()[i].getTransactionByProductByType(p.id,"return")[0].quantity}}</span>
-                                                </div>
-                                                <div class="row" *ngIf="viewingView.getLines()[i].getTransactionByProductByType(p.id,'empty')[0] !== undefined">
-                                                    <i class="fa fa-arrow-down" aria-hidden="true" style="color:#0000ff;"></i>
-                                                    <span style="color:#0000ff;">{{viewingView.getLines()[i].getTransactionByProductByType(p.id,"empty")[0].quantity}}</span>
-                                                </div>
-                                            </div>
-                                            <div class="col">
-                                                <div class="row">
-                                                    <img src="images/productos/{{p.path_image}}" width="20px" height="60px" />
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </td>
+                    <td style="text-align: center;">{{v.pos.name}}</td>
                     <td style="background-color:#CCCCCC;">
                         <div class="container">
                             <div class="row">
@@ -127,7 +98,38 @@
                                 <span style="color:#0000ff;">{{viewingView.getLines()[i].getQuantityTransactionType("empty")}}</span>
                             </div>
                         </div>
-                    </td>
+                    </td>                    
+                    <td style="text-align: center;" [ngClass]="{'d-none': ocultarDetalles}">
+                            <div class="container">
+                                <div class="row">
+                                    <div *ngFor="let p of products" class="col" style="min-width: 90px;">
+                                        <div class="container">
+                                            <div class="row">
+                                                <div class="col">
+                                                    <div class="row" *ngIf="viewingView.getLines()[i].getTransactionByProductByType(p.id,'delivery')[0] !== undefined">
+                                                        <i class="fa fa-arrow-up" aria-hidden="true" style="color:#00aa00;"></i>
+                                                        <span style="color:#00aa00;">{{viewingView.getLines()[i].getTransactionByProductByType(p.id,"delivery")[0].quantity}}</span>
+                                                    </div>
+                                                    <div class="row" *ngIf="viewingView.getLines()[i].getTransactionByProductByType(p.id,'return')[0] !== undefined">
+                                                        <i class="fa fa-arrow-down" aria-hidden="true" style="color:#aa0000;"></i>
+                                                        <span style="color:#aa0000;">{{viewingView.getLines()[i].getTransactionByProductByType(p.id,"return")[0].quantity}}</span>
+                                                    </div>
+                                                    <div class="row" *ngIf="viewingView.getLines()[i].getTransactionByProductByType(p.id,'empty')[0] !== undefined">
+                                                        <i class="fa fa-arrow-down" aria-hidden="true" style="color:#0000ff;"></i>
+                                                        <span style="color:#0000ff;">{{viewingView.getLines()[i].getTransactionByProductByType(p.id,"empty")[0].quantity}}</span>
+                                                    </div>
+                                                </div>
+                                                <div class="col">
+                                                    <div class="row">
+                                                        <img src="images/productos/{{p.path_image}}" width="20px" height="60px" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
                 </tr>
             </tbody>
         </table>
