@@ -6,6 +6,8 @@ router.get('/', productsController.getAll);
 
 router.get('/:id', productsController.get);
 
+router.get('/priceByProduct/:idProduct', productsController.pricesByProduct);
+
 router.get('/priceByProductByPOS/:idProduct/:idPOS', productsController.priceByProductByPOS);
 
 router.post('/', productsController.add);
