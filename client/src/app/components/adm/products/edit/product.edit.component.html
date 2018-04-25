@@ -15,8 +15,10 @@
                             <div *ngIf="product !== undefined">
                             Precios:
                             <div *ngFor="let gpos of product.prices" class="row" >
-                                <div class="col">{{gpos.idProvicer}}</div>
-                                <div class="col"><input type="number" class="form-control" [(ngModel)]= "gpos.price" /></div>
+                                <div class="col-8">{{ findGroup(gpos.idGroupPointofsale).name }}</div>
+                                <div class="col-4">
+                                    <input type="number" class="form-control" [(ngModel)]= "gpos.amount" />
+                                </div>
                             </div>
                             </div>
                             <div class="form-group">
@@ -53,11 +55,11 @@
                                                     <th scope="col"></th>
                                                 </tr>
                                             </thead>
-                                            <tbody *ngIf="!!supplies && !!units">
+                                            <tbody *ngIf="!!product && !!supplies && !!units">
                                                 <tr *ngFor="let i of sortSupplies(product.supplies)" class="supply-row">
-                                                    <td>{{ filterSupply(i.idSupply).name }}</td>
-                                                    <td>{{ i.quantity }} {{filterUnit(i.idSupply).name}}</td>
-                                                    <td class="align-text-right">{{ filterSupply(i.idSupply).amount * i.quantity }}</td>
+                                                    <td>{{ findSupply(i.idSupply).name }}</td>
+                                                    <td>{{ i.quantity }} {{findUnit(i.idSupply).name}}</td>
+                                                    <td class="align-text-right">{{ findSupply(i.idSupply).amount * i.quantity }}</td>
                                                     <td style="text-align: center;">
                                                         <a (click)="deleteSupply(i.idSupply)" class="delete-product-supply">
                                                             <i class="fa fa-trash-o" style="font-size: 1.2em;"></i>

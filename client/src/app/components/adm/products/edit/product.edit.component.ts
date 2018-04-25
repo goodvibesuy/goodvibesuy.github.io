@@ -28,7 +28,7 @@ export class ProductEditComponent implements OnInit, OnDestroy {
 	private units: Unit[];
 	private supplies: Supply[];
     private imageFile: GVFile;
-    private groupPOS:GroupPos[];
+    private groupsPos: GroupPos[];
 
 	constructor(
 		private activatedRoute: ActivatedRoute,
@@ -48,6 +48,7 @@ export class ProductEditComponent implements OnInit, OnDestroy {
 			err => {
 				// TODO: handle error
 				console.error(err);
+                alert(err);
 			}
 		);
 		this.suppliesService.getLatestPrices().subscribe(
@@ -57,6 +58,7 @@ export class ProductEditComponent implements OnInit, OnDestroy {
 			err => {
 				// TODO: handle error
 				console.error(err);
+                alert(err);
 			}
 		);
 		this.suppliesService.getUnits().subscribe(
@@ -66,30 +68,50 @@ export class ProductEditComponent implements OnInit, OnDestroy {
 			err => {
 				// TODO: handle error
 				console.error(err);
+                alert(err);
 			}
 		);
     }
     
-
 	ngOnDestroy() {
 		this.paramsSub.unsubscribe();
 	}
 
 	loadProduct(id: number): void {
 		this.productsService.get(id).subscribe(res => {
-			if (res.result == ResultCode.Error) {
-				// TODO: handle error
-			} else {
+			if (res.result == ResultCode.OK) {
                 this.product = res.data;
-                this.product.prices = new Array<{idProvicer:number,price:number}>();
+                this.loadProductPrices(id);
+            } else {
+				// TODO: handle error
+                console.error(res.message);
+                alert(res.message);			
+            }
+		},
+        error => {
+            // TODO: error handling
+            console.error(error);
+            alert(error);
+        });
+    }
 
-                
-                this.groupPosService.get().subscribe(result => {
-                    if(result.result == ResultCode.OK){
-                        this.groupPOS = result.data;
-                        for (let gPOS = 0; gPOS < this.groupPOS.length; gPOS++){
-                            this.product.prices.push({idProvicer:this.groupPOS[gPOS].id,price:0});
-                        }
+    loadProductPrices(id:number): void{        
+        this.product.prices = [];
+
+        this.groupPosService.get().subscribe(result => {
+            if (result.result == ResultCode.OK) {
+                this.groupsPos = result.data;
+
+                this.productsService.getPriceByProduct(id).subscribe(result => {
+                    if (result.result == ResultCode.OK) {
+                        this.product.prices = result.data;
+
+                        // let pricesByGroup = result.data;                                
+
+                        // for (let pg = 0; gPOS < pricesByGroup.length; gPOS++){
+                        //     this.product.prices.push({idGroup: groupPOS[gPOS].id, nameGroup: groupPOS[gPOS].name, price: 0});
+                        // }
+
                     } else {
                         // TODO: error handling
                         console.error(result.message);
@@ -100,14 +122,20 @@ export class ProductEditComponent implements OnInit, OnDestroy {
                     // TODO: error handling
                     console.error(error);
                     alert(error);
-                }
-            );
+                });
 
-
-
-			}
-		});
-	}
+            } else {
+                // TODO: error handling
+                console.error(result.message);
+                alert(result.message);
+            }
+        },
+        error => {
+            // TODO: error handling
+            console.error(error);
+            alert(error);
+        });
+    }
 
 	actualizar() {
 		const category: string = 'productos';
@@ -151,17 +179,21 @@ export class ProductEditComponent implements OnInit, OnDestroy {
 			.value();
 	}
 
-	filterSupply(idSupply: number): Supply {
+    findGroup(idGroup: number): GroupPos {
+        return this.groupsPos.find(gp => gp.id == idGroup);
+    }
+
+	findSupply(idSupply: number): Supply {
 		return this.supplies.find(s => s.id == idSupply);
 	}
 
-	filterUnit(idSupply: number): Unit {
-		return this.units.find(u => u.id == this.filterSupply(idSupply).unit);
+	findUnit(idSupply: number): Unit {
+		return this.units.find(u => u.id == this.findSupply(idSupply).unit);
 	}
 	
 	totalSupplyPrice(): number {
 		return _.chain(this.product.supplies)
-			.map(s => s.quantity * this.filterSupply(s.idSupply).amount)
+			.map(s => s.quantity * this.findSupply(s.idSupply).amount)
 			.sum()
 			.value();
     }

@@ -47,8 +47,13 @@ export class DetalleLocalComponent implements OnInit {
         this.viewingVisited = new ViewingView();
         this.getPointOfSale(Number(this.route.snapshot.paramMap.get('id'))); 
 
-
-        this.productService.getPriceByProductByPOS(2,Number(this.route.snapshot.paramMap.get('id'))).subscribe(
+        /////////////
+        //
+        // TODO: OJO !! CON EL 2 
+        //
+        ////////////
+        const DOS: number = 2;
+        this.productService.getPriceByProductByPOS(DOS, Number(this.route.snapshot.paramMap.get('id'))).subscribe(
             response => {
                 console.log(response);
                 if(response.result > 0){

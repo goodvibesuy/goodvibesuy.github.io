@@ -5,6 +5,7 @@ import * as _ from 'lodash';
 
 var masterDBController = require('../bd/masterConnectionsBD');
 import { MainModel } from './mainModel';
+import { GroupPrice } from '../datatypes/groupPrice';
 
 
 export class ProductModel extends MainModel {
@@ -137,7 +138,7 @@ export class ProductModel extends MainModel {
     private updatePricesProduct(index: number, product: Product, callback: (r: Result) => void, con: any): void {
         var mainThis = this;
         con.query("INSERT INTO productprice(date,amount,idProduct,idGroupPointofsale) VALUES (NOW(),?,?,?)",
-            [product.prices[index].price, product.id, product.prices[index].idProvicer],
+            [product.prices[index].amount, product.id, product.prices[index].idGroupPointofsale],
             function (err: any, result: any) {
                 if (!!err) {
                     // TODO: log error -> common/errorHandling.ts
@@ -160,6 +161,38 @@ export class ProductModel extends MainModel {
                     }
                 }
             });
+    }
+
+    public pricesByProduct(idProduct: number, dbName: string, callBack: (r: ResultWithData<GroupPrice[]>) => void): void {
+        var pool = this.controllerConnections.getUserConnection(dbName);
+        pool.getConnection(function (err: any, con: any) {
+            if (err) {
+                con.release();
+                console.error(err);
+                callBack(<ResultWithData<GroupPrice[]>>{
+                    result: ResultCode.Error,
+                    message: err.code                    
+                });
+            } else {
+                con.query("SELECT * FROM productprice WHERE id in ( SELECT MAX(id) FROM productprice WHERE idProduct = ? GROUP BY idGroupPointofsale )", [idProduct],
+                    function (err: any, result: any) {
+                        if (!!err) {
+                            // TODO: log error -> common/errorHandling.ts
+                            // errorHandler.log(err);
+                            console.error(err);
+                            con.release();
+                            callBack({
+                                result: ResultCode.Error,
+                                message: err.code
+                            });
+                        } else {
+                            con.release();
+                            callBack({ result: ResultCode.OK, message: 'OK', data: result });
+                        }
+                    }
+                );
+            }
+        });
     }
 
     public priceByProductByPOS(idProduct: number, idPOS: number, dbName: string, callBack: (r: ResultWithData<any>) => void): void {
@@ -211,7 +244,6 @@ export class ProductModel extends MainModel {
             }
         });
     }
-
 
     delete(productId: number, dbName: string, callback: (r: Result) => void): void {
         var pool = this.controllerConnections.getUserConnection(dbName);

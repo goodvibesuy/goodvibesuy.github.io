@@ -19,7 +19,7 @@ class ProductsController extends MainController {
                     res.send(result);
                 });
             }
-        )
+        );
     }
 
     public get = (req: any, res: any): void => {
@@ -29,9 +29,17 @@ class ProductsController extends MainController {
                     res.send(result);
                 });
             }
-        )
+        );
     }
 
+
+    public pricesByProduct = (req:any, res:any):void =>{
+        this.verifyAccess(req, res, this.resource, (dbName: string) => {
+            this.productModel.pricesByProduct(req.params.idProduct,dbName,function (result: any) {
+                res.send(result);
+            });
+        });
+    }
 
     public priceByProductByPOS = (req:any,res:any):void =>{
         this.verifyAccess(req, res,this.resource,
@@ -40,7 +48,7 @@ class ProductsController extends MainController {
                     res.send(result);
                 });
             }
-        )
+        );
     }
     
 
@@ -51,7 +59,7 @@ class ProductsController extends MainController {
                     res.send(result);
                 });
             }
-        )
+        );
     }
 
     public update = (req: any, res: any): void => {
@@ -61,7 +69,7 @@ class ProductsController extends MainController {
                     res.send(result);
                 });
             }
-        )
+        );
     }
 
     public delete = (req: any, res: any): void => {
@@ -71,7 +79,7 @@ class ProductsController extends MainController {
                     res.send(result);
                 });
             }
-        )
+        );
     }
 
     public removeSupply = (req: any, res: any): void => {
@@ -81,9 +89,8 @@ class ProductsController extends MainController {
                     res.send(result);                    
                 });
             }
-        )
+        );
     }
-
 }
 
 module.exports = new ProductsController();
