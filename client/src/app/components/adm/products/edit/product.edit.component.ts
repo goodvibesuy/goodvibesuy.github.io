@@ -142,25 +142,31 @@ export class ProductEditComponent implements OnInit, OnDestroy {
         });
     }
 
+    isValid() {
+        return !!this.product && !!this.product.name && this.product.name != '';
+    }
+
 	actualizar() {
-		const category: string = 'productos';
-		var promise = this.productsService.update(this.product);
-		promise.subscribe(data => {
-			if (!!this.imageFile) {
-				this.imagesService
-					.sendImage(category, this.product.path_image, this.imageFile.size, this.imageFile.data)
-					.subscribe(
-						res => {
-							this.router.navigateByUrl('/admin/productos');
-						},
-						error => {
-							console.error(error);
-						}
-					);
-			} else {
-				this.router.navigateByUrl('/admin/productos');
-			}
-		});
+        if(this.isValid()){
+            const category: string = 'productos';
+            var promise = this.productsService.update(this.product);
+            promise.subscribe(data => {
+                if (!!this.imageFile) {
+                    this.imagesService
+                        .sendImage(category, this.product.path_image, this.imageFile.size, this.imageFile.data)
+                        .subscribe(
+                            res => {
+                                this.router.navigateByUrl('/admin/productos');
+                            },
+                            error => {
+                                console.error(error);
+                            }
+                        );
+                } else {
+                    this.router.navigateByUrl('/admin/productos');
+                }
+            });
+        }
 	}
 
 	getImage() {

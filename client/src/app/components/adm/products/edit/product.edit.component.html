@@ -10,7 +10,8 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <span class="input-group-addon">Nombre:</span>
-                                <input type="text" class="form-control" id="name" *ngIf="product" [(ngModel)]="product.name">
+                                <input type="text" class="form-control" id="name" *ngIf="!!product" [(ngModel)]="product.name">
+                                <div class="invalid-feedback" *ngIf="!!product&&product.name==''">Ingrese un valor válido.</div>
                             </div>
                             <div *ngIf="!!product && !!groupsPos && !!product.prices">
                                 Precios:
@@ -27,9 +28,10 @@
                                     <file-picker text="Cambiar" (selected)="handleSelected($event)" class="small_edit_image_action"></file-picker>
                                     <div class="small_edit_image">
                                         <img [src]="getImage()" *ngIf="product" />
-                                        <div *ngIf="filestring" class="img_stream">
+                                        
+                                        <!--<div *ngIf="filestring" class="img_stream">
                                             {{filestring}}
-                                        </div>
+                                        </div>-->
                                     </div>
                                 </div>
                             </div>
