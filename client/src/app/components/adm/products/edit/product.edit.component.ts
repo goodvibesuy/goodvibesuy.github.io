@@ -95,9 +95,11 @@ export class ProductEditComponent implements OnInit, OnDestroy {
         });
     }
 
-    loadProductPrices(id:number): void{        
-        this.product.prices = [];
+    findPrice(idGroup){
+        return this.product.prices.find(f=> f.idGroupPointofsale == idGroup);
+    }
 
+    loadProductPrices(id:number): void{
         this.groupPosService.get().subscribe(result => {
             if (result.result == ResultCode.OK) {
                 this.groupsPos = result.data;
@@ -106,11 +108,14 @@ export class ProductEditComponent implements OnInit, OnDestroy {
                     if (result.result == ResultCode.OK) {
                         this.product.prices = result.data;
 
-                        // let pricesByGroup = result.data;                                
-
-                        // for (let pg = 0; gPOS < pricesByGroup.length; gPOS++){
-                        //     this.product.prices.push({idGroup: groupPOS[gPOS].id, nameGroup: groupPOS[gPOS].name, price: 0});
-                        // }
+                        // agrega en product.prices los grupos groupsPos que faltan
+                        if(this.product.prices.length < this.groupsPos.length) {
+                            let newPrices = this.groupsPos.filter(gpos => this.product.prices.filter(p=>p.idGroupPointofsale == gpos.id).length==0);
+                            for (let index = 0; index < newPrices.length; index++) {
+                                const element = newPrices[index];
+                                this.product.prices.push({idGroupPointofsale: element.id, amount: 0});
+                            }
+                        }
 
                     } else {
                         // TODO: error handling
