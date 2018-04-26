@@ -57,9 +57,6 @@ var ViewingsModel = /** @class */ (function (_super) {
             }
         });
     };
-    ViewingsModel.prototype.viewingsByRoute = function (idRoute, dbName, callBack) {
-    };
-    ;
     ViewingsModel.prototype.viewingsBetween = function (sourceYear, sourceMonth, sourceDay, lastYear, lastMonth, lastDay, idPos, idProduct, dbName, callBack) {
         var mainThis = this;
         var pool = this.controllerConnections.getUserConnection(dbName);
@@ -163,6 +160,36 @@ var ViewingsModel = /** @class */ (function (_super) {
         });
     };
     */
+    ViewingsModel.prototype.viewingsByRoute = function (idRoute, dbName, callBack) {
+        var mainThis = this;
+        var pool = this.controllerConnections.getUserConnection(dbName);
+        pool.getConnection(function (err, con) {
+            if (err) {
+                console.error(err);
+                con.release();
+            }
+            else {
+                con.query("SELECT * FROM route_pointofsale rps INNER JOIN viewing  v ON rps.idViewing = v.idviewing WHERE idRoute = ? ", [idRoute], function (err, result) {
+                    con.release();
+                    if (err) {
+                        callBack({
+                            result: result_1.ResultCode.Error,
+                            message: err.code,
+                            data: result
+                        });
+                    }
+                    else {
+                        callBack({
+                            result: result_1.ResultCode.OK,
+                            message: 'OK',
+                            data: result
+                        });
+                    }
+                });
+            }
+        });
+    };
+    ;
     ViewingsModel.prototype.viewingByRouteAndPOS = function (idRoute, idPointofsale, dbName, callBack) {
         var mainThis = this;
         var pool = this.controllerConnections.getUserConnection(dbName);
@@ -247,6 +274,54 @@ var ViewingsModel = /** @class */ (function (_super) {
                     else {
                         con.beginTransaction(function (err) {
                             con.query("INSERT INTO viewing  (date, idpointofsale,idUser,annotation) VALUES(NOW(),?,?,?)", [idpointofsail, idUser, annotation], function (err, result) {
+                                if (err) {
+                                    console.log(err);
+                                    con.release();
+                                    callBack({ result: -1, message: "Error interno." });
+                                    //if (err.code === "ER_DUP_ENTRY") {
+                                    //    con.release();
+                                    //}
+                                }
+                                else {
+                                    var idviewing = result.insertId;
+                                    //TODO revisar el cao en el que no se actualiza nada.
+                                    con.query("UPDATE route_pointofsale  SET idViewing = ? WHERE idPointofsale = ?  AND idRoute = ?", [idviewing, idpointofsail, idRoute], function (err, result) {
+                                        if (err) {
+                                            console.log(err);
+                                            con.release();
+                                            callBack({ result: -1, message: "Error interno." });
+                                        }
+                                        else {
+                                            mainThis.addViewingProducts(0, 0, ["delivery", "return", "empty"], idviewing, idRoute, data, con, callBack);
+                                        }
+                                    });
+                                }
+                            });
+                        });
+                    }
+                });
+            }
+            else {
+                callBack({ result: -1, message: "Error con el usuario." });
+            }
+        });
+    };
+    ;
+    ViewingsModel.prototype.updateVisit = function (userName, idViewing, idpointofsail, data, annotation, idPOS, idRoute, dbName, callBack) {
+        var mainThis = this;
+        this.userModel.userByUserName(userName, dbName, function (result) {
+            if (result.data !== undefined && result.data.length > 0) {
+                var idUser = result.data[0].id;
+                var pool = mainThis.controllerConnections.getUserConnection(dbName);
+                pool.getConnection(function (err, con) {
+                    if (err) {
+                        console.log(err);
+                        con.release();
+                        callBack({ result: -1, message: "Error interno." });
+                    }
+                    else {
+                        con.beginTransaction(function (err) {
+                            con.query("UPDATE viewing  SET date = ?, idpointofsale = ?, idUser = ?, annotation = ? WHERE idviewing = ?", [idpointofsail, idUser, annotation, idViewing], function (err, result) {
                                 if (err) {
                                     console.log(err);
                                     con.release();

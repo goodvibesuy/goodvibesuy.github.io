@@ -32,6 +32,13 @@ var ProductsController = /** @class */ (function (_super) {
                 });
             });
         };
+        _this.pricesByProduct = function (req, res) {
+            _this.verifyAccess(req, res, _this.resource, function (dbName) {
+                _this.productModel.pricesByProduct(req.params.idProduct, dbName, function (result) {
+                    res.send(result);
+                });
+            });
+        };
         _this.priceByProductByPOS = function (req, res) {
             _this.verifyAccess(req, res, _this.resource, function (dbName) {
                 _this.productModel.priceByProductByPOS(req.params.idProduct, req.params.idPOS, dbName, function (result) {

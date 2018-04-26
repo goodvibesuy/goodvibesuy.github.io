@@ -151,7 +151,7 @@ var ProductModel = /** @class */ (function (_super) {
     ;
     ProductModel.prototype.updatePricesProduct = function (index, product, callback, con) {
         var mainThis = this;
-        con.query("INSERT INTO productprice(date,amount,idProduct,idGroupPointofsale) VALUES (NOW(),?,?,?)", [product.prices[index].price, product.id, product.prices[index].idProvicer], function (err, result) {
+        con.query("INSERT INTO productprice(date,amount,idProduct,idGroupPointofsale) VALUES (NOW(),?,?,?)", [product.prices[index].amount, product.id, product.prices[index].idGroupPointofsale], function (err, result) {
             if (!!err) {
                 // TODO: log error -> common/errorHandling.ts
                 // errorHandler.log(err);
@@ -173,6 +173,37 @@ var ProductModel = /** @class */ (function (_super) {
                         message: 'OK'
                     });
                 }
+            }
+        });
+    };
+    ProductModel.prototype.pricesByProduct = function (idProduct, dbName, callBack) {
+        var pool = this.controllerConnections.getUserConnection(dbName);
+        pool.getConnection(function (err, con) {
+            if (err) {
+                con.release();
+                console.error(err);
+                callBack({
+                    result: result_1.ResultCode.Error,
+                    message: err.code
+                });
+            }
+            else {
+                con.query("SELECT * FROM productprice WHERE id in ( SELECT MAX(id) FROM productprice WHERE idProduct = ? GROUP BY idGroupPointofsale )", [idProduct], function (err, result) {
+                    if (!!err) {
+                        // TODO: log error -> common/errorHandling.ts
+                        // errorHandler.log(err);
+                        console.error(err);
+                        con.release();
+                        callBack({
+                            result: result_1.ResultCode.Error,
+                            message: err.code
+                        });
+                    }
+                    else {
+                        con.release();
+                        callBack({ result: result_1.ResultCode.OK, message: 'OK', data: result });
+                    }
+                });
             }
         });
     };

@@ -55,11 +55,6 @@ export class ViewingsModel extends MainModel {
         });
     }
 
-    public viewingsByRoute(idRoute: number, dbName: string,
-        callBack: (r: ResultWithData<any[]>) => void): void {
-
-    };
-
 
     public viewingsBetween(sourceYear: number, sourceMonth: number, sourceDay: number, lastYear: number, lastMonth: number, lastDay: number,
         idPos: number, idProduct: number,
@@ -173,6 +168,41 @@ export class ViewingsModel extends MainModel {
         });
     };
     */
+
+
+   public viewingsByRoute(idRoute: number, dbName: string,
+    callBack: (r: ResultWithData<any[]>) => void): void {
+    var mainThis = this;
+    var pool = this.controllerConnections.getUserConnection(dbName);
+    pool.getConnection(function (err: any, con: any) {
+        if (err) {
+            console.error(err);
+            con.release();
+        } else {
+            con.query(
+                "SELECT * FROM route_pointofsale rps INNER JOIN viewing  v ON rps.idViewing = v.idviewing WHERE idRoute = ? ",
+                [idRoute],
+                function (err: any, result: any) {
+                    con.release();
+                    if (err) {                        
+                        callBack({
+                            result: ResultCode.Error,
+                            message: err.code,
+                            data: result
+                        });
+                    } else {                        
+                        callBack({
+                            result: ResultCode.OK,
+                            message: 'OK',
+                            data: result
+                        });
+                    }
+                }
+            );
+        }
+    });
+};
+
 
     public viewingByRouteAndPOS(idRoute: number, idPointofsale: number, dbName: string,
         callBack: (r: ResultWithData<any[]>) => void): void {
@@ -303,6 +333,61 @@ export class ViewingsModel extends MainModel {
             }
         });
     };
+
+
+    public updateVisit(userName: string,idViewing:number, idpointofsail: number, data: any[], annotation: string, idPOS: number, idRoute: number,
+        dbName: string, callBack: (r: Result) => void): void {
+        var mainThis = this;
+        this.userModel.userByUserName(userName, dbName, function (result: ResultWithData<any[]>) {
+            if (result.data !== undefined && result.data.length > 0) {
+                var idUser = result.data[0].id;
+                var pool = mainThis.controllerConnections.getUserConnection(dbName);
+                pool.getConnection(function (err: any, con: any) {
+                    if (err) {
+                        console.log(err);
+                        con.release();
+                        callBack({ result: -1, message: "Error interno." });
+                    } else {
+                        con.beginTransaction(function (err: any) {
+                            con.query(
+                                "UPDATE viewing  SET date = ?, idpointofsale = ?, idUser = ?, annotation = ? WHERE idviewing = ?",
+                                [idpointofsail, idUser, annotation, idViewing],
+                                function (err: any, result: any) {
+                                    if (err) {
+                                        console.log(err);
+                                        con.release();
+                                        callBack({ result: -1, message: "Error interno." });
+                                        //if (err.code === "ER_DUP_ENTRY") {
+                                        //    con.release();
+                                        //}
+                                    } else {
+                                        var idviewing = result.insertId;
+                                        //TODO revisar el cao en el que no se actualiza nada.
+                                        con.query(
+                                            "UPDATE route_pointofsale  SET idViewing = ? WHERE idPointofsale = ?  AND idRoute = ?",
+                                            [idviewing, idpointofsail, idRoute],
+                                            function (err: any, result: any) {
+                                                if (err) {
+                                                    console.log(err);
+                                                    con.release();
+                                                    callBack({ result: -1, message: "Error interno." });
+                                                } else {
+                                                    mainThis.addViewingProducts(0, 0, ["delivery", "return", "empty"], idviewing, idRoute, data, con, callBack);
+                                                }
+                                            }
+                                        );
+                                    }
+                                }
+                            );
+                        });
+                    }
+                });
+            } else {
+                callBack({ result: -1, message: "Error con el usuario." });
+            }
+        });
+    };
+
 
     public addViewingProducts(index: number, indexTransaction: number, typeTransaction: string[], idviewing: number, idRoute: number,
         data: any[], con: any, callBack: (r: Result) => void): void {

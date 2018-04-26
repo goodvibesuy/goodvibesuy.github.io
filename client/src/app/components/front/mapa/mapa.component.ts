@@ -5,6 +5,7 @@ import { ActivatedRoute } from '@angular/router';
 import { ProductsService } from '../../../services/products.service';
 import { Product } from '../../../../../../datatypes/product';
 import { AuthenticateService } from '../../../services/authenticate.service';
+import { ViewingService } from '../../../services/viewing.service';
 
 @Component({
     selector: 'app-mapa',
@@ -22,7 +23,8 @@ export class MapaComponent implements OnInit {
     constructor(
         private route: ActivatedRoute,
         private routeService: RouteService,
-        private authenticateService: AuthenticateService
+        private authenticateService: AuthenticateService,
+        private viewingService: ViewingService
     ) {
         this.stock = new Array<{ product: Product, quantity: number }>();
     }
@@ -69,20 +71,24 @@ export class MapaComponent implements OnInit {
         this.currentRoute = idRoute;
         this.routeService.getPointsOfSalesRoute(idRoute).subscribe(
             response => {
-                this.pointsOfSale = response;
-                console.log(response);
-                //this.pointsOfSale.sort(this.compareViewing);
-                this.finishedViewing = this.getFinishedViewing();
-                this.pointsOfSale = this.getUnFinishedViewing();
-                console.log(response);
-                this.routeService.getStockRoute(idRoute).subscribe(
-                    responseStock => {
-                        this.stock = responseStock;
-                        //console.log(response);
+                this.viewingService.getViewingsByRoute(idRoute).subscribe(
+                    responseViewing => {
+
+                        this.pointsOfSale = response;
+                        console.log(response);
+                        //this.pointsOfSale.sort(this.compareViewing);
+                        this.finishedViewing = this.getFinishedViewing();
+                        this.pointsOfSale = this.getUnFinishedViewing();
+                        console.log(response);
+                        this.routeService.getStockRoute(idRoute).subscribe(
+                            responseStock => {
+                                this.stock = responseStock;
+                                //console.log(response);
+                            }
+                        );
                     }
                 )
             }
-        )
-        console.log(idRoute);
+        )        
     }
 }
