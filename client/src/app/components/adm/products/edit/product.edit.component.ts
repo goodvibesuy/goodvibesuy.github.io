@@ -149,6 +149,14 @@ export class ProductEditComponent implements OnInit, OnDestroy {
 	actualizar() {
         if(this.isValid()){
             const category: string = 'productos';
+            
+            for (let index = 0; index < this.product.prices.length; index++) {
+                const element = this.product.prices[index];
+                if(element.amount==null){
+                    element.amount = 0;
+                }
+            }
+
             var promise = this.productsService.update(this.product);
             promise.subscribe(data => {
                 if (!!this.imageFile) {
