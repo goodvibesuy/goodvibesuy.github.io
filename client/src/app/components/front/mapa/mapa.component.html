@@ -29,71 +29,76 @@
         <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
 
         -->
-            <div class="flex flex-wrap d-flex justify-content-around content-center content-between boxs-container">
-                <div class="container">
+    <div class="flex flex-wrap d-flex justify-content-around content-center content-between boxs-container">
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <span>
+                        Stock del recorrido.
+                    </span>
                     <div class="row">
-                        <div class="col">
-                            <span>
-                                Stock del recorrido.
-                            </span>
-                            <div class="row">
-                                <div *ngFor="let s of stock" class="col">
-                                    {{s.quantity}}
-                                    <img src="images/productos/{{s.product.path_image}}" width="15px" height="40px" />
-                                </div>
-                            </div>
-                            <span *ngIf="finishedViewing !== undefined && pointsOfSale.length !== undefined && pointsOfSale.length!== 0">
-                                Porcentajer realizado {{ (finishedViewing.length / (pointsOfSale.length + finishedViewing.length) * 100 ).toFixed(1) }}%
-                            </span>
+                        <div *ngFor="let s of stock" class="col">
+                            {{s.quantity}}
+                            <img src="images/productos/{{s.product.path_image}}" width="15px" height="40px" />
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col">
-                            <b>
-                                Puntos de venta pendientes.
-                            </b>
-                            <div class="boxs-productos border" style="padding: 10px;" *ngFor="let pos of pointsOfSale">
-                                <div class="container">
-                                    <div class="row">
-                                        <div style="font-size:20px;padding: 10px;" class="col2">
-                                            <img *ngIf="pos.image !== '' && pos.image !== null" style="width:50px;" src="images/locales/{{pos.image}}" />
-                                            <i *ngIf="pos.image === '' || pos.image === null" class="fa fa-home" style="font-size: 2.0em;"></i>
-                                        </div>
-                                        <div class="col">
-                                            <div class="productos-title">
-                                                <label>{{pos.name}}</label>
-                                            </div>
-                                            <a *ngIf="pos.coord != null" href="https://www.google.com/maps/dir/?api=1&destination={{pos.coord.x}},{{pos.coord.y}}&travelmode=driving">
-                                                <!--<a href="comgooglemaps://?daddr=-34.923443,-56.159779&directionsmode=driving">-->
-                                                <span class="fa fa-map" style="margin-left:5px;font-size: 1.5em;color:#555;"></span>
-                                            </a>
-                                            <a href="/#/detalle-local/{{pos.id}}/{{currentRoute}}">
-                                                <span class="fa fa-cart-arrow-down" style="margin-left:5px;font-size: 1.8em;color:#555;"></span>
-                                            </a>
-                                        </div>
+                    <span *ngIf="finishedViewing !== undefined && pointsOfSale.length !== undefined && pointsOfSale.length!== 0">
+                        Porcentajer realizado {{ (finishedViewing.length / (pointsOfSale.length + finishedViewing.length) * 100 ).toFixed(1) }}%
+                    </span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <b>
+                        Puntos de venta pendientes.
+                    </b>
+                    <div class="boxs-productos border" style="padding: 10px;" *ngFor="let pos of pointsOfSale">
+                        <div class="container">
+                            <div class="row">
+                                <div style="font-size:20px;padding: 10px;" class="col2">
+                                    <img *ngIf="pos.image !== '' && pos.image !== null" style="width:50px;" src="images/locales/{{pos.image}}" />
+                                    <i *ngIf="pos.image === '' || pos.image === null" class="fa fa-home" style="font-size: 2.0em;"></i>
+                                </div>
+                                <div class="col">
+                                    <div class="productos-title">
+                                        <label>{{pos.name}}</label>
                                     </div>
+                                    <a *ngIf="pos.coord != null" href="https://www.google.com/maps/dir/?api=1&destination={{pos.coord.x}},{{pos.coord.y}}&travelmode=driving">
+                                        <!--<a href="comgooglemaps://?daddr=-34.923443,-56.159779&directionsmode=driving">-->
+                                        <span class="fa fa-map" style="margin-left:5px;font-size: 1.5em;color:#555;"></span>
+                                    </a>
+                                    <a href="/#/detalle-local/{{pos.id}}/{{currentRoute}}">
+                                        <span class="fa fa-cart-arrow-down" style="margin-left:5px;font-size: 1.8em;color:#555;"></span>
+                                    </a>
                                 </div>
                             </div>
                         </div>
-                        <div class="col">
-                            <b>
-                                Puntos de venta visitados.
-                            </b>
-                            <div class="boxs-productos border" style="padding: 10px" *ngFor="let pos of finishedViewing">
-                                <div class="container">
-                                    <a class="row" href="/#/detalle-local/{{pos.id}}/{{currentRoute}}">
-                                        <div *ngIf="pos.idViewing !== null" class="col-1">
-                                            <span class="fa fa-check" style="color: #22df22; font-size: 20px;"></span>
-                                        </div>
-                                        <div style="font-size:20px;" class="col-2">
-                                            <img *ngIf="pos.image !== '' && pos.image !== null" style="width:50px;" src="images/locales/{{pos.image}}" />
-                                            <i *ngIf="pos.image === '' || pos.image === null" class="fa fa-home" style="font-size: 2.0em;"></i>
-                                        </div>
-                                        <div class="col">
-                                            <div class="productos-title">
-                                                <label>{{pos.name}}</label>
-                                            </div>
-                                            <!--
+                    </div>
+                </div>
+                <div class="col">
+                    <b>
+                        Puntos de venta visitados.
+                    </b>
+                    <div class="boxs-productos border" style="padding: 10px" *ngFor="let fv of finishedViewing">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col">
+                                    {{fv.date | date:'dd/MM/yyyy HH:mm'}}Hs
+                                </div>
+                            </div>
+                            <a class="row" href="/#/detalle-local/{{fv.pos.id}}/{{currentRoute}}">
+                                <div *ngIf="fv.pos.idViewing !== null" class="col-1">
+                                    <span class="fa fa-check" style="color: #22df22; font-size: 20px;"></span>
+                                </div>
+                                <div style="font-size:20px;" class="col-2">
+                                    <img *ngIf="fv.pos.image !== '' && fv.pos.image !== null" style="width:50px;" src="images/locales/{{fv.pos.image}}" />
+                                    <i *ngIf="fv.pos.image === '' || fv.pos.image === null" class="fa fa-home" style="font-size: 2.0em;"></i>
+                                </div>
+                                <div class="col">
+                                    <div class="productos-title">
+                                        <label>{{fv.pos.name}}</label>
+                                    </div>
+                                    <!--
                                                                         <span class="fa fa-calendar-check-o" style="font-size: 2em; color:#00aa00;" aria-hidden="true"></span>
                                                                         <span style="color:#00aa00;">10:00Hs</span>
                                                                         <br/>
@@ -102,16 +107,16 @@
                                                                         <i class="fa fa-arrow-down" aria-hidden="true" style="color:#aa0000;"></i>
                                                                         <span style="color:#aa0000;"> 3</span>
                                                                     -->
-                                        </div>
-                                    </a>
                                 </div>
-                            </div>
+                            </a>
                         </div>
                     </div>
                 </div>
             </div>
+        </div>
+    </div>
 
-            <!--
+    <!--
         </div>
         <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
             Resumen

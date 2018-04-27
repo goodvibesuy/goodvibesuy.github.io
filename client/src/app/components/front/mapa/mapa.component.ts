@@ -15,8 +15,9 @@ import { ViewingService } from '../../../services/viewing.service';
 export class MapaComponent implements OnInit {
 
     private routes: any[];
+    private viewings: any[];
     private pointsOfSale: PointOfSale[];
-    private finishedViewing: PointOfSale;
+    private finishedViewing: PointOfSale[];
     private currentRoute: number;
     public stock: { product: Product, quantity: number }[];
 
@@ -49,7 +50,25 @@ export class MapaComponent implements OnInit {
     }
 
     public getFinishedViewing(): any {
-        return this.pointsOfSale.filter(input => input.idViewing !== null);
+        let finished = this.pointsOfSale.filter(input => input.idViewing !== null);
+        let viewingPOS:Array<{date:Date,pos:PointOfSale}>;
+        viewingPOS = new Array<{date:Date,pos:PointOfSale}>();
+        for(let i = 0;i < finished.length ; i++){
+            let viewing = this.viewings.filter(v => v.idPointofsale == finished[i].id)[0];
+            console.log(viewing,this.viewings);
+            viewingPOS.push({date:viewing.date,pos:finished[i]});
+        }
+
+        return viewingPOS.sort(function(a, b) {
+            if (a.date > b.date) {
+              return -1;
+            }
+            if (a.date < b.date) {
+              return 1;
+            }
+            return 0;
+          });
+        
     }
 
     public getUnFinishedViewing(): any {
@@ -73,22 +92,24 @@ export class MapaComponent implements OnInit {
             response => {
                 this.viewingService.getViewingsByRoute(idRoute).subscribe(
                     responseViewing => {
-
-                        this.pointsOfSale = response;
-                        console.log(response);
-                        //this.pointsOfSale.sort(this.compareViewing);
-                        this.finishedViewing = this.getFinishedViewing();
-                        this.pointsOfSale = this.getUnFinishedViewing();
-                        console.log(response);
-                        this.routeService.getStockRoute(idRoute).subscribe(
-                            responseStock => {
-                                this.stock = responseStock;
-                                //console.log(response);
-                            }
-                        );
+                        if (responseViewing.result > 0) {
+                            this.viewings = responseViewing.data;
+                            this.pointsOfSale = response;
+                            console.log(response);
+                            //this.pointsOfSale.sort(this.compareViewing);
+                            this.finishedViewing = this.getFinishedViewing();
+                            this.pointsOfSale = this.getUnFinishedViewing();
+                            console.log(response);
+                            this.routeService.getStockRoute(idRoute).subscribe(
+                                responseStock => {
+                                    this.stock = responseStock;
+                                    //console.log(response);
+                                }
+                            );
+                        }
                     }
                 )
             }
-        )        
+        )
     }
 }
