@@ -354,6 +354,41 @@
                     </div>
                 </div>
             </div>
+            <div class="row">
+                <div class="card col">
+                    <div class="card-body">
+                        <h3 class="card-title">Indicadores: devoluciones</h3>
+                    </div>
+                    <table class="table" *ngIf="viewingView !== undefined">
+                        <tr>
+                            <td>Grupo</td>
+                            <td>Entregados</td>
+                            <td>Devueltos</td>
+                            <td>% devoluciones</td>
+                            <td>Share de devoluciones</td>
+                        </tr>
+                        <ng-container *ngFor="let gpos of groupPOS">
+                            <!-- TODO Mejorar el filtro-->
+                            <tr *ngIf="viewingView.getTotalTransactionByGroupPOSByType(gpos.id,'delivery') !== 0">
+                                <td>{{gpos.name}}</td>
+                                <td>{{viewingView.getTotalTransactionByGroupPOSByType(gpos.id,"delivery")}}</td>
+                                <td>{{viewingView.getTotalTransactionByGroupPOSByType(gpos.id,"return")}}</td>
+                                <td>
+                                    <span *ngIf="viewingView.getTotalTransactionByGroupPOSByType(gpos.id,'delivery') !== 0">
+                                        {{(((viewingView.getTotalTransactionByGroupPOSByType(gpos.id,"return")) / viewingView.getTotalTransactionByGroupPOSByType(gpos.id,"delivery")
+                                        ) * 100).toFixed(2) }} %
+                                    </span>
+                                </td>
+                                <td>
+                                    <span *ngIf="viewingView.getTotalTransactionByGroupPOSByType(gpos.id,'delivery') !== 0">
+                                        {{(((viewingView.getTotalTransactionByGroupPOSByType(gpos.id,"return")) / totalReturns() ) * 100).toFixed(2) }} %
+                                    </span>
+                                </td>
+                            </tr>
+                        </ng-container>
+                    </table>
+                </div>
+            </div>
         </div>
     </div>
 
