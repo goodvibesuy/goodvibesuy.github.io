@@ -113,6 +113,7 @@ export class ViewingsModel extends MainModel {
                                     pos.name = viewings[i].name;
                                     pos.tel = viewings[i].tel;
                                     pos.id = viewings[i].id;
+                                    pos.idGroup = viewings[i].idGroup;
                                     var line: LineViewingView = new LineViewingView(viewings[i].date, pos, viewings[i].idviewing);
                                     linesViewings.push(line);
                                 }

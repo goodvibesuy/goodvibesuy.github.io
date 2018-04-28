@@ -106,6 +106,7 @@ var ViewingsModel = /** @class */ (function (_super) {
                                 pos.name = viewings[i].name;
                                 pos.tel = viewings[i].tel;
                                 pos.id = viewings[i].id;
+                                pos.idGroup = viewings[i].idGroup;
                                 var line = new lineViewingView_1.LineViewingView(viewings[i].date, pos, viewings[i].idviewing);
                                 linesViewings.push(line);
                             }

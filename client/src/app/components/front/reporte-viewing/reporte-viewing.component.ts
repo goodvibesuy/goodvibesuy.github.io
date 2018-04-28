@@ -9,6 +9,7 @@ import { PointOfSaleService } from '../../../services/point-of-sale.service';
 import { PointOfSale } from '../../../../../../datatypes/pointOfSale';
 import { Subject } from 'rxjs';
 import { Observable } from 'rxjs/Observable';
+import { GroupPosService } from '../../../services/group-pos.service';
 
 @Component({
     selector: 'app-reporte-viewing',
@@ -32,10 +33,12 @@ export class ReporteViewingComponent implements OnInit {
     private useDates:boolean = true;
     private shareSales:any[];
     private ocultarDetalles: boolean;
+    private groupPOS:any[];
 
     constructor(private viewingsService: ViewingService,
         private posService:PointOfSaleService,
-        private productsService: ProductsService
+        private productsService: ProductsService,
+        private groupPOSService:GroupPosService
     ) {        
         this.ocultarDetalles = window.innerWidth < 400;
     }
@@ -72,6 +75,15 @@ export class ReporteViewingComponent implements OnInit {
     }
 
     ngOnInit() {
+
+        this.groupPOSService.get().subscribe(
+            groupsResponse => {
+                if(groupsResponse.result > 0){
+                    this.groupPOS = groupsResponse.data;
+                }                
+            }
+        )
+
         this.pointsOfSale = new Array<PointOfSale>();
         let now = new Date();
         this.sourceDate = { year: now.getFullYear(), month: now.getMonth() + 1, day: now.getDate() };

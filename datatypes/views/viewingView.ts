@@ -55,6 +55,16 @@ export class ViewingView {
         return quantity;
     }
 
+    public getTotalTransactionByGroupPOSByType(idGroupPOS:number, type: string): number {
+        var quantity = 0;
+        let lines = this.getLinesByGroupPOS(idGroupPOS);
+        for (let i = 0; i < lines.length; i++) {
+            quantity += lines[i].getQuantityTransactionType(type);
+        }
+        return quantity;
+    }
+
+
     //viewingView.getLines()[i].getTransactionByProductByType(p.id,"delivery")[0].quantity
 
     public getLines(): LineViewingView[] {
@@ -65,4 +75,9 @@ export class ViewingView {
         return this.lines.filter(input => input.getPointOfSale().id === idPOS);
     }
 
+    public getLinesByGroupPOS(idGroupPOS:number): LineViewingView[]{
+        let lines = this.lines.filter(input => input.getPointOfSale().idGroup === idGroupPOS);
+        console.log(idGroupPOS,lines);
+        return lines;
+    }
 }
