@@ -88,17 +88,29 @@ export class TemplateRoutesModel extends MainModel{
     reorderPointOfSale(idRoute: Number, idPointOfSale: Number, position: Number, newPosition: Number, dbName: string, callBack: (r: ResultWithData<any[]>) => void): void {
         var pool = this.controllerConnections.getUserConnection(dbName);
         pool.getConnection(function (err: any, con: any) {
-            if (err) {
+            if (!!err) {
                 con.release();
                 console.error(err);
+                callBack({ result: -1, message: "Error", data: err });
             } else {
                 con.query("UPDATE templateRoute_customer SET position = ? WHERE idTemplateRoute = ? AND position = ?", [position, idRoute, newPosition], function (err: any, result: any) {
-                    if (err) throw err;
-                    con.query("UPDATE templateRoute_customer SET position = ? WHERE idTemplateRoute = ? AND idCustomer = ?",
-                        [newPosition, idRoute, idPointOfSale], function (err: any, result: any) {
-                            con.release();
-                            callBack({ result: 1, message: "OK", data: result });
-                        });
+                    if (!!err){
+                        con.release();
+                        console.error(err);
+                        callBack({ result: -1, message: "Error", data: err });
+                    } else {
+                        con.query("UPDATE templateRoute_customer SET position = ? WHERE idTemplateRoute = ? AND idCustomer = ?",
+                            [newPosition, idRoute, idPointOfSale], function (err: any, result: any) {
+                                if (!!err) {
+                                    con.release();
+                                    console.error(err);
+                                    callBack({ result: -1, message: "Error", data: err });
+                                } else {
+                                    con.release();
+                                    callBack({ result: 1, message: "OK", data: result });
+                                }
+                            });
+                        }
                 });
             }
         });
