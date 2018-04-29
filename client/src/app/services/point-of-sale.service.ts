@@ -23,12 +23,12 @@ export class PointOfSaleService {
         return this.http.get<ResultWithData<PointOfSale>>(this.pointOfSaleURL + '/getPointOfSale/' + idPointOfSale);
     }
 
-    addPointOfSale(pos: PointOfSale): Observable<any> {
-        return this.http.post(this.pointOfSaleURL, pos);
+    addPointOfSale(pos: PointOfSale): Observable<ResultWithData<PointOfSale>> {
+        return this.http.post<ResultWithData<PointOfSale>>(this.pointOfSaleURL, pos);
     }
 
-    updatePointOfSale(pos: PointOfSale): Observable<PointOfSale> {
-        return this.http.put<PointOfSale>(this.pointOfSaleURL, pos);
+    updatePointOfSale(pos: PointOfSale): Observable<ResultWithData<PointOfSale>> {
+        return this.http.put<ResultWithData<PointOfSale>>(this.pointOfSaleURL, pos);
     }
 
     deletePointOfSale(idPointOfSale: Number): Observable<any> {

@@ -59,16 +59,16 @@ export class PosEditComponent extends ValidableForm implements OnInit, OnDestroy
                     this.initMap(pos.coord);
                 })
             });
-        
+
         this.groupPosService.get().subscribe(result => {
-                if(result.result == ResultCode.OK){
-                    this.groupPos = result.data;
-                } else {
-                    // TODO: error handling
-                    console.error(result.message);
-                    alert(result.message);
-                }
-            },
+            if (result.result == ResultCode.OK) {
+                this.groupPos = result.data;
+            } else {
+                // TODO: error handling
+                console.error(result.message);
+                alert(result.message);
+            }
+        },
             error => {
                 // TODO: error handling
                 console.error(error);
@@ -141,22 +141,33 @@ export class PosEditComponent extends ValidableForm implements OnInit, OnDestroy
             this.pointOFSaleService
                 .updatePointOfSale(pos)
                 .subscribe(response => {
-                    if (!!this.imageFile) {
-                        this.imagesService
-                            .sendImage('locales', pos.image, this.imageFile.size, this.imageFile.data)
-                            .subscribe(
-                                res => {
-                                    this.router.navigateByUrl('/admin/puntos-de-venta');
-                                },
-                                error => {
-                                    // TODO: error handling
-                                    console.error(error);
-                                    alert(error);
-                                }
-                            );
+                    if (response.result == ResultCode.Error) {
+                        // TODO: error handling
+                        console.error(response.message);
+                        alert(response.message);
                     } else {
-                        this.router.navigateByUrl('/admin/puntos-de-venta');
+                        if (!!this.imageFile) {
+                            this.imagesService
+                                .sendImage('locales', pos.image, this.imageFile.size, this.imageFile.data)
+                                .subscribe(
+                                    res => {
+                                        this.router.navigateByUrl('/admin/puntos-de-venta');
+                                    },
+                                    error => {
+                                        // TODO: error handling
+                                        console.error(error);
+                                        alert(error);
+                                    }
+                                );
+                        } else {
+                            this.router.navigateByUrl('/admin/puntos-de-venta');
+                        }
                     }
+                },
+                error => {
+                    // TODO: error handling
+                    console.error(error);
+                    alert(error);
                 });
         }
     }

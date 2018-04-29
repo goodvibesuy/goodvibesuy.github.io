@@ -140,22 +140,33 @@ export class PosAddComponent extends ValidableForm implements OnInit {
 
             this.pointOFSaleService.addPointOfSale(pos)
                 .subscribe(response => {
-                    if (!!this.imageFile) {
-                        this.imagesService
-                            .sendImage('locales', pos.image, this.imageFile.size, this.imageFile.data)
-                            .subscribe(
-                                res => {
-                                    this.router.navigateByUrl('/admin/puntos-de-venta');
-                                },
-                                error => {
-                                    // TODO: error handling
-                                    console.error(error);
-                                    alert(error);
-                                }
-                            );
+                    if (response.result == ResultCode.Error) {
+                        // TODO: error handling
+                        console.error(response.message);
+                        alert(response.message);
                     } else {
-                        this.router.navigateByUrl('/admin/puntos-de-venta');
+                        if (!!this.imageFile) {
+                            this.imagesService
+                                .sendImage('locales', pos.image, this.imageFile.size, this.imageFile.data)
+                                .subscribe(
+                                    res => {
+                                        this.router.navigateByUrl('/admin/puntos-de-venta');
+                                    },
+                                    error => {
+                                        // TODO: error handling
+                                        console.error(error);
+                                        alert(error);
+                                    }
+                                );
+                        } else {
+                            this.router.navigateByUrl('/admin/puntos-de-venta');
+                        }
                     }
+                },
+                error => {
+                    // TODO: error handling
+                    console.error(error);
+                    alert(error);
                 });
         }
     }
