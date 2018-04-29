@@ -46,11 +46,11 @@ export class TemplateRoutesModel extends MainModel{
                 con.release();
                 console.error(err);
             } else {
-                con.query("SELECT position AS last FROM templateRoute_pointofsale WHERE idTemplateRoute = ? order by position desc limit 1",
+                con.query("SELECT position AS last FROM templateRoute_customer WHERE idTemplateRoute = ? order by position desc limit 1",
                     [idTemplateRoute], function (err: any, result: any) {
                         if (err) throw err;
                         var lastPointOfSale = result.length == 0 ? 0 : result[0].last;
-                        con.query("INSERT INTO templateRoute_pointofsale (idTemplateRoute,idpointofsale,position) VALUES (?,?,?)",
+                        con.query("INSERT INTO templateRoute_customer (idTemplateRoute,idCustomer,position) VALUES (?,?,?)",
                             [idTemplateRoute, idPointOfSale, lastPointOfSale + 1], function (err: any, result: any) {
                                 con.release();
                                 if (err) throw err;
@@ -68,13 +68,13 @@ export class TemplateRoutesModel extends MainModel{
                 con.release();
                 console.error(err);
             } else {
-                con.query("SELECT position FROM templateRoute_pointofsale WHERE idTemplateRoute = ? AND idpointofsale = ?", [idRoute, idPointOfSale], function (err: any, result: any) {
+                con.query("SELECT position FROM templateRoute_customer WHERE idTemplateRoute = ? AND idCustomer = ?", [idRoute, idPointOfSale], function (err: any, result: any) {
                     if (err) throw err;
                     var positionPointOfSale = result[0].position;
 
-                    con.query("DELETE FROM templateRoute_pointofsale WHERE idTemplateRoute = ? AND idpointofsale = ?", [idRoute, idPointOfSale], function (err: any, result: any) {
+                    con.query("DELETE FROM templateRoute_customer WHERE idTemplateRoute = ? AND idCustomer = ?", [idRoute, idPointOfSale], function (err: any, result: any) {
                         if (err) throw err;
-                        con.query("UPDATE templateRoute_pointofsale SET position = position -1 WHERE idTemplateRoute = ? AND  position > ?",
+                        con.query("UPDATE templateRoute_customer SET position = position -1 WHERE idTemplateRoute = ? AND  position > ?",
                             [idRoute, positionPointOfSale], function (err: any, result: any) {
                                 con.release();
                                 callBack({ result: 1, message: "OK", data: result });
@@ -92,9 +92,9 @@ export class TemplateRoutesModel extends MainModel{
                 con.release();
                 console.error(err);
             } else {
-                con.query("UPDATE templateRoute_pointofsale SET position = ? WHERE idTemplateRoute = ? AND position = ?", [position, idRoute, newPosition], function (err: any, result: any) {
+                con.query("UPDATE templateRoute_customer SET position = ? WHERE idTemplateRoute = ? AND position = ?", [position, idRoute, newPosition], function (err: any, result: any) {
                     if (err) throw err;
-                    con.query("UPDATE templateRoute_pointofsale SET position = ? WHERE idTemplateRoute = ? AND idpointofsale = ?",
+                    con.query("UPDATE templateRoute_customer SET position = ? WHERE idTemplateRoute = ? AND idCustomer = ?",
                         [newPosition, idRoute, idPointOfSale], function (err: any, result: any) {
                             con.release();
                             callBack({ result: 1, message: "OK", data: result });
@@ -111,7 +111,7 @@ export class TemplateRoutesModel extends MainModel{
                 con.release();
                 console.error(err);
             } else {
-                con.query("SELECT * FROM templateRoute_pointofsale INNER JOIN pointofsale as POS ON POS.id = idpointofsale WHERE idTemplateRoute = ? ORDER BY position ASC", [idRoute],
+                con.query("SELECT * FROM templateRoute_customer INNER JOIN customer as POS ON POS.id = idCustomer WHERE idTemplateRoute = ? ORDER BY position ASC", [idRoute],
                     function (err: any, result: any) {
                         con.release();
                         if (err) throw err;

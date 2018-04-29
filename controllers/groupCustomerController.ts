@@ -1,8 +1,8 @@
 import { Result, ResultWithData, ResultCode } from '../datatypes/result';
 import { MainController } from './mainController';
-import { GroupPosModel } from '../models/groupPosModel';
+import { GroupPosModel } from '../models/groupCustomerModel';
 
-class GroupPosController extends MainController {
+class GroupCustomerController extends MainController {
 
     private resource: string;
     private groupPosModel: GroupPosModel;
@@ -23,4 +23,4 @@ class GroupPosController extends MainController {
     };
 }
 
-module.exports = new GroupPosController();
+module.exports = new GroupCustomerController();

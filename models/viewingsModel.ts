@@ -26,7 +26,7 @@ export class ViewingsModel extends MainModel {
                 con.release();
             } else {
                 con.query(
-                    "SELECT * FROM viewing v INNER JOIN pointofsale pos ON v.idpointofsale = pos.id WHERE idviewing = ?",
+                    "SELECT * FROM viewing v INNER JOIN customer pos ON v.idCustomer = pos.id WHERE idviewing = ?",
                     [viewingId],
                     function (err: any, result: any) {
                         if (err) {
@@ -91,7 +91,7 @@ export class ViewingsModel extends MainModel {
                 }
 
                 con.query(
-                    "SELECT * FROM viewing v INNER JOIN pointofsale pos ON v.idpointofsale = pos.id " + filters + " ORDER BY v.date DESC",
+                    "SELECT * FROM viewing v INNER JOIN customer pos ON v.idCustomer = pos.id " + filters + " ORDER BY v.date DESC",
                     queryParameters,
                     function (err: any, result: any) {
                         if (err) {
@@ -181,7 +181,7 @@ export class ViewingsModel extends MainModel {
             con.release();
         } else {
             con.query(
-                "SELECT * FROM route_pointofsale rps INNER JOIN viewing  v ON rps.idViewing = v.idviewing WHERE idRoute = ? ",
+                "SELECT * FROM route_customer rc INNER JOIN viewing v ON rc.idViewing = v.idviewing WHERE idRoute = ? ",
                 [idRoute],
                 function (err: any, result: any) {
                     con.release();
@@ -215,7 +215,7 @@ export class ViewingsModel extends MainModel {
                 con.release();
             } else {
                 con.query(
-                    "SELECT idViewing FROM route_pointofsale WHERE idRoute = ? AND idPointofsale = ?",
+                    "SELECT idViewing FROM route_customer WHERE idRoute = ? AND idCustomer = ?",
                     [idRoute, idPointofsale],
                     function (err: any, result: any) {
                         if (err) {
@@ -297,7 +297,7 @@ export class ViewingsModel extends MainModel {
                     } else {
                         con.beginTransaction(function (err: any) {
                             con.query(
-                                "INSERT INTO viewing  (date, idpointofsale,idUser,annotation) VALUES(NOW(),?,?,?)",
+                                "INSERT INTO viewing  (date, idCustomer,idUser,annotation) VALUES(NOW(),?,?,?)",
                                 [idpointofsail, idUser, annotation],
                                 function (err: any, result: any) {
                                     if (err) {
@@ -311,7 +311,7 @@ export class ViewingsModel extends MainModel {
                                         var idviewing = result.insertId;
                                         //TODO revisar el cao en el que no se actualiza nada.
                                         con.query(
-                                            "UPDATE route_pointofsale  SET idViewing = ? WHERE idPointofsale = ?  AND idRoute = ?",
+                                            "UPDATE route_customer  SET idViewing = ? WHERE idCustomer = ?  AND idRoute = ?",
                                             [idviewing, idpointofsail, idRoute],
                                             function (err: any, result: any) {
                                                 if (err) {
@@ -351,7 +351,7 @@ export class ViewingsModel extends MainModel {
                     } else {
                         con.beginTransaction(function (err: any) {
                             con.query(
-                                "UPDATE viewing  SET date = ?, idpointofsale = ?, idUser = ?, annotation = ? WHERE idviewing = ?",
+                                "UPDATE viewing  SET date = ?, idCustomer = ?, idUser = ?, annotation = ? WHERE idviewing = ?",
                                 [idpointofsail, idUser, annotation, idViewing],
                                 function (err: any, result: any) {
                                     if (err) {
@@ -365,7 +365,7 @@ export class ViewingsModel extends MainModel {
                                         var idviewing = result.insertId;
                                         //TODO revisar el cao en el que no se actualiza nada.
                                         con.query(
-                                            "UPDATE route_pointofsale  SET idViewing = ? WHERE idPointofsale = ?  AND idRoute = ?",
+                                            "UPDATE route_customer  SET idViewing = ? WHERE idCustomer = ?  AND idRoute = ?",
                                             [idviewing, idpointofsail, idRoute],
                                             function (err: any, result: any) {
                                                 if (err) {

@@ -59,7 +59,6 @@ export class TravelModel extends MainModel {
                                             callBack({ result: -1, message: "Error interno. - No se pudo guardar el usuario de la ruta." });
                                         });
                                     } else {
-                                        //mainThis.addPointsOfSale(0, route, callBack, con);
                                         mainThis.addUpdateProductStock(0, route, callBack, con);
                                     }
                                 });
@@ -87,7 +86,6 @@ export class TravelModel extends MainModel {
                             mainThis.addUpdateProductStock(index + 1, route, callBack, con);
                         } else {
                             mainThis.removePointsOfSale(0, route, callBack, con);
-                            //mainThis.addPointsOfSale(0, route, callBack, con);
                         }
                     } else {
                         con.query("INSERT INTO route_stock(idRoute,idProduct,quantity) VALUES(?,?,?) ",
@@ -103,7 +101,6 @@ export class TravelModel extends MainModel {
                                         mainThis.addUpdateProductStock(index + 1, route, callBack, con);
                                     } else {
                                         mainThis.removePointsOfSale(0, route, callBack, con);
-                                        //mainThis.addPointsOfSale(0, route, callBack, con);
                                     }
                                 }
                             });
@@ -171,7 +168,7 @@ export class TravelModel extends MainModel {
         callBack: (r: ResultWithData<any[]>) => void, con: any): void {
         var mainThis = this;
         if (route.pointsOfSaleToRemove.length > 0) {
-            con.query("DELETE FROM route_pointofsale WHERE idRoute = ? AND idPointofsale = ? ",
+            con.query("DELETE FROM route_customer WHERE idRoute = ? AND idCustomer = ? ",
                 [route.id, route.pointsOfSaleToRemove[index].id], function (err: any, result: any) {
                     if (err) {
                         con.rollback(function () {
@@ -197,7 +194,7 @@ export class TravelModel extends MainModel {
         var mainThis = this;
 
         if (route.pointsOfSale.length > 0) {
-            con.query("UPDATE route_pointofsale SET position = ? WHERE idRoute = ? AND idPointofsale = ? ",
+            con.query("UPDATE route_customer SET position = ? WHERE idRoute = ? AND idCustomer = ? ",
                 [index, route.id, route.pointsOfSale[index].id], function (err: any, result1: any) {
                     if (err) {
                         con.rollback(function () {
@@ -207,7 +204,7 @@ export class TravelModel extends MainModel {
                         });
                     } else {
                         if (result1.affectedRows === 0) {
-                            con.query("INSERT  INTO route_pointofsale(idRoute,idPointofsale,position) VALUES(?,?,?) ",
+                            con.query("INSERT  INTO route_customer(idRoute,idCustomer,position) VALUES(?,?,?) ",
                                 [route.id, route.pointsOfSale[index].id, index], function (err: any, result2: any) {
                                     if (err) {
                                         con.rollback(function () {
@@ -279,10 +276,10 @@ export class TravelModel extends MainModel {
                 con.release();
                 console.error(err);
             } else {
-                con.query("SELECT position AS last FROM route_pointofsale WHERE idroute = ? order by position desc limit 1", [idRoute], function (err: any, result: any) {
+                con.query("SELECT position AS last FROM route_customer WHERE idroute = ? order by position desc limit 1", [idRoute], function (err: any, result: any) {
                     if (err) throw err;
                     var lastPointOfSale = result.length == 0 ? 0 : result[0].last;
-                    con.query("INSERT INTO route_pointofsale (idroute,idpointofsale,position) VALUES (?,?,?)", [idRoute, idPointOfSale, lastPointOfSale + 1], function (err: any, result: any) {
+                    con.query("INSERT INTO route_customer (idroute,idCustomer,position) VALUES (?,?,?)", [idRoute, idPointOfSale, lastPointOfSale + 1], function (err: any, result: any) {
                         con.release();
                         if (err) throw err;
                         callBack({ result: 1, message: "OK", data: result });
@@ -316,13 +313,13 @@ export class TravelModel extends MainModel {
                 con.release();
                 console.error(err);
             } else {
-                con.query("SELECT position FROM route_pointofsale WHERE idroute = ? AND idpointofsale = ?", [idRoute, idPointOfSale], function (err: any, result: any) {
+                con.query("SELECT position FROM route_customer WHERE idroute = ? AND idCustomer = ?", [idRoute, idPointOfSale], function (err: any, result: any) {
                     if (err) throw err;
                     var positionPointOfSale = result[0].position;
 
-                    con.query("DELETE FROM route_pointofsale WHERE idroute = ? AND idpointofsale = ?", [idRoute, idPointOfSale], function (err: any, result: any) {
+                    con.query("DELETE FROM route_customer WHERE idroute = ? AND idCustomer = ?", [idRoute, idPointOfSale], function (err: any, result: any) {
                         if (err) throw err;
-                        con.query("UPDATE route_pointofsale SET position = position -1 WHERE idroute = ? AND  position > ?",
+                        con.query("UPDATE route_customer SET position = position -1 WHERE idroute = ? AND  position > ?",
                             [idRoute, positionPointOfSale], function (err: any, result: any) {
                                 con.release();
                                 callBack({ result: 1, message: "OK", data: result });
@@ -356,9 +353,9 @@ export class TravelModel extends MainModel {
                 con.release();
                 console.error(err);
             } else {
-                con.query("UPDATE route_pointofsale SET position = ? WHERE idroute = ? AND position = ?", [position, idRoute, newPosition], function (err: any, result: any) {
+                con.query("UPDATE route_customer SET position = ? WHERE idroute = ? AND position = ?", [position, idRoute, newPosition], function (err: any, result: any) {
                     if (err) throw err;
-                    con.query("UPDATE route_pointofsale SET position = ? WHERE idroute = ? AND idpointofsale = ?",
+                    con.query("UPDATE route_customer SET position = ? WHERE idroute = ? AND idCustomer = ?",
                         [newPosition, idRoute, idPointOfSale], function (err: any, result: any) {
                             con.release();
                             callBack({ result: 1, message: "OK", data: result });
@@ -375,7 +372,7 @@ export class TravelModel extends MainModel {
                 con.release();
                 console.error(err);
             } else {
-                con.query("SELECT * FROM route_pointofsale INNER JOIN pointofsale as POS ON POS.id = idpointofsale WHERE idroute = ? ORDER BY position ASC", [idRoute],
+                con.query("SELECT * FROM route_customer as rc INNER JOIN customer as c ON c.id = rc.idCustomer WHERE idroute = ? ORDER BY position ASC", [idRoute],
                     function (err: any, result: any) {
                         con.release();
                         if (err) throw err;

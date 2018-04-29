@@ -137,7 +137,7 @@ export class ProductModel extends MainModel {
 
     private updatePricesProduct(index: number, product: Product, callback: (r: Result) => void, con: any): void {
         var mainThis = this;
-        con.query("INSERT INTO productprice(date,amount,idProduct,idGroupPointofsale) VALUES (NOW(),?,?,?)",
+        con.query("INSERT INTO productprice(date,amount,idProduct,idGroupCustomer) VALUES (NOW(),?,?,?)",
             [product.prices[index].amount, product.id, product.prices[index].idGroupPointofsale],
             function (err: any, result: any) {
                 if (!!err) {
@@ -174,7 +174,7 @@ export class ProductModel extends MainModel {
                     message: err.code                    
                 });
             } else {
-                con.query("SELECT * FROM productprice WHERE id in ( SELECT MAX(id) FROM productprice WHERE idProduct = ? GROUP BY idGroupPointofsale )", [idProduct],
+                con.query("SELECT * FROM productprice WHERE id in ( SELECT MAX(id) FROM productprice WHERE idProduct = ? GROUP BY idGroupCustomer )", [idProduct],
                     function (err: any, result: any) {
                         if (!!err) {
                             // TODO: log error -> common/errorHandling.ts
@@ -207,7 +207,7 @@ export class ProductModel extends MainModel {
                     data:null
                 });
             } else {
-                con.query("SELECT * FROM pointofsale WHERE id = ?", [idPOS],
+                con.query("SELECT * FROM customer WHERE id = ?", [idPOS],
                     function (err: any, result: any) {
                         if (!!err) {
                             // TODO: log error -> common/errorHandling.ts
@@ -221,7 +221,7 @@ export class ProductModel extends MainModel {
                             });
                         } else {
                             console.log(result[0].idGroup, idProduct);
-                            con.query("SELECT * FROM productprice WHERE idGroupPointofsale = ? AND idProduct = ? ORDER BY date DESC LIMIT 1",
+                            con.query("SELECT * FROM productprice WHERE idGroupCustomer = ? AND idProduct = ? ORDER BY date DESC LIMIT 1",
                                 [result[0].idGroup, idProduct],
                                 function (err: any, result2: any) {
                                     if (!!err) {

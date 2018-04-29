@@ -54,7 +54,7 @@ export class MapaComponent implements OnInit {
         let viewingPOS:Array<{date:Date,pos:PointOfSale}>;
         viewingPOS = new Array<{date:Date,pos:PointOfSale}>();
         for(let i = 0;i < finished.length ; i++){
-            let viewing = this.viewings.filter(v => v.idPointofsale == finished[i].id)[0];
+            let viewing = this.viewings.filter(v => v.idCustomer == finished[i].id)[0];
             console.log(viewing,this.viewings);
             viewingPOS.push({date:viewing.date,pos:finished[i]});
         }
