@@ -25,6 +25,11 @@ var UserController = /** @class */ (function (_super) {
                 });
             });
         };
+        _this.getUserByIdMaster = function (idMaster, tokenId, userName, rolId, accountId, dbName, req, res) {
+            _this.userModel.userByIdMaster(idMaster, tokenId, userName, rolId, accountId, dbName, function (result) {
+                res.send(result);
+            });
+        };
         _this.userModel = new userModel_1.UserModel();
         return _this;
     }

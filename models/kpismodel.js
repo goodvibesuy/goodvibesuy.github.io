@@ -1,19 +1,31 @@
 "use strict";
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 Object.defineProperty(exports, "__esModule", { value: true });
 var masterDBController = require('../bd/masterConnectionsBD');
-var clientDBController = require('../bd/clientConnectionsBD');
-var KpisModel = /** @class */ (function () {
+var mainModel_1 = require("./mainModel");
+var KpisModel = /** @class */ (function (_super) {
+    __extends(KpisModel, _super);
     function KpisModel() {
+        return _super.call(this) || this;
     }
     KpisModel.prototype.suppliesPrices = function (supplyId, dbName, callBack) {
-        var pool = clientDBController.getUserConnection(dbName);
+        var pool = this.controllerConnections.getUserConnection(dbName);
         pool.getConnection(function (err, con) {
             if (err) {
                 con.release();
                 console.error(err);
             }
             else {
-                con.query("SELECT * FROM supply s INNER JOIN supplyprice sp ON s.id = sp.idSupply WHERE s.id = ?", [supplyId], function (err, result) {
+                con.query("SELECT * FROM supply s INNER JOIN supplyPrice sp ON s.id = sp.idSupply WHERE s.id = ? ORDER BY price_date ASC ", [supplyId], function (err, result) {
                     if (err)
                         throw err;
                     con.release();
@@ -23,7 +35,7 @@ var KpisModel = /** @class */ (function () {
         });
     };
     KpisModel.prototype.kpiDeliveryReturnEmpty = function (dbName, callBack) {
-        var pool = clientDBController.getUserConnection(dbName);
+        var pool = this.controllerConnections.getUserConnection(dbName);
         pool.getConnection(function (err, con) {
             if (err) {
                 con.release();
@@ -41,7 +53,7 @@ var KpisModel = /** @class */ (function () {
     };
     ;
     KpisModel.prototype.sales = function (dbName, callBack) {
-        var pool = clientDBController.getUserConnection(dbName);
+        var pool = this.controllerConnections.getUserConnection(dbName);
         pool.getConnection(function (err, con) {
             if (err) {
                 con.release();
@@ -72,6 +84,6 @@ var KpisModel = /** @class */ (function () {
     };
     ;
     return KpisModel;
-}());
+}(mainModel_1.MainModel));
 module.exports = new KpisModel();
 //# sourceMappingURL=kpisModel.js.map

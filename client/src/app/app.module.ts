@@ -1,12 +1,11 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule, LOCALE_ID } from '@angular/core';
+import { NgModule, LOCALE_ID, OnChanges, SimpleChanges, DoCheck, Renderer, Renderer2 } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { AmChartsModule } from "@amcharts/amcharts3-angular";
-
+import { NgbModule, NgbDateParserFormatter } from '@ng-bootstrap/ng-bootstrap';
+import { AmChartsModule } from '@amcharts/amcharts3-angular';
 
 // components
 import { AppComponent } from './app.component';
@@ -35,8 +34,12 @@ import { RoutesComponent } from './components/adm/routes/routes.component';
 import { ListComponent } from './components/adm/routes/list/list.component';
 import { RouteAdd } from './components/adm/routes/route.add/route.add.component';
 import { RouteEdit } from './components/adm/routes/route.edit/route.edit.component';
+import { TemplatesRoutesComponent } from './components/adm/templates-routes/templates-routes.component';
 // Point of sale
 import { PosComponent } from './components/adm/pos/pos.component';
+import { PosAddComponent } from './components/adm/pos/add/pos.add.component';
+import { PosEditComponent } from './components/adm/pos/edit/pos.edit.component';
+import { PosListComponent } from './components/adm/pos/list/pos.list.component';
 
 // services
 import { SupplyService } from './services/supply.service';
@@ -48,6 +51,10 @@ import { ImagesService } from './services/images.service';
 import { ViewingService } from './services/viewing.service';
 import { HeaderService } from './services/header.service';
 import { PointOfSaleService } from './services/point-of-sale.service';
+import { KpiService } from './services/kpi.service';
+import { TemplatesRoutesService } from './services/templates-routes.service';
+import { ProvidersService } from './services/providers.service';
+import { UnitsConversorService } from './services/units-conversor.service';
 
 // shared
 import { FilePicker } from './shared/components/file-picker/file-picker.component';
@@ -63,65 +70,97 @@ import { AlertModule } from './modules/alert/alert.module';
 import { AlertService } from './modules/alert/alert.service';
 // Interceptor
 import { InterceptorModule } from './auth/token.interceptor';
-import { KpiService } from './services/kpi.service';
-import { TemplatesRoutesComponent } from './components/adm/templates-routes/templates-routes.component';
-import { TemplatesRoutesService } from './services/templates-routes.service';
+
+import {DragulaModule, DragulaService} from 'ng2-dragula/ng2-dragula';
+
+import { NgbDatepickerConfig } from '@ng-bootstrap/ng-bootstrap';
+import { CenouraInputValidation } from './shared/validation/CenouraInputValidation';
+import { NgbDateESParserFormatter } from './shared/DateParserFormatter';
+import { ReporteViewingComponent } from './components/front/reporte-viewing/reporte-viewing.component';
+import { GroupPosService } from './services/group-pos.service';
+import { ClientComponent } from './components/adm/client/client.component';
+import { ClientService } from './services/client.service';
+import { ClientFormComponent } from './components/forms/client-form/client-form.component';
+import { ProviderComponent } from './components/adm/provider/provider.component';
+import { PieChartComponent } from './components/charts/pie-chart/pie-chart.component';
 
 @NgModule({
-	declarations: [
-		AppComponent,
-		HeaderComponent,
-		DashboardComponent,
-		ProductsComponent,
-		ProductsListComponent,
-		ProductEditComponent,
-		ProductAddComponent,
-		LocalesComponent,
-		ReportesComponent,
-		SupplyComponent,
-		SupplyListComponent,
-		SupplyEditComponent,
-		SupplyAddComponent,
-		MapaComponent,
-		DetalleLocalComponent,
-		ConfigsComponent,
-		RoutesComponent,
-		ListComponent,
-		RouteAdd,
-		RouteEdit,
-		// shared
-		FilePicker,
-		LoginComponent,
+    declarations: [
+        CenouraInputValidation,
+        AppComponent,
+        HeaderComponent,
+        DashboardComponent,
+        ProductsComponent,
+        ProductsListComponent,
+        ProductEditComponent,
+        ProductAddComponent,
+        LocalesComponent,
+        ReportesComponent,
+        SupplyComponent,
+        SupplyListComponent,
+        SupplyEditComponent,
+        SupplyAddComponent,
+        MapaComponent,
+        DetalleLocalComponent,
+        ConfigsComponent,
+        RoutesComponent,
+        ListComponent,
+        RouteAdd,
+        RouteEdit,
+        // shared
+        FilePicker,
+        LoginComponent,
         PosComponent,
-        TemplatesRoutesComponent
-	],
-	imports: [
-		BrowserModule,
-		FormsModule,
-		ReactiveFormsModule,
-		HttpClientModule,
-		AppRoutingModule,
-		InterceptorModule,
-		NgbModule.forRoot(),
+        PosAddComponent,
+        PosEditComponent,
+        PosListComponent,
+        TemplatesRoutesComponent,
+        ReporteViewingComponent,
+        ClientComponent,
+        ClientFormComponent,
+        ProviderComponent,
+        PieChartComponent
+    ],
+    imports: [
+        BrowserModule,
+        FormsModule,
+        ReactiveFormsModule,
+        HttpClientModule,
+        AppRoutingModule,
+        InterceptorModule,
+        NgbModule.forRoot(),
         AlertModule.forRoot(),
-        AmChartsModule
-	],
-	providers: [
-		SupplyService,
-		ProductsService,
+        AmChartsModule,
+        DragulaModule
+    ],
+    providers: [
+        SupplyService,
+        ProductsService,
+        ProvidersService,
         RouteService,
+        ClientService,
         TemplatesRoutesService,
-		UsersService,
-		ImagesService,
-		AuthenticateService,
-		PointOfSaleService,
-		ViewingService,
-		HeaderService,
+        UsersService,
+        ImagesService,
+
+
+        DragulaService,
+
+
+
+        
+        AuthenticateService,
+        PointOfSaleService,
+        GroupPosService,
+        ViewingService,
+        HeaderService,
         TokenService,
         AlertService,
         KpiService,
-        { provide: LOCALE_ID, useValue: 'es-UY' }
-	],
-	bootstrap: [AppComponent]
+        UnitsConversorService,
+        { provide: LOCALE_ID, useValue: 'es-UY' },
+        { provide: NgbDateParserFormatter, useClass: NgbDateESParserFormatter }
+    ],
+    bootstrap: [AppComponent]
 })
-export class AppModule {}
+export class AppModule { }

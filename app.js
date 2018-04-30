@@ -18,10 +18,14 @@ var kpis = require('./routes/kpis');
 var route = require('./routes/route');
 var templateRoute = require('./routes/templateRoute');
 var images = require('./routes/images');
+var providers = require('./routes/providers');
+var groupPos = require('./routes/groupPos');
+var clients = require('./routes/clients');
 
 var NewACL = require('./motionLibJS/serverSide/acl/newACL');
 var masterDBController = require('./bd/masterConnectionsBD');
-NewACL.setUp(masterDBController.dbMasterConnection.connection);
+//NewACL.setUp(masterDBController.dbMasterConnection.connection);
+NewACL.setUp(masterDBController.getController().getMasterConnection().getConnection());
 
 
 var app = express();
@@ -57,6 +61,9 @@ app.use('/api/kpis', kpis);
 app.use('/api/route', route);
 app.use('/api/templateRoute', templateRoute);
 app.use('/api/images', images);
+app.use('/api/providers', providers);
+app.use('/api/groupPos', groupPos);
+app.use('/api/clients', clients);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

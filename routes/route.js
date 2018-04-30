@@ -4,6 +4,8 @@ var routesController = require('../controllers/routesController');
 
 router.get('/', routesController.getAll);
 
+//router.get('/:id', routesController.getAll);
+
 router.post('/', routesController.add);
 
 router.put('/', routesController.update);
@@ -11,6 +13,14 @@ router.put('/', routesController.update);
 router.delete('/:id', routesController.delete);
 
 router.get('/pointofsales/:idRoute', routesController.getPointsOfSales);
+
+router.get('/stock/:idRoute', routesController.getStock);
+
+
+router.get('/routesByUser/:user', routesController.getRoutesByUser);
+
+//TODO hacer que se saque del usuario autenticado
+router.get('/routes/:idUser', routesController.getRoutesByUserId);
 
 router.get('/users/:idRoute', routesController.getUsers);
 

@@ -1,10 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { TemplatesRoutesService } from '../../../services/templates-routes.service';
 import { TemplateRoute } from '../../../models/TemplateRoute.model';
-import { PointOfSale } from '../../../models/pointofsale.model';
-
 
 import { RouteService } from '../../../services/route.service';
+import { PointOfSale } from '../../../../../../datatypes/pointOfSale';
 
 @Component({
     selector: 'app-templates-routes',

@@ -7,6 +7,7 @@ import { of } from 'rxjs/observable/of';
 
 import { Product } from '../../../../datatypes/product';
 import { Result, ResultWithData, ResultCode } from '../../../../datatypes/result';
+import { GroupPrice } from '../../../../datatypes/groupPrice';
 
 @Injectable()
 export class ProductsService {
@@ -18,12 +19,20 @@ export class ProductsService {
 		return this.http.get<ResultWithData<Product>>(this.PRODUCTS_URL + '/' + id);
 	}
 
+    getPriceByProduct(idProduct: number): Observable<ResultWithData<GroupPrice[]>> {
+		return this.http.get<ResultWithData<GroupPrice[]>>(this.PRODUCTS_URL + '/priceByProduct/' + idProduct);
+	}
+
+    getPriceByProductByPOS(idProduct: number,idPOS:number ): Observable<ResultWithData<Product>> {
+		return this.http.get<ResultWithData<Product>>(this.PRODUCTS_URL + '/priceByProductByPOS/' + idProduct + '/' + idPOS);
+	}
+
 	getAll(): Observable<ResultWithData<Product[]>> {
 		return this.http.get<ResultWithData<Product[]>>(this.PRODUCTS_URL);
 	}
 
 	update(product: Product): Observable<any> {
-		return this.http.put<Product[]>(this.PRODUCTS_URL + '/' + product.id, product);
+		return this.http.put<Product[]>(this.PRODUCTS_URL, {product});
 	}
 
 	agregar(Product: Product): Observable<any> {

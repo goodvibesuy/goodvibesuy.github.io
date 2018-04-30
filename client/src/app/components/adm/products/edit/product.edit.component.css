@@ -58,3 +58,7 @@
 .delete-product-supply {
     cursor: pointer;
 }
+
+.form-group .invalid-feedback{
+    display: block;
+}

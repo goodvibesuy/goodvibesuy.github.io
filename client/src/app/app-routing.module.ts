@@ -1,7 +1,6 @@
 
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-
 import { DashboardComponent } from './components/front/dashboard/dashboard.component';
 import { LocalesComponent } from './components/front/locales/locales.component';
 import { ReportesComponent } from './components/front/reportes/reportes.component';
@@ -22,13 +21,29 @@ import { ProductEditComponent } from './components/adm/products/edit/product.edi
 import { ProductAddComponent } from './components/adm/products/add/product.add.component';
 import { LoginComponent } from './components/login/login.component';
 import { PosComponent } from './components/adm/pos/pos.component';
+import { PosListComponent } from './components/adm/pos/list/pos.list.component';
+import { PosEditComponent } from './components/adm/pos/edit/pos.edit.component';
+import { PosAddComponent } from './components/adm/pos/add/pos.add.component';
 import { TemplatesRoutesComponent } from './components/adm/templates-routes/templates-routes.component';
+import { ReporteViewingComponent } from './components/front/reporte-viewing/reporte-viewing.component';
+import { ClientComponent } from './components/adm/client/client.component';
+import { ProviderComponent } from './components/adm/provider/provider.component';
 
 const routes: Routes = [
     {
         path:'admin/puntos-de-venta',
-        component:PosComponent
+        component:PosComponent,
+		children: [
+			{ path: '', component: PosListComponent },
+			{ path: 'agregar', component: PosAddComponent },
+			{ path: 'editar/:id', component: PosEditComponent }
+		]
     },
+    {
+        path:'admin/client',
+        component:ClientComponent
+    }
+    ,
 	{
 		path: '',
 		component: LoginComponent
@@ -49,11 +64,20 @@ const routes: Routes = [
 	{
 		path: 'locales',
 		component: LocalesComponent
+    },
+    {
+		path: 'proveedores',
+		component: ProviderComponent
 	},
 	{
 		path: 'reportes',
 		component: ReportesComponent
-	},
+    },
+    {
+		path: 'reporteVisitas',
+		component: ReporteViewingComponent
+    }
+    ,
 	{
 		path: 'admin/insumos',
 		component: SupplyComponent,
@@ -73,6 +97,10 @@ const routes: Routes = [
 		]
 	},
 	{
+		path: 'mapa/:idRoute',
+		component: MapaComponent
+    },
+    {
 		path: 'mapa',
 		component: MapaComponent
     },
@@ -80,6 +108,11 @@ const routes: Routes = [
 		path: 'plantilla-recorridos',
 		component: TemplatesRoutesComponent
 	},
+	{
+		path: 'detalle-local/:id/:idRoute',
+		component: DetalleLocalComponent
+    },
+    
 	{
 		path: 'detalle-local/:id',
 		component: DetalleLocalComponent

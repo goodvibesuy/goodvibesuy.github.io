@@ -4,189 +4,198 @@ import { ReactiveFormsModule, FormsModule, FormGroup, FormControl, Validators, F
 
 import { RouteService } from '../../../../services/route.service';
 import { UsersService } from '../../../../services/users.service';
-import { Route as RouteModel } from '../../../../models/route.model';
-import { PointOfSale } from '../../../../models/pointofsale.model';
-import { RoutePointOfSale } from '../../../../models/RoutePointOfSale.model';
+import { RoutePointOfSale } from '../../../../models/routePointOfSale.model';
 import { RouteUser } from '../../../../models/routeUser.model';
-import { User } from '../../../../models/user.model';
+
+import { TemplatesRoutesService } from '../../../../services/templates-routes.service';
+import { TemplatesRoutesComponent } from '../../templates-routes/templates-routes.component';
+import { TemplateRoute } from '../../../../models/TemplateRoute.model';
+
+import { PointOfSale } from '../../../../../../../datatypes/pointOfSale';
+import { User } from '../../../../../../../datatypes/user';
+import { Route } from "../../../../../../../datatypes/route";
+import { RouteTable } from "../../../../../../../datatypes/routeTable";
+import { ValidableForm } from '../../../../shared/ValidableForms';
+import { NgbDateFormatter } from '../../../../shared/DateParserFormatter';
+import { Product } from '../../../../../../../datatypes/product';
+import { ProductsService } from '../../../../services/products.service';
+
 
 @Component({
-	selector: 'app-route.edit',
-	templateUrl: './route.edit.component.html',
-	styleUrls: ['./route.edit.component.css']
+    selector: 'app-route.edit',
+    templateUrl: './route.edit.component.html',
+    styleUrls: ['./route.edit.component.css']
 })
-export class RouteEdit implements OnInit {
-	private token: string;
-	private userSaved: string;
-	private accountId: Number;
+export class RouteEdit  extends ValidableForm implements OnInit {
+    private currentRoute: Route;
+    private id: number;
+    paramsSub: any;
+    //Puntos de venta para el combo
+    private pointsOfSales: PointOfSale[];
+    //Usuarios para el combo
+    private users: User[];
+    
+    //Puntos de venta de la ruta
+    //private pointsOfSaleRoute: PointOfSale[];
+    private POSSelected: PointOfSale;
+    private templatesRoutes: TemplateRoute[];
+    private products:Product[];
+    private templateSelected: TemplateRoute;
+    private errorNoPOS: boolean = false;
 
-	//public myform: FormGroup;
-	//public editForm: FormGroup;
-
-	firstName: FormControl;
-	lastName: FormControl;
-	email: FormControl;
-	password: FormControl;
-	language: FormControl;
-	editName: FormControl;
-
-	public usuario;
-	private id: number;
-	paramsSub: any;
-	private route: RouteModel;
-	//Puntos de venta para el combo
-	private pointsOfSales: PointOfSale[];
-	//Usuarios para el combo
-	private users: User[];
-	private usersRoute: User[];
-	//Interfaz que mapea ruta y punto de venta
-	private rPOS: RoutePointOfSale;
-	//Interfaz que mapea ruta y usuario
-	private rUser: RouteUser;
-	//Puntos de venta de la ruta
-	private pointsOfSaleRoute: PointOfSale[];
-
-	constructor(
-		private activatedRoute: ActivatedRoute,
-		private router: Router,
-		private routeService: RouteService,
-		private userService: UsersService
-	) {
-		this.rPOS = <RoutePointOfSale>{};
-		this.rUser = <RouteUser>{};
-
-		this.usuario = {
-			nombre: '',
-			apellidos: '',
-			email: '',
-			password: ''
-		};
-	}
-
-	onSubmit() {
-		console.log(this.usuario);
-	}
-
-	ngOnInit() {
-		this.token = localStorage.getItem('token');
-		this.userSaved = localStorage.getItem('user');
-		this.accountId = Number(localStorage.getItem('accountId'));
-		this.editName = new FormControl('', Validators.required);
-		this.paramsSub = this.activatedRoute.params.subscribe(
-			params => {
-				this.routeService.get().subscribe(response => {
-					console.log(response.data);
-					this.route = (<RouteModel[]>response.data).find(s => s.idroute == params['id']);
-					this.rPOS.idRoute = this.route.idroute;
-					this.rUser.idRoute = this.route.idroute;
-					this.getPointOfSalesRoute();
-					this.getUsers();
-					this.getUsersRoute();
-					//this.editForm = new FormGroup({ editName: this.editName });
-				});
-			},
-			error => {}
-		);
-
-		this.routeService.getPointsOfSales().subscribe(dataPOS => {
-			this.pointsOfSales = <PointOfSale[]>dataPOS;
-			console.log(dataPOS);
-		});
-
-		this.createFormControls();
-		this.createForm();
-		this.createFormEditControls();
-		this.createFormEdit();
-	}
-
-	createFormControls() {
-		this.firstName = new FormControl('', Validators.required);
-		this.lastName = new FormControl('', Validators.required);
-		this.email = new FormControl('', [Validators.required, Validators.pattern('[^ @]*@[^ @]*')]);
-		this.password = new FormControl('', [Validators.required, Validators.minLength(8)]);
-		this.language = new FormControl('', Validators.required);
-	}
-
-	createForm() {
-		/*
-        this.myform = new FormGroup({
-            name: new FormGroup({
-                firstName: this.firstName,
-                lastName: this.lastName,
-            }),
-            email: this.email,
-            password: this.password,
-            language: this.language
+    constructor(
+        fb: FormBuilder,
+        private activatedRoute: ActivatedRoute,
+        private router: Router,
+        private routeService: RouteService,
+        private userService: UsersService,
+        private templateRouteService: TemplatesRoutesService,
+        private productService: ProductsService
+    ) {
+        super(fb);
+        this.currentRoute = new Route();
+        super.initForm({
+            name: [null, Validators.required],
+            date: [null, Validators.required],
+            user: [null, Validators.required],
+            
         });
-        */
-	}
+    };
 
-	createFormEditControls() {
-		this.editName = new FormControl('', Validators.required);
-	}
+    onSubmit() {
+        console.log("aa");
+    }
 
-	createFormEdit() {
-		/*
-        this.editForm = new FormGroup({
-            editName: this.editName
+    ngOnInit() {
+        this.getTemplatesRoute();
+        this.productService.getAll().subscribe(
+            response => {
+                console.log(response);
+                if(response.result === 1){
+                    this.products = response.data;
+                }else{
+                    alert("Error al cargar los productos.");
+                }
+            }
+        )
+        this.paramsSub = this.activatedRoute.params.subscribe(
+            params => {
+                this.routeService.get().subscribe(response => {
+                    console.log(response.data);
+                    //TO DO --> Cambiar proxima linea por <RouteTable[]>
+                    var route = (<any[]>response.data).find(s => s.id == params['id']);  
+                    console.log(route);                  
+                    this.currentRoute.id = route.id;
+                    this.currentRoute.name = route.name;
+                    this.currentRoute.date = new Date (route.date);
+                    //super.setModel(route, { 'date': NgbDateFormatter.formatDate });
+                    super.setModel(this.currentRoute, { 'date': NgbDateFormatter.formatDate });
+                    //super.setModel(this.currentRoute);
+
+                    this.getPointOfSalesRoute();
+                    this.getUsers();
+                    this.getUsersRoute();
+                    this.getStockRoute();
+                });
+            },
+            error => { }
+        );
+
+        this.routeService.getPointsOfSales().subscribe(dataPOS => {            
+            this.pointsOfSales = <PointOfSale[]>dataPOS;
+            this.POSSelected = this.pointsOfSales[0];
         });
-        */
-	}
+    }
 
-	remove(idPointOfSale) {
-		this.routeService.remove(this.route.idroute, idPointOfSale).subscribe(data => {
-			this.getPointOfSalesRoute();
-		});
-	}
+    getTemplatesRoute() {
+        this.templateRouteService.getAll().subscribe(
+            response => {
+                this.templatesRoutes = response.data;
+                this.templateSelected = this.templatesRoutes[0];
+            }
+        )
+    }
 
-	removeUser(idUser) {
-		this.routeService.removeUser(this.route.idroute, idUser).subscribe(data => {
-			this.getUsersRoute();
-		});
-	}
+    addTemplate() {
+        this.templateRouteService.getPointsOfSalesRoute(this.templateSelected.id).subscribe(
+            data => {
+                for(let i = 0; i < data.length ; i++){
+                    this.currentRoute.addPointOfSale(data[i]);
+                }
+            }
+        )
+    }
 
-	actualizar() {
-		this.routeService.update(this.route).subscribe(data => {
-			this.router.navigateByUrl('/recorridos');
-		});
-	}
+    remove(idPointOfSale) {
+        this.currentRoute.removePointOfSale(idPointOfSale);
+    }
 
-	getUsersRoute() {
-		this.routeService.getUsersRoute(this.route.idroute).subscribe(data => {
-			this.usersRoute = data;
-		});
-	}
+    actualizar() {        
+        if (super.isInvalid()) {
+            super.showValidationErrors();
+        } else {
+            var route = super.getModel<Route>({ 'date': NgbDateFormatter.unformatDate });
+            route.pointsOfSale = this.currentRoute.getPointsOfSale();
+            route.stock = this.currentRoute.getStock();
+            console.log(route.pointsOfSale);
 
-	getPointOfSalesRoute() {
-		this.routeService.getPointsOfSalesRoute(this.route.idroute).subscribe(data => {
-			this.pointsOfSaleRoute = data;
-		});
-	}
+            if(route.pointsOfSale.length === 0){
+                this.errorNoPOS = true;
+            }else{
+                this.errorNoPOS = false;
+                this.routeService.update(route).subscribe(data => {
 
-	getUsers() {
-		this.userService.get().subscribe(data => {
-			console.log(data);
-			this.users = data;
-		});
-	}
+                    if(data.result > 0){
+                        this.router.navigateByUrl('/recorridos');
+                    }else{
+                        alert(data.message);
+                    }                    
+                });
+            }
+        }                
+    }
 
-	agregarPuntoDeVenta() {
-		this.routeService.addPointOfSale(this.rPOS).subscribe(data => {
-			this.getPointOfSalesRoute();
-		});
-	}
 
-	agregarUsuario() {
-		this.routeService.addUser(this.rUser).subscribe(data => {
-			this.getUsersRoute();
-		});
-	}
+    compareUser(u1:User,u2:User):boolean{
+        return u1 && u2 ? u1.id === u2.id : u1 === u2;
+    }
 
-	changeOrder(idpointofSale: number, position: number, newposition: number) {
-		this.routeService
-			.reorderPointOfSale(this.route.idroute, idpointofSale, position, newposition)
-			.subscribe(data => {
-				this.getPointOfSalesRoute();
-			});
-	}
+    getUsersRoute() {        
+        this.routeService.getUsersRoute(this.currentRoute.id).subscribe(
+            data => {
+                this.currentRoute.setUser(data[0]);
+            }
+        );        
+    }
+
+    getPointOfSalesRoute() {
+        this.routeService.getPointsOfSalesRoute(this.currentRoute.id).subscribe(
+            data => {
+                this.currentRoute.pointsOfSale = data;                
+            }
+        );
+    }
+
+    getStockRoute(){
+        this.routeService.getStockRoute(this.currentRoute.id).subscribe(
+            response => {
+                this.currentRoute.stock = response;
+                console.log(response);
+            }
+        );
+    }
+
+    getUsers() {
+        this.userService.get().subscribe(data => {
+            this.users = data;
+        });
+    }
+
+    agregarPuntoDeVenta() {
+        this.currentRoute.addPointOfSale(this.POSSelected);        
+    }
+
+    changeOrder(idpointofSale: number, position: number, newposition: number) {
+        this.currentRoute.reorderPointOfSale(position,newposition);
+    }
 }

@@ -1,5 +1,5 @@
 /node_modules/
 /.metadata/
-models/productsModel.js
+/models/*.js
 *.js.map
 /client/dist

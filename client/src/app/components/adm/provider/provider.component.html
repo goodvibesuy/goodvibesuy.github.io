@@ -1,0 +1,28 @@
+<form novalidate>
+    <div class="card" style="margin:15px;">
+        <div class="card-header">
+            <b>Agregar Proveedor</b>
+        </div>
+        <div class="card-body">
+            <div class="form-group">
+                <span class="input-group-addon">Nombre:</span>
+                <input type="text" class="form-control" name="name" [(ngModel)]="providerName">
+            </div>
+            <button type="button" class="btn btn-primary" (click)="newProvider()">Agregar</button>
+            <button type="button" class="btn btn-light" routerLink="/recorridos">Cancelar</button>
+        </div>
+    </div>
+</form>
+
+<table class="table table-striped">
+    <thead class="thead-dark">
+        <tr>
+            <th>Nombre</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let p of providers">
+            <td>{{p.name}}</td>
+        </tr>
+    </tbody>
+</table>

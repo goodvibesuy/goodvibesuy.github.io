@@ -1,37 +1,32 @@
 "use strict";
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 Object.defineProperty(exports, "__esModule", { value: true });
 var result_1 = require("../datatypes/result");
+var mainModel_1 = require("./mainModel");
 var masterDBController = require('../bd/masterConnectionsBD');
-var clientDBController = require('../bd/clientConnectionsBD');
-var TravelModel = /** @class */ (function () {
+var TravelModel = /** @class */ (function (_super) {
+    __extends(TravelModel, _super);
     function TravelModel() {
-        this.removeUser = function (idRoute, idUser, dbName, callBack) {
-            var pool = clientDBController.getUserConnection(dbName);
-            pool.getConnection(function (err, con) {
-                if (err) {
-                    con.release();
-                    console.error(err);
-                }
-                else {
-                    con.query("DELETE FROM route_user WHERE idroute = ? AND iduser = ? ", [idRoute, idUser], function (err, result) {
-                        con.release();
-                        if (err)
-                            throw err;
-                        callBack({ result: 1, message: "OK", data: result });
-                    });
-                }
-            });
-        };
+        return _super.call(this) || this;
     }
     TravelModel.prototype.getAll = function (dbName, callBack) {
-        var pool = clientDBController.getUserConnection(dbName);
+        var pool = this.controllerConnections.getUserConnection(dbName);
         pool.getConnection(function (err, con) {
             if (err) {
                 con.release();
                 console.error(err);
             }
             else {
-                con.query("SELECT * FROM route", function (err, result) {
+                con.query("SELECT * FROM route ORDER BY date DESC", function (err, result) {
                     con.release();
                     if (err)
                         throw err;
@@ -41,26 +36,261 @@ var TravelModel = /** @class */ (function () {
         });
     };
     ;
-    TravelModel.prototype.add = function (travelName, dbName, callBack) {
-        var pool = clientDBController.getUserConnection(dbName);
+    TravelModel.prototype.add = function (route, dbName, callBack) {
+        var mainThis = this;
+        var pool = this.controllerConnections.getUserConnection(dbName);
         pool.getConnection(function (err, con) {
             if (err) {
+                console.log(err);
                 con.release();
                 console.error(err);
+                callBack({ result: -1, message: "Error interno. - No se pudo agregar la ruta." });
             }
             else {
-                con.query("INSERT INTO route (name) VALUES (?)", [travelName], function (err, result) {
-                    con.release();
-                    if (err)
-                        throw err;
-                    callBack({ result: 1, message: "OK", data: result });
+                con.beginTransaction(function (err) {
+                    //year: 2018, month: 4, day: 1
+                    var d = route.date;
+                    var dateRoute = d.year + "-" + (d.month + 1) + "-" + d.day;
+                    con.query("INSERT INTO route (name,date) VALUES (?,?)", [route.name, dateRoute], function (err, result) {
+                        if (err) {
+                            con.rollback(function () {
+                                console.log(err);
+                                con.release();
+                                callBack({ result: -1, message: "Error interno. - No se pudo agregar la ruta." });
+                            });
+                        }
+                        else {
+                            route.id = result.insertId;
+                            con.query("INSERT INTO route_user(idroute,iduser) VALUES(?,?) ", [route.id, route.user.id], function (err, result) {
+                                if (err) {
+                                    con.rollback(function () {
+                                        console.log(err);
+                                        con.release();
+                                        callBack({ result: -1, message: "Error interno. - No se pudo guardar el usuario de la ruta." });
+                                    });
+                                }
+                                else {
+                                    //mainThis.addPointsOfSale(0, route, callBack, con);
+                                    mainThis.addUpdateProductStock(0, route, callBack, con);
+                                }
+                            });
+                        }
+                    });
                 });
             }
         });
     };
     ;
+    TravelModel.prototype.addUpdateProductStock = function (index, route, callBack, con) {
+        var mainThis = this;
+        con.query("UPDATE route_stock SET quantity = ? WHERE idRoute =? && idProduct = ?", [route.stock[index].quantity, route.id, route.stock[index].product.id], function (err, result) {
+            if (err) {
+                con.rollback(function () {
+                    console.log(err);
+                    con.release();
+                    callBack({ result: -1, message: "Error interno. No se pudo guardar el POS de la ruta." });
+                });
+            }
+            else {
+                if (result.affectedRows === 1) {
+                    if (index + 1 < route.stock.length) {
+                        mainThis.addUpdateProductStock(index + 1, route, callBack, con);
+                    }
+                    else {
+                        mainThis.removePointsOfSale(0, route, callBack, con);
+                        //mainThis.addPointsOfSale(0, route, callBack, con);
+                    }
+                }
+                else {
+                    con.query("INSERT INTO route_stock(idRoute,idProduct,quantity) VALUES(?,?,?) ", [route.id, route.stock[index].product.id, route.stock[index].quantity], function (err, result) {
+                        if (err) {
+                            con.rollback(function () {
+                                console.log(err);
+                                con.release();
+                                callBack({ result: -1, message: "Error interno. No se pudo guardar el POS de la ruta." });
+                            });
+                        }
+                        else {
+                            if (index + 1 < route.stock.length) {
+                                mainThis.addUpdateProductStock(index + 1, route, callBack, con);
+                            }
+                            else {
+                                mainThis.removePointsOfSale(0, route, callBack, con);
+                                //mainThis.addPointsOfSale(0, route, callBack, con);
+                            }
+                        }
+                    });
+                }
+            }
+        });
+    };
+    TravelModel.prototype.update = function (route, dbName, callBack) {
+        var mainThis = this;
+        var pool = this.controllerConnections.getUserConnection(dbName);
+        pool.getConnection(function (err, con) {
+            if (err) {
+                con.release();
+                console.error(err);
+                callBack({ result: -1, message: "Error interno." });
+            }
+            else {
+                con.beginTransaction(function (err) {
+                    var dateOnly = (route.date.toString()).split("T");
+                    con.query("UPDATE route SET  name = ?, date = ? WHERE id =?", [route.name, dateOnly[0], route.id], function (err, result) {
+                        if (err) {
+                            con.rollback(function () {
+                                console.log(err);
+                                con.release();
+                                callBack({ result: -1, message: "Error interno. - No se pudo actualizar la ruta." });
+                            });
+                        }
+                        else {
+                            con.query("UPDATE route_user SET iduser = ? WHERE idroute = ? ", [route.user.id, route.id], function (err, result) {
+                                if (err) {
+                                    con.rollback(function () {
+                                        console.log(err);
+                                        con.release();
+                                        callBack({ result: -1, message: "Error interno.No se pudo actualizar el usuario de la ruta" });
+                                    });
+                                }
+                                else {
+                                    if (result.affectedRows === 0) {
+                                        con.query("INSERT INTO route_user(iduser,idroute)  VALUES(?,?)", [route.user.id, route.id], function (err, result) {
+                                            if (err) {
+                                                con.rollback(function () {
+                                                    console.log(err);
+                                                    con.release();
+                                                    callBack({ result: -1, message: "Error interno.No se pudo actualizar el usuario de la ruta" });
+                                                });
+                                            }
+                                            else {
+                                                mainThis.addUpdateProductStock(0, route, callBack, con);
+                                            }
+                                        });
+                                    }
+                                    else {
+                                        mainThis.addUpdateProductStock(0, route, callBack, con);
+                                    }
+                                }
+                            });
+                        }
+                    });
+                });
+            }
+        });
+    };
+    ;
+    TravelModel.prototype.removePointsOfSale = function (index, route, callBack, con) {
+        var mainThis = this;
+        if (route.pointsOfSaleToRemove.length > 0) {
+            con.query("DELETE FROM route_pointofsale WHERE idRoute = ? AND idPointofsale = ? ", [route.id, route.pointsOfSaleToRemove[index].id], function (err, result) {
+                if (err) {
+                    con.rollback(function () {
+                        console.log(err);
+                        con.release();
+                        callBack({ result: -1, message: "Error interno. No se pudo actualizar el POS de la ruta." });
+                    });
+                }
+                else {
+                    if (index + 1 < route.pointsOfSaleToRemove.length) {
+                        mainThis.removePointsOfSale(index + 1, route, callBack, con);
+                    }
+                    else {
+                        mainThis.addPointsOfSale(0, route, callBack, con);
+                    }
+                }
+            });
+        }
+        else {
+            mainThis.addPointsOfSale(0, route, callBack, con);
+        }
+    };
+    TravelModel.prototype.addPointsOfSale = function (index, route, callBack, con) {
+        var mainThis = this;
+        if (route.pointsOfSale.length > 0) {
+            con.query("UPDATE route_pointofsale SET position = ? WHERE idRoute = ? AND idPointofsale = ? ", [index, route.id, route.pointsOfSale[index].id], function (err, result1) {
+                if (err) {
+                    con.rollback(function () {
+                        console.log(err);
+                        con.release();
+                        callBack({ result: -1, message: "Error interno. No se pudo actualizar el POS de la ruta." });
+                    });
+                }
+                else {
+                    if (result1.affectedRows === 0) {
+                        con.query("INSERT  INTO route_pointofsale(idRoute,idPointofsale,position) VALUES(?,?,?) ", [route.id, route.pointsOfSale[index].id, index], function (err, result2) {
+                            if (err) {
+                                con.rollback(function () {
+                                    console.log(err);
+                                    con.release();
+                                    callBack({ result: -1, message: "Error interno. No se pudo guardar el POS de la ruta." });
+                                });
+                            }
+                            else {
+                                if (index + 1 < route.pointsOfSale.length) {
+                                    mainThis.addPointsOfSale(index + 1, route, callBack, con);
+                                }
+                                else {
+                                    con.commit(function (err) {
+                                        if (err) {
+                                            con.rollback(function () {
+                                                console.log(err);
+                                                con.release();
+                                                callBack({ result: -1, message: "Error interno. No se pudo hacer commit de la ruta" });
+                                            });
+                                        }
+                                        else {
+                                            con.release();
+                                            callBack({ result: 1, message: "OK" });
+                                        }
+                                    });
+                                }
+                            }
+                        });
+                    }
+                    else {
+                        if (index + 1 < route.pointsOfSale.length) {
+                            mainThis.addPointsOfSale(index + 1, route, callBack, con);
+                        }
+                        else {
+                            con.commit(function (err) {
+                                if (err) {
+                                    con.rollback(function () {
+                                        console.log(err);
+                                        con.release();
+                                        callBack({ result: -1, message: "Error interno. No se pudo hacer commit de la ruta" });
+                                    });
+                                }
+                                else {
+                                    con.commit(function (err) {
+                                        if (err) {
+                                            con.rollback(function () {
+                                                console.log(err);
+                                                con.release();
+                                                callBack({ result: -1, message: "Error interno. No se pudo hacer commit de la ruta" });
+                                            });
+                                        }
+                                        else {
+                                            con.release();
+                                            callBack({ result: 1, message: "OK" });
+                                        }
+                                    });
+                                }
+                            });
+                        }
+                    }
+                }
+            });
+        }
+        else {
+            con.rollback(function () {
+                con.release();
+                callBack({ result: -1, message: "Error interno. No se puede agregar un POS vacio." });
+            });
+        }
+    };
     TravelModel.prototype.addPointOfSale = function (idRoute, idPointOfSale, dbName, callBack) {
-        var pool = clientDBController.getUserConnection(dbName);
+        var pool = this.controllerConnections.getUserConnection(dbName);
         pool.getConnection(function (err, con) {
             if (err) {
                 con.release();
@@ -83,7 +313,7 @@ var TravelModel = /** @class */ (function () {
     };
     ;
     TravelModel.prototype.addUser = function (idRoute, idUser, date, dbName, callBack) {
-        var pool = clientDBController.getUserConnection(dbName);
+        var pool = this.controllerConnections.getUserConnection(dbName);
         pool.getConnection(function (err, con) {
             if (err) {
                 con.release();
@@ -101,7 +331,7 @@ var TravelModel = /** @class */ (function () {
     };
     ;
     TravelModel.prototype.removePointOfSale = function (idRoute, idPointOfSale, dbName, callBack) {
-        var pool = clientDBController.getUserConnection(dbName);
+        var pool = this.controllerConnections.getUserConnection(dbName);
         pool.getConnection(function (err, con) {
             if (err) {
                 con.release();
@@ -124,8 +354,25 @@ var TravelModel = /** @class */ (function () {
             }
         });
     };
+    TravelModel.prototype.removeUser = function (idRoute, idUser, dbName, callBack) {
+        var pool = this.controllerConnections.getUserConnection(dbName);
+        pool.getConnection(function (err, con) {
+            if (err) {
+                con.release();
+                console.error(err);
+            }
+            else {
+                con.query("DELETE FROM route_user WHERE idroute = ? AND iduser = ? ", [idRoute, idUser], function (err, result) {
+                    con.release();
+                    if (err)
+                        throw err;
+                    callBack({ result: 1, message: "OK", data: result });
+                });
+            }
+        });
+    };
     TravelModel.prototype.reorderPointOfSale = function (idRoute, idPointOfSale, position, newPosition, dbName, callBack) {
-        var pool = clientDBController.getUserConnection(dbName);
+        var pool = this.controllerConnections.getUserConnection(dbName);
         pool.getConnection(function (err, con) {
             if (err) {
                 con.release();
@@ -144,7 +391,7 @@ var TravelModel = /** @class */ (function () {
         });
     };
     TravelModel.prototype.getPointsOfSales = function (idRoute, dbName, callBack) {
-        var pool = clientDBController.getUserConnection(dbName);
+        var pool = this.controllerConnections.getUserConnection(dbName);
         pool.getConnection(function (err, con) {
             if (err) {
                 con.release();
@@ -161,8 +408,31 @@ var TravelModel = /** @class */ (function () {
         });
     };
     ;
+    TravelModel.prototype.getStock = function (idRoute, dbName, callBack) {
+        var pool = this.controllerConnections.getUserConnection(dbName);
+        pool.getConnection(function (err, con) {
+            if (err) {
+                con.release();
+                console.error(err);
+            }
+            else {
+                con.query("SELECT * FROM route_stock as rs INNER JOIN product as p ON p.id = idProduct WHERE idroute = ? ORDER BY displayOrder ASC", [idRoute], function (err, result) {
+                    con.release();
+                    if (err)
+                        throw err;
+                    var stock = new Array();
+                    for (var i = 0; i < result.length; i++) {
+                        var product = { id: result[i].idProduct, name: result[i].name, path_image: result[i].path_image };
+                        stock.push({ product: product, quantity: result[i].quantity });
+                    }
+                    callBack({ result: 1, message: "OK", data: stock });
+                });
+            }
+        });
+    };
+    ;
     TravelModel.prototype.getUers = function (idRoute, dbName, callBack) {
-        var pool = clientDBController.getUserConnection(dbName);
+        var pool = this.controllerConnections.getUserConnection(dbName);
         pool.getConnection(function (err, con) {
             if (err) {
                 con.release();
@@ -178,15 +448,15 @@ var TravelModel = /** @class */ (function () {
             }
         });
     };
-    TravelModel.prototype.update = function (travelName, idRoute, dbName, callBack) {
-        var pool = clientDBController.getUserConnection(dbName);
+    TravelModel.prototype.getRoutesByUserId = function (userId, dbName, callBack) {
+        var pool = this.controllerConnections.getUserConnection(dbName);
         pool.getConnection(function (err, con) {
             if (err) {
                 con.release();
                 console.error(err);
             }
             else {
-                con.query("UPDATE route SET  name = ? WHERE idroute =?", [travelName, idRoute], function (err, result) {
+                con.query("SELECT * FROM route_user r_u INNER JOIN route r ON r.id = r_u.idroute WHERE iduser = ? ORDER BY r.date DESC", [userId], function (err, result) {
                     con.release();
                     if (err)
                         throw err;
@@ -195,43 +465,108 @@ var TravelModel = /** @class */ (function () {
             }
         });
     };
-    ;
-    TravelModel.prototype.delete = function (idRoute, dbName, callBack) {
-        var pool = clientDBController.getUserConnection(dbName);
+    TravelModel.prototype.getRoutesByUser = function (user, dbName, callBack) {
+        var pool = this.controllerConnections.getUserConnection(dbName);
         pool.getConnection(function (err, con) {
             if (err) {
                 con.release();
                 console.error(err);
             }
             else {
-                con.query("DELETE FROM route WHERE idRoute = ?", [idRoute], function (err, result) {
-                    con.release();
-                    if (!!err) {
-                        // TODO: log error -> common/errorHandling.ts
-                        // errorHandler.log(err);
+                con.query("SELECT * FROM users WHERE user_name = ?", [user], function (err, result) {
+                    if (err) {
+                        con.release();
                         console.error(err);
-                        var errorMessage = "";
-                        if (err.code === "ER_ROW_IS_REFERENCED_2") {
-                            errorMessage = "No se puede borrar el registro, porque es utilizado en otra parte del sistema";
+                    }
+                    con.query("SELECT * FROM route_user r_u INNER JOIN route r ON r.id = r_u.idroute WHERE iduser = ?", [result.id], function (err, result) {
+                        con.release();
+                        if (err)
+                            throw err;
+                        callBack({ result: 1, message: "OK", data: result });
+                    });
+                });
+            }
+        });
+    };
+    TravelModel.prototype.delete = function (idRoute, dbName, callBack) {
+        var pool = this.controllerConnections.getUserConnection(dbName);
+        pool.getConnection(function (err, con) {
+            if (err) {
+                con.release();
+                console.error(err);
+            }
+            else {
+                con.beginTransaction(function (err) {
+                    con.query("DELETE FROM route_pointofsale WHERE idRoute = ?", [idRoute], function (err, result) {
+                        if (err) {
+                            con.rollback(function () {
+                                console.log(err);
+                                con.release();
+                                callBack({ result: -1, message: "Error interno. - No se pudo borrar asociacion ruta pos." });
+                            });
                         }
-                        callBack({
-                            result: result_1.ResultCode.Error,
-                            message: errorMessage
-                        });
-                    }
-                    else {
-                        callBack({
-                            result: result_1.ResultCode.OK,
-                            message: 'OK'
-                        });
-                    }
-                    //if (err) throw err;
+                        else {
+                            con.query("DELETE FROM route_stock WHERE idRoute = ?", [idRoute], function (err, result) {
+                                if (err) {
+                                    con.rollback(function () {
+                                        console.log(err);
+                                        con.release();
+                                        callBack({ result: -1, message: "Error interno. - No se pudo borrar asociacion ruta stock." });
+                                    });
+                                }
+                                else {
+                                    con.query("DELETE FROM route_user WHERE idRoute = ?", [idRoute], function (err, result) {
+                                        if (err) {
+                                            con.rollback(function () {
+                                                console.log(err);
+                                                con.release();
+                                                callBack({ result: -1, message: "Error interno. - No se pudo borrar asociacion ruta usuario." });
+                                            });
+                                        }
+                                        else {
+                                            con.query("DELETE FROM route WHERE id = ?", [idRoute], function (err, result) {
+                                                if (!!err) {
+                                                    // TODO: log error -> common/errorHandling.ts
+                                                    // errorHandler.log(err);
+                                                    console.error(err);
+                                                    var errorMessage = "";
+                                                    if (err.code === "ER_ROW_IS_REFERENCED_2") {
+                                                        errorMessage = "No se puede borrar el registro, porque es utilizado en otra parte del sistema";
+                                                    }
+                                                    callBack({
+                                                        result: result_1.ResultCode.Error,
+                                                        message: errorMessage
+                                                    });
+                                                }
+                                                else {
+                                                    con.commit(function (err) {
+                                                        if (err) {
+                                                            con.rollback(function () {
+                                                                console.log(err);
+                                                                con.release();
+                                                                callBack({ result: -1, message: "Error interno. No se pudo hacer commit de la ruta" });
+                                                            });
+                                                        }
+                                                        else {
+                                                            con.release();
+                                                            callBack({ result: 1, message: "La ruta se ha borrado correctamente" });
+                                                        }
+                                                    });
+                                                }
+                                                //if (err) throw err;
+                                            });
+                                        }
+                                    });
+                                }
+                            });
+                        }
+                    });
                 });
             }
         });
     };
     ;
     return TravelModel;
-}());
-module.exports = new TravelModel();
+}(mainModel_1.MainModel));
+exports.TravelModel = TravelModel;
 //# sourceMappingURL=travelModel.js.map

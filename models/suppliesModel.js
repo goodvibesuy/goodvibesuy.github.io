@@ -1,12 +1,24 @@
 "use strict";
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 Object.defineProperty(exports, "__esModule", { value: true });
+var mainModel_1 = require("./mainModel");
 var masterDBController = require('../bd/masterConnectionsBD');
-var clientDBController = require('../bd/clientConnectionsBD');
-var SuppliesModel = /** @class */ (function () {
+var SuppliesModel = /** @class */ (function (_super) {
+    __extends(SuppliesModel, _super);
     function SuppliesModel() {
+        return _super.call(this) || this;
     }
     SuppliesModel.prototype.getAll = function (dbName, callBack) {
-        var pool = clientDBController.getUserConnection(dbName);
+        var pool = this.controllerConnections.getUserConnection(dbName);
         pool.getConnection(function (err, con) {
             if (err) {
                 con.release();
@@ -22,9 +34,8 @@ var SuppliesModel = /** @class */ (function () {
             }
         });
     };
-    ;
     SuppliesModel.prototype.supplies = function (dbName, callBack) {
-        var pool = clientDBController.getUserConnection(dbName);
+        var pool = this.controllerConnections.getUserConnection(dbName);
         pool.getConnection(function (err, con) {
             if (err) {
                 con.release();
@@ -40,9 +51,8 @@ var SuppliesModel = /** @class */ (function () {
             }
         });
     };
-    ;
     SuppliesModel.prototype.suppliesByProduct = function (idProduct, dbName, callBack) {
-        var pool = clientDBController.getUserConnection(dbName);
+        var pool = this.controllerConnections.getUserConnection(dbName);
         pool.getConnection(function (err, con) {
             if (err) {
                 con.release();
@@ -52,14 +62,14 @@ var SuppliesModel = /** @class */ (function () {
                 con.query('SELECT * FROM supply INNER JOIN product_supply ON id  = idSupply WHERE idProduct = ?', [idProduct], function (err, result) {
                     if (err)
                         throw err;
+                    con.release();
                     callBack({ result: 1, message: 'OK', data: result });
                 });
             }
         });
     };
-    ;
-    SuppliesModel.prototype.addSupply = function (name, idUnit, amount, path_image, dbName, callBack) {
-        var pool = clientDBController.getUserConnection(dbName);
+    SuppliesModel.prototype.addSupply = function (name, idUnit, amount, price_date, idProvider, path_image, dbName, callBack) {
+        var pool = this.controllerConnections.getUserConnection(dbName);
         pool.getConnection(function (err, con) {
             if (err) {
                 con.release();
@@ -81,7 +91,8 @@ var SuppliesModel = /** @class */ (function () {
                     }
                     else {
                         var idSupply = result.insertId;
-                        con.query('INSERT INTO supplyPrice  (date, amount, idSupply) VALUES(NOW(),?,?)', [amount, idSupply], function (err, result) {
+                        var priceDateFormat = new Date(price_date).toISOString().slice(0, 19).replace('T', ' ');
+                        con.query('INSERT INTO supplyPrice  (date, price_date, amount, idSupply, idProvider) VALUES(NOW(),?,?,?,?)', [priceDateFormat, amount, idSupply, idProvider], function (err, result) {
                             con.release();
                             // sea cual sea el tipo de error => siempre tengo que liberar la conexión
                             // sino el cliente web queda esperando
@@ -103,9 +114,8 @@ var SuppliesModel = /** @class */ (function () {
             }
         });
     };
-    ;
-    SuppliesModel.prototype.updateSupply = function (id, name, idUnit, amount, path_image, dbName, callBack) {
-        var pool = clientDBController.getUserConnection(dbName);
+    SuppliesModel.prototype.updateSupply = function (id, name, idUnit, amount, price_date, idProvider, path_image, dbName, callBack) {
+        var pool = this.controllerConnections.getUserConnection(dbName);
         pool.getConnection(function (err, con) {
             if (err) {
                 con.release();
@@ -126,7 +136,8 @@ var SuppliesModel = /** @class */ (function () {
                         }
                     }
                     else {
-                        con.query('INSERT INTO supplyPrice  (date, amount,idSupply) VALUES(NOW(),?,?)', [amount, id], function (err, result) {
+                        var priceDateFormat = new Date(price_date).toISOString().slice(0, 19).replace('T', ' ');
+                        con.query('INSERT INTO supplyPrice  (date, price_date, amount, idSupply, idProvider) VALUES(NOW(),?,?,?,?)', [priceDateFormat, amount, id, idProvider], function (err, result) {
                             con.release();
                             // sea cual sea el tipo de error => siempre tengo que liberar la conexión
                             // sino el cliente web queda esperando
@@ -148,9 +159,8 @@ var SuppliesModel = /** @class */ (function () {
             }
         });
     };
-    ;
     SuppliesModel.prototype.deleteSupply = function (id, dbName, callBack) {
-        var pool = clientDBController.getUserConnection(dbName);
+        var pool = this.controllerConnections.getUserConnection(dbName);
         pool.getConnection(function (err, con) {
             if (err) {
                 con.release();
@@ -180,8 +190,7 @@ var SuppliesModel = /** @class */ (function () {
             }
         });
     };
-    ;
     return SuppliesModel;
-}());
-module.exports = new SuppliesModel();
+}(mainModel_1.MainModel));
+exports.SuppliesModel = SuppliesModel;
 //# sourceMappingURL=suppliesModel.js.map

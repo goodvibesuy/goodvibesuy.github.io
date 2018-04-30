@@ -1,20 +1,24 @@
+var masterDBController = require('../bd/masterConnectionsBD');
 import { Result, ResultWithData, ResultCode } from '../datatypes/result';
 import { Product } from '../datatypes/product';
-var masterDBController = require('../bd/masterConnectionsBD');
-var clientDBController = require('../bd/clientConnectionsBD');
+import {ClientConnectionsBD} from '../bd/clientConnectionsBD'
+import { ControllerDBClientsConnections } from '../motionLibJS/serverSide/masterClientDBFramework/controllers/controllerDBClient';
+import { MainModel } from './mainModel';
 
-class KpisModel {
+class KpisModel extends MainModel{
+    
     constructor() {
+        super();
     }
 
     suppliesPrices(supplyId: number, dbName: string, callBack: (r: ResultWithData<any[]>) => void): void {
-        var pool = clientDBController.getUserConnection(dbName);
+        var pool = this.controllerConnections.getUserConnection(dbName);
         pool.getConnection(function (err: any, con: any) {
             if (err) {
                 con.release();
                 console.error(err);
             } else {
-                con.query("SELECT * FROM supply s INNER JOIN supplyprice sp ON s.id = sp.idSupply WHERE s.id = ?",
+                con.query("SELECT * FROM supply s INNER JOIN supplyPrice sp ON s.id = sp.idSupply WHERE s.id = ? ORDER BY price_date ASC ",
                     [supplyId], function (err: any, result: any) {
                         if (err) throw err;
                         con.release();
@@ -25,7 +29,7 @@ class KpisModel {
     }
 
     kpiDeliveryReturnEmpty(dbName: string, callBack: (r: ResultWithData<any[]>) => void): void {
-        var pool = clientDBController.getUserConnection(dbName);
+        var pool = this.controllerConnections.getUserConnection(dbName);
         pool.getConnection(function (err: any, con: any) {
             if (err) {
                 con.release();
@@ -41,7 +45,7 @@ class KpisModel {
     };
 
     sales(dbName: string, callBack: (r: ResultWithData<any[]>) => void): void {
-        var pool = clientDBController.getUserConnection(dbName);
+        var pool = this.controllerConnections.getUserConnection(dbName);
         pool.getConnection(function (err: any, con: any) {
             if (err) {
                 con.release();

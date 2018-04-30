@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
-import { PointOfSale } from '../../../models/pointofsale.model';
 import { PointOfSaleService } from '../../../services/point-of-sale.service';
 import { ProductsService } from '../../../services/products.service';
+import { PointOfSale } from '../../../../../../datatypes/pointOfSale';
+import { AuthenticateService } from '../../../services/authenticate.service';
 
 @Component({
 	selector: 'app-locales',
@@ -17,11 +18,21 @@ export class LocalesComponent implements OnInit {
 	constructor(
 		private router: Router,
 		private pointOFSaleService: PointOfSaleService,
-		private productService: ProductsService
-	) {}
+        private productService: ProductsService,
+        private authenticateService:AuthenticateService
+	) {
+
+    }
 
 	ngOnInit() {
-		this.loadPointsOfSale();
+        this.authenticateService.verifyToken().subscribe(
+            response => {
+			if (!response.result) {
+				alert("Su sesion ha expirado o no tiene privilegios para esta operacion.");
+			}else{
+                this.loadPointsOfSale();
+            }
+		});
 	}
 
 	loadPointsOfSale(): void {

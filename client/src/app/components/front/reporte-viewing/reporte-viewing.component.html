@@ -1,0 +1,425 @@
+<div class="row" style="margin-top: 15px;">
+    <div style="width: 30px;margin-left:15px;">
+        <input style="margin-top: 35px" type="checkbox" aria-label="Checkbox for following text input" [(ngModel)]="useDates">
+    </div>
+    <div class="form-group	col-lg-2" *ngIf="useDates">
+        <span class="input-group-addon">Desde:</span>
+        <div class="form-group">
+            <div class="input-group">
+                <input class="form-control" placeholder="dd/mm/yyyy" name="dp1" [(ngModel)]="sourceDate" ngbDatepicker #d="ngbDatepicker">
+                <div class="input-group-append">
+                    <button class="btn btn-outline-secondary" (click)="d.toggle()" type="button">
+                        <img src="images/calendar-icon.svg" style="width: 1.2rem; height: 1rem; cursor: pointer;" />
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="form-group col-lg-2" *ngIf="useDates">
+        <span class="input-group-addon">Hasta:</span>
+        <div class="form-group">
+            <div class="input-group">
+                <input class="form-control" placeholder="dd/mm/yyyy" name="dp2" [(ngModel)]="lastDate" ngbDatepicker #d2="ngbDatepicker">
+                <div class="input-group-append">
+                    <button class="btn btn-outline-secondary" (click)="d2.toggle()" type="button">
+                        <img src="images/calendar-icon.svg" style="width: 1.2rem; height: 1rem; cursor: pointer;" />
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="form-group col-lg-3" *ngIf="pointsOfSale">
+        <span class="input-group-addon">Punto de venta:</span>
+        <div class="form-group">
+            <div class="input-group">
+                <select class="form-control" *ngIf="pointsOfSale" [(ngModel)]="posId">
+                    <option *ngFor="let u of pointsOfSale" [ngValue]="u.id">{{u.name}}</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="form-group col-lg-3" *ngIf="pointsOfSale">
+        <span class="input-group-addon">Producto:</span>
+        <div class="form-group">
+            <div class="input-group">
+                <select class="form-control" *ngIf="pointsOfSale" [(ngModel)]="idProduct">
+                    <option *ngFor="let p of products" [ngValue]="p.id">{{p.name}}</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="form-group col-lg-1">
+        <button class="form-control" (click)=search() style="margin-top: 25px;">
+            <i class="fa fa-search"></i>
+        </button>
+    </div>
+</div>
+
+<nav>
+    <div class="nav nav-tabs" id="nav-tab" role="tablist">
+        <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home"
+            aria-selected="true">Listado</a>
+        <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile"
+            aria-selected="false">Productos</a>
+        <a class="nav-item nav-link" id="nav-pos-tab" data-toggle="tab" href="#nav-pos" role="tab" aria-controls="nav-pos" aria-selected="false">
+            Locales</a>
+        <a class="nav-item nav-link" id="nav-groupPos-tab" data-toggle="tab" href="#nav-groupPos" role="tab" aria-controls="nav-groupPos"
+            aria-selected="false">
+            Grupo de puntos de venta</a>
+    </div>
+</nav>
+<div class="tab-content" id="nav-tabContent">
+    <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+        <table class="table table-striped">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Fecha</th>
+                    <th>Punto de venta</th>
+                    <th>Total
+                        <a (click)="ocultarDetalles=!ocultarDetalles">
+                            <label style="cursor: pointer;white-space: nowrap;">({{ocultarDetalles?'+':'-'}}info)</label>
+                        </a>
+                    </th>
+                    <th [ngClass]="{'d-none': ocultarDetalles}">Productos</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let v of viewings; index as i">
+                    <td>{{v.date | date:'dd/MM/yyyy HH:mm'}}Hs</td>
+                    <td style="text-align: center;">{{v.pos.name}}</td>
+                    <td style="background-color:#CCCCCC;">
+                        <div class="container">
+                            <div class="row">
+                                <i class="fa fa-arrow-up" aria-hidden="true" style="color:#00aa00;"></i>
+                                <span style="color:#00aa00;">{{viewingView.getLines()[i].getQuantityTransactionType("delivery")}}</span>
+                            </div>
+                            <div class="row">
+                                <i class="fa fa-arrow-down" aria-hidden="true" style="color:#aa0000;"></i>
+                                <span style="color:#aa0000;">{{viewingView.getLines()[i].getQuantityTransactionType("return")}}</span>
+                            </div>
+                            <div class="row">
+                                <i class="fa fa-arrow-down" aria-hidden="true" style="color:#0000ff;"></i>
+                                <span style="color:#0000ff;">{{viewingView.getLines()[i].getQuantityTransactionType("empty")}}</span>
+                            </div>
+                        </div>
+                    </td>
+                    <td style="text-align: center;" [ngClass]="{'d-none': ocultarDetalles}">
+                        <div class="container">
+                            <div class="row">
+                                <div *ngFor="let p of products" class="col" style="min-width: 90px;">
+                                    <div class="container">
+                                        <div class="row">
+                                            <div class="col">
+                                                <div class="row" *ngIf="viewingView.getLines()[i].getTransactionByProductByType(p.id,'delivery')[0] !== undefined">
+                                                    <i class="fa fa-arrow-up" aria-hidden="true" style="color:#00aa00;"></i>
+                                                    <span style="color:#00aa00;">{{viewingView.getLines()[i].getTransactionByProductByType(p.id,"delivery")[0].quantity}}</span>
+                                                </div>
+                                                <div class="row" *ngIf="viewingView.getLines()[i].getTransactionByProductByType(p.id,'return')[0] !== undefined">
+                                                    <i class="fa fa-arrow-down" aria-hidden="true" style="color:#aa0000;"></i>
+                                                    <span style="color:#aa0000;">{{viewingView.getLines()[i].getTransactionByProductByType(p.id,"return")[0].quantity}}</span>
+                                                </div>
+                                                <div class="row" *ngIf="viewingView.getLines()[i].getTransactionByProductByType(p.id,'empty')[0] !== undefined">
+                                                    <i class="fa fa-arrow-down" aria-hidden="true" style="color:#0000ff;"></i>
+                                                    <span style="color:#0000ff;">{{viewingView.getLines()[i].getTransactionByProductByType(p.id,"empty")[0].quantity}}</span>
+                                                </div>
+                                            </div>
+                                            <div class="col">
+                                                <div class="row">
+                                                    <img src="images/productos/{{p.path_image}}" width="20px" height="60px" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
+        <div class="container" style="margin-top:30px;">
+            <div class="row">
+                <div class="card col">
+                    <div class="card-body">
+                        <h3 class="card-title">Indicadores: ventas</h3>
+
+                        <div class="container" style="margin-top:30px;">
+
+                            <div class="row">
+                                <div class="col">
+                                    <table class="table" *ngIf="viewingView !== undefined">
+                                        <tr>
+                                            <td>Producto</td>
+                                            <td>Entregados</td>
+                                            <td>Devueltos</td>
+                                            <td>Total vendidos</td>
+                                            <td>% ventas</td>
+                                            <td>Share de ventas</td>
+                                        </tr>
+                                        <tr *ngFor="let p of products">
+                                            <td>
+                                                <img src="images/productos/{{p.path_image}}" width="30px" height="80px" />
+                                            </td>
+                                            <td>{{viewingView.getTotalTransactionByProductByType(p.id,"delivery")}}</td>
+                                            <td>{{viewingView.getTotalTransactionByProductByType(p.id,"return")}}</td>
+                                            <td>{{viewingView.getTotalTransactionByProductByType(p.id,"delivery") - viewingView.getTotalTransactionByProductByType(p.id,"return")}}</td>
+                                            <td>
+                                                <span *ngIf="viewingView !== undefined && viewingView.getTotalTransactionByProductByType(p.id,'delivery') !== 0">
+                                                    {{((viewingView.getTotalTransactionByProductByType(p.id,"delivery") - viewingView.getTotalTransactionByProductByType(p.id,"return"))
+                                                    / viewingView.getTotalTransactionByProductByType(p.id,"delivery") * 100
+                                                    ).toFixed(2) }} %
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <span *ngIf="viewingView !== undefined && viewingView.getTotalTransactionByProductByType(p.id,'delivery') !== 0">
+                                                    {{((viewingView.getTotalTransactionByProductByType(p.id,"delivery") - viewingView.getTotalTransactionByProductByType(p.id,"return"))
+                                                    / totalSales() * 100).toFixed(2) }} %
+                                                </span>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                                <!--
+                                <div class="col-4">
+                                    <pie-chart title="productName" valueField="sales"></pie-chart>
+                                </div>
+                            -->
+                            </div>
+
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="card col">
+                    <div class="card-body">
+                        <h3 class="card-title">Indicadores: devoluciones</h3>
+                    </div>
+                    <table class="table" *ngIf="viewingView !== undefined">
+                        <tr>
+                            <td>Producto</td>
+                            <td>Entregados</td>
+                            <td>Devueltos</td>
+                            <td>% devoluciones</td>
+                            <td>Share de devoluciones</td>
+                        </tr>
+                        <tr *ngFor="let p of products">
+                            <td>
+                                <img src="images/productos/{{p.path_image}}" width="30px" height="80px" />
+                            </td>
+                            <td>{{viewingView.getTotalTransactionByProductByType(p.id,"delivery")}}</td>
+                            <td>{{viewingView.getTotalTransactionByProductByType(p.id,"return")}}</td>
+                            <td>
+                                <span *ngIf="viewingView.getTotalTransactionByProductByType(p.id,'delivery') !== 0">
+                                    {{(viewingView.getTotalTransactionByProductByType(p.id,"return") / viewingView.getTotalTransactionByProductByType(p.id,"delivery")
+                                    * 100).toFixed(2) }} %
+                                </span>
+                            </td>
+                            <td>
+                                <span *ngIf="viewingView.getTotalTransactionByProductByType(p.id,'delivery') !== 0">
+                                    {{(viewingView.getTotalTransactionByProductByType(p.id,"return") / totalReturns() * 100).toFixed(2) }} %
+                                </span>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <!--
+            <div *ngIf="viewingView.getLineWithMajorPercentReturn() !== null" style="margin:20px;">
+                <b>Punto de venta con mayor porcentaje de devoluciones:</b> {{viewingView.getLineWithMajorPercentReturn().pos.name}}
+            </div>
+        -->
+        </div>
+    </div>
+    <div class="tab-pane fade" id="nav-pos" role="tabpanel" aria-labelledby="nav-pos-tab">
+        <div class="container" style="margin-top:30px;">
+            <div class="row">
+                <div class="card col">
+                    <div class="card-body">
+                        <h3 class="card-title">Indicadores: ventas</h3>
+                        <table class="table" *ngIf="viewingView !== undefined">
+                            <tr>
+                                <td>Local</td>
+                                <td>Entregados</td>
+                                <td>Devueltos</td>
+                                <td>Total vendidos</td>
+                                <td>% ventas</td>
+                                <td>Share de ventas</td>
+                            </tr>
+                            <ng-container *ngFor="let pos of pointsOfSale">
+                                <!-- TODO Mejorar el filtro-->
+                                <tr *ngIf="viewingView.getTotalTransactionByPOSByType(pos.id,'delivery') !== 0">
+
+                                    <td>{{pos.name}}</td>
+                                    <td>{{viewingView.getTotalTransactionByPOSByType(pos.id,"delivery")}}</td>
+                                    <td>{{viewingView.getTotalTransactionByPOSByType(pos.id,"return")}}</td>
+                                    <td>{{viewingView.getTotalTransactionByPOSByType(pos.id,"delivery") - viewingView.getTotalTransactionByPOSByType(pos.id,"return")}}</td>
+                                    <td>
+                                        <span *ngIf="viewingView.getTotalTransactionByPOSByType(pos.id,'delivery') !== 0">
+                                            {{(((viewingView.getTotalTransactionByPOSByType(pos.id,"delivery") - viewingView.getTotalTransactionByPOSByType(pos.id,"return"))
+                                            / viewingView.getTotalTransactionByPOSByType(pos.id,"delivery") ) * 100).toFixed(2)
+                                            }} %
+                                        </span>
+                                    </td>
+                                    <td>
+                                        {{( (viewingView.getTotalTransactionByPOSByType(pos.id,"delivery") - viewingView.getTotalTransactionByPOSByType(pos.id,"return"))
+                                        / totalSales() * 100).toFixed(2) }} %
+                                    </td>
+                                </tr>
+                            </ng-container>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="card col">
+                    <div class="card-body">
+                        <h3 class="card-title">Indicadores: devoluciones</h3>
+                    </div>
+                    <table class="table" *ngIf="viewingView !== undefined">
+                        <tr>
+                            <td>Local</td>
+                            <td>Entregados</td>
+                            <td>Devueltos</td>
+                            <td>% devoluciones</td>
+                            <td>Share de devoluciones</td>
+                        </tr>
+                        <ng-container *ngFor="let pos of pointsOfSale">
+                            <!-- TODO Mejorar el filtro-->
+                            <tr *ngIf="viewingView.getTotalTransactionByPOSByType(pos.id,'delivery') !== 0">
+                                <td>{{pos.name}}</td>
+                                <td>{{viewingView.getTotalTransactionByPOSByType(pos.id,"delivery")}}</td>
+                                <td>{{viewingView.getTotalTransactionByPOSByType(pos.id,"return")}}</td>
+                                <td>
+                                    <span *ngIf="viewingView.getTotalTransactionByPOSByType(pos.id,'delivery') !== 0">
+                                        {{(((viewingView.getTotalTransactionByPOSByType(pos.id,"return")) / viewingView.getTotalTransactionByPOSByType(pos.id,"delivery")
+                                        ) * 100).toFixed(2) }} %
+                                    </span>
+                                </td>
+                                <td>
+                                    <span *ngIf="viewingView.getTotalTransactionByPOSByType(pos.id,'delivery') !== 0">
+                                        {{(((viewingView.getTotalTransactionByPOSByType(pos.id,"return")) / totalReturns() ) * 100).toFixed(2) }} %
+                                    </span>
+                                </td>
+                            </tr>
+                        </ng-container>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="tab-pane fade" id="nav-groupPos" role="Tabpanel" aria-labelledby="nav-pos-groupPos">
+        <div class="container" style="margin-top:30px;">
+            <div class="row">
+                <div class="card col">
+                    <div class="card-body">
+                        <h3 class="card-title">Indicadores: ventas</h3>
+                        <table class="table" *ngIf="viewingView !== undefined">
+                            <tr>
+                                <td>Grupo</td>
+                                <td>Entregados</td>
+                                <td>Devueltos</td>
+                                <td>Total vendidos</td>
+                                <td>% ventas</td>
+                                <td>Share de ventas</td>
+                            </tr>
+                            <ng-container *ngFor="let gpos of groupPOS">
+                                <!-- TODO Mejorar el filtro-->
+                                <tr *ngIf="viewingView.getTotalTransactionByGroupPOSByType(gpos.id,'delivery') !== 0">
+                                    <td>{{gpos.name}}</td>
+                                    <td>{{viewingView.getTotalTransactionByGroupPOSByType(gpos.id,"delivery")}}</td>
+                                    <td>{{viewingView.getTotalTransactionByGroupPOSByType(gpos.id,"return")}}</td>
+                                    <td>{{viewingView.getTotalTransactionByGroupPOSByType(gpos.id,"delivery") - viewingView.getTotalTransactionByGroupPOSByType(gpos.id,"return")}}</td>
+                                    <td>
+                                        <span *ngIf="viewingView.getTotalTransactionByGroupPOSByType(gpos.id,'delivery') !== 0">
+                                            {{(((viewingView.getTotalTransactionByGroupPOSByType(gpos.id,"delivery") - viewingView.getTotalTransactionByGroupPOSByType(gpos.id,"return"))
+                                            / viewingView.getTotalTransactionByGroupPOSByType(gpos.id,"delivery") ) * 100).toFixed(2)
+                                            }} %
+                                        </span>
+                                    </td>
+                                    <td>
+                                        {{( (viewingView.getTotalTransactionByGroupPOSByType(gpos.id,"delivery") - viewingView.getTotalTransactionByGroupPOSByType(gpos.id,"return"))
+                                        / totalSales() * 100).toFixed(2) }} %
+                                    </td>
+                                </tr>
+                            </ng-container>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="card col">
+                    <div class="card-body">
+                        <h3 class="card-title">Indicadores: devoluciones</h3>
+                    </div>
+                    <table class="table" *ngIf="viewingView !== undefined">
+                        <tr>
+                            <td>Grupo</td>
+                            <td>Entregados</td>
+                            <td>Devueltos</td>
+                            <td>% devoluciones</td>
+                            <td>Share de devoluciones</td>
+                        </tr>
+                        <ng-container *ngFor="let gpos of groupPOS">
+                            <!-- TODO Mejorar el filtro-->
+                            <tr *ngIf="viewingView.getTotalTransactionByGroupPOSByType(gpos.id,'delivery') !== 0">
+                                <td>{{gpos.name}}</td>
+                                <td>{{viewingView.getTotalTransactionByGroupPOSByType(gpos.id,"delivery")}}</td>
+                                <td>{{viewingView.getTotalTransactionByGroupPOSByType(gpos.id,"return")}}</td>
+                                <td>
+                                    <span *ngIf="viewingView.getTotalTransactionByGroupPOSByType(gpos.id,'delivery') !== 0">
+                                        {{(((viewingView.getTotalTransactionByGroupPOSByType(gpos.id,"return")) / viewingView.getTotalTransactionByGroupPOSByType(gpos.id,"delivery")
+                                        ) * 100).toFixed(2) }} %
+                                    </span>
+                                </td>
+                                <td>
+                                    <span *ngIf="viewingView.getTotalTransactionByGroupPOSByType(gpos.id,'delivery') !== 0">
+                                        {{(((viewingView.getTotalTransactionByGroupPOSByType(gpos.id,"return")) / totalReturns() ) * 100).toFixed(2) }} %
+                                    </span>
+                                </td>
+                            </tr>
+                        </ng-container>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!---
+                <div *ngFor="let p of products" class="col" style="border:#dddddd solid 1px;padding:5px;margin:2px;background-color:#eeeeee;">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col" style="margin-top:13px;margin-left:13px;">
+                                <div class="row" style="font-size:25px;">
+                                    <i class="fa fa-arrow-up" aria-hidden="true" style="color:#00aa00;"></i>
+                                    <span style="color:#00aa00;">{{viewingView.getTotalTransactionByProductByType(p.id,"delivery")}}</span>
+                                </div>
+                                <div class="row" style="font-size:25px;">
+                                    <i class="fa fa-arrow-down" aria-hidden="true" style="color:#aa0000;"></i>
+                                    <span style="color:#aa0000;">{{viewingView.getTotalTransactionByProductByType(p.id,"return")}}</span>
+                                </div>
+                                <div class="row" style="font-size:25px;">
+                                    <i class="fa fa-arrow-down" aria-hidden="true" style="color:#0000ff;"></i>
+                                    <span style="color:#0000ff;">{{viewingView.getTotalTransactionByProductByType(p.id,"empty")}}</span>
+                                </div>
+                                <div class="row" style="font-size:25px;">
+                                    <i class="fa fa-dollar" aria-hidden="true"></i>
+                                    <span>{{viewingView.getTotalTransactionByProductByType(p.id,"delivery") - viewingView.getTotalTransactionByProductByType(p.id,"return")}}</span>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="row">
+                                    <img src="images/productos/{{p.path_image}}" width="60px" height="160px" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            -->

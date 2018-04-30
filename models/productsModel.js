@@ -1,4 +1,14 @@
 "use strict";
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 var __importStar = (this && this.__importStar) || function (mod) {
     if (mod && mod.__esModule) return mod;
     var result = {};
@@ -10,12 +20,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var result_1 = require("../datatypes/result");
 var _ = __importStar(require("lodash"));
 var masterDBController = require('../bd/masterConnectionsBD');
-var clientDBController = require('../bd/clientConnectionsBD');
-var ProductModel = /** @class */ (function () {
+var mainModel_1 = require("./mainModel");
+var ProductModel = /** @class */ (function (_super) {
+    __extends(ProductModel, _super);
     function ProductModel() {
+        return _super.call(this) || this;
     }
     ProductModel.prototype.get = function (id, dbName, callBack) {
-        var pool = clientDBController.getUserConnection(dbName);
+        var pool = this.controllerConnections.getUserConnection(dbName);
         pool.getConnection(function (err, con) {
             if (err) {
                 con.release();
@@ -57,14 +69,14 @@ var ProductModel = /** @class */ (function () {
         });
     };
     ProductModel.prototype.getAll = function (dbName, callBack) {
-        var pool = clientDBController.getUserConnection(dbName);
+        var pool = this.controllerConnections.getUserConnection(dbName);
         pool.getConnection(function (err, con) {
             if (err) {
                 con.release();
                 console.error(err);
             }
             else {
-                con.query('SELECT * FROM product', function (err, result) {
+                con.query('SELECT * FROM product ORDER BY displayOrder ASC', function (err, result) {
                     con.release();
                     if (!!err) {
                         // TODO: log error
@@ -80,7 +92,7 @@ var ProductModel = /** @class */ (function () {
         });
     };
     ProductModel.prototype.add = function (name, pathImage, dbName, callBack) {
-        var pool = clientDBController.getUserConnection(dbName);
+        var pool = this.controllerConnections.getUserConnection(dbName);
         pool.getConnection(function (err, con) {
             if (err) {
                 con.release();
@@ -109,38 +121,143 @@ var ProductModel = /** @class */ (function () {
             }
         });
     };
-    ProductModel.prototype.update = function (id, name, path_image, dbName, callback) {
-        var pool = clientDBController.getUserConnection(dbName);
+    ProductModel.prototype.update = function (product, dbName, callback) {
+        var mainThis = this;
+        var pool = this.controllerConnections.getUserConnection(dbName);
         pool.getConnection(function (err, con) {
             if (err) {
                 con.release();
                 console.error(err);
             }
             else {
-                con.query("UPDATE product  SET name = ?, path_image = ? WHERE id = ?", [name, path_image, id], function (err, result) {
-                    con.release();
+                con.query("UPDATE product  SET name = ?, path_image = ? WHERE id = ?", [product.name, product.path_image, product.id], function (err, result) {
                     if (!!err) {
                         // TODO: log error -> common/errorHandling.ts
                         // errorHandler.log(err);
                         console.error(err);
+                        con.release();
                         callback({
                             result: result_1.ResultCode.Error,
                             message: err.code
                         });
                     }
                     else {
-                        callback({
-                            result: result_1.ResultCode.OK,
-                            message: 'OK'
-                        });
+                        mainThis.updatePricesProduct(0, product, callback, con);
                     }
                 });
             }
         });
     };
     ;
+    ProductModel.prototype.updatePricesProduct = function (index, product, callback, con) {
+        var mainThis = this;
+        con.query("INSERT INTO productprice(date,amount,idProduct,idGroupPointofsale) VALUES (NOW(),?,?,?)", [product.prices[index].amount, product.id, product.prices[index].idGroupPointofsale], function (err, result) {
+            if (!!err) {
+                // TODO: log error -> common/errorHandling.ts
+                // errorHandler.log(err);
+                console.error(err);
+                con.release();
+                callback({
+                    result: result_1.ResultCode.Error,
+                    message: err.code
+                });
+            }
+            else {
+                if (index + 1 < product.prices.length) {
+                    mainThis.updatePricesProduct(index + 1, product, callback, con);
+                }
+                else {
+                    con.release();
+                    callback({
+                        result: result_1.ResultCode.OK,
+                        message: 'OK'
+                    });
+                }
+            }
+        });
+    };
+    ProductModel.prototype.pricesByProduct = function (idProduct, dbName, callBack) {
+        var pool = this.controllerConnections.getUserConnection(dbName);
+        pool.getConnection(function (err, con) {
+            if (err) {
+                con.release();
+                console.error(err);
+                callBack({
+                    result: result_1.ResultCode.Error,
+                    message: err.code
+                });
+            }
+            else {
+                con.query("SELECT * FROM productprice WHERE id in ( SELECT MAX(id) FROM productprice WHERE idProduct = ? GROUP BY idGroupPointofsale )", [idProduct], function (err, result) {
+                    if (!!err) {
+                        // TODO: log error -> common/errorHandling.ts
+                        // errorHandler.log(err);
+                        console.error(err);
+                        con.release();
+                        callBack({
+                            result: result_1.ResultCode.Error,
+                            message: err.code
+                        });
+                    }
+                    else {
+                        con.release();
+                        callBack({ result: result_1.ResultCode.OK, message: 'OK', data: result });
+                    }
+                });
+            }
+        });
+    };
+    ProductModel.prototype.priceByProductByPOS = function (idProduct, idPOS, dbName, callBack) {
+        var pool = this.controllerConnections.getUserConnection(dbName);
+        pool.getConnection(function (err, con) {
+            if (err) {
+                con.release();
+                console.error(err);
+                callBack({
+                    result: result_1.ResultCode.Error,
+                    message: err.code,
+                    data: null
+                });
+            }
+            else {
+                con.query("SELECT * FROM pointofsale WHERE id = ?", [idPOS], function (err, result) {
+                    if (!!err) {
+                        // TODO: log error -> common/errorHandling.ts
+                        // errorHandler.log(err);
+                        console.error(err);
+                        con.release();
+                        callBack({
+                            result: result_1.ResultCode.Error,
+                            message: err.code,
+                            data: null
+                        });
+                    }
+                    else {
+                        console.log(result[0].idGroup, idProduct);
+                        con.query("SELECT * FROM productprice WHERE idGroupPointofsale = ? AND idProduct = ? ORDER BY date DESC LIMIT 1", [result[0].idGroup, idProduct], function (err, result2) {
+                            if (!!err) {
+                                // TODO: log error -> common/errorHandling.ts
+                                // errorHandler.log(err);
+                                console.error(err);
+                                con.release();
+                                callBack({
+                                    result: result_1.ResultCode.Error,
+                                    message: err.code,
+                                    data: null
+                                });
+                            }
+                            else {
+                                con.release();
+                                callBack({ result: result_1.ResultCode.OK, message: 'OK', data: result2 });
+                            }
+                        });
+                    }
+                });
+            }
+        });
+    };
     ProductModel.prototype.delete = function (productId, dbName, callback) {
-        var pool = clientDBController.getUserConnection(dbName);
+        var pool = this.controllerConnections.getUserConnection(dbName);
         pool.getConnection(function (err, con) {
             if (err) {
                 con.release();
@@ -178,7 +295,7 @@ var ProductModel = /** @class */ (function () {
         });
     };
     ProductModel.prototype.deleteSupply = function (productId, supplyId, dbName, callback) {
-        var pool = clientDBController.getUserConnection(dbName);
+        var pool = this.controllerConnections.getUserConnection(dbName);
         pool.getConnection(function (err, con) {
             if (err) {
                 con.release();
@@ -207,6 +324,6 @@ var ProductModel = /** @class */ (function () {
         });
     };
     return ProductModel;
-}());
-module.exports = new ProductModel();
+}(mainModel_1.MainModel));
+exports.ProductModel = ProductModel;
 //# sourceMappingURL=productsModel.js.map

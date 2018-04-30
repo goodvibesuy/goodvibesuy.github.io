@@ -1,75 +1,108 @@
 import { Component, OnInit } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
+import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms';
 // service
 import { SupplyService } from '../../../../services/supply.service';
 import { ImagesService } from '../../../../services/images.service';
+import { ProvidersService } from '../../../../services/providers.service';
 // datatypes
 import { Supply } from '../../../../../../../datatypes/supply';
+import { Provider } from '../../../../../../../datatypes/provider';
 
 import { Unit } from '../../../../models/unit.model';
 import { GVFile } from '../../../../models/gvfile.model';
+import { ValidableForm } from '../../../../shared/ValidableForms';
+import { NgbDateFormatter } from '../../../../shared/DateParserFormatter';
+import { UnitsConversorService, UnitsConvertion, Units } from '../../../../services/units-conversor.service';
 
 @Component({
-	selector: 'app-input-add',
-	templateUrl: './supply.add.component.html',
-	styleUrls: ['./supply.add.component.css']
+    templateUrl: './supply.add.component.html',
+    styleUrls: ['./supply.add.component.css']
 })
-export class SupplyAddComponent implements OnInit {
-	private supply: Supply;
-	private units: Unit[];
-	private imageFile: GVFile;
-	private category: string = 'insumos';
+export class SupplyAddComponent extends ValidableForm implements OnInit {
+    
+    private providers: Provider[];
+    private units: Unit[];
+    private imageFile: GVFile;
+    private category: string = 'insumos';
+     private convertibleUnits: UnitsConvertion[];
 
-	constructor(
-		private supplyService: SupplyService,
-		private router: Router,
-		private domSanitizer: DomSanitizer,
-		private imagesService: ImagesService
-	) {
-		this.supply = <Supply>{ id: -1, name: '', unit: 1, amount: 0 };
-	}
+    constructor(
+        fb: FormBuilder,
+        private router: Router,
+        private domSanitizer: DomSanitizer,
+        private supplyService: SupplyService,
+        private providerService: ProvidersService,
+        private imagesService: ImagesService,        
+         private unitsConversorService: UnitsConversorService
+    ) {
+        super(fb);
 
-	ngOnInit() {
-		this.supplyService.getUnits().subscribe(data => {
-			this.units = <Unit[]>data;
-		});
-	}
+        let formGroup = {
+            name: [null, Validators.required],
+            unit: [null, Validators.required],
+            idProvider: [null, Validators.required],
+            amount: [null, Validators.required],
+            price_date: [NgbDateFormatter.formatDate(new Date), Validators.required]
+        };
+        super.initForm(formGroup);
+    }
 
-	agregar(): void {
-		var promise = this.supplyService.agregar(this.supply);
+    ngOnInit() {
+        this.supplyService.getUnits().subscribe(data => {
+            this.units = <Unit[]>data;
+        });
+        this.providerService.getAll().subscribe(data => {
+            this.providers = data.data;
+        });
+        this.convertibleUnits = this.unitsConversorService.getConvertibleUnits();
+    }
 
-		promise.subscribe(data => {
-			if (!!this.imageFile) {
-                
-				this.imagesService
-					.sendImage(this.category, this.supply.path_image, this.imageFile.size, this.imageFile.data)
-					.subscribe(
-						res => {
-							this.router.navigateByUrl('/admin/' + this.category);
-						},
-						error => {
-							console.error(error);
-						}
-					);
-			} else {
-				this.router.navigateByUrl('/admin/' + this.category);
-			}
-		});
-	}
+    agregar(): void {
+        if (super.isInvalid()) {
+            super.showValidationErrors();
+        } else {
+            var supply = super.getModel<Supply>({'price_date': NgbDateFormatter.unformatDate });
+            
+            // Convertir el precio de la unidad X a Kg
+            supply.amount = this.unitsConversorService.convertTo(supply.unit, supply.amount, Units.Kg);
+            supply.unit = Units.Kg;
 
-	getImage() {
-		return this.imageFile
-			? this.domSanitizer.bypassSecurityTrustUrl(
-					'data:image/' + this.imageFile.type + ';base64, ' + this.imageFile.data
-			  )
-			: 'images/' + this.category + '/' + this.imagesService.getSmallImage(this.supply.path_image);
-	}
+            var promise = this.supplyService.agregar(supply);
 
-	handleSelected(file: GVFile): void {
-		if (!!file) {
-			this.imageFile = file;
-			this.supply.path_image = this.imageFile.name;
-		}
-	}
+            promise.subscribe(data => {
+                if (!!this.imageFile) {
+                    this.imagesService
+                        .sendImage(this.category, this.imageFile.name, this.imageFile.size, this.imageFile.data)
+                        .subscribe(
+                            res => {
+                                this.router.navigateByUrl('/admin/' + this.category);
+                            },
+                            error => {
+                                console.error(error);
+                            }
+                        );
+                } else {
+                    this.router.navigateByUrl('/admin/' + this.category);
+                }
+            });
+        }
+    }
+
+    getImage() {
+        var supply = super.getModel<Supply>({ 'price_date': NgbDateFormatter.unformatDate });
+
+        return !!this.imageFile
+            ? this.domSanitizer.bypassSecurityTrustUrl(
+                'data:image/' + this.imageFile.type + ';base64, ' + this.imageFile.data
+            )
+            : 'images/' + this.category + '/' + this.imagesService.getSmallImage(supply.path_image);
+    }
+
+    handleSelected(file: GVFile): void {
+        if (!!file) {
+            this.imageFile = file;
+        }
+    }
 }

@@ -21,7 +21,47 @@ var ViewingsController = /** @class */ (function (_super) {
         _this.add = function (req, res) {
             _this.verifyAccess(req, res, "viewing", function (dbName) {
                 var data = req.body.data;
-                _this.viewingsModel.addVisit(req.headers['user'], req.body.idPointOfSale, data, req.body.annotation, dbName, function (result) {
+                var userName = req.headers['user'];
+                _this.viewingsModel.addVisit(userName, req.body.idPointOfSale, data, req.body.annotation, req.body.idPOS, req.body.idRoute, dbName, function (result) {
+                    res.send(result);
+                });
+            });
+        };
+        /*
+        public last = (req:any,res:any): void => {
+            this.verifyAccess(req,res,"viewing",
+                (dbName:string) =>{
+                    this.viewingsModel.getLast(req.params.cantViews, dbName,function (result:any) {
+                        res.send(result);
+                    });
+                }
+            )
+        }
+        */
+        _this.viewingsBetween = function (req, res) {
+            _this.verifyAccess(req, res, "viewing", function (dbName) {
+                _this.viewingsModel.viewingsBetween(req.params.sourceYear, req.params.sourceMonth, req.params.sourceDay, req.params.lastYear, req.params.lastMonth, req.params.lastDay, Number(req.params.idPos), Number(req.params.idProduct), dbName, function (result) {
+                    res.send(result);
+                });
+            });
+        };
+        _this.viewingsByRoute = function (req, res) {
+            _this.verifyAccess(req, res, "viewing", function (dbName) {
+                _this.viewingsModel.viewingsByRoute(req.params.idRoute, dbName, function (result) {
+                    res.send(result);
+                });
+            });
+        };
+        _this.getViewingById = function (req, res) {
+            _this.verifyAccess(req, res, "viewing", function (dbName) {
+                _this.viewingsModel.getViewingById(req.params.idViewing, dbName, function (result) {
+                    res.send(result);
+                });
+            });
+        };
+        _this.viewingByRouteAndPOS = function (req, res) {
+            _this.verifyAccess(req, res, "viewing", function (dbName) {
+                _this.viewingsModel.viewingByRouteAndPOS(req.params.idRoute, req.params.idPointOfSale, dbName, function (result) {
                     res.send(result);
                 });
             });

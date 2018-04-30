@@ -5,8 +5,7 @@ import { SupplyEditComponent } from './edit/supply.edit.component';
 import { SupplyAddComponent } from './add/supply.add.component';
 
 @Component({
-	templateUrl: './supply.component.html',
-	styleUrls: ['./supply.component.css']
+	templateUrl: './supply.component.html'
 })
 export class SupplyComponent {
 	constructor() {}

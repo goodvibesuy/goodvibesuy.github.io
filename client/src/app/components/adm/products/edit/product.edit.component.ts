@@ -14,6 +14,8 @@ import { GVFile } from '../../../../models/gvfile.model';
 import { Unit } from '../../../../models/unit.model';
 import * as _ from 'lodash';
 import { ProductSupply } from '../../../../../../../datatypes/productSupply';
+import { GroupPosService } from '../../../../services/group-pos.service';
+import { GroupPos } from '../../../../../../../datatypes/groupPos';
 
 @Component({
 	templateUrl: './product.edit.component.html',
@@ -25,7 +27,8 @@ export class ProductEditComponent implements OnInit, OnDestroy {
 	private product: Product;
 	private units: Unit[];
 	private supplies: Supply[];
-	private imageFile: GVFile;
+    private imageFile: GVFile;
+    private groupsPos: GroupPos[];
 
 	constructor(
 		private activatedRoute: ActivatedRoute,
@@ -33,7 +36,8 @@ export class ProductEditComponent implements OnInit, OnDestroy {
 		private domSanitizer: DomSanitizer,
 		private productsService: ProductsService,
 		private suppliesService: SupplyService,
-		private imagesService: ImagesService
+        private imagesService: ImagesService,
+        private groupPosService: GroupPosService
 	) {}
 
 	ngOnInit() {
@@ -44,6 +48,7 @@ export class ProductEditComponent implements OnInit, OnDestroy {
 			err => {
 				// TODO: handle error
 				console.error(err);
+                alert(err);
 			}
 		);
 		this.suppliesService.getLatestPrices().subscribe(
@@ -53,6 +58,7 @@ export class ProductEditComponent implements OnInit, OnDestroy {
 			err => {
 				// TODO: handle error
 				console.error(err);
+                alert(err);
 			}
 		);
 		this.suppliesService.getUnits().subscribe(
@@ -62,45 +68,113 @@ export class ProductEditComponent implements OnInit, OnDestroy {
 			err => {
 				// TODO: handle error
 				console.error(err);
+                alert(err);
 			}
 		);
-	}
-
+    }
+    
 	ngOnDestroy() {
 		this.paramsSub.unsubscribe();
 	}
 
 	loadProduct(id: number): void {
 		this.productsService.get(id).subscribe(res => {
-			if (res.result == ResultCode.Error) {
+			if (res.result == ResultCode.OK) {
+                this.product = res.data;
+                this.loadProductPrices(id);
+            } else {
 				// TODO: handle error
-			} else {
-				this.product = res.data;
-			}
-		});
-	}
+                console.error(res.message);
+                alert(res.message);			
+            }
+		},
+        error => {
+            // TODO: error handling
+            console.error(error);
+            alert(error);
+        });
+    }
+
+    findPrice(idGroup){
+        return this.product.prices.find(f=> f.idGroupPointofsale == idGroup);
+    }
+
+    loadProductPrices(id:number): void{
+        this.groupPosService.get().subscribe(result => {
+            if (result.result == ResultCode.OK) {
+                this.groupsPos = result.data;
+
+                this.productsService.getPriceByProduct(id).subscribe(result => {
+                    if (result.result == ResultCode.OK) {
+                        this.product.prices = result.data;
+
+                        // agrega en product.prices los grupos groupsPos que faltan
+                        if(this.product.prices.length < this.groupsPos.length) {
+                            let newPrices = this.groupsPos.filter(gpos => this.product.prices.filter(p=>p.idGroupPointofsale == gpos.id).length==0);
+                            for (let index = 0; index < newPrices.length; index++) {
+                                const element = newPrices[index];
+                                this.product.prices.push({idGroupPointofsale: element.id, amount: 0});
+                            }
+                        }
+
+                    } else {
+                        // TODO: error handling
+                        console.error(result.message);
+                        alert(result.message);
+                    }
+                },
+                error => {
+                    // TODO: error handling
+                    console.error(error);
+                    alert(error);
+                });
+
+            } else {
+                // TODO: error handling
+                console.error(result.message);
+                alert(result.message);
+            }
+        },
+        error => {
+            // TODO: error handling
+            console.error(error);
+            alert(error);
+        });
+    }
+
+    isValid() {
+        return !!this.product && !!this.product.name && this.product.name != '';
+    }
 
 	actualizar() {
-		const category: string = 'productos';
+        if(this.isValid()){
+            const category: string = 'productos';
+            
+            for (let index = 0; index < this.product.prices.length; index++) {
+                const element = this.product.prices[index];
+                if(element.amount==null){
+                    element.amount = 0;
+                }
+            }
 
-		var promise = this.productsService.update(this.product);
-
-		promise.subscribe(data => {
-			if (!!this.imageFile) {
-				this.imagesService
-					.sendImage(category, this.product.path_image, this.imageFile.size, this.imageFile.data)
-					.subscribe(
-						res => {
-							this.router.navigateByUrl('/admin/productos');
-						},
-						error => {
-							console.error(error);
-						}
-					);
-			} else {
-				this.router.navigateByUrl('/admin/productos');
-			}
-		});
+            var promise = this.productsService.update(this.product);
+            promise.subscribe(data => {
+                if (!!this.imageFile) {
+                    this.imagesService
+                        .sendImage(category, this.product.path_image, this.imageFile.size, this.imageFile.data)
+                        .subscribe(
+                            res => {
+                                this.router.navigateByUrl('/admin/productos');
+                            },
+                            error => {
+                                console.error(error);
+                            }
+                        );
+                } else {
+                    this.router.navigateByUrl('/admin/productos');
+                }
+            });
+        }
 	}
 
 	getImage() {
@@ -124,17 +198,21 @@ export class ProductEditComponent implements OnInit, OnDestroy {
 			.value();
 	}
 
-	filterSupply(idSupply: number): Supply {
+    findGroup(idGroup: number): GroupPos {
+        return this.groupsPos.find(gp => gp.id == idGroup);
+    }
+
+	findSupply(idSupply: number): Supply {
 		return this.supplies.find(s => s.id == idSupply);
 	}
 
-	filterUnit(idSupply: number): Unit {
-		return this.units.find(u => u.id == this.filterSupply(idSupply).unit);
+	findUnit(idSupply: number): Unit {
+		return this.units.find(u => u.id == this.findSupply(idSupply).unit);
 	}
 	
 	totalSupplyPrice(): number {
 		return _.chain(this.product.supplies)
-			.map(s => s.quantity * this.filterSupply(s.idSupply).amount)
+			.map(s => s.quantity * this.findSupply(s.idSupply).amount)
 			.sum()
 			.value();
     }
