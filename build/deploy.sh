@@ -4,20 +4,21 @@ echo "*** Scripts para hacer deploy de GoodVibes"
 echo "***"
 echo "********************************************"
 echo ""
-echo "Hora comienzo: $(date +%Y-%m-%d-%H.%M.%S)"
 
 echo "*************************"
 echo "*    ADVERTENCIA"
 echo "El scripts no actualiza el código desde el repositorio!!"
 echo "Es necesario hacer git pull a mano."
 read -p "Presionar cualquier tecla para continuar (Ctrl + C para cancelar)... " -n1 -s
+echo ""
 echo "*************************"
+
+echo "Hora comienzo: $(date +%Y-%m-%d-%H.%M.%S)"
 
 echo "***************************"
 echo "Paso 1/10 Cambiando directorio:"
-echo ""
 cd /root/src/goodvibesuy.github.io
-pwd
+echo "current dir: $(pwd)"
 echo ""
 
 echo "***************************"
@@ -26,55 +27,54 @@ echo "chmod a+x (path)/build/backup.sh"
 chmod a+x /root/src/goodvibesuy.github.io/build/backup.sh
 echo ""
 
-cd ..
 echo "***************************"
 echo "Paso 3/10 Actualizando paquetes servidor: npm install"
-echo ""
 npm install
+echo "current dir: $(pwd)"
 echo ""
 
 echo "***************************"
 echo "Paso 4/10 Compilando TypeScript servidor: tsc"
-echo ""
 tsc
+echo "current dir: $(pwd)"
 echo ""
 
 echo "***************************"
 echo "Paso 5/10 Actualizando paquetes cliente: npm install"
-echo ""
 cd client
 npm install
+echo "current dir: $(pwd)"
 echo ""
 
 echo "***************************"
 echo "Paso 6/10 Compilando TypeScrip client: tsc"
-echo ""
 tsc
+echo "current dir: $(pwd)"
 echo ""
 
 echo "***************************"
 echo "Paso 7/10 Compilando angular: ng build"
-echo ""
 ng build --locale es-UY 
+echo "current dir: $(pwd)"
 echo ""
 
 echo "***************************"
 echo "Paso 8/10 Actualizando imagenes cp de images a client"
-echo ""
-cp -r ../client/images ../client/dist/
+cp -r /root/src/goodvibesuy.github.io/client/images /root/src/goodvibesuy.github.io/client/dist/
+echo "current dir: $(pwd)"
 echo ""
 
 echo "***************************"
 echo "Paso 9/10 Ejecutando el forever"
-echo ""
 forever stopall
-forever start bin/www
+forever start /root/src/goodvibesuy.github.io/bin/www
+echo "current dir: $(pwd)"
 echo ""
 
 echo "***************************"
 echo "Paso 10/10 Instalación concluída"
-echo ""
 forever list
+echo "current dir: $(pwd)"
 echo ""
 
 echo "***************************"

@@ -6,13 +6,14 @@ echo "********************************************"
 echo ""
 read -p "Presionar cualquier tecla para continuar (Ctrl + C para cancelar)... " -n1 -s
 
+echo ""
 echo "Hora comienzo: $(date +%Y-%m-%d-%H.%M.%S)"
 
 echo "***************************"
 echo "Paso 1/3 Cambiando directorio: cd github"
 echo ""
 cd /root/src/goodvibesuy.github.io
-pwd
+echo "current dir: $(pwd)"
 echo ""
 
 echo "***************************"
@@ -21,6 +22,7 @@ echo ""
 cd ..
 cp -rf goodvibesuy.github.io/ goodvibesuy.github.io_backup_$(date +%Y-%m-%d-%H.%M.%S)
 ls
+echo "current dir: $(pwd)"
 echo ""
 
 echo "***************************"
@@ -28,6 +30,7 @@ echo "Paso 3/3 Actualización de código: git pull"
 echo ""
 cd goodvibesuy.github.io
 git pull
+echo "current dir: $(pwd)"
 echo ""
 
 echo "***************************"
