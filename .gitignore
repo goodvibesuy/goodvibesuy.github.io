@@ -3,3 +3,7 @@
 /models/*.js
 *.js.map
 /client/dist
+controllers/mainController.js
+controllers/groupCustomerController.js
+controllers/clientController.js
+package-lock.json
