@@ -7,5 +7,34 @@
     "editor.insertSpaces": true,
     
     // When opening a file, `editor.tabSize` and `editor.insertSpaces` will be detected based on the file contents.
-    "editor.detectIndentation": false
+    "editor.detectIndentation": false,
+
+    "files.exclude": {
+
+        // datatypes
+        "datatypes/*.js": true,
+
+        // controlers
+        "controllers/*.js": true,
+
+        // models
+        "models/*.js": true,
+
+        // client/dist
+        "client/dist": true,
+
+        // e2e
+        "client/e2e": true,
+
+        // ocultar todos los map
+        "**/*.js.map": true,
+
+        // main
+        "client/src/main.js": true,
+
+        "bd/*.js": true,
+        
+        // routes/client.ts
+        "routes/clients.js": true
+    }
 }

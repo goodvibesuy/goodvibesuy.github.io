@@ -57,7 +57,7 @@
 		// "emitDecoratorMetadata": true,         /* Enables experimental support for emitting type metadata for decorators. */
 	},
     "include": ["./models/*.ts", "./datatypes/*.ts", "./routes/*.ts","./controllers/*.ts", "./motionLibJS","./bd"],
-	"exclude": ["./node_modules", "client", "client_old", "messages", "build", "routes", "views"]
+	"exclude": ["./node_modules", "client", "client_old", "messages", "build", "views"]
 
 	// {
 	//     "compilerOptions": {

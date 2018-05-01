@@ -2,7 +2,7 @@ import { Result, ResultWithData, ResultCode } from '../datatypes/result';
 import { MainController } from './mainController';
 import { ClientModel } from '../models/clientModel';
 
-class ClientController extends MainController {
+export class ClientController extends MainController {
 
     private resource: string;
     private clientModel: ClientModel;
@@ -56,5 +56,3 @@ class ClientController extends MainController {
         });
     };
 }
-
-module.exports = new ClientController();
