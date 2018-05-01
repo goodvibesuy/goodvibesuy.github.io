@@ -174,7 +174,7 @@ export class PointsOfSaleModel extends MainModel {
                                 con.release();
                                 callback({
                                     result: ResultCode.Error,
-                                    message: err.code
+                                    message: "Error interno. No se pudo actualizar el punto de venta."
                                 });
                             });
                         } else {
@@ -189,7 +189,7 @@ export class PointsOfSaleModel extends MainModel {
                                         con.release();
                                         callback({
                                             result: ResultCode.Error,
-                                            message: err.code
+                                            message: "Error interno. No se pudo actualizar el punto de venta."
                                         });
                                     });
                                 } else {
@@ -199,7 +199,10 @@ export class PointsOfSaleModel extends MainModel {
                                             con.rollback(function () {
                                                 console.log(err);
                                                 con.release();
-                                                callback({ result: -1, message: "Error interno. No se pudo actualizar el punto de venta." });
+                                                callback({
+                                                    result: ResultCode.Error,
+                                                     message: "Error interno. No se pudo actualizar el punto de venta."
+                                                });
                                             });
                                         } else {
                                             con.release();

@@ -1,8 +1,9 @@
 export interface Client {
 	id: number;
-    names: string;    
-    lastnames:string;
-    address:string;    
-    phone:string;
+    name: string;    
+    lastName: string;
+    address: string;    
+    tel: string;
+    idGroup: number;
     coord?: { lat(): number; lng(): number; };
 }

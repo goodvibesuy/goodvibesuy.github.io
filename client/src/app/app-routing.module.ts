@@ -1,4 +1,5 @@
 
+// #region begin imports 
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { DashboardComponent } from './components/front/dashboard/dashboard.component';
@@ -27,9 +28,25 @@ import { PosAddComponent } from './components/adm/pos/add/pos.add.component';
 import { TemplatesRoutesComponent } from './components/adm/templates-routes/templates-routes.component';
 import { ReporteViewingComponent } from './components/front/reporte-viewing/reporte-viewing.component';
 import { ClientComponent } from './components/adm/client/client.component';
+import { ClientListComponent } from './components/adm/client/list/client.list.component';
+import { ClientFormComponent } from './components/forms/client-form/client-form.component';
 import { ProviderComponent } from './components/adm/provider/provider.component';
+// #endregion end imports
 
 const routes: Routes = [
+    {
+		path: '',
+		component: LoginComponent
+    },
+    {
+		path: 'admin/insumos',
+		component: SupplyComponent,
+		children: [
+			{ path: '', component: SupplyListComponent},
+			{ path: 'editar/:id', component: SupplyEditComponent},
+			{ path: 'agregar', component: SupplyAddComponent}
+		]
+	},
     {
         path:'admin/puntos-de-venta',
         component:PosComponent,
@@ -40,18 +57,14 @@ const routes: Routes = [
 		]
     },
     {
-        path:'admin/client',
-        component:ClientComponent
-    }
-    ,
-	{
-		path: '',
-		component: LoginComponent
-	},
-	{
-		path: 'dashboard',
-		component: DashboardComponent
-	},
+        path:'admin/clientes',
+        component: ClientComponent,
+		children: [
+			{ path: '', component: ClientListComponent },
+			{ path: 'agregar', component: ClientFormComponent },
+			{ path: 'editar/:id', component: ClientFormComponent }
+		]
+    },
 	{
 		path: 'admin/productos',
 		component: ProductsComponent,
@@ -60,6 +73,10 @@ const routes: Routes = [
 			{ path: 'editar/:id', component: ProductEditComponent },
 			{ path: 'agregar', component: ProductAddComponent }
 		]
+	},
+    {
+		path: 'dashboard',
+		component: DashboardComponent
 	},
 	{
 		path: 'locales',
@@ -76,18 +93,8 @@ const routes: Routes = [
     {
 		path: 'reporteVisitas',
 		component: ReporteViewingComponent
-    }
-    ,
-	{
-		path: 'admin/insumos',
-		component: SupplyComponent,
-		children: [
-			{ path: '', component: SupplyListComponent},
-			{ path: 'editar/:id', component: SupplyEditComponent},
-			{ path: 'agregar', component: SupplyAddComponent}
-		]
-	},
-	{
+    },
+    {
 		path: 'recorridos',
 		component: RoutesComponent,
 		children: [
@@ -111,8 +118,7 @@ const routes: Routes = [
 	{
 		path: 'detalle-local/:id/:idRoute',
 		component: DetalleLocalComponent
-    },
-    
+    },    
 	{
 		path: 'detalle-local/:id',
 		component: DetalleLocalComponent

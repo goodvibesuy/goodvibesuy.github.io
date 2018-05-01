@@ -1,6 +1,6 @@
 
 -- 
--- Proposito: cambios de BD para agregar los clientes a los recorridos
+-- Proposito: cambios de BD para integrar los pointofsale a los customers
 --
 
 -- Comienzo de Transaccion
@@ -15,7 +15,7 @@ START TRANSACTION;
         `businessName` VARCHAR(56) NOT NULL,
         `RUT` VARCHAR(56) NOT NULL,
         PRIMARY KEY (`idCustomer`),
-        FOREIGN KEY (idCustomer) REFERENCES Customer(id)
+        FOREIGN KEY (idCustomer) REFERENCES customer(id)
     ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- 3. insertar en la nueva tabla pointofsale los atributos extras
@@ -43,10 +43,10 @@ START TRANSACTION;
     ALTER TABLE route_customer CHANGE `idPointofsale` `idCustomer` INT(11) DEFAULT NULL;
 
 -- 10. Por consistencia, renombrado templateroute_pointofsale a templateroute_customer
-    ALTER TABLE templateroute_pointofsale RENAME TO templateroute_customer;
+    ALTER TABLE templateRoute_pointofsale RENAME TO templateRoute_customer;
 
 -- 11. Por consistencia, renombrar columna idpointofsale de viewing a idCustomer
-    ALTER TABLE templateroute_customer CHANGE `idpointofsale` `idCustomer` INT(11) DEFAULT NULL;
+    ALTER TABLE templateRoute_customer CHANGE `idpointofsale` `idCustomer` INT(11) DEFAULT NULL;
 
 -- Commit de transaccion
 COMMIT;

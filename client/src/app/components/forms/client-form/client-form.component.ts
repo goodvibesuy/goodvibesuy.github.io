@@ -2,9 +2,13 @@ import { Component, OnInit, ViewChild, Input } from '@angular/core';
 import { Client } from '../../../../../../datatypes/Client';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ValidableForm } from '../../../shared/ValidableForms';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { ClientService } from '../../../services/client.service';
 import { ClientComponent } from '../../adm/client/client.component';
+import { Subscription } from 'rxjs';
+import { ResultCode } from '../../../../../../datatypes/result';
+import { GroupPosService } from '../../../services/group-pos.service';
+import { GroupPos } from '../../../../../../datatypes/groupPos';
 
 @Component({
     selector: 'app-client-form',
@@ -17,32 +21,110 @@ export class ClientFormComponent extends ValidableForm implements OnInit {
     @ViewChild('gmapClient') gmapEditElement: any;
     private map: google.maps.Map;
     private geocoder = new google.maps.Geocoder();
-    private clients: Array<Client>;
+
+    private client: Client;
+    private groupPos: GroupPos[];
+    private isAdding: boolean;
 
     @Input() titleForm: string;
-    @Input() parentComponent: ClientComponent;
+
+    private paramsSub: Subscription;
+
     constructor(fb: FormBuilder,
         private router: Router,
-        private clientService: ClientService
-    ) {        
+        private clientService: ClientService,
+        private activatedRoute: ActivatedRoute,
+        private groupPosService: GroupPosService
+    ) {
+
         super(fb);
         super.initForm({
-            names: [null, Validators.required],
+            name: [null, Validators.required],
+            lastName: [null, Validators.required],
             address: [null, Validators.required],
-            lastnames: [null, Validators.required],
-            phone: [null, null]
-        });
-        this.clients = new Array<Client>();
+            tel: [null, null],
+            idGroup: [null, Validators.required]
+        });        
     }
 
     ngOnInit() {
-        console.log(this.titleForm);
-        console.log(this.parentComponent);
-        this.initMap({ x: -34.909664, y: -56.163319 });        
+        this.isAdding = true;
+        this.paramsSub = this.activatedRoute.params.subscribe(
+            params => {
+                var id = params['id']
+                if (id) {
+                    this.isAdding = !id;
+                    // load client 
+                    this.clientService.get(id).subscribe(result => {
+                        if (result.result == ResultCode.OK) {
+                            super.setModel(result.data);
+                        } else {
+                            // TODO: error handling
+                            console.error(result.message);
+                            alert(result.message);
+                        }
+                    },
+                    error => {
+                        // TODO: error handling
+                        console.error(error);
+                        alert(error);
+                    });
+                }
+
+                this.titleForm = !!id ? 'Actualizar ' : 'Agregar ';
+            }
+        );
+
+        this.groupPosService.get().subscribe(
+            result => {
+                if (result.result == ResultCode.OK) {
+                    this.groupPos = result.data;
+                } else {
+                    // TODO: error handling
+                    console.error(result.message);
+                    alert(result.message);
+                }
+            },
+            error => {
+                // TODO: error handling
+                console.error(error);
+                alert(error);
+            }
+        );
+
+        this.initMap({ x: -34.909664, y: -56.163319 });
+    }
+
+    addOrUpdate() {
+        if (super.isInvalid()) {
+            super.showValidationErrors();
+        } else {
+            var cli = super.getModel<Client>();
+            cli.coord = this.marker.getPosition();
+
+            let fn = (this.isAdding ? this.clientService.add : this.clientService.update).bind(this.clientService);
+
+            fn(cli).subscribe(response => {
+                if (response.result == ResultCode.Error) {
+                    // TODO: error handling
+                    console.error(response.message);
+                    alert(response.message);
+                } else {
+                    this.router.navigateByUrl('/admin/clientes');
+                }
+            },
+                error => {
+                    // TODO: error handling
+                    console.error(error);
+                    alert(error);
+                }
+            );
+        }
     }
 
     findLocation() {
         var cli = super.getModel<Client>();
+
         var mapEdit = this.map;
         var address = cli.address;
         var thisPrincipal = this;
@@ -64,7 +146,7 @@ export class ClientFormComponent extends ValidableForm implements OnInit {
         });
     }
 
-    initMap(coord) {        
+    private initMap(coord) {
         const defaultLat: number = -34.909664;
         const defaultLong: number = -56.163319;
 
@@ -85,23 +167,6 @@ export class ClientFormComponent extends ValidableForm implements OnInit {
                 draggable: true,
                 position: new google.maps.LatLng(coord.x, coord.y)
             });
-        }
-    }
-
-    add() {
-        if (super.isInvalid()) {
-            super.showValidationErrors();
-        } else {
-            var cli = super.getModel<Client>();
-            cli.coord = this.marker.getPosition();
-            this.clientService.addClient(cli)
-                .subscribe(response => {
-                    if(response.result > 0){
-                        this.parentComponent.getClients();                        
-                    }else{
-                        alert(response.message);
-                    }                    
-                });
         }
     }
 }

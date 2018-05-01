@@ -1,38 +1,16 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { Router } from '@angular/router';
-import { Client } from '../../../../../../datatypes/Client';
-import { ClientService } from '../../../services/client.service';
+import { Component, OnInit } from '@angular/core';
+
+import { ClientListComponent } from './list/client.list.component';
+import { ClientFormComponent } from '../../forms/client-form/client-form.component';
 
 @Component({
-    selector: 'app-client',
-    templateUrl: './client.component.html',
-    styleUrls: ['./client.component.scss']
+	templateUrl: './client.component.html'
 })
-export class ClientComponent implements OnInit {
-    private clients:Array<Client>;
-    constructor(private router: Router,private clientService: ClientService) {
-        this.clients = new Array<Client>();
+export class ClientComponent implements OnInit{
+    
+    ngOnInit(): void {
+        console.log("Method not implemented.");
     }
 
-    ngOnInit() {        
-        this.getClients();
-    }
-
-    getClients():void{
-        this.clientService.getClients().subscribe(
-            response => {
-                this.clients = response.data;
-                console.log(response);
-            }
-        )
-    }
-
-    delete(id:number):void{
-        this.clientService.delete(id).subscribe(
-            response => {
-                this.getClients();
-                console.log(response);
-            }
-        )
-    }    
+	constructor() {}
 }

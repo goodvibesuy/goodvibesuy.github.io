@@ -16,12 +16,12 @@
                         <div class="card-body">
                             <h5 class="card-title">Información del Punto de venta </h5>
                             <div class="form-group">
-                                <span class="input-group-addon">Nombres:</span>
-                                <input type="text" class="form-control" [cenInputValidation]="getFormField('names')" formControlName="names">
+                                <span class="input-group-addon">Nombre:</span>
+                                <input type="text" class="form-control" [cenInputValidation]="getFormField('name')" formControlName="name">
                             </div>
                             <div class="form-group">
-                                <span class="input-group-addon">Apellidos:</span>
-                                <input type="text" class="form-control" [cenInputValidation]="getFormField('lastnames')" formControlName="lastnames">
+                                <span class="input-group-addon">Apellido:</span>
+                                <input type="text" class="form-control" [cenInputValidation]="getFormField('lastName')" formControlName="lastName">
                             </div>
                             <div class="form-group">
                                 <span class="input-group-addon">Dirección:</span>
@@ -37,7 +37,14 @@
                             </div>
                             <div class="form-group">
                                 <span class="input-group-addon">Telefono:</span>
-                                <input type="text" class="form-control" [cenInputValidation]="getFormField('phone')" formControlName="phone">
+                                <input type="text" class="form-control" [cenInputValidation]="getFormField('tel')" formControlName="tel">
+                            </div>
+                            <div class="form-group">
+                                <span class="input-group-addon">Grupo:</span>
+                                <select class="form-control" [cenInputValidation]="getFormField('idGroup')" formControlName="idGroup">
+                                    <option *ngFor="let gp of groupPos" [ngValue]="gp.id">{{gp.name}}</option>
+                                </select>
+                                <div class="invalid-feedback" *ngIf="isFormFieldInvalid('idGroup')">Ingrese un valor válido.</div>
                             </div>
                         </div>
                     </form>
@@ -46,7 +53,7 @@
         </div>
     </div>
     <div class="card-footer footer">
-        <button type="button" class="btn btn-danger" (click)="cancelAdd()">Cancelar</button>
-        <button type="button" class="btn btn-primary" (click)="add()">Agregar</button>
+        <button type="button" class="btn btn-danger"  routerLink="/admin/clientes">Cancelar</button>
+        <button type="button" class="btn btn-primary" (click)="addOrUpdate()">Agregar</button>
     </div>
 </div>

@@ -55,6 +55,8 @@ import { KpiService } from './services/kpi.service';
 import { TemplatesRoutesService } from './services/templates-routes.service';
 import { ProvidersService } from './services/providers.service';
 import { UnitsConversorService } from './services/units-conversor.service';
+import { ClientService } from './services/client.service';
+import { GroupPosService } from './services/group-pos.service';
 
 // shared
 import { FilePicker } from './shared/components/file-picker/file-picker.component';
@@ -77,10 +79,9 @@ import { NgbDatepickerConfig } from '@ng-bootstrap/ng-bootstrap';
 import { CenouraInputValidation } from './shared/validation/CenouraInputValidation';
 import { NgbDateESParserFormatter } from './shared/DateParserFormatter';
 import { ReporteViewingComponent } from './components/front/reporte-viewing/reporte-viewing.component';
-import { GroupPosService } from './services/group-pos.service';
 import { ClientComponent } from './components/adm/client/client.component';
-import { ClientService } from './services/client.service';
 import { ClientFormComponent } from './components/forms/client-form/client-form.component';
+import { ClientListComponent } from './components/adm/client/list/client.list.component';
 import { ProviderComponent } from './components/adm/provider/provider.component';
 import { PieChartComponent } from './components/charts/pie-chart/pie-chart.component';
 
@@ -117,6 +118,7 @@ import { PieChartComponent } from './components/charts/pie-chart/pie-chart.compo
         TemplatesRoutesComponent,
         ReporteViewingComponent,
         ClientComponent,
+        ClientListComponent,
         ClientFormComponent,
         ProviderComponent,
         PieChartComponent

@@ -32,7 +32,6 @@ class ProductsController extends MainController {
         );
     }
 
-
     public pricesByProduct = (req:any, res:any):void =>{
         this.verifyAccess(req, res, this.resource, (dbName: string) => {
             this.productModel.pricesByProduct(req.params.idProduct,dbName,function (result: any) {
