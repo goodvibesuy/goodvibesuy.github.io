@@ -1,0 +1,17 @@
+.alert-main {
+    position: absolute;
+    z-index: 100;
+}
+
+.alert-container {
+    min-height: 65px;
+}
+
+.show {
+    opacity: 1 !important;
+}
+
+.step {
+    opacity: 0;
+    transition: .5s ease-in-out all;
+}
