@@ -29,6 +29,8 @@ export class ProductsListComponent implements OnInit {
 	}
 
 	delete(id: number): void {
+        event.stopPropagation();
+        event.preventDefault();
 		this.productsService.delete(id).subscribe(
 			res => {
 				if (res.result == ResultCode.OK) {
@@ -42,7 +44,7 @@ export class ProductsListComponent implements OnInit {
 				console.log('UNEXPECTED ERROR: ' + err);
 				alert(err);
 			}
-		);
+        );
 	}
 
 	loadProducts(): void {
@@ -52,7 +54,10 @@ export class ProductsListComponent implements OnInit {
 					.sortBy(m => m.name.toLowerCase())
 					.value();
 			},
-			error => {}
+			error => {
+				console.log('UNEXPECTED ERROR: ' + error);
+				alert(error);
+			}
 		);
 	}
 
