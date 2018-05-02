@@ -9,6 +9,7 @@ import { Product } from '../../../../../../../datatypes/product';
 // models
 import { GVFile } from '../../../../models/gvfile.model';
 import { AlertService } from '../../../../modules/alert/alert.service';
+import { ResultCode } from '../../../../../../../datatypes/result';
 
 @Component({
 	templateUrl: './product.add.component.html',
@@ -33,22 +34,32 @@ export class ProductAddComponent {
 
 		var promise = this.productsService.agregar(this.product);
 
-		promise.subscribe(data => {
-			if (!!this.imageFile) {
-				this.imagesService
-					.sendImage(category, this.product.path_image, this.imageFile.size, this.imageFile.data)
-					.subscribe(
-						res => {
-							this.router.navigateByUrl('/admin/productos');
-						},
-						error => {
-                            console.error(error);
-                            this.alertService.error(error.error);
-						}
-					);
-			} else {
-				this.router.navigateByUrl('/admin/productos');
-			}
+		promise.subscribe(response => {
+            if (response.result == ResultCode.Error) {
+                // TODO: error handling
+                console.error(response.message);
+                this.alertService.error(response.message);
+            } else {
+                if (!!this.imageFile) {
+                    this.imagesService
+                        .sendImage(category, this.product.path_image, this.imageFile.size, this.imageFile.data)
+                        .subscribe(
+                            res => {
+                                const keepAfterRouteChange = true;
+                                this.alertService.success('Producto creado correctamente!', keepAfterRouteChange);
+                                this.router.navigateByUrl('/admin/productos');
+                            },
+                            error => {
+                                console.error(error);
+                                this.alertService.error(error.error);
+                            }
+                        );
+                } else {
+                    const keepAfterRouteChange = true;
+                    this.alertService.success('Producto creado correctamente!', keepAfterRouteChange);
+                    this.router.navigateByUrl('/admin/productos');
+                }
+            }
 		},
         error => {
             console.error(error);
