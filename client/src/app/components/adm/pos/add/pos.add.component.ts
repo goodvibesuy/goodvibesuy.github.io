@@ -40,7 +40,7 @@ export class PosAddComponent extends ValidableForm implements OnInit {
         private pointOFSaleService: PointOfSaleService,
         private groupPosService: GroupPosService,
         private imagesService: ImagesService,
-		private alertService: AlertService
+        private alertService: AlertService
     ) {
         super(fb)
         super.initForm({
@@ -58,22 +58,23 @@ export class PosAddComponent extends ValidableForm implements OnInit {
         super.setModel<PointOfSale>(<PointOfSale>{
             name: null,
             address: null,
-            tel: null, 
+            tel: null,
             businessName: null,
-            contactName: null, 
+            contactName: null,
             RUT: null,
             idGroup: null
         });
 
-        this.groupPosService.get().subscribe(result => {
-            if(result.result == ResultCode.OK){
-                this.groupPos = result.data;
-            } else {
-                console.error(result.message);
-                this.alertService.error('Error obteniendo datos del servidor. ' + result.message);
-            }
-        },
-        error => {
+        this.groupPosService.get().subscribe(
+            result => {
+                if (result.result == ResultCode.OK) {
+                    this.groupPos = result.data;
+                } else {
+                    console.error(result.message);
+                    this.alertService.error('Error obteniendo datos del servidor. ' + result.message);
+                }
+            },
+            error => {
                 console.error(error);
                 this.alertService.error('Error obteniendo datos del servidor.');
             }
@@ -119,7 +120,6 @@ export class PosAddComponent extends ValidableForm implements OnInit {
                     this.marker.setPosition(results[0].geometry.location);
                 }
             } else {
-                // TODO: mostrar el mensaje un poco mejor
                 console.warn('Geocode was not successful for the following reason: ' + status);
                 this.alertService.warn('El servicio de localización de google no pudo encontrar la dirección ingresada.');
             }
@@ -136,8 +136,8 @@ export class PosAddComponent extends ValidableForm implements OnInit {
             }
             pos.coord = this.marker.getPosition();
 
-            this.pointOFSaleService.addPointOfSale(pos)
-                .subscribe(response => {
+            this.pointOFSaleService.addPointOfSale(pos).subscribe(
+                response => {
                     if (response.result == ResultCode.Error) {
                         console.error(response.message);
                         this.alertService.error('Error agregando el punto de venta. ' + response.message);
@@ -166,7 +166,8 @@ export class PosAddComponent extends ValidableForm implements OnInit {
                 error => {
                     console.error(error);
                     this.alertService.error('Error agregando el punto de venta.');
-                });
+                }
+            );
         }
     }
 

@@ -16,6 +16,8 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { NgbDateFormatter } from '../../../../shared/DateParserFormatter';
 import { Subscription } from 'rxjs';
 import { UnitsConversorService, UnitsConvertion, Units } from '../../../../services/units-conversor.service';
+import { AlertService } from '../../../../modules/alert/alert.service';
+import { ResultCode } from '../../../../../../../datatypes/result';
 
 @Component({
     templateUrl: './supply.edit.component.html',
@@ -38,7 +40,8 @@ export class SupplyEditComponent extends ValidableForm implements OnInit, OnDest
         private providerService: ProvidersService,
         private domSanitizer: DomSanitizer,
         private imagesService: ImagesService,
-        private unitsConversorService: UnitsConversorService
+        private unitsConversorService: UnitsConversorService,
+        private alertService: AlertService
     ) {
         super(fb)
         super.initForm({
@@ -55,20 +58,40 @@ export class SupplyEditComponent extends ValidableForm implements OnInit, OnDest
 
         this.paramsSub = this.activatedRoute.params.subscribe(
             params => {
-                this.providerService.getAll().subscribe(data => {
-                    this.providers = data.data;
-                });
+                this.providerService.getAll().subscribe(
+                    data => {
+                        this.providers = data.data;
+                    },
+                    error => {
+                        console.error(error);
+                        this.alertService.error('Error obteniendo datos del servidor.');
+                    }
+                );
 
-                this.supplyService.getAll().subscribe(data => {
-                    var supply = (<Supply[]>data).find(s => s.id == params['id']);
-                    super.setModel(supply, { 'price_date': NgbDateFormatter.formatDate });
-                });
+                this.supplyService.getAll().subscribe(
+                    data => {
+                        var supply = (<Supply[]>data).find(s => s.id == params['id']);
+                        super.setModel(supply, { 'price_date': NgbDateFormatter.formatDate });
+                    },
+                    error => {
+                        console.error(error);
+                        this.alertService.error('Error obteniendo datos del servidor.');
+                    });
 
-                this.supplyService.getUnits().subscribe(data => {
-                    this.units = <Unit[]>data;
-                });
+                this.supplyService.getUnits().subscribe(
+                    data => {
+                        this.units = <Unit[]>data;
+                    },
+                    error => {
+                        console.error(error);
+                        this.alertService.error('Error obteniendo datos del servidor.');
+                    }
+                );
             },
-            error => { }
+            error => {
+                console.error(error);
+                this.alertService.error('Error obteniendo datos del servidor.');
+            }
         );
     }
 
@@ -91,22 +114,38 @@ export class SupplyEditComponent extends ValidableForm implements OnInit, OnDest
             }
             var promise = this.supplyService.update(supply);
 
-            promise.subscribe(data => {
-                if (!!this.imageFile) {
-                    this.imagesService
-                        .sendImage(this.category, supply.path_image, this.imageFile.size, this.imageFile.data)
-                        .subscribe(
-                            res => {
-                                this.router.navigateByUrl('/admin/' + this.category);
-                            },
-                            error => {
-                                console.error(error);
-                            }
-                        );
-                } else {
-                    this.router.navigateByUrl('/admin/' + this.category);
+            promise.subscribe(
+                response => {
+                    if (response.result == ResultCode.Error) {
+                        console.error(response.message);
+                        this.alertService.error('Error actualizando el insumo. ' + response.message);
+                    } else {
+                        if (!!this.imageFile) {
+                            this.imagesService
+                                .sendImage(this.category, supply.path_image, this.imageFile.size, this.imageFile.data)
+                                .subscribe(
+                                    res => {
+                                        const keepAfterRouteChange = true;
+                                        this.alertService.success('Insumo actualizado correctamente!', keepAfterRouteChange);
+                                        this.router.navigateByUrl('/admin/' + this.category);
+                                    },
+                                    error => {
+                                        console.error(error);
+                                        this.alertService.error('Error actualizando el insumo.');
+                                    }
+                                );
+                        } else {
+                            const keepAfterRouteChange = true;
+                            this.alertService.success('Insumo actualizado correctamente!', keepAfterRouteChange);
+                            this.router.navigateByUrl('/admin/' + this.category);
+                        }
+                    }
+                },
+                error => {
+                    console.error(error);
+                    this.alertService.error('Error obteniendo datos del servidor.');
                 }
-            });
+            );
         }
     }
 

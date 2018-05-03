@@ -9,6 +9,7 @@ import { Subscription } from 'rxjs';
 import { ResultCode } from '../../../../../../datatypes/result';
 import { GroupPosService } from '../../../services/group-pos.service';
 import { GroupPos } from '../../../../../../datatypes/groupPos';
+import { AlertService } from '../../../modules/alert/alert.service';
 
 @Component({
     selector: 'app-client-form',
@@ -34,9 +35,9 @@ export class ClientFormComponent extends ValidableForm implements OnInit {
         private router: Router,
         private clientService: ClientService,
         private activatedRoute: ActivatedRoute,
-        private groupPosService: GroupPosService
+        private groupPosService: GroupPosService,
+        private alertService: AlertService
     ) {
-
         super(fb);
         super.initForm({
             name: [null, Validators.required],
@@ -44,7 +45,7 @@ export class ClientFormComponent extends ValidableForm implements OnInit {
             address: [null, Validators.required],
             tel: [null, null],
             idGroup: [null, Validators.required]
-        });        
+        });
     }
 
     ngOnInit() {
@@ -55,20 +56,20 @@ export class ClientFormComponent extends ValidableForm implements OnInit {
                 if (id) {
                     this.isAdding = !id;
                     // load client 
-                    this.clientService.get(id).subscribe(result => {
-                        if (result.result == ResultCode.OK) {
-                            super.setModel(result.data);
-                        } else {
-                            // TODO: error handling
-                            console.error(result.message);
-                            alert(result.message);
+                    this.clientService.get(id).subscribe(
+                        result => {
+                            if (result.result == ResultCode.Error) {
+                                console.error(result.message);
+                                this.alertService.error('Error obteniendo datos del servidor. ' + result.message);
+                            } else {
+                                super.setModel(result.data);
+                            }
+                        },
+                        error => {
+                            console.error(error);
+                            this.alertService.error('Error obteniendo datos del servidor.');
                         }
-                    },
-                    error => {
-                        // TODO: error handling
-                        console.error(error);
-                        alert(error);
-                    });
+                    );
                 }
 
                 this.titleForm = !!id ? 'Actualizar ' : 'Agregar ';
@@ -77,21 +78,18 @@ export class ClientFormComponent extends ValidableForm implements OnInit {
 
         this.groupPosService.get().subscribe(
             result => {
-                if (result.result == ResultCode.OK) {
-                    this.groupPos = result.data;
-                } else {
-                    // TODO: error handling
+                if (result.result == ResultCode.Error) {
                     console.error(result.message);
-                    alert(result.message);
+                    this.alertService.error('Error obteniendo datos del servidor.');
+                } else {
+                    this.groupPos = result.data;
                 }
             },
             error => {
-                // TODO: error handling
                 console.error(error);
-                alert(error);
+                this.alertService.error('Error obteniendo datos del servidor.');
             }
         );
-
         this.initMap({ x: -34.909664, y: -56.163319 });
     }
 
@@ -104,19 +102,20 @@ export class ClientFormComponent extends ValidableForm implements OnInit {
 
             let fn = (this.isAdding ? this.clientService.add : this.clientService.update).bind(this.clientService);
 
-            fn(cli).subscribe(response => {
-                if (response.result == ResultCode.Error) {
-                    // TODO: error handling
-                    console.error(response.message);
-                    alert(response.message);
-                } else {
-                    this.router.navigateByUrl('/admin/clientes');
-                }
-            },
+            fn(cli).subscribe(
+                response => {
+                    if (response.result == ResultCode.Error) {
+                        console.error(response.message);
+                        this.alertService.error('Error ' + this.isAdding ? 'creando' : 'actualizando' + ' el cliente.');
+                    } else {
+                        const keepAfterRouteChange = true;
+                        this.alertService.success('Cliente ' + this.isAdding ? 'creando' : 'actualizando' + ' correctamente!', keepAfterRouteChange);
+                        this.router.navigateByUrl('/admin/clientes');
+                    }
+                },
                 error => {
-                    // TODO: error handling
                     console.error(error);
-                    alert(error);
+                    this.alertService.error('Error obteniendo datos del servidor.');
                 }
             );
         }
@@ -141,7 +140,8 @@ export class ClientFormComponent extends ValidableForm implements OnInit {
                     thisPrincipal.marker.setPosition(results[0].geometry.location);
                 }
             } else {
-                alert('Geocode was not successful for the following reason: ' + status);
+                console.warn('Geocode was not successful for the following reason: ' + status);
+                this.alertService.warn('El servicio de localización de google no pudo encontrar la dirección ingresada.');
             }
         });
     }

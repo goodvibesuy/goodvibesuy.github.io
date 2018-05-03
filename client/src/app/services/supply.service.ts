@@ -54,6 +54,7 @@ export class SupplyService {
     //         );
     // }
 
+    // TODO: Cambiar a ResultWithData<Supply[]>
     getLatestPrices(): Observable<Supply[]> {
         return this.getAll().pipe(map(r => _.chain(r)
             .groupBy(s => s.id)
@@ -68,10 +69,12 @@ export class SupplyService {
 
     }
 
+    // TODO: Cambiar a ResultWithData<Unit[]>
     getUnits(): Observable<Unit[]> {
         return this.http.get<Unit[]>(this.unitsUrl).pipe(map(r => (<any>r).data));
     }
 
+    // TODO: Cambiar a Result
     agregar(supply: Supply): Observable<any> {
         return this.http.post(this.suppliesUrl, supply);
     }

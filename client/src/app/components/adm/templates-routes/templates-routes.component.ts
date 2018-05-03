@@ -4,6 +4,7 @@ import { TemplateRoute } from '../../../models/TemplateRoute.model';
 
 import { RouteService } from '../../../services/route.service';
 import { PointOfSale } from '../../../../../../datatypes/pointOfSale';
+import { AlertService } from '../../../modules/alert/alert.service';
 
 @Component({
     selector: 'app-templates-routes',
@@ -21,6 +22,7 @@ export class TemplatesRoutesComponent implements OnInit {
     constructor(
         private templateRouteService: TemplatesRoutesService,
         private routeService: RouteService,
+        private alertService: AlertService
     ) { }
 
     ngOnInit() {
@@ -29,7 +31,12 @@ export class TemplatesRoutesComponent implements OnInit {
             response => {
                 this.pointsOfSale = <PointOfSale[]>response;
                 console.log(this.pointsOfSale);
-            });
+            },
+            error => {
+                console.error(error);
+                this.alertService.error('Error obteniendo datos del servidor.');
+            }
+        );
     }
 
     getPointOfSalesRoute() {
@@ -37,6 +44,10 @@ export class TemplatesRoutesComponent implements OnInit {
             response => {
                 this.pointsOfSaleRoute = response;
                 console.log(response);
+            },
+            error => {
+                console.error(error);
+                this.alertService.error('Error obteniendo datos del servidor.');
             });
     }
 
@@ -45,6 +56,10 @@ export class TemplatesRoutesComponent implements OnInit {
             response => {
                 this.templates = response.data;
                 console.log(response);
+            },
+            error => {
+                console.error(error);
+                this.alertService.error('Error obteniendo datos del servidor.');
             }
         )
     }
@@ -54,6 +69,10 @@ export class TemplatesRoutesComponent implements OnInit {
             response => {
                 this.getTemplates();
                 console.log(response);
+            },
+            error => {
+                console.error(error);
+                this.alertService.error('Error eliminando el template de recorrido.');
             }
         )
     }
@@ -78,35 +97,59 @@ export class TemplatesRoutesComponent implements OnInit {
                 console.log(data);
                 this.getTemplates();
                 this.typeOfView = 1;
+            },
+            error => {
+                console.error(error);
+                this.alertService.error('Error agregando el template recorrido.');
             }
         );
     }
 
     agregarPuntoDeVenta() {
         console.log(this.templateRoute.id, this.POS.id);
-        this.templateRouteService.addPointOfSale(this.templateRoute.id, this.POS.id).subscribe(data => {
-            this.getPointOfSalesRoute();
-        });
+        this.templateRouteService.addPointOfSale(this.templateRoute.id, this.POS.id).subscribe(
+            data => {
+                this.getPointOfSalesRoute();
+            },
+            error => {
+                console.error(error);
+                this.alertService.error('Error agregando el punto de venta al template de recorrido.');
+            }
+        );
     }
-
 
     changeOrder(idpointofSale: number, position: number, newposition: number) {
         this.templateRouteService
             .reorderPointOfSale(this.templateRoute.id, idpointofSale, position, newposition)
-            .subscribe(data => {
-                this.getPointOfSalesRoute();
-            });
+            .subscribe(
+                data => {
+                    this.getPointOfSalesRoute();
+                },
+                error => {
+                    console.error(error);
+                }
+            );
     }
 
     remove(idPointOfSale) {
-		this.templateRouteService.remove(this.templateRoute.id, idPointOfSale).subscribe(data => {
-			this.getPointOfSalesRoute();
-		});
+        this.templateRouteService.remove(this.templateRoute.id, idPointOfSale).subscribe(
+            data => {
+                this.getPointOfSalesRoute();
+            },
+            error => {
+                console.error(error);
+            });
     }
-    
+
     actualizar() {
-		this.templateRouteService.update(this.templateRoute).subscribe(data => {
-			this.typeOfView = 1;
-		});
-	}
+        this.templateRouteService.update(this.templateRoute).subscribe(
+            data => {
+                this.typeOfView = 1;
+            },
+            error => {
+                console.error(error);
+                this.alertService.error('Error actualizando el template del recorrido.');
+            }
+        );
+    }
 }

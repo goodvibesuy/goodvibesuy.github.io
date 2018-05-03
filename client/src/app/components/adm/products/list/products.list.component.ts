@@ -43,8 +43,8 @@ export class ProductsListComponent implements OnInit {
                 }
             },
             err => {
-                console.log('UNEXPECTED ERROR: ' + err);
-                alert(err);
+                console.error(err);
+                this.alertService.error('Error eliminando el producto');
             }
         );
     }
@@ -52,13 +52,18 @@ export class ProductsListComponent implements OnInit {
     loadProducts(): void {
         this.productsService.getAll().subscribe(
             response => {
-                this.products = _.chain(response.data)
-                    .sortBy(m => m.name.toLowerCase())
-                    .value();
+                if (response.result == ResultCode.Error) {
+                    console.error(response.message);
+                    this.alertService.error(response.message);
+                } else {
+                    this.products = _.chain(response.data)
+                        .sortBy(m => m.name.toLowerCase())
+                        .value();
+                }
             },
             error => {
-                console.log('UNEXPECTED ERROR: ' + error);
-                alert(error);
+                console.error(error);
+                this.alertService.error('Error cargando los productos');
             }
         );
     }

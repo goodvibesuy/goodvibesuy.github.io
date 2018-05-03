@@ -5,6 +5,8 @@ import { RouteService } from '../../../../services/route.service';
 import { RouteTable } from '../../../../../../../datatypes/routeTable';
 
 import { Router } from '@angular/router';
+import { AlertService } from '../../../../modules/alert/alert.service';
+import { ResultCode } from '../../../../../../../datatypes/result';
 
 @Component({
     selector: 'app-list',
@@ -18,7 +20,9 @@ export class ListComponent implements OnInit {
 
     private routes: RouteTable[];
 
-    constructor(private router: Router, private routeServices: RouteService) { }
+    constructor(private router: Router,
+        private routeServices: RouteService,
+        private alertService: AlertService) { }
 
     ngOnInit() {
         this.loadRoutes();
@@ -28,29 +32,37 @@ export class ListComponent implements OnInit {
         var r = confirm("Esta seguro que quiere borrar el recorrido?");
         if (r == true) {
             this.routeServices.delete(id).subscribe(
-                data => {
-                    if (data.result < 0) {
-                        alert(data.message);
+                response => {
+                    if (response.result == ResultCode.Error) {
+                        console.error(response);
+                        this.alertService.error('Error eliminando el recorrido. ' + response.message);
                     } else {
                         this.loadRoutes();
                     }
+                },
+                error => {
+                    console.error(error);
+                    this.alertService.error('Error eliminando el recorrido.');
                 }
             );
-        }        
+        }
     }
 
     loadRoutes(): void {
         this.routeServices.get().subscribe(
-            data => {
-                console.log(data);
-                if (data.result === -1) {
-                    console.log(data);
-                    this.router.navigate(['']);
+            response => {
+                if (response.result === ResultCode.Error) {
+                    console.error(response.message);
+                    this.alertService.error('Error obteniendo datos del servidor. ' + response.message);
+
                 } else {
-                    this.routes = data.data;
+                    this.routes = response.data;
                 }
             },
-            error => { }
+            error => {
+                console.error(error);
+                this.alertService.error('Error obteniendo datos del servidor.');
+            }
         );
     }
 }

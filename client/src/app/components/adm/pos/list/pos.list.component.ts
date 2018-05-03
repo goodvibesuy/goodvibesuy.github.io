@@ -6,6 +6,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { GVFile } from '../../../../models/gvfile.model';
 import { ImagesService } from '../../../../services/images.service';
 import { PointOfSale } from '../../../../../../../datatypes/pointOfSale';
+import { AlertService } from '../../../../modules/alert/alert.service';
 
 @Component({
     templateUrl: './pos.list.component.html',
@@ -15,7 +16,7 @@ export class PosListComponent implements OnInit {
 
     private imageFile: GVFile;
     private imagePath: string;
-    private filter:string;
+    private filter: string;
 
     private pointsOfSale: PointOfSale[];
     private POSEdit: PointOfSale;
@@ -50,7 +51,8 @@ export class PosListComponent implements OnInit {
         private router: Router,
         private pointOFSaleService: PointOfSaleService,
         private domSanitizer: DomSanitizer,
-        private imagesService: ImagesService
+        private imagesService: ImagesService,
+        private alertService: AlertService
     ) { }
 
     ngOnInit() {
@@ -94,7 +96,8 @@ export class PosListComponent implements OnInit {
                     thisPrincipal.POSEditMarker.setPosition(results[0].geometry.location);
                 }
             } else {
-                alert('Geocode was not successful for the following reason: ' + status);
+                console.warn('Geocode was not successful for the following reason: ' + status);
+                this.alertService.warn('El servicio de localización de google no pudo encontrar la dirección ingresada.');
             }
         });
     }
@@ -114,7 +117,8 @@ export class PosListComponent implements OnInit {
                     position: results[0].geometry.location
                 });
             } else {
-                alert('Geocode was not successful for the following reason: ' + status);
+                console.warn('Geocode was not successful for the following reason: ' + status);
+                this.alertService.warn('El servicio de localización de google no pudo encontrar la dirección ingresada.');
             }
         });
     }
@@ -134,21 +138,30 @@ export class PosListComponent implements OnInit {
                         }
                         this.pointsOfSale.push(i);
                     }
-                    //this.POSEditCoord = new google.maps.LatLng(POSEdit.coord.x,POSEdit.coord.y);
                 }
             },
-            error => { }
+            error => {
+                console.error(error);
+                this.alertService.error('Error cargando los puntos de venta.');
+            }
         );
     }
 
     delete(idPOS): void {
-        this.pointOFSaleService.deletePointOfSale(idPOS).subscribe(response => {
-            if (response.result === -1) {
-                alert(response.message);
-            } else {
-                this.loadPointsOfSale();
+        this.pointOFSaleService.deletePointOfSale(idPOS).subscribe(
+            response => {
+                if (response.result === -1) {
+                    console.error(response.message);
+                    this.alertService.error(response.message);
+                } else {
+                    this.loadPointsOfSale();
+                }
+            },
+            error => {
+                console.error(error);
+                this.alertService.error('Error eliminando el punto de venta.');
             }
-        });
+        );
     }
 
     getImage() {
@@ -167,16 +180,16 @@ export class PosListComponent implements OnInit {
     }
 
     filterPOS(): void {
-		if (this.filter !== '') {
-			this.pointOFSaleService.getFilteredByName(this.filter).subscribe(data => {
-				if (data.result === -1) {
-					this.router.navigate(['']);
-				} else {
-					this.pointsOfSale = data.data;
-				}
-			});
-		} else {
-			this.loadPointsOfSale();
-		}
-	}
+        if (this.filter !== '') {
+            this.pointOFSaleService.getFilteredByName(this.filter).subscribe(data => {
+                if (data.result === -1) {
+                    this.router.navigate(['']);
+                } else {
+                    this.pointsOfSale = data.data;
+                }
+            });
+        } else {
+            this.loadPointsOfSale();
+        }
+    }
 }

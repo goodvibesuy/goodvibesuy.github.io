@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { Client } from '../../../../../../../datatypes/client';
 import { ClientService } from '../../../../services/client.service';
 import { ResultCode } from '../../../../../../../datatypes/result';
+import { AlertService } from '../../../../modules/alert/alert.service';
 
 @Component({
     templateUrl: './client.list.component.html',
@@ -12,7 +13,8 @@ export class ClientListComponent implements OnInit {
     private clients: Array<Client>;
 
     constructor(private router: Router,
-        private clientService: ClientService) {
+        private clientService: ClientService,
+        private alertService: AlertService) {
         this.clients = new Array<Client>();
     }
 
@@ -24,12 +26,10 @@ export class ClientListComponent implements OnInit {
         this.clientService.getAlls().subscribe(
             response => {
                 this.clients = response.data;
-                console.log(response);
             },
             error => {
-                // TODO: error handling
                 console.error(error);
-                alert(error);
+                this.alertService.error('Error obteniendo los clientes.');
             }
         )
     }
@@ -38,17 +38,15 @@ export class ClientListComponent implements OnInit {
         this.clientService.delete(id).subscribe(
             response => {
                 if (response.result == ResultCode.Error) {
-                    // TODO: error handling
                     console.error(response.message);
-                    alert(response.message);
+                    this.alertService.error('Error eliminando el cliente. ' + response.message);
                 } else {
                     this.getAlls();
                 }
             },
             error => {
-                // TODO: error handling
                 console.error(error);
-                alert(error);
+                this.alertService.error('Error eliminando el cliente.');
             }
         );
     }

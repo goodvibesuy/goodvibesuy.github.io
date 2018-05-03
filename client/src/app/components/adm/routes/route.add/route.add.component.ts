@@ -12,6 +12,8 @@ import { TemplateRoute } from '../../../../models/TemplateRoute.model';
 import { PointOfSale } from '../../../../../../../datatypes/pointOfSale';
 import { ProductsService } from '../../../../services/products.service';
 import { Product } from '../../../../../../../datatypes/product';
+import { AlertService } from '../../../../modules/alert/alert.service';
+import { ResultCode } from '../../../../../../../datatypes/result';
 
 @Component({
     selector: 'app-route.add',
@@ -33,12 +35,12 @@ export class RouteAdd implements OnInit {
         private router: Router,
         private userService: UsersService,
         private templateRouteService: TemplatesRoutesService,
-        private productService: ProductsService
+        private productService: ProductsService,
+        private alertService: AlertService
     ) {
         this.newRoute = new Route();
         this.route = <RouteModel>{};
     }
-
 
     ngOnInit() {
         this.getUsers();
@@ -46,7 +48,10 @@ export class RouteAdd implements OnInit {
         this.productService.getAll().subscribe(
             response => {
                 console.log(response);
-                if (response.result === 1) {
+                if (response.result === ResultCode.Error) {
+                    console.error("Error al cargar los productos. " + response.message)
+                    this.alertService.error("Error al cargar los productos.");
+                } else {
                     this.products = response.data;
                     for (let i = 0; i < this.products.length; i++) {
                         this.newRoute.addProductStock({ product: this.products[i], quantity: 0 });
@@ -55,17 +60,25 @@ export class RouteAdd implements OnInit {
                         this.pointsOfSales = <PointOfSale[]>dataPOS;
                         this.POSSelected = this.pointsOfSales[0];
                     });
-                } else {
-                    alert("Error al cargar los productos.");
                 }
+            },
+            error => {
+                console.error(error);
+                this.alertService.error('Error obteniendo los productos.');
             }
         )
     }
 
     getUsers() {
-        this.userService.get().subscribe(data => {
-            this.users = data;
-        });
+        this.userService.get().subscribe(
+            data => {
+                this.users = data;
+            },
+            error => {
+                console.error(error);
+                this.alertService.error('Error obteniendo datos del servidor.');
+            }
+        );
     }
 
     getTemplatesRoute() {
@@ -73,8 +86,12 @@ export class RouteAdd implements OnInit {
             response => {
                 this.templatesRoutes = response.data;
                 this.templateSelected = this.templatesRoutes[0];
+            },
+            error => {
+                console.error(error);
+                this.alertService.error('Error obteniendo datos del servidor.');
             }
-        )
+        );
     }
 
     addTemplate() {
@@ -83,8 +100,12 @@ export class RouteAdd implements OnInit {
                 for (let i = 0; i < data.length; i++) {
                     this.newRoute.addPointOfSale(data[i]);
                 }
+            },
+            error => {
+                console.error(error);
+                this.alertService.error('Error obteniendo datos del servidor.');
             }
-        )
+        );
     }
 
 
@@ -97,13 +118,21 @@ export class RouteAdd implements OnInit {
     }
 
     agregar(): void {
-        this.routeService.agregar(this.newRoute)
-            .subscribe(data => {
-                if (data.result > 0) {
-                    this.router.navigateByUrl('/recorridos');
+        this.routeService.agregar(this.newRoute).subscribe(
+            response => {
+                if (response.result == ResultCode.Error) {
+                    console.error(response.message);
+                    this.alertService.error('Error agregando la ruta al recorrido. ' + response.message);
                 } else {
-                    alert(data.message);
+                    const keepAfterRouteChange = true;
+                    this.alertService.success('Recorrido agregado correctamente!', keepAfterRouteChange);
+                    this.router.navigateByUrl('/recorridos');
                 }
-            });
+            },
+            error => {
+                console.error(error);
+                this.alertService.error('Error obteniendo datos del servidor.');
+            }
+        );
     }
 }

@@ -12,6 +12,7 @@ import { ResultCode } from '../../../../../../../datatypes/result';
 import { PointOfSale } from '../../../../../../../datatypes/pointOfSale';
 import { GroupPosService } from '../../../../services/group-pos.service';
 import { GroupPos } from '../../../../../../../datatypes/groupPos';
+import { AlertService } from '../../../../modules/alert/alert.service';
 
 @Component({
     templateUrl: './pos.edit.component.html',
@@ -36,7 +37,8 @@ export class PosEditComponent extends ValidableForm implements OnInit, OnDestroy
         private pointOFSaleService: PointOfSaleService,
         private groupPosService: GroupPosService,
         private domSanitizer: DomSanitizer,
-        private imagesService: ImagesService
+        private imagesService: ImagesService,
+        private alertService: AlertService
     ) {
         super(fb)
         super.initForm({
@@ -60,19 +62,18 @@ export class PosEditComponent extends ValidableForm implements OnInit, OnDestroy
                 })
             });
 
-        this.groupPosService.get().subscribe(result => {
-            if (result.result == ResultCode.OK) {
-                this.groupPos = result.data;
-            } else {
-                // TODO: error handling
-                console.error(result.message);
-                alert(result.message);
-            }
-        },
+        this.groupPosService.get().subscribe(
+            result => {
+                if (result.result == ResultCode.OK) {
+                    this.groupPos = result.data;
+                } else {
+                    console.error(result.message);
+                    this.alertService.error('Error cargando el punto de venta. ' + result.message);
+                }
+            },
             error => {
-                // TODO: error handling
                 console.error(error);
-                alert(error);
+                this.alertService.error('Error cargando el punto de venta.');
             }
         );
     }
@@ -123,7 +124,7 @@ export class PosEditComponent extends ValidableForm implements OnInit, OnDestroy
                     thisPrincipal.marker.setPosition(results[0].geometry.location);
                 }
             } else {
-                alert('Geocode was not successful for the following reason: ' + status);
+                this.alertService.warn('El servicio de localización de google no pudo encontrar la dirección ingresada.');
             }
         });
     }
@@ -140,35 +141,38 @@ export class PosEditComponent extends ValidableForm implements OnInit, OnDestroy
 
             this.pointOFSaleService
                 .updatePointOfSale(pos)
-                .subscribe(response => {
-                    if (response.result == ResultCode.Error) {
-                        // TODO: error handling
-                        console.error(response.message);
-                        alert(response.message);
-                    } else {
-                        if (!!this.imageFile) {
-                            this.imagesService
-                                .sendImage('locales', pos.image, this.imageFile.size, this.imageFile.data)
-                                .subscribe(
-                                    res => {
-                                        this.router.navigateByUrl('/admin/puntos-de-venta');
-                                    },
-                                    error => {
-                                        // TODO: error handling
-                                        console.error(error);
-                                        alert(error);
-                                    }
-                                );
+                .subscribe(
+                    response => {
+                        if (response.result == ResultCode.Error) {
+                            console.error(response.message);
+                            this.alertService.warn(response.message);
                         } else {
-                            this.router.navigateByUrl('/admin/puntos-de-venta');
+                            if (!!this.imageFile) {
+                                this.imagesService
+                                    .sendImage('locales', pos.image, this.imageFile.size, this.imageFile.data)
+                                    .subscribe(
+                                        res => {
+                                            const keepAfterRouteChange = true;
+                                            this.alertService.success('Punto de venta actualizado correctamente!', keepAfterRouteChange);
+                                            this.router.navigateByUrl('/admin/puntos-de-venta');
+                                        },
+                                        error => {
+                                            console.error(error);
+                                            this.alertService.error('Error actualizando el punto de venta');
+                                        }
+                                    );
+                            } else {
+                                const keepAfterRouteChange = true;
+                                this.alertService.success('Punto de venta actualizado correctamente!', keepAfterRouteChange);
+                                this.router.navigateByUrl('/admin/puntos-de-venta');
+                            }
                         }
+                    },
+                    error => {
+                        console.error(error);
+                        this.alertService.error('Error actualizando el punto de venta');
                     }
-                },
-                error => {
-                    // TODO: error handling
-                    console.error(error);
-                    alert(error);
-                });
+                );
         }
     }
 
@@ -176,16 +180,15 @@ export class PosEditComponent extends ValidableForm implements OnInit, OnDestroy
         this.pointOFSaleService.getPointOfSale(id).subscribe(
             response => {
                 if (response.result == ResultCode.Error) {
-                    // TODO: error handling
                     console.error(response.message);
-                    this.router.navigate(['']);
+                    this.alertService.error('Error cargando  el punto de venta.');
                 } else {
                     callback(response.data);
                 }
             },
             error => {
-                // TODO: error handling
                 console.error(error);
+                this.alertService.error('Error cargado el punto de venta.');
             }
         );
     }
