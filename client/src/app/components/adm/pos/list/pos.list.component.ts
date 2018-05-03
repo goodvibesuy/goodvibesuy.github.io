@@ -83,7 +83,7 @@ export class PosListComponent implements OnInit {
         var mapEdit = this.mapEdit;
         var address = this.POSEditAddress;
         var thisPrincipal = this;
-        this.geocoder.geocode({ address: address }, function (results, status) {
+        this.geocoder.geocode({ address: address },  (results, status) =>  {
             if (status.toString() === 'OK') {
                 mapEdit.setCenter(results[0].geometry.location);
                 if (thisPrincipal.POSEditMarker === null || thisPrincipal.POSEditMarker === undefined) {
@@ -105,7 +105,7 @@ export class PosListComponent implements OnInit {
     geocodeAddress(geocoder, resultsMap) {
         var address = this.POSAddress;
         var thisPrincipal = this;
-        geocoder.geocode({ address: address }, function (results, status) {
+        geocoder.geocode({ address: address },  (results, status) => {
             if (status === 'OK') {
                 if (thisPrincipal.POSMarker !== undefined) {
                     thisPrincipal.POSMarker.setMap(null);

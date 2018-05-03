@@ -50,9 +50,13 @@ export class AlertComponent {
     }
 
     removeAlert(alert: IAlert) {
-        if (this.alert.id == alert.id) {
-            this.mostrarAlerta = false;
-            setTimeout(() => { this.alert = null; }, 500);
+        this.mostrarAlerta = false;
+        if (this.alert) {
+            if (this.alert.id == alert.id) {
+                setTimeout(() => {
+                    this.alert = null;
+                }, 500);
+            }
         }
     }
 

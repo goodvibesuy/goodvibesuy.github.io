@@ -67,7 +67,9 @@ echo ""
 echo "***************************"
 echo "Paso 9/10 Ejecutando el forever"
 forever stopall
-forever start /root/src/goodvibesuy.github.io/bin/www
+# el forever necesita iniciarse desde el directorio root
+cd /root/src/goodvibesuy.github.io
+forever start bin/www
 echo "current dir: $(pwd)"
 echo ""
 

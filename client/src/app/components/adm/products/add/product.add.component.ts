@@ -34,36 +34,38 @@ export class ProductAddComponent {
 
         var promise = this.productsService.agregar(this.product);
 
-        promise.subscribe(response => {
-            if (response.result == ResultCode.Error) {
-                console.error(response.message);
-                this.alertService.error(response.message);
-            } else {
-                if (!!this.imageFile) {
-                    this.imagesService
-                        .sendImage(category, this.product.path_image, this.imageFile.size, this.imageFile.data)
-                        .subscribe(
-                            res => {
-                                const keepAfterRouteChange = true;
-                                this.alertService.success('Producto creado correctamente!', keepAfterRouteChange);
-                                this.router.navigateByUrl('/admin/productos');
-                            },
-                            error => {
-                                console.error(error);
-                                this.alertService.error('Error al actualizar la imagen del producto.');
-                            }
-                        );
+        promise.subscribe(
+            response => {
+                if (response.result == ResultCode.Error) {
+                    console.error(response.message);
+                    this.alertService.error(response.message);
                 } else {
-                    const keepAfterRouteChange = true;
-                    this.alertService.success('Producto creado correctamente!', keepAfterRouteChange);
-                    this.router.navigateByUrl('/admin/productos');
+                    if (!!this.imageFile) {
+                        this.imagesService
+                            .sendImage(category, this.product.path_image, this.imageFile.size, this.imageFile.data)
+                            .subscribe(
+                                res => {
+                                    const keepAfterRouteChange = true;
+                                    this.alertService.success('Producto creado correctamente!', keepAfterRouteChange);
+                                    this.router.navigateByUrl('/admin/productos');
+                                },
+                                error => {
+                                    console.error(error);
+                                    this.alertService.error('Error al actualizar la imagen del producto.');
+                                }
+                            );
+                    } else {
+                        const keepAfterRouteChange = true;
+                        this.alertService.success('Producto creado correctamente!', keepAfterRouteChange);
+                        this.router.navigateByUrl('/admin/productos');
+                    }
                 }
-            }
-        },
+            },
             error => {
                 console.error(error);
                 this.alertService.error('Error al actualizar el producto.');
-            });
+            }
+        );
     }
 
     getImage() {

@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, Input } from '@angular/core';
-import { Client } from '../../../../../../datatypes/Client';
+import { Client } from '../../../../../../datatypes/client';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ValidableForm } from '../../../shared/ValidableForms';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -106,10 +106,10 @@ export class ClientFormComponent extends ValidableForm implements OnInit {
                 response => {
                     if (response.result == ResultCode.Error) {
                         console.error(response.message);
-                        this.alertService.error('Error ' + this.isAdding ? 'creando' : 'actualizando' + ' el cliente.');
+                        this.alertService.error('Error ' + (this.isAdding ? 'creando' : 'actualizando') + ' el cliente.');
                     } else {
                         const keepAfterRouteChange = true;
-                        this.alertService.success('Cliente ' + this.isAdding ? 'creando' : 'actualizando' + ' correctamente!', keepAfterRouteChange);
+                        this.alertService.success('Cliente ' + (this.isAdding ? 'creado' : 'actualizado') + ' correctamente!', keepAfterRouteChange);
                         this.router.navigateByUrl('/admin/clientes');
                     }
                 },
@@ -127,7 +127,7 @@ export class ClientFormComponent extends ValidableForm implements OnInit {
         var mapEdit = this.map;
         var address = cli.address;
         var thisPrincipal = this;
-        this.geocoder.geocode({ address: address }, function (results, status) {
+        this.geocoder.geocode({ address: address },  (results, status) => {
             if (status.toString() === 'OK') {
                 mapEdit.setCenter(results[0].geometry.location);
                 if (thisPrincipal.marker === null || thisPrincipal.marker === undefined) {

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
-import { Client } from '../../../../datatypes/Client';
+import { Client } from '../../../../datatypes/client';
 import { Result, ResultWithData, ResultCode } from '../../../../datatypes/result';
 
 import { catchError, map, tap } from 'rxjs/operators';

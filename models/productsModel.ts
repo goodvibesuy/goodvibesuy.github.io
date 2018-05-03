@@ -138,11 +138,11 @@ export class ProductModel extends MainModel {
         });
     };
 
-
+    // TODO: usar transaccion acá !!!
     private updatePricesProduct(index: number, product: Product, callback: (r: Result) => void, con: any): void {
         var mainThis = this;
         con.query("INSERT INTO productprice(date,amount,idProduct,idGroupCustomer) VALUES (NOW(),?,?,?)",
-            [product.prices[index].amount, product.id, product.prices[index].idGroupPointofsale],
+            [product.prices[index].amount, product.id, product.prices[index].idGroupCustomer],
             function (err: any, result: any) {
                 if (!!err) {
                     // TODO: log error -> common/errorHandling.ts

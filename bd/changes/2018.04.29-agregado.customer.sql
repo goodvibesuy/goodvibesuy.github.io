@@ -28,7 +28,7 @@ START TRANSACTION;
     ALTER TABLE customer DROP COLUMN RUT;
 
 -- 5. Por consistencia, renombrado grouppointofsale a groupCustomer
-    ALTER TABLE grouppointofsale RENAME TO groupCustomer;
+    ALTER TABLE groupPointofsale RENAME TO groupCustomer;
 
 -- 6. Por consistencia, renombrar columna idGroupPointofsale de productprice a idGroupCustomer
     ALTER TABLE productprice CHANGE `idGroupPointofsale` `idGroupCustomer` INT(11) NOT NULL;

@@ -5,6 +5,7 @@ import { TemplateRoute } from '../../../models/TemplateRoute.model';
 import { RouteService } from '../../../services/route.service';
 import { PointOfSale } from '../../../../../../datatypes/pointOfSale';
 import { AlertService } from '../../../modules/alert/alert.service';
+import { ResultCode } from '../../../../../../datatypes/result';
 
 @Component({
     selector: 'app-templates-routes',
@@ -67,8 +68,12 @@ export class TemplatesRoutesComponent implements OnInit {
     delete(id: number): void {
         this.templateRouteService.delete(id).subscribe(
             response => {
-                this.getTemplates();
-                console.log(response);
+                if (response.result == ResultCode.Error) {
+                    console.error(response.message);
+                    this.alertService.error(response.message);
+                } else {
+                    this.getTemplates();
+                }
             },
             error => {
                 console.error(error);
@@ -100,7 +105,7 @@ export class TemplatesRoutesComponent implements OnInit {
             },
             error => {
                 console.error(error);
-                this.alertService.error('Error agregando el template recorrido.');
+                this.alertService.error('Error agregando el template de recorrido.');
             }
         );
     }
@@ -143,8 +148,15 @@ export class TemplatesRoutesComponent implements OnInit {
 
     actualizar() {
         this.templateRouteService.update(this.templateRoute).subscribe(
-            data => {
-                this.typeOfView = 1;
+            response => {
+                if (response.result == ResultCode.Error) {
+                    console.error(response.message);
+                    this.alertService.error(response.message);
+                } else {
+                    const keepAfterRouteChange = true;
+                    this.alertService.success('Template de recorrido actualizado correctamente!');
+                    this.typeOfView = 1;
+                }
             },
             error => {
                 console.error(error);

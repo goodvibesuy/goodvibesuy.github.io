@@ -105,9 +105,11 @@ export class SupplyEditComponent extends ValidableForm implements OnInit, OnDest
         } else {
             var supply = super.getModel<Supply>({ 'price_date': NgbDateFormatter.unformatDate });
 
-            // Convertir el precio de la unidad X a Kg
-            supply.amount = this.unitsConversorService.convertTo(supply.unit, supply.amount, Units.Kg);
-            supply.unit = Units.Kg;
+            if (this.existUnitsConversions(supply.unit) && supply.unit != Units.Kg) {
+                // Convertir el precio de la unidad X a Kg
+                supply.amount = this.unitsConversorService.convertTo(supply.unit, supply.amount, Units.Kg);
+                supply.unit = Units.Kg;
+            }
 
             if (!!this.imageFile) {
                 supply.path_image = supply.id + '_' + this.imageFile.name;
