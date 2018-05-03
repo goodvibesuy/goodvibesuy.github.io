@@ -26,8 +26,7 @@ export class ViewingService {
 
     viewingsBetween(sourceDate:NgbDateStruct,lastDate:NgbDateStruct,idPos:number,idProduct:number):Observable<any>{
         let stringSource:string;
-        let stringLast:string;
-        console.info(sourceDate,lastDate);
+        let stringLast:string;        
         if(sourceDate === null){
             stringSource = "0/0/0";
         }else{

@@ -9,10 +9,10 @@
                         <td>Entregados</td>
                         <td>Devueltos</td>
                         <td>Total vendidos</td>
-                        <td>% ventas</td>
-                        <td>Share de ventas</td>
+                        <td (click)="orderBySale()">% ventas</td>
+                        <td (click)="orderByShareSale()">Share de ventas</td>
                     </tr>
-                    <ng-container *ngFor="let k of kpiSales">                        
+                    <ng-container *ngFor="let k of kpiSales">
                         <tr>
                             <td>{{k.pos.name}}</td>
                             <td>{{k.delivery}}</td>
@@ -22,31 +22,8 @@
                             <td>{{k.shareSale}} % </td>
                         </tr>
                     </ng-container>
-
-                    <!-- TODO Mejorar el filtro-->
-                    <!--
-                    <ng-container *ngFor="let pos of pointsOfSale">                        
-                        <tr *ngIf="viewingView.getTotalTransactionByPOSByType(pos.id,'delivery') !== 0">
-                            <td>{{pos.name}}</td>
-                            <td>{{viewingView.getTotalTransactionByPOSByType(pos.id,"delivery")}}</td>
-                            <td>{{viewingView.getTotalTransactionByPOSByType(pos.id,"return")}}</td>
-                            <td>{{viewingView.getTotalTransactionByPOSByType(pos.id,"delivery") - viewingView.getTotalTransactionByPOSByType(pos.id,"return")}}</td>
-                            <td>
-                                <span *ngIf="viewingView.getTotalTransactionByPOSByType(pos.id,'delivery') !== 0">
-                                    {{(((viewingView.getTotalTransactionByPOSByType(pos.id,"delivery") - viewingView.getTotalTransactionByPOSByType(pos.id,"return"))
-                                    / viewingView.getTotalTransactionByPOSByType(pos.id,"delivery") ) * 100).toFixed(2)
-                                    }} %
-                                </span>
-                            </td>
-                            <td>
-                                {{( (viewingView.getTotalTransactionByPOSByType(pos.id,"delivery") - viewingView.getTotalTransactionByPOSByType(pos.id,"return"))
-                                / totalSales * 100).toFixed(2) }} %
-                            </td>
-                        </tr>
-                    </ng-container>
-                -->
                 </table>
-            </div>            
+            </div>
         </div>
     </div>
     <div class="row">
@@ -59,30 +36,19 @@
                     <td>Local</td>
                     <td>Entregados</td>
                     <td>Devueltos</td>
-                    <td>% devoluciones</td>
-                    <td>Share de devoluciones</td>
+                    <td (click)="orderByReturn()">% devoluciones</td>
+                    <td (click)="orderByShareReturns()">Share de devoluciones</td>
                 </tr>
-                <ng-container *ngFor="let pos of pointsOfSale">
-                    <!-- TODO Mejorar el filtro-->
-                    <tr *ngIf="viewingView.getTotalTransactionByPOSByType(pos.id,'delivery') !== 0">
-                        <td>{{pos.name}}</td>
-                        <td>{{viewingView.getTotalTransactionByPOSByType(pos.id,"delivery")}}</td>
-                        <td>{{viewingView.getTotalTransactionByPOSByType(pos.id,"return")}}</td>
-                        <td>
-                            <span *ngIf="viewingView.getTotalTransactionByPOSByType(pos.id,'delivery') !== 0">
-                                {{(((viewingView.getTotalTransactionByPOSByType(pos.id,"return")) / viewingView.getTotalTransactionByPOSByType(pos.id,"delivery")
-                                ) * 100).toFixed(2) }} %
-                            </span>
-                        </td>
-                        <td>
-                            <span *ngIf="viewingView.getTotalTransactionByPOSByType(pos.id,'delivery') !== 0">
-                                {{(((viewingView.getTotalTransactionByPOSByType(pos.id,"return")) / totalReturns ) * 100).toFixed(2) }} %
-                            </span>
-                        </td>
+                <ng-container *ngFor="let kr of kpiReturns">
+                    <tr>
+                        <td>{{kr.pos.name}}</td>
+                        <td>{{kr.delivery}}</td>
+                        <td>{{kr.returnProduct}}</td>
+                        <td>{{kr.percentReturn}}</td>
+                        <td>{{kr.shareReturn}}</td>
                     </tr>
                 </ng-container>
             </table>
         </div>
     </div>
-
 </div>

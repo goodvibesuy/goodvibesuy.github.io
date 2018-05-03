@@ -10,6 +10,7 @@ import { PointOfSale } from '../../../../../../datatypes/pointOfSale';
 import { Subject } from 'rxjs';
 import { Observable } from 'rxjs/Observable';
 import { GroupPosService } from '../../../services/group-pos.service';
+import { KpiSalesPosComponent } from './kpi-sales-pos/kpi-sales-pos.component';
 
 @Component({
     selector: 'app-reporte-viewing',
@@ -17,8 +18,8 @@ import { GroupPosService } from '../../../services/group-pos.service';
     styleUrls: ['./reporte-viewing.component.scss']
 })
 export class ReporteViewingComponent implements OnInit {
-
     @ViewChild('instancePOS') instancePOS: NgbTypeahead;
+    @ViewChild(KpiSalesPosComponent) kpiSalesPOS: KpiSalesPosComponent;
     focus$ = new Subject<string>();
     click$ = new Subject<string>();
 
@@ -28,28 +29,28 @@ export class ReporteViewingComponent implements OnInit {
     private viewingView: ViewingView;
     private sourceDate: NgbDateStruct;
     private lastDate: NgbDateStruct;
-    private posId:number = 0;
-    private idProduct:number = 0;
-    private useDates:boolean = true;
-    private shareSales:any[];
+    private posId: number = 0;
+    private idProduct: number = 0;
+    private useDates: boolean = true;
+    private shareSales: any[];
     private ocultarDetalles: boolean;
-    private groupPOS:any[];
+    private groupPOS: any[];
 
     constructor(private viewingsService: ViewingService,
-        private posService:PointOfSaleService,
+        private posService: PointOfSaleService,
         private productsService: ProductsService,
-        private groupPOSService:GroupPosService
-    ) {        
+        private groupPOSService: GroupPosService
+    ) {
         this.ocultarDetalles = window.innerWidth < 400;
     }
 
     search() {
-        let sourceDate:NgbDateStruct = this.sourceDate;
-        let lastDate:NgbDateStruct = this.lastDate;
-        if(!this.useDates){
+        let sourceDate: NgbDateStruct = this.sourceDate;
+        let lastDate: NgbDateStruct = this.lastDate;
+        if (!this.useDates) {
             sourceDate = null;
             lastDate = null;
-        }       
+        }
 
         this.viewingsService.viewingsBetween(sourceDate, lastDate, this.posId, this.idProduct).subscribe(
             response => {
@@ -63,23 +64,24 @@ export class ReporteViewingComponent implements OnInit {
                     this.viewingView.addLine(line);
                 }
 
-                for(let i=0 ; i < this.products.length; i++){
-                    this.shareSales.push({"productName":this.products[i].name,"sales":
-                    this.viewingView.getTotalTransactionByProductByType(this.products[i].id,"delivery") -
-                     this.viewingView.getTotalTransactionByProductByType(this.products[i].id,"return")
+                for (let i = 0; i < this.products.length; i++) {
+                    this.shareSales.push({
+                        "productName": this.products[i].name, "sales":
+                            this.viewingView.getTotalTransactionByProductByType(this.products[i].id, "delivery") -
+                            this.viewingView.getTotalTransactionByProductByType(this.products[i].id, "return")
                     });
                 }
+                this.kpiSalesPOS.updateData();
             }
         );
     }
 
     ngOnInit() {
-
         this.groupPOSService.get().subscribe(
             groupsResponse => {
-                if(groupsResponse.result > 0){
+                if (groupsResponse.result > 0) {
                     this.groupPOS = groupsResponse.data;
-                }                
+                }
             }
         )
 
@@ -97,44 +99,40 @@ export class ReporteViewingComponent implements OnInit {
         this.productsService.getAll().subscribe(
             responseProducts => {
                 this.products = responseProducts.data;
-                this.search();                
+                this.search();
             }
         );
     }
 
-    totalSales():number{
-        let total = 0;   
-        if(this.products !== undefined && this.viewingView !== undefined){
-            for(let i = 0 ; i < this.products.length ; i++){
+    totalSales(): number {
+        let total = 0;
+        if (this.products !== undefined && this.viewingView !== undefined) {
+            for (let i = 0; i < this.products.length; i++) {
                 let idProduct = this.products[i].id;
-                total += this.viewingView.getTotalTransactionByProductByType(idProduct,"delivery") - 
-                        this.viewingView.getTotalTransactionByProductByType(idProduct,"return");
+                total += this.viewingView.getTotalTransactionByProductByType(idProduct, "delivery") -
+                    this.viewingView.getTotalTransactionByProductByType(idProduct, "return");
             }
-        }        
+        }
         return total;
     }
 
-    totalReturns():number{
-        let total = 0;        
-        if(this.products !== undefined && this.viewingView !== undefined){
-            for(let i = 0 ; i < this.products.length ; i++){
+    totalReturns(): number {
+        let total = 0;
+        if (this.products !== undefined && this.viewingView !== undefined) {
+            for (let i = 0; i < this.products.length; i++) {
                 let idProduct = this.products[i].id;
-                total += this.viewingView.getTotalTransactionByProductByType(idProduct,"return");
+                total += this.viewingView.getTotalTransactionByProductByType(idProduct, "return");
             }
-        }        
+        }
         return total;
     }
 
-
-
-    
-    searchPOS = (text$: Observable<string>) =>
-    {
-    text$
-      .debounceTime(200)
-      .distinctUntilChanged()
-      .map(term => term.length < 2 ? []
-        : this.pointsOfSale.filter(v => v.name.toLowerCase().indexOf(term.toLowerCase()) > -1).slice(0, 10));
-      } 
+    searchPOS = (text$: Observable<string>) => {
+        text$
+            .debounceTime(200)
+            .distinctUntilChanged()
+            .map(term => term.length < 2 ? []
+                : this.pointsOfSale.filter(v => v.name.toLowerCase().indexOf(term.toLowerCase()) > -1).slice(0, 10));
+    }
 
 }
