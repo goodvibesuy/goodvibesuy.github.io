@@ -106,10 +106,10 @@ export class ClientFormComponent extends ValidableForm implements OnInit {
                 response => {
                     if (response.result == ResultCode.Error) {
                         console.error(response.message);
-                        this.alertService.error('Error ' + this.isAdding ? 'creando' : 'actualizando' + ' el cliente.');
+                        this.alertService.error('Error ' + (this.isAdding ? 'creando' : 'actualizando') + ' el cliente.');
                     } else {
                         const keepAfterRouteChange = true;
-                        this.alertService.success('Cliente ' + this.isAdding ? 'creando' : 'actualizando' + ' correctamente!', keepAfterRouteChange);
+                        this.alertService.success('Cliente ' + (this.isAdding ? 'creado' : 'actualizado') + ' correctamente!', keepAfterRouteChange);
                         this.router.navigateByUrl('/admin/clientes');
                     }
                 },
