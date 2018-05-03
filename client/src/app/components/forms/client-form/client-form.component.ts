@@ -127,7 +127,7 @@ export class ClientFormComponent extends ValidableForm implements OnInit {
         var mapEdit = this.map;
         var address = cli.address;
         var thisPrincipal = this;
-        this.geocoder.geocode({ address: address }, function (results, status) {
+        this.geocoder.geocode({ address: address },  (results, status) => {
             if (status.toString() === 'OK') {
                 mapEdit.setCenter(results[0].geometry.location);
                 if (thisPrincipal.marker === null || thisPrincipal.marker === undefined) {
