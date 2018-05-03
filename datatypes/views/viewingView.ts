@@ -77,7 +77,6 @@ export class ViewingView {
 
     public getLinesByGroupPOS(idGroupPOS:number): LineViewingView[]{
         let lines = this.lines.filter(input => input.getPointOfSale().idGroup === idGroupPOS);
-        console.log(idGroupPOS,lines);
         return lines;
     }
 }

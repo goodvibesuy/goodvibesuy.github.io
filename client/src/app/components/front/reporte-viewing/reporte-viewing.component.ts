@@ -68,8 +68,7 @@ export class ReporteViewingComponent implements OnInit {
                     this.viewingView.getTotalTransactionByProductByType(this.products[i].id,"delivery") -
                      this.viewingView.getTotalTransactionByProductByType(this.products[i].id,"return")
                     });
-                }              
-                console.log(this.shareSales);  
+                }
             }
         );
     }
@@ -91,7 +90,6 @@ export class ReporteViewingComponent implements OnInit {
 
         this.posService.get().subscribe(
             response => {
-                console.log(response);
                 this.pointsOfSale = response.data;
             }
         );
@@ -105,21 +103,25 @@ export class ReporteViewingComponent implements OnInit {
     }
 
     totalSales():number{
-        let total = 0;        
-        for(let i = 0 ; i < this.products.length ; i++){
-            let idProduct = this.products[i].id;
-            total += this.viewingView.getTotalTransactionByProductByType(idProduct,"delivery") - 
-                    this.viewingView.getTotalTransactionByProductByType(idProduct,"return");
-        }
+        let total = 0;   
+        if(this.products !== undefined && this.viewingView !== undefined){
+            for(let i = 0 ; i < this.products.length ; i++){
+                let idProduct = this.products[i].id;
+                total += this.viewingView.getTotalTransactionByProductByType(idProduct,"delivery") - 
+                        this.viewingView.getTotalTransactionByProductByType(idProduct,"return");
+            }
+        }        
         return total;
     }
 
     totalReturns():number{
         let total = 0;        
-        for(let i = 0 ; i < this.products.length ; i++){
-            let idProduct = this.products[i].id;
-            total += this.viewingView.getTotalTransactionByProductByType(idProduct,"return");
-        }
+        if(this.products !== undefined && this.viewingView !== undefined){
+            for(let i = 0 ; i < this.products.length ; i++){
+                let idProduct = this.products[i].id;
+                total += this.viewingView.getTotalTransactionByProductByType(idProduct,"return");
+            }
+        }        
         return total;
     }
 
@@ -128,7 +130,6 @@ export class ReporteViewingComponent implements OnInit {
     
     searchPOS = (text$: Observable<string>) =>
     {
-        console.log("--" , text$);
     text$
       .debounceTime(200)
       .distinctUntilChanged()

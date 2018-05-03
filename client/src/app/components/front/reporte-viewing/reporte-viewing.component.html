@@ -236,83 +236,10 @@
         </div>
     </div>
     <div class="tab-pane fade" id="nav-pos" role="tabpanel" aria-labelledby="nav-pos-tab">
-        <div class="container" style="margin-top:30px;">
-            <div class="row">
-                <div class="card col">
-                    <div class="card-body">
-                        <h3 class="card-title">Indicadores: ventas</h3>
-                        <table class="table" *ngIf="viewingView !== undefined">
-                            <tr>
-                                <td>Local</td>
-                                <td>Entregados</td>
-                                <td>Devueltos</td>
-                                <td>Total vendidos</td>
-                                <td>% ventas</td>
-                                <td>Share de ventas</td>
-                            </tr>
-                            <ng-container *ngFor="let pos of pointsOfSale">
-                                <!-- TODO Mejorar el filtro-->
-                                <tr *ngIf="viewingView.getTotalTransactionByPOSByType(pos.id,'delivery') !== 0">
+        
+        <kpi-sales-pos [pointsOfSale]="pointsOfSale" [viewingView]="viewingView" 
+                    [totalSales]="totalSales()" [totalReturns]="totalReturns()"></kpi-sales-pos>
 
-                                    <td>{{pos.name}}</td>
-                                    <td>{{viewingView.getTotalTransactionByPOSByType(pos.id,"delivery")}}</td>
-                                    <td>{{viewingView.getTotalTransactionByPOSByType(pos.id,"return")}}</td>
-                                    <td>{{viewingView.getTotalTransactionByPOSByType(pos.id,"delivery") - viewingView.getTotalTransactionByPOSByType(pos.id,"return")}}</td>
-                                    <td>
-                                        <span *ngIf="viewingView.getTotalTransactionByPOSByType(pos.id,'delivery') !== 0">
-                                            {{(((viewingView.getTotalTransactionByPOSByType(pos.id,"delivery") - viewingView.getTotalTransactionByPOSByType(pos.id,"return"))
-                                            / viewingView.getTotalTransactionByPOSByType(pos.id,"delivery") ) * 100).toFixed(2)
-                                            }} %
-                                        </span>
-                                    </td>
-                                    <td>
-                                        {{( (viewingView.getTotalTransactionByPOSByType(pos.id,"delivery") - viewingView.getTotalTransactionByPOSByType(pos.id,"return"))
-                                        / totalSales() * 100).toFixed(2) }} %
-                                    </td>
-                                </tr>
-                            </ng-container>
-                        </table>
-                    </div>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="card col">
-                    <div class="card-body">
-                        <h3 class="card-title">Indicadores: devoluciones</h3>
-                    </div>
-                    <table class="table" *ngIf="viewingView !== undefined">
-                        <tr>
-                            <td>Local</td>
-                            <td>Entregados</td>
-                            <td>Devueltos</td>
-                            <td>% devoluciones</td>
-                            <td>Share de devoluciones</td>
-                        </tr>
-                        <ng-container *ngFor="let pos of pointsOfSale">
-                            <!-- TODO Mejorar el filtro-->
-                            <tr *ngIf="viewingView.getTotalTransactionByPOSByType(pos.id,'delivery') !== 0">
-                                <td>{{pos.name}}</td>
-                                <td>{{viewingView.getTotalTransactionByPOSByType(pos.id,"delivery")}}</td>
-                                <td>{{viewingView.getTotalTransactionByPOSByType(pos.id,"return")}}</td>
-                                <td>
-                                    <span *ngIf="viewingView.getTotalTransactionByPOSByType(pos.id,'delivery') !== 0">
-                                        {{(((viewingView.getTotalTransactionByPOSByType(pos.id,"return")) / viewingView.getTotalTransactionByPOSByType(pos.id,"delivery")
-                                        ) * 100).toFixed(2) }} %
-                                    </span>
-                                </td>
-                                <td>
-                                    <span *ngIf="viewingView.getTotalTransactionByPOSByType(pos.id,'delivery') !== 0">
-                                        {{(((viewingView.getTotalTransactionByPOSByType(pos.id,"return")) / totalReturns() ) * 100).toFixed(2) }} %
-                                    </span>
-                                </td>
-                            </tr>
-                        </ng-container>
-                    </table>
-                </div>
-            </div>
-
-        </div>
     </div>
 
     <div class="tab-pane fade" id="nav-groupPos" role="Tabpanel" aria-labelledby="nav-pos-groupPos">
