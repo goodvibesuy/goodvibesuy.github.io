@@ -1,7 +1,7 @@
 import { Result, ResultWithData, ResultCode } from '../datatypes/result';
 import { Product } from '../datatypes/product';
 import { MainModel } from './mainModel';
-import { Client } from '../datatypes/Client';
+import { Client } from '../datatypes/client';
 
 var mysql = require('mysql');
 

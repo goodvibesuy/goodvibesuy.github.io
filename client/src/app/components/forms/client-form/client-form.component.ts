@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, Input } from '@angular/core';
-import { Client } from '../../../../../../datatypes/Client';
+import { Client } from '../../../../../../datatypes/client';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ValidableForm } from '../../../shared/ValidableForms';
 import { Router, ActivatedRoute } from '@angular/router';
