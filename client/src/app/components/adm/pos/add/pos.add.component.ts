@@ -6,15 +6,16 @@ import { } from '@types/googlemaps';
 // datatypes
 import { PointOfSale } from '../../../../../../../datatypes/pointOfSale';
 import { GroupPos } from '../../../../../../../datatypes/groupPos';
+import { ResultCode } from '../../../../../../../datatypes/result';
 // services
 import { PointOfSaleService } from '../../../../services/point-of-sale.service';
 import { GroupPosService } from '../../../../services/group-pos.service';
 import { ImagesService } from '../../../../services/images.service';
+import { AlertService } from '../../../../modules/alert/alert.service';
 // validation
 import { ValidableForm } from '../../../../shared/ValidableForms';
-// model
+// model: TODO: convertir en datatypes
 import { GVFile } from '../../../../models/gvfile.model';
-import { ResultCode } from '../../../../../../../datatypes/result';
 
 @Component({
     templateUrl: './pos.add.component.html',
@@ -38,7 +39,8 @@ export class PosAddComponent extends ValidableForm implements OnInit {
         private activatedRoute: ActivatedRoute,
         private pointOFSaleService: PointOfSaleService,
         private groupPosService: GroupPosService,
-        private imagesService: ImagesService
+        private imagesService: ImagesService,
+		private alertService: AlertService
     ) {
         super(fb)
         super.initForm({
@@ -67,15 +69,13 @@ export class PosAddComponent extends ValidableForm implements OnInit {
             if(result.result == ResultCode.OK){
                 this.groupPos = result.data;
             } else {
-                // TODO: error handling
                 console.error(result.message);
-                alert(result.message);
+                this.alertService.error('Error obteniendo datos del servidor. ' + result.message);
             }
         },
         error => {
-                // TODO: error handling
                 console.error(error);
-                alert(error);
+                this.alertService.error('Error obteniendo datos del servidor.');
             }
         );
 
@@ -106,24 +106,22 @@ export class PosAddComponent extends ValidableForm implements OnInit {
 
     findLocation() {
         var pos = super.getModel<PointOfSale>();
-        var mapEdit = this.map;
-        var address = pos.address;
-        var thisPrincipal = this;
-        this.geocoder.geocode({ address: address }, function (results, status) {
+        this.geocoder.geocode({ address: pos.address }, (results, status) => {
             if (status.toString() === 'OK') {
-                mapEdit.setCenter(results[0].geometry.location);
-                if (thisPrincipal.marker === null || thisPrincipal.marker === undefined) {
-                    thisPrincipal.marker = new google.maps.Marker({
-                        map: mapEdit,
+                this.map.setCenter(results[0].geometry.location);
+                if (!this.marker) {
+                    this.marker = new google.maps.Marker({
+                        map: this.map,
                         draggable: true,
                         position: results[0].geometry.location
                     });
                 } else {
-                    thisPrincipal.marker.setPosition(results[0].geometry.location);
+                    this.marker.setPosition(results[0].geometry.location);
                 }
             } else {
                 // TODO: mostrar el mensaje un poco mejor
-                alert('Geocode was not successful for the following reason: ' + status);
+                console.warn('Geocode was not successful for the following reason: ' + status);
+                this.alertService.warn('El servicio de localización de google no pudo encontrar la dirección ingresada.');
             }
         });
     }
@@ -141,32 +139,33 @@ export class PosAddComponent extends ValidableForm implements OnInit {
             this.pointOFSaleService.addPointOfSale(pos)
                 .subscribe(response => {
                     if (response.result == ResultCode.Error) {
-                        // TODO: error handling
                         console.error(response.message);
-                        alert(response.message);
+                        this.alertService.error('Error agregando el punto de venta. ' + response.message);
                     } else {
                         if (!!this.imageFile) {
                             this.imagesService
                                 .sendImage('locales', pos.image, this.imageFile.size, this.imageFile.data)
                                 .subscribe(
                                     res => {
+                                        const keepAfterRouteChange = true;
+                                        this.alertService.success('Punto de venta creado correctamente!', keepAfterRouteChange);
                                         this.router.navigateByUrl('/admin/puntos-de-venta');
                                     },
                                     error => {
-                                        // TODO: error handling
                                         console.error(error);
-                                        alert(error);
+                                        this.alertService.error('Error agregando el punto de venta.');
                                     }
                                 );
                         } else {
+                            const keepAfterRouteChange = true;
+                            this.alertService.success('Punto de venta creado correctamente!', keepAfterRouteChange);
                             this.router.navigateByUrl('/admin/puntos-de-venta');
                         }
                     }
                 },
                 error => {
-                    // TODO: error handling
                     console.error(error);
-                    alert(error);
+                    this.alertService.error('Error agregando el punto de venta.');
                 });
         }
     }

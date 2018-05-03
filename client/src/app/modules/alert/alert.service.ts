@@ -10,7 +10,7 @@ export class AlertService {
 
     constructor() { }
 
-    getAlert(): Observable<any> {
+    getAlert(): Observable<IAlert> {
         return this.subject.asObservable();
     }
 
@@ -31,6 +31,7 @@ export class AlertService {
     }
 
     alert(type: AlertType, message: string, keepAfterRouteChange = false) {
-        this.subject.next(<Alert>{ type: type, message: message, keepAfterRouteChange: keepAfterRouteChange });
+        let alert = new Alert(type, message, keepAfterRouteChange);
+        this.subject.next(<IAlert>alert);
     }
 }

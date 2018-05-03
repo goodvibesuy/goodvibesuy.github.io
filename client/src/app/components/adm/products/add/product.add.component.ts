@@ -12,31 +12,30 @@ import { AlertService } from '../../../../modules/alert/alert.service';
 import { ResultCode } from '../../../../../../../datatypes/result';
 
 @Component({
-	templateUrl: './product.add.component.html',
-	styleUrls: ['./product.add.component.css']
+    templateUrl: './product.add.component.html',
+    styleUrls: ['./product.add.component.css']
 })
 export class ProductAddComponent {
-	private product: Product;
-	private imageFile: GVFile;
+    private product: Product;
+    private imageFile: GVFile;
 
-	constructor(
-		private router: Router,
-		private domSanitizer: DomSanitizer,
-		private productsService: ProductsService,
-		private imagesService: ImagesService,
-		private alertService: AlertService
-	) {
-		this.product = <Product>{ id: -1, name: '', path_image: null };
-	}
+    constructor(
+        private router: Router,
+        private domSanitizer: DomSanitizer,
+        private productsService: ProductsService,
+        private imagesService: ImagesService,
+        private alertService: AlertService
+    ) {
+        this.product = <Product>{ id: -1, name: '', path_image: null };
+    }
 
-	agregar() {
-		const category: string = 'productos';
+    agregar() {
+        const category: string = 'productos';
 
-		var promise = this.productsService.agregar(this.product);
+        var promise = this.productsService.agregar(this.product);
 
-		promise.subscribe(response => {
+        promise.subscribe(response => {
             if (response.result == ResultCode.Error) {
-                // TODO: error handling
                 console.error(response.message);
                 this.alertService.error(response.message);
             } else {
@@ -51,7 +50,7 @@ export class ProductAddComponent {
                             },
                             error => {
                                 console.error(error);
-                                this.alertService.error(error.error);
+                                this.alertService.error('Error al actualizar la imagen del producto.');
                             }
                         );
                 } else {
@@ -60,25 +59,25 @@ export class ProductAddComponent {
                     this.router.navigateByUrl('/admin/productos');
                 }
             }
-		},
-        error => {
-            console.error(error);
-            this.alertService.error(error.error);
-        });
-	}
+        },
+            error => {
+                console.error(error);
+                this.alertService.error('Error al actualizar el producto.');
+            });
+    }
 
-	getImage() {
-		return this.imageFile
-			? this.domSanitizer.bypassSecurityTrustUrl(
-					'data:image/' + this.imageFile.type + ';base64, ' + this.imageFile.data
-			  )
-			: 'images/productos/' + this.imagesService.getSmallImage(this.product.path_image);
-	}
+    getImage() {
+        return this.imageFile
+            ? this.domSanitizer.bypassSecurityTrustUrl(
+                'data:image/' + this.imageFile.type + ';base64, ' + this.imageFile.data
+            )
+            : 'images/productos/' + this.imagesService.getSmallImage(this.product.path_image);
+    }
 
-	handleSelected(file: GVFile): void {
-		if (!!file) {
-			this.imageFile = file;
-			this.product.path_image = this.imageFile.name;
-		}
-	}
+    handleSelected(file: GVFile): void {
+        if (!!file) {
+            this.imageFile = file;
+            this.product.path_image = this.imageFile.name;
+        }
+    }
 }

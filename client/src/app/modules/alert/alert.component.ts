@@ -12,7 +12,7 @@ import { Timeouts } from 'selenium-webdriver';
     styleUrls: ['alert.component.css']
 })
 export class AlertComponent {
-    protected visible: boolean;
+    protected mostrarAlerta: boolean;
     protected alert: Alert;
 
     constructor(private router: Router, private alertService: AlertService) {
@@ -34,19 +34,24 @@ export class AlertComponent {
     }
 
     ngOnInit() {
-        this.alertService.getAlert().subscribe((alert: Alert) => {
-            this.alert = alert;
-            this.visible = true;
-            // shutdown alert after a fixed time
-            setTimeout(() => {
-                this.removeAlert(alert);
-            }, this.getTimeout(alert.type));
-        });
+        this.alertService.getAlert().subscribe(
+            (alert: IAlert) => {
+                this.alert = alert;
+                this.mostrarAlerta = true;
+                // shutdown alert after a fixed time
+                setTimeout(() => {
+                    this.removeAlert(alert);
+                }, this.getTimeout(alert.type));
+            },
+            error => {
+                console.error(error);
+            }
+        );
     }
 
     removeAlert(alert: IAlert) {
         if (this.alert.id == alert.id) {
-            this.alert = null;
+            this.mostrarAlerta = false;
             setTimeout(() => { this.alert = null; }, 500);
         }
     }
@@ -81,7 +86,7 @@ export class AlertComponent {
             case AlertType.Warning:
                 return 'Aviso';
         }
-    }    
+    }
 
     private getTimeout(type: AlertType) {
         let timeout = 0;

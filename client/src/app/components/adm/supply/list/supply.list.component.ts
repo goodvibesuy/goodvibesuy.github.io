@@ -9,6 +9,7 @@ import { Supply } from '../../../../../../../datatypes/supply';
 import { SupplyService } from '../../../../services/supply.service';
 import { Unit } from '../../../../models/unit.model';
 import { ResultCode } from '../../../../../../../datatypes/result';
+import { AlertService } from '../../../../modules/alert/alert.service';
 
 @Component({
     templateUrl: './supply.list.component.html',
@@ -19,7 +20,8 @@ export class SupplyListComponent implements OnInit {
     protected units: Unit[];
     private category: string = 'insumos';
 
-    constructor(private supplyService: SupplyService) { }
+    constructor(private supplyService: SupplyService,
+        private alertService: AlertService) { }
 
     ngOnInit() {
         this.loadSupplies();
@@ -35,32 +37,31 @@ export class SupplyListComponent implements OnInit {
                 if (res.result == ResultCode.OK) {
                     this.loadSupplies();
                 } else {
-                    console.error('ERROR: ' + res.message);
-                    alert('ERROR: ' + res.message);
+                    console.error(res);
+                    this.alertService.error(res.message);
                 }
             },
             err => {
-                console.error('UNEXPECTED ERROR: ' + err);
-                alert(err);
+                console.error(err);
+                this.alertService.error('Error eliminando el insumo.');
             }
         );
     }
 
     private loadSupplies(): void {
-        this.supplyService.getLatestPrices().subscribe(data => { this.supplies = data; },
+        this.supplyService.getLatestPrices().subscribe(
+            data => { this.supplies = data; },
             error => {
-                // TODO: mostrar error
                 console.error(error);
-                alert(error);
+                this.alertService.error('Error cargando los insumos');
             }
         );
 
         this.supplyService.getUnits().subscribe(
             data => (this.units = data),
             error => {
-                // TODO: mostrar error
                 console.error(error);
-                alert(error);
+                this.alertService.error('Error cargando los insumos.');
             }
         );
     }

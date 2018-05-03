@@ -82,7 +82,11 @@ export class ProductModel extends MainModel {
                 con.release();
                 console.error(err);
             } else {
-                con.query('INSERT INTO product  (name, path_image) VALUES(?,?)', [name, pathImage], function (
+                // TODO: la base de datos no admite null -> cambiar tipo en la base de datos
+                if (!pathImage) {
+                    pathImage = '';
+                }
+                con.query('INSERT INTO product  (name, path_image, displayOrder) VALUES(?, ?, 100)', [name, pathImage], function (
                     err: any,
                     result: any
                 ) {
@@ -171,7 +175,7 @@ export class ProductModel extends MainModel {
                 console.error(err);
                 callBack(<ResultWithData<GroupPrice[]>>{
                     result: ResultCode.Error,
-                    message: err.code                    
+                    message: err.code
                 });
             } else {
                 con.query("SELECT * FROM productprice WHERE id in ( SELECT MAX(id) FROM productprice WHERE idProduct = ? GROUP BY idGroupCustomer )", [idProduct],
@@ -204,7 +208,7 @@ export class ProductModel extends MainModel {
                 callBack({
                     result: ResultCode.Error,
                     message: err.code,
-                    data:null
+                    data: null
                 });
             } else {
                 con.query("SELECT * FROM customer WHERE id = ?", [idPOS],
@@ -217,7 +221,7 @@ export class ProductModel extends MainModel {
                             callBack({
                                 result: ResultCode.Error,
                                 message: err.code,
-                                data:null
+                                data: null
                             });
                         } else {
                             console.log(result[0].idGroup, idProduct);
@@ -232,7 +236,7 @@ export class ProductModel extends MainModel {
                                         callBack({
                                             result: ResultCode.Error,
                                             message: err.code,
-                                            data:null
+                                            data: null
                                         });
                                     } else {
                                         con.release();

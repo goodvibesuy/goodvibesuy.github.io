@@ -1,6 +1,6 @@
-<div class="container alert-main">
-    <div [class.show]="this.alert!=null" class="step">
-        <div class="{{ cssClass(alert) }} alert-dismissable alert-container" *ngIf="alert">
+<div class="container alert-main" *ngIf="alert">
+    <div [class.show]="mostrarAlerta" class="step">
+        <div class="{{ cssClass(alert) }} alert-dismissable alert-container">
             <label><strong>{{getTypeText(alert.type)}}</strong></label>
             <span>{{alert.message}}</span>            
             <a class="close" (click)="removeAlert(alert)">&times;</a>

@@ -31,16 +31,25 @@ export class UnitsConversorService {
             .value();
     }
 
-    convertTo(idUnitSource: number, valueSource: number, idUnitDest): number {
-        return this.calculateUnitsConversions(idUnitSource, valueSource).find(uc=>uc.idUnit==idUnitDest).value;
+    convertTo(idUnitSource: number, valueSource: number, idUnitDest: number): number {
+        var valueDest: number;
+
+        if (idUnitSource != idUnitDest) {
+            var conversion = this.calculateUnitsConversions(idUnitSource, valueSource)
+                                 .find(uc => uc.idUnit == idUnitDest);
+            valueDest = !!conversion ? conversion.value : null;
+        } else {
+            valueDest = valueSource;
+        }
+        return valueDest;
     }
 
     // Obtiene las unidades a las cuales se puede convertir (Bolso, Caja, Cajon, Baul)
     getConvertibleUnits(): UnitsConvertion[] {
         return _.chain(this.unitsConversions)
-                .orderBy(uc => uc.name)
-                .filter(uc => uc.name != 'Kg')
-                .value();
+            .orderBy(uc => uc.name)
+            .filter(uc => uc.name != 'Kg')
+            .value();
     }
 
     // Determina si la unidad de id 'idUnit' tiene alguna conversión disponible
