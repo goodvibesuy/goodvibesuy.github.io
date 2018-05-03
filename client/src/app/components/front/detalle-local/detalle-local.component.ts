@@ -68,7 +68,8 @@ export class DetalleLocalComponent implements OnInit {
         this.viewingService.wasVisited(this.currentRoute, Number(this.route.snapshot.paramMap.get('id'))).subscribe(
             response => {
                 if (response.result === 1) {
-                    this.wasVisited = response.data[0].idViewing !== null;
+                    this.wasVisited = !!response.data && response.data.length > 0 &&
+                                      response.data[0].idViewing !== null;
                 }
 
                 if (this.wasVisited) {

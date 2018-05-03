@@ -93,10 +93,10 @@ export class ProductEditComponent implements OnInit, OnDestroy {
     }
 
     findPrice(idGroup) {
-        return this.product.prices.find(f => f.idGroupPointofsale == idGroup);
+        return this.product.prices.find(f => f.idGroupCustomer == idGroup);
     }
 
-    loadProductPrices(id: number): void {
+    loadProductPrices(id: number): void { 
         this.groupPosService.get().subscribe(
             result => {
                 if (result.result == ResultCode.OK) {
@@ -109,10 +109,10 @@ export class ProductEditComponent implements OnInit, OnDestroy {
 
                                 // agrega en product.prices los grupos groupsPos que faltan
                                 if (this.product.prices.length < this.groupsPos.length) {
-                                    let newPrices = this.groupsPos.filter(gpos => this.product.prices.filter(p => p.idGroupPointofsale == gpos.id).length == 0);
+                                    let newPrices = this.groupsPos.filter(gpos => this.product.prices.filter(p => p.idGroupCustomer == gpos.id).length == 0);
                                     for (let index = 0; index < newPrices.length; index++) {
                                         const element = newPrices[index];
-                                        this.product.prices.push({ idGroupPointofsale: element.id, amount: 0 });
+                                        this.product.prices.push({ idGroupCustomer: element.id, amount: 0 });
                                     }
                                 }
 
