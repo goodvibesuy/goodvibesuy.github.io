@@ -11,6 +11,7 @@ import { Subject } from 'rxjs';
 import { Observable } from 'rxjs/Observable';
 import { GroupPosService } from '../../../services/group-pos.service';
 import { KpiSalesPosComponent } from './kpi-sales-pos/kpi-sales-pos.component';
+import { KpiSaleReturnsGroupPosComponent } from './kpi-sale-returns-group-pos/kpi-sale-returns-group-pos.component';
 
 @Component({
     selector: 'app-reporte-viewing',
@@ -20,6 +21,7 @@ import { KpiSalesPosComponent } from './kpi-sales-pos/kpi-sales-pos.component';
 export class ReporteViewingComponent implements OnInit {
     @ViewChild('instancePOS') instancePOS: NgbTypeahead;
     @ViewChild(KpiSalesPosComponent) kpiSalesPOS: KpiSalesPosComponent;
+    @ViewChild(KpiSaleReturnsGroupPosComponent) kpiSalesReturnGroupPOS: KpiSaleReturnsGroupPosComponent;
     focus$ = new Subject<string>();
     click$ = new Subject<string>();
 
@@ -72,6 +74,7 @@ export class ReporteViewingComponent implements OnInit {
                     });
                 }
                 this.kpiSalesPOS.updateData();
+                this.kpiSalesReturnGroupPOS.updateData();
             }
         );
     }

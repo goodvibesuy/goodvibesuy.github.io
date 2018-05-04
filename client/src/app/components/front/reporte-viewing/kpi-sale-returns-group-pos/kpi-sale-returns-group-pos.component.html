@@ -5,7 +5,7 @@
                 <h3 class="card-title">Indicadores: ventas</h3>
                 <table class="table" *ngIf="viewingView !== undefined">
                     <tr>
-                        <td>Local</td>
+                        <td>Grupo</td>
                         <td>Entregados</td>
                         <td>Devueltos</td>
                         <td>Total vendidos</td>
@@ -33,7 +33,7 @@
             </div>
             <table class="table" *ngIf="viewingView !== undefined">
                 <tr>
-                    <td>Local</td>
+                    <td>Grupo</td>
                     <td>Entregados</td>
                     <td>Devueltos</td>
                     <td (click)="orderByReturn()" style="cursor: pointer;">% devoluciones</td>

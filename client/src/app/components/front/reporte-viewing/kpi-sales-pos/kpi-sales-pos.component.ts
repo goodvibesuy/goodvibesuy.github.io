@@ -53,6 +53,7 @@ export class KpiSalesPosComponent implements OnInit {
                     }
                 }
                 this.kpiSales.sort(this.compareShareSales);
+                this.kpiReturns.sort(this.compareShareReturns);
             }
         }, 100);
     }
