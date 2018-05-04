@@ -14,6 +14,9 @@ import { ProductsService } from '../../../../services/products.service';
 import { Product } from '../../../../../../../datatypes/product';
 import { AlertService } from '../../../../modules/alert/alert.service';
 import { ResultCode } from '../../../../../../../datatypes/result';
+import { ClientService } from '../../../../services/client.service';
+import { Client } from '../../../../../../../datatypes/client';
+import { Customer } from '../../../../../../../datatypes/customer';
 
 @Component({
     selector: 'app-route.add',
@@ -26,9 +29,11 @@ export class RouteAdd implements OnInit {
     private users: User[];
     private templatesRoutes: TemplateRoute[];
     private pointsOfSales: PointOfSale[];
+    private clients: Client[];
     private products: Product[];
     private templateSelected: TemplateRoute;
     private POSSelected: PointOfSale;
+    private ClientSelected: Client;
 
     constructor(
         private routeService: RouteService,
@@ -36,7 +41,8 @@ export class RouteAdd implements OnInit {
         private userService: UsersService,
         private templateRouteService: TemplatesRoutesService,
         private productService: ProductsService,
-        private alertService: AlertService
+        private alertService: AlertService,
+        private clientService: ClientService
     ) {
         this.newRoute = new Route();
         this.route = <RouteModel>{};
@@ -60,6 +66,21 @@ export class RouteAdd implements OnInit {
                         this.pointsOfSales = <PointOfSale[]>dataPOS;
                         this.POSSelected = this.pointsOfSales[0];
                     });
+                    this.clientService.getAlls().subscribe(
+                        response => {
+                            if (response.result === ResultCode.Error) {
+                                console.error("Error al cargar los clientes. " + response.message)
+                                this.alertService.error("Error al cargar los clientes. " + response.message);
+                            } else {
+                                this.clients = response.data;
+                                this.ClientSelected = this.clients[0];
+                            }
+                        },
+                        error => {
+                            console.error(error);
+                            this.alertService.error('Error obteniendo los productos.');
+                        }
+                    );
                 }
             },
             error => {
@@ -98,7 +119,7 @@ export class RouteAdd implements OnInit {
         this.templateRouteService.getPointsOfSalesRoute(this.templateSelected.id).subscribe(
             data => {
                 for (let i = 0; i < data.length; i++) {
-                    this.newRoute.addPointOfSale(data[i]);
+                    this.newRoute.addCustomer(data[i]);
                 }
             },
             error => {
@@ -108,13 +129,16 @@ export class RouteAdd implements OnInit {
         );
     }
 
-
-    agregarPuntoDeVenta() {
-        this.newRoute.addPointOfSale(this.POSSelected);
+    agregarCustomer(c: Customer) {
+        this.newRoute.addCustomer(c);
     }
 
-    changeOrder(idpointofSale: number, position: number, newposition: number) {
-        this.newRoute.reorderPointOfSale(position, newposition);
+    changeOrder(idCustomer: number, position: number, newposition: number) {
+        this.newRoute.reorderCustomer(position, newposition);
+    }
+
+    remove(idCustomer) {
+        this.newRoute.removeCustomer(idCustomer);
     }
 
     agregar(): void {

@@ -21,6 +21,9 @@ import { Product } from '../../../../../../../datatypes/product';
 import { ProductsService } from '../../../../services/products.service';
 import { ResultCode } from '../../../../../../../datatypes/result';
 import { AlertService } from '../../../../modules/alert/alert.service';
+import { Client } from '../../../../../../../datatypes/client';
+import { ClientService } from '../../../../services/client.service';
+import { Customer } from '../../../../../../../datatypes/customer';
 
 
 @Component({
@@ -34,12 +37,14 @@ export class RouteEdit extends ValidableForm implements OnInit {
     paramsSub: any;
     //Puntos de venta para el combo
     private pointsOfSales: PointOfSale[];
+    private clients: Client[];
     //Usuarios para el combo
     private users: User[];
 
     //Puntos de venta de la ruta
     //private pointsOfSaleRoute: PointOfSale[];
     private POSSelected: PointOfSale;
+    private ClientSelected: Client;
     private templatesRoutes: TemplateRoute[];
     private products: Product[];
     private templateSelected: TemplateRoute;
@@ -53,7 +58,8 @@ export class RouteEdit extends ValidableForm implements OnInit {
         private userService: UsersService,
         private templateRouteService: TemplatesRoutesService,
         private productService: ProductsService,
-        private alertService: AlertService
+        private alertService: AlertService,
+        private clientService: ClientService
     ) {
         super(fb);
         this.currentRoute = new Route();
@@ -114,10 +120,27 @@ export class RouteEdit extends ValidableForm implements OnInit {
             dataPOS => {
                 this.pointsOfSales = <PointOfSale[]>dataPOS;
                 this.POSSelected = this.pointsOfSales[0];
-            }, error => {
+            },
+            error => {
                 console.error(error);
                 this.alertService.error('Error obteniendo datos del servidor.');
-            });
+            }
+        );
+        this.clientService.getAlls().subscribe(
+            response => {
+                if (response.result === ResultCode.Error) {
+                    console.error("Error al cargar los clientes. " + response.message)
+                    this.alertService.error("Error al cargar los clientes. " + response.message);
+                } else {
+                    this.clients = response.data;
+                    this.ClientSelected = this.clients[0];
+                }
+            },
+            error => {
+                console.error(error);
+                this.alertService.error('Error obteniendo los productos.');
+            }
+        );
     }
 
     getTemplatesRoute() {
@@ -137,7 +160,7 @@ export class RouteEdit extends ValidableForm implements OnInit {
         this.templateRouteService.getPointsOfSalesRoute(this.templateSelected.id).subscribe(
             data => {
                 for (let i = 0; i < data.length; i++) {
-                    this.currentRoute.addPointOfSale(data[i]);
+                    this.currentRoute.addCustomer(data[i]);
                 }
             },
             error => {
@@ -147,8 +170,8 @@ export class RouteEdit extends ValidableForm implements OnInit {
         )
     }
 
-    remove(idPointOfSale) {
-        this.currentRoute.removePointOfSale(idPointOfSale);
+    remove(idCustomer) {
+        this.currentRoute.removeCustomer(idCustomer);
     }
 
     actualizar() {
@@ -156,11 +179,11 @@ export class RouteEdit extends ValidableForm implements OnInit {
             super.showValidationErrors();
         } else {
             var route = super.getModel<Route>({ 'date': NgbDateFormatter.unformatDate });
-            route.pointsOfSale = this.currentRoute.getPointsOfSale();
+            route.customers = this.currentRoute.getCustomers();
             route.stock = this.currentRoute.getStock();
-            console.log(route.pointsOfSale);
+            console.log(route.customers);
 
-            if (route.pointsOfSale.length === 0) {
+            if (route.customers.length === 0) {
                 this.errorNoPOS = true;
             } else {
                 this.errorNoPOS = false;
@@ -184,7 +207,6 @@ export class RouteEdit extends ValidableForm implements OnInit {
         }
     }
 
-
     compareUser(u1: User, u2: User): boolean {
         return u1 && u2 ? u1.id === u2.id : u1 === u2;
     }
@@ -204,7 +226,7 @@ export class RouteEdit extends ValidableForm implements OnInit {
     getPointOfSalesRoute() {
         this.routeService.getPointsOfSalesRoute(this.currentRoute.id).subscribe(
             data => {
-                this.currentRoute.pointsOfSale = data;
+                this.currentRoute.customers = data;
             },
             error => {
                 console.error(error);
@@ -237,11 +259,11 @@ export class RouteEdit extends ValidableForm implements OnInit {
             });
     }
 
-    agregarPuntoDeVenta() {
-        this.currentRoute.addPointOfSale(this.POSSelected);
+    agregarCustomer(c: Customer) {
+        this.currentRoute.addCustomer(c);
     }
 
     changeOrder(idpointofSale: number, position: number, newposition: number) {
-        this.currentRoute.reorderPointOfSale(position, newposition);
+        this.currentRoute.reorderCustomer(position, newposition);
     }
 }

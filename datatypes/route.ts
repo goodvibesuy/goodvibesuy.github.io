@@ -1,69 +1,71 @@
 import { User } from "./user";
 import { PointOfSale } from "./pointOfSale";
 import { Product } from "./product";
+import { Client } from "./client";
+import { Customer } from './customer';
 
 export class Route {
     public id: number;
     public name: string;
     public date: Date;
-    public user:User;
-    public pointsOfSale:PointOfSale[];
-    public pointsOfSaleToRemove:PointOfSale[];
-    public stock:{product:Product,quantity:number}[];
+    public user: User;
+    public customers: Customer[];
+    public customersToRemove: Customer[];
+    public stock: { product: Product, quantity: number }[];
 
     constructor() {
         this.id = 0;
         this.name = "";
         this.date = new Date();
         this.user = new User();
-        this.pointsOfSale = new Array<PointOfSale>();
-        this.pointsOfSaleToRemove = new Array<PointOfSale>();
-        this.stock = new Array<{product:Product,quantity:number}>();
+        this.customers = new Array<Customer>();
+        this.customersToRemove = new Array<Customer>();
+        this.stock = new Array<{ product: Product, quantity: number }>();
     }
 
-    public addProductStock(productStock:{product:Product,quantity:number}):void{
+    public addProductStock(productStock: { product: Product, quantity: number }): void {
         this.stock.push(productStock);
     }
 
-    public getStock():{product:Product,quantity:number}[]{
+    public getStock(): { product: Product, quantity: number }[] {
         return this.stock;
     }
 
-    public setUser(user:User):void{
+    public setUser(user: User): void {
         this.user = user;
     }
 
-    public getUser():User{
+    public getUser(): User {
         return this.user;
     }
 
-    public addPointOfSale(POS:PointOfSale):void{
-        this.pointsOfSale.push(POS);
-        this.pointsOfSaleToRemove = this.pointsOfSaleToRemove.filter(function(val:PointOfSale){
-            return val.id != POS.id;
+    public addCustomer(c: Customer): void {
+        this.customers.push(c);
+        this.customersToRemove = this.customersToRemove.filter((val: Customer) => {
+            return val.id != c.id;
         });
     }
 
-    public removePointOfSale(idPointOfSale:number):void{
-        this.pointsOfSaleToRemove.push(this.pointsOfSale.filter(function(val:PointOfSale){
-            return val.id == idPointOfSale;
+    public removeCustomer(idCustomer: number): void {
+        this.customersToRemove.push(this.customers.filter((val: Customer) => {
+            return val.id == idCustomer;
         })[0]);
-        this.pointsOfSale = this.pointsOfSale.filter(function(val:PointOfSale){
-            return val.id != idPointOfSale;
+        this.customers = this.customers.filter((val: Customer) => {
+            return val.id != idCustomer;
         });
     }
 
-    public getPointsOfSale():PointOfSale[]{
-        return this.pointsOfSale;
+    public getCustomers(): Customer[] {
+        return this.customers.map<Customer>(c => <Customer>c);
     }
 
-    public getPointsOfSaleToRemove():PointOfSale[]{
-        return this.pointsOfSaleToRemove;
+    public getCustomersToRemove(): Customer[] {
+        return this.customersToRemove;
     }
 
-    public reorderPointOfSale(position:number, newPosition:number):void{
-        var auxPOS = this.pointsOfSale[newPosition];
-        this.pointsOfSale[newPosition] =  this.pointsOfSale[position];
-        this.pointsOfSale[position] =  auxPOS;
+    public reorderCustomer(position: number, newPosition: number): void {
+        var auxPOS = this.customers[newPosition];
+        this.customers[newPosition] = this.customers[position];
+        this.customers[position] = auxPOS;
     }
 }

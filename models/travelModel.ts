@@ -69,8 +69,7 @@ export class TravelModel extends MainModel {
         })
     };
 
-    private addUpdateProductStock(index: number, route: Route,
-        callBack: (r: ResultWithData<any[]>) => void, con: any): void {
+    private addUpdateProductStock(index: number, route: Route, callBack: (r: ResultWithData<any[]>) => void, con: any): void {
         var mainThis = this;
         con.query("UPDATE route_stock SET quantity = ? WHERE idRoute =? && idProduct = ?",
             [route.stock[index].quantity, route.id, route.stock[index].product.id], function (err: any, result: any) {
@@ -167,9 +166,9 @@ export class TravelModel extends MainModel {
     removePointsOfSale(index: number, route: Route,
         callBack: (r: ResultWithData<any[]>) => void, con: any): void {
         var mainThis = this;
-        if (route.pointsOfSaleToRemove.length > 0) {
+        if (route.customersToRemove.length > 0) {
             con.query("DELETE FROM route_customer WHERE idRoute = ? AND idCustomer = ? ",
-                [route.id, route.pointsOfSaleToRemove[index].id], function (err: any, result: any) {
+                [route.id, route.customersToRemove[index].id], function (err: any, result: any) {
                     if (err) {
                         con.rollback(function () {
                             console.log(err);
@@ -177,7 +176,7 @@ export class TravelModel extends MainModel {
                             callBack({ result: -1, message: "Error interno. No se pudo actualizar el POS de la ruta." });
                         });
                     } else {
-                        if (index + 1 < route.pointsOfSaleToRemove.length) {
+                        if (index + 1 < route.customersToRemove.length) {
                             mainThis.removePointsOfSale(index + 1, route, callBack, con);
                         } else {
                             mainThis.addPointsOfSale(0, route, callBack, con);
@@ -193,9 +192,9 @@ export class TravelModel extends MainModel {
         callBack: (r: ResultWithData<any[]>) => void, con: any): void {
         var mainThis = this;
 
-        if (route.pointsOfSale.length > 0) {
+        if (route.customers.length > 0) {
             con.query("UPDATE route_customer SET position = ? WHERE idRoute = ? AND idCustomer = ? ",
-                [index, route.id, route.pointsOfSale[index].id], function (err: any, result1: any) {
+                [index, route.id, route.customers[index].id], function (err: any, result1: any) {
                     if (err) {
                         con.rollback(function () {
                             console.log(err);
@@ -205,7 +204,7 @@ export class TravelModel extends MainModel {
                     } else {
                         if (result1.affectedRows === 0) {
                             con.query("INSERT  INTO route_customer(idRoute,idCustomer,position) VALUES(?,?,?) ",
-                                [route.id, route.pointsOfSale[index].id, index], function (err: any, result2: any) {
+                                [route.id, route.customers[index].id, index], function (err: any, result2: any) {
                                     if (err) {
                                         con.rollback(function () {
                                             console.log(err);
@@ -213,7 +212,7 @@ export class TravelModel extends MainModel {
                                             callBack({ result: -1, message: "Error interno. No se pudo guardar el POS de la ruta." });
                                         });
                                     } else {
-                                        if (index + 1 < route.pointsOfSale.length) {
+                                        if (index + 1 < route.customers.length) {
                                             mainThis.addPointsOfSale(index + 1, route, callBack, con);
                                         } else {
                                             con.commit(function (err: any) {
@@ -232,7 +231,7 @@ export class TravelModel extends MainModel {
                                     }
                                 });
                         } else {
-                            if (index + 1 < route.pointsOfSale.length) {
+                            if (index + 1 < route.customers.length) {
                                 mainThis.addPointsOfSale(index + 1, route, callBack, con);
                             } else {
                                 con.commit(function (err: any) {
@@ -477,7 +476,7 @@ export class TravelModel extends MainModel {
             } else {
 
                 con.beginTransaction(function (err: any) {
-                    con.query("DELETE FROM route_pointofsale WHERE idRoute = ?", [idRoute], function (err: any, result: any) {
+                    con.query("DELETE FROM route_customer WHERE idRoute = ?", [idRoute], function (err: any, result: any) {
                         if (err) {
                             con.rollback(function () {
                                 console.log(err);
