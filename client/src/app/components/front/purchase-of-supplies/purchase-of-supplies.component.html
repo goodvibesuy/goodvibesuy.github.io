@@ -5,6 +5,7 @@
                 <th scope="col">Nombre</th>
                 <th scope="col">Precio</th>
                 <th scope="col">Unidad</th>
+                <th scope="col">Fecha</th>
                 <th scope="col">Proveedor</th>
                 <th>Modificar</th>
             </tr>
@@ -13,7 +14,7 @@
             <tr *ngFor="let s of supplies" class="supply-row">
                 <td>{{s.name}}</td>
                 <td>
-                    <input type="text" class="form-control" value="{{s.amount}}" /> 
+                    <input type="text" class="form-control" value="{{s.amount}}" />
                 </td>
                 <td>
                     <select class="form-control">
@@ -23,8 +24,20 @@
                     </select>
                 </td>
                 <td>
-                    <select class="form-control">
-                        <option *ngFor="let p of providers" [ngValue]="p">{{p.name}}</option>
+                    <div class="input-group">
+                        <input class="form-control" placeholder="dd/mm/yyyy" 
+                            [(ngModel)]="s.price_date"
+                            name="dp" ngbDatepicker #d="ngbDatepicker">
+                        <div class="input-group-btn">
+                            <button class="btn btn-outline-secondary" (click)="d.toggle()" type="button">
+                                <img src="img/calendar-icon.svg" style="width: 1.2rem; height: 1rem; cursor: pointer;" />
+                            </button>
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <select class="form-control" *ngIf="s" [(ngModel)]="s.id">
+                        <option *ngFor="let p of providers" [ngValue]="p.id">{{p.name}}</option>
                     </select>
                 </td>
                 <td>
