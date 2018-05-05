@@ -26,6 +26,7 @@ export class PointOfSale {
         this.RUT = '';
         this.idGroup = 0;
         this.idViewing = 0;
+        this.type = CustomerType.PointOfSale;
     }
 
     public setId(id: number): void {
