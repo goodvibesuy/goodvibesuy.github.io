@@ -21,6 +21,7 @@ var images = require('./routes/images');
 var providers = require('./routes/providers');
 var groupPos = require('./routes/groupPos');
 var clients = require('./routes/clients');
+var customers = require('./routes/customers');
 
 var NewACL = require('./motionLibJS/serverSide/acl/newACL');
 var masterDBController = require('./bd/masterConnectionsBD');
@@ -64,6 +65,7 @@ app.use('/api/images', images);
 app.use('/api/providers', providers);
 app.use('/api/groupPos', groupPos);
 app.use('/api/clients', clients.routes());
+app.use('/api/customers', customers.routes());
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
