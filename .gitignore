@@ -7,3 +7,8 @@ controllers/mainController.js
 controllers/groupCustomerController.js
 controllers/clientController.js
 package-lock.json
+controllers/customerController.js
+routes/customers.js
+datatypes/pointOfSale.js
+datatypes/customer.js
+routes/supplies.js
