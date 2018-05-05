@@ -1,0 +1,36 @@
+<div>
+    <table class="table table-striped">
+        <thead class="thead-dark">
+            <tr>
+                <th scope="col">Nombre</th>
+                <th scope="col">Precio</th>
+                <th scope="col">Unidad</th>
+                <th scope="col">Proveedor</th>
+                <th>Modificar</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let s of supplies" class="supply-row">
+                <td>{{s.name}}</td>
+                <td>
+                    <input type="text" class="form-control" value="{{s.amount}}" /> 
+                </td>
+                <td>
+                    <select class="form-control">
+                        <option *ngFor="let unit of units">{{unit.name}}</option>
+                        <hr>
+                        <option *ngFor="let cUnit of convertibleUnits">{{cUnit.name}} ({{cUnit.value}} Kg)</option>
+                    </select>
+                </td>
+                <td>
+                    <select class="form-control">
+                        <option *ngFor="let p of providers" [ngValue]="p">{{p.name}}</option>
+                    </select>
+                </td>
+                <td>
+                    <button class="btn btn-success">Enviar</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>

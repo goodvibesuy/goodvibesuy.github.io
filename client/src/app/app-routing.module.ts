@@ -31,6 +31,7 @@ import { ClientComponent } from './components/adm/client/client.component';
 import { ClientListComponent } from './components/adm/client/list/client.list.component';
 import { ClientFormComponent } from './components/forms/client-form/client-form.component';
 import { ProviderComponent } from './components/adm/provider/provider.component';
+import { PurchaseOfSuppliesComponent } from './components/front/purchase-of-supplies/purchase-of-supplies.component';
 // #endregion end imports
 
 const routes: Routes = [
@@ -77,7 +78,11 @@ const routes: Routes = [
     {
 		path: 'dashboard',
 		component: DashboardComponent
-	},
+    },
+    {
+		path: 'compraInsumos',
+		component: PurchaseOfSuppliesComponent
+    },    
 	{
 		path: 'locales',
 		component: LocalesComponent

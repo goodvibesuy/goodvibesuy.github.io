@@ -1,7 +1,7 @@
 import  {SuppliesModel} from '../models/suppliesModel';
 import { MainController } from './mainController';
 
-class SuppliesController extends MainController {
+export class SuppliesController extends MainController {
     private resource: string;
     private suppliesModel:SuppliesModel;
 	constructor() {
@@ -77,5 +77,3 @@ class SuppliesController extends MainController {
 		});
 	};
 }
-
-module.exports = new SuppliesController();

@@ -54,7 +54,7 @@ app.use('/api/authenticate',authenticate);
 app.use('/api/users', users);
 app.use('/api/pointOfSail', pointOfSail);
 app.use('/api/units', units);
-app.use('/api/supplies', supplies);
+app.use('/api/supplies', supplies.routes());
 app.use('/api/products', products);
 app.use('/api/viewings', viewings);
 app.use('/api/kpis', kpis);

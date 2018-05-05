@@ -64,5 +64,5 @@ var SuppliesController = /** @class */ (function (_super) {
     }
     return SuppliesController;
 }(mainController_1.MainController));
-module.exports = new SuppliesController();
+exports.SuppliesController = SuppliesController;
 //# sourceMappingURL=suppliesController.js.map

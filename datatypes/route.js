@@ -7,8 +7,8 @@ var Route = /** @class */ (function () {
         this.name = "";
         this.date = new Date();
         this.user = new user_1.User();
-        this.pointsOfSale = new Array();
-        this.pointsOfSaleToRemove = new Array();
+        this.customers = new Array();
+        this.customersToRemove = new Array();
         this.stock = new Array();
     }
     Route.prototype.addProductStock = function (productStock) {
@@ -23,30 +23,30 @@ var Route = /** @class */ (function () {
     Route.prototype.getUser = function () {
         return this.user;
     };
-    Route.prototype.addPointOfSale = function (POS) {
-        this.pointsOfSale.push(POS);
-        this.pointsOfSaleToRemove = this.pointsOfSaleToRemove.filter(function (val) {
-            return val.id != POS.id;
+    Route.prototype.addCustomer = function (c) {
+        this.customers.push(c);
+        this.customersToRemove = this.customersToRemove.filter(function (val) {
+            return val.id != c.id;
         });
     };
-    Route.prototype.removePointOfSale = function (idPointOfSale) {
-        this.pointsOfSaleToRemove.push(this.pointsOfSale.filter(function (val) {
-            return val.id == idPointOfSale;
+    Route.prototype.removeCustomer = function (idCustomer) {
+        this.customersToRemove.push(this.customers.filter(function (val) {
+            return val.id == idCustomer;
         })[0]);
-        this.pointsOfSale = this.pointsOfSale.filter(function (val) {
-            return val.id != idPointOfSale;
+        this.customers = this.customers.filter(function (val) {
+            return val.id != idCustomer;
         });
     };
-    Route.prototype.getPointsOfSale = function () {
-        return this.pointsOfSale;
+    Route.prototype.getCustomers = function () {
+        return this.customers.map(function (c) { return c; });
     };
-    Route.prototype.getPointsOfSaleToRemove = function () {
-        return this.pointsOfSaleToRemove;
+    Route.prototype.getCustomersToRemove = function () {
+        return this.customersToRemove;
     };
-    Route.prototype.reorderPointOfSale = function (position, newPosition) {
-        var auxPOS = this.pointsOfSale[newPosition];
-        this.pointsOfSale[newPosition] = this.pointsOfSale[position];
-        this.pointsOfSale[position] = auxPOS;
+    Route.prototype.reorderCustomer = function (position, newPosition) {
+        var auxPOS = this.customers[newPosition];
+        this.customers[newPosition] = this.customers[position];
+        this.customers[position] = auxPOS;
     };
     return Route;
 }());

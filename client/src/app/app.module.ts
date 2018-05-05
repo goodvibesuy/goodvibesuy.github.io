@@ -86,6 +86,7 @@ import { ProviderComponent } from './components/adm/provider/provider.component'
 import { PieChartComponent } from './components/charts/pie-chart/pie-chart.component';
 import { KpiSalesPosComponent } from './components/front/reporte-viewing/kpi-sales-pos/kpi-sales-pos.component';
 import { KpiSaleReturnsGroupPosComponent } from './components/front/reporte-viewing/kpi-sale-returns-group-pos/kpi-sale-returns-group-pos.component';
+import { PurchaseOfSuppliesComponent } from './components/front/purchase-of-supplies/purchase-of-supplies.component';
 
 @NgModule({
     declarations: [
@@ -125,7 +126,8 @@ import { KpiSaleReturnsGroupPosComponent } from './components/front/reporte-view
         ProviderComponent,
         PieChartComponent,
         KpiSalesPosComponent,
-        KpiSaleReturnsGroupPosComponent
+        KpiSaleReturnsGroupPosComponent,
+        PurchaseOfSuppliesComponent
     ],
     imports: [
         BrowserModule,
