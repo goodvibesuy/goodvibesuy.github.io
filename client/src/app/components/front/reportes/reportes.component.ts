@@ -12,7 +12,8 @@ import { SupplyTable } from '../../../../../../datatypes/supplyTable';
     styleUrls: ['./reportes.component.css']
 })
 export class ReportesComponent implements OnInit {
-    private suppliesPrice: [any];
+    private suppliesPrice: Supply[];
+    private suppliesPriceTable: Supply[];
     private supplies: SupplyTable[];
     private chart: AmChart;
     private suppliesById: Map<number, any>;
@@ -26,6 +27,17 @@ export class ReportesComponent implements OnInit {
     ) {
     }
 
+    compareDate(a, b) {
+        if (a.price_date > b.price_date) {
+            return -1;
+        }
+        if (a.price_date < b.price_date) {
+            return 1;
+        }
+        return 0;
+    }
+
+
     suppliesPrices(id: number): void {
         this.kpiService.get(id).subscribe(
             response => {
@@ -35,8 +47,11 @@ export class ReportesComponent implements OnInit {
                     
                 } else {
                     this.error = false;
-
                     this.suppliesPrice = response.data;
+                    this.suppliesPriceTable = Object.assign([], this.suppliesPrice);
+                    this.suppliesPriceTable.sort(this.compareDate);
+                    
+
                     var chartData = [];
 
                     for (var i = 0; i < this.suppliesPrice.length; i++) {

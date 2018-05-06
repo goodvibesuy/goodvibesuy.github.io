@@ -14,20 +14,18 @@
             <tr *ngFor="let s of supplies" class="supply-row">
                 <td>{{s.name}}</td>
                 <td>
-                    <input type="text" class="form-control" value="{{s.amount}}" />
+                    <input type="text" [(ngModel)]="s.amount" class="form-control" value="{{s.amount}}" />
                 </td>
                 <td>
-                    <select class="form-control">
-                        <option *ngFor="let unit of units">{{unit.name}}</option>
+                    <select class="form-control" [(ngModel)]="s.unit" >
+                        <option *ngFor="let unit of units" [ngValue]="unit.id">{{unit.name}}</option>
                         <hr>
-                        <option *ngFor="let cUnit of convertibleUnits">{{cUnit.name}} ({{cUnit.value}} Kg)</option>
+                        <option *ngFor="let cUnit of convertibleUnits" [ngValue]="cUnit.idUnit">{{cUnit.name}} ({{cUnit.value}} Kg)</option>
                     </select>
                 </td>
                 <td>
                     <div class="input-group">
-                        <input class="form-control" placeholder="dd/mm/yyyy" 
-                            [(ngModel)]="s.price_date"
-                            name="dp" ngbDatepicker #d="ngbDatepicker">
+                        <input class="form-control" placeholder="dd/mm/yyyy" [(ngModel)]="supplies_prices[s.id]" ngbDatepicker #d="ngbDatepicker">
                         <div class="input-group-btn">
                             <button class="btn btn-outline-secondary" (click)="d.toggle()" type="button">
                                 <img src="img/calendar-icon.svg" style="width: 1.2rem; height: 1rem; cursor: pointer;" />
@@ -36,12 +34,12 @@
                     </div>
                 </td>
                 <td>
-                    <select class="form-control" *ngIf="s" [(ngModel)]="s.id">
+                    <select class="form-control" *ngIf="s" [(ngModel)]="s.idProvider">
                         <option *ngFor="let p of providers" [ngValue]="p.id">{{p.name}}</option>
                     </select>
                 </td>
                 <td>
-                    <button class="btn btn-success">Enviar</button>
+                    <button class="btn btn-success" (click)="send(s.id)">Editar</button>
                 </td>
             </tr>
         </tbody>

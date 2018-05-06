@@ -13,7 +13,6 @@ var SuppliesRoute = /** @class */ (function () {
     function SuppliesRoute() {
     }
     SuppliesRoute.prototype.routes = function () {
-        console.log("*s*");
         var router = express.Router();
         var suppliesController = new suppliesController_1.SuppliesController();
         router.get('/', suppliesController.get);
