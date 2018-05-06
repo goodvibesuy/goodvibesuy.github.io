@@ -1,14 +1,19 @@
+// angular core
 import 'rxjs/add/operator/switchMap';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, ParamMap } from '@angular/router';
-
+// service
 import { PointOfSaleService } from '../../../services/point-of-sale.service';
+import { CustomerService } from '../../../services/customer.service';
 import { ProductsService } from '../../../services/products.service';
 import { ViewingService } from '../../../services/viewing.service';
+// datatypes
 import { Product } from '../../../../../../datatypes/product';
 import { PointOfSale } from '../../../../../../datatypes/pointOfSale';
 import { ViewingView } from '../../../../../../datatypes/views/viewingView';
 import { LineViewingView } from '../../../../../../datatypes/views/lineViewingView';
+import { Customer, CustomerType } from '../../../../../../datatypes/customer';
+import { AlertService } from '../../../modules/alert/alert.service';
 
 
 @Component({
@@ -20,6 +25,7 @@ export class DetalleLocalComponent implements OnInit {
     private params: any;
     private id: number;
     private pointOfSale: PointOfSale;
+    private customer: Customer;
     private products: Product[];
     private productsToSend: any[];
     private annotation: string = '';
@@ -31,21 +37,23 @@ export class DetalleLocalComponent implements OnInit {
 
     constructor(
         private route: ActivatedRoute,
-        private pointOFSaleService: PointOfSaleService,
+        private pointOfSaleService: PointOfSaleService,
+        private customerService: CustomerService,
         private productService: ProductsService,
-        private viewingService: ViewingService
+        private viewingService: ViewingService,
+        private alertService: AlertService
     ) { }
 
-    saveData():void{        
-        localStorage.setItem("productsToSend",JSON.stringify(this.productsToSend));
+    saveData(): void {
+        localStorage.setItem("productsToSend", JSON.stringify(this.productsToSend));
     }
 
     ngOnInit(): void {
 
-        console.log(JSON.parse( localStorage.getItem("productsToSend")));
+        console.log(JSON.parse(localStorage.getItem("productsToSend")));
 
         this.viewingVisited = new ViewingView();
-        this.getPointOfSale(Number(this.route.snapshot.paramMap.get('id'))); 
+        this.loadCustomer(Number(this.route.snapshot.paramMap.get('id')));
 
         /////////////
         //
@@ -56,9 +64,13 @@ export class DetalleLocalComponent implements OnInit {
         this.productService.getPriceByProductByPOS(DOS, Number(this.route.snapshot.paramMap.get('id'))).subscribe(
             response => {
                 console.log(response);
-                if(response.result > 0){
+                if (response.result > 0) {
                     this.unitePrice = response.data[0].amount;
                 }
+            },
+            error => {
+                console.error(error);
+                this.alertService.error('Error cargando datos del servidor.');
             }
         );
 
@@ -69,14 +81,14 @@ export class DetalleLocalComponent implements OnInit {
             response => {
                 if (response.result === 1) {
                     this.wasVisited = !!response.data && response.data.length > 0 &&
-                                      response.data[0].idViewing !== null;
+                        response.data[0].idViewing !== null;
                 }
 
                 if (this.wasVisited) {
                     this.viewingService.getViewing(response.data[0].idViewing).subscribe(
                         response => {
                             this.viewingVisited.setDate(response.data[0].date);
-                            let line: LineViewingView = new LineViewingView(response.data[0].date, null, 0);                            
+                            let line: LineViewingView = new LineViewingView(response.data[0].date, null, 0);
                             line.setProducts(response.data[0].products);
                             line.setPointOfSale(response.data[0].pos);
                             this.viewingVisited.addLine(line);
@@ -84,6 +96,10 @@ export class DetalleLocalComponent implements OnInit {
                         }
                     )
                 }
+            },
+            error => {
+                console.error(error);
+                this.alertService.error('Error cargando datos del servidor.');
             }
         )
     }
@@ -91,34 +107,56 @@ export class DetalleLocalComponent implements OnInit {
     quantity(typeTransaction: string): number {
         let sum = 0;
         if (this.productsToSend !== undefined) {
-            for (let i = 0; i < this.productsToSend.length; i++) {                
+            for (let i = 0; i < this.productsToSend.length; i++) {
                 sum += this.productsToSend[i].typeTransaction[typeTransaction]
             }
         }
         return sum;
     }
 
-    getProductQuantityById(idProduct:number):any{
+    getProductQuantityById(idProduct: number): any {
         let p = this.productsToSend.filter(input => input.id === idProduct)[0];
         return p.typeTransaction.delivery - p.typeTransaction.return;
     }
 
-    getPointOfSale(id: Number): void {
-        var pos: PointOfSale;
-        this.pointOFSaleService.getPointOfSale(id).subscribe(result => {
-            console.log(result.data, "data");
-            this.pointOfSale = result.data;
-        });
+    loadCustomer(id: number): void {
+        var c: Customer;
+        this.customerService.get(id).subscribe(
+            result => {
+                this.customer = result.data;
+                if (this.customer.type == CustomerType.PointOfSale) {
+                    this.loadPointOfSale(id);
+                }
+            },
+            error => {
+                console.error(error);
+                this.alertService.error('Error cargando datos del servidor.');
+            }
+        );
     }
 
-    getProducts(): void {        
-        this.productService.getAll().subscribe(response => {
-            this.products = response.data;
+    loadPointOfSale(id: Number): void {
+        var pos: PointOfSale;
+        this.pointOfSaleService.getPointOfSale(id).subscribe(
+            result => {
+                this.pointOfSale = result.data;
+            },
+            error => {
+                console.error(error);
+                this.alertService.error('Error cargando datos del servidor.');
+            }
+        );
+    }
 
-            if (typeof(Storage) !== "undefined") {            
-                console.log(localStorage.getItem("productsToSend"));
-                if(JSON.parse(localStorage.getItem("productsToSend")) === undefined || JSON.parse(localStorage.getItem("productsToSend")) === null){                
-                
+    getProducts(): void {
+        this.productService.getAll().subscribe(
+            response => {
+                this.products = response.data;
+
+                if (typeof (Storage) !== "undefined") {
+                    console.log(localStorage.getItem("productsToSend"));
+                    if (JSON.parse(localStorage.getItem("productsToSend")) === undefined || JSON.parse(localStorage.getItem("productsToSend")) === null) {
+
                         this.productsToSend = new Array();
                         for (let p of this.products) {
                             let product: any = {};
@@ -131,24 +169,35 @@ export class DetalleLocalComponent implements OnInit {
                             product.typeTransaction.empty = 0;
                             this.productsToSend.push(product);
                         }
-                        localStorage.setItem("productsToSend",JSON.stringify(this.productsToSend));
-                                
-                }else{                
-                    this.productsToSend = JSON.parse(localStorage.getItem("productsToSend"));
-                }   
-                    
-            } else {
-                alert("Su navegador no soporta almacenamiento local");
+                        localStorage.setItem("productsToSend", JSON.stringify(this.productsToSend));
+
+                    } else {
+                        this.productsToSend = JSON.parse(localStorage.getItem("productsToSend"));
+                    }
+
+                } else {
+                    alert("Su navegador no soporta almacenamiento local");
+                }
+            },
+            error => {
+                console.error(error);
+                this.alertService.error('Error cargando datos del servidor.');
             }
-        }); 
+        );
     }
 
     agregar(): void {
-        this.viewingService.addViewing(this.pointOfSale.id, this.productsToSend, this.annotation, this.pointOfSale.id, this.currentRoute).subscribe(response => {
-            if (response.result > 0) {
-                this.submittedSuccessfully = true;
-                localStorage.setItem("productsToSend",JSON.stringify(null));
+        this.viewingService.addViewing(this.customer.id, this.productsToSend, this.annotation, this.customer.id, this.currentRoute).subscribe(
+            response => {
+                if (response.result > 0) {
+                    this.submittedSuccessfully = true;
+                    localStorage.setItem("productsToSend", JSON.stringify(null));
+                }
+            },
+            error => {
+                console.error(error);
+                this.alertService.error('Error cargando datos del servidor.');
             }
-        });
+        );
     }
 }

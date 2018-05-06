@@ -1,3 +1,5 @@
+import { CustomerType } from "./customer";
+
 export class PointOfSale {
     id: number;
     name: string;
@@ -11,6 +13,7 @@ export class PointOfSale {
     idGroup: number;
     //TODO sacar
     idViewing:number;
+    type: CustomerType;
 
     constructor() {
         this.id = 0;
@@ -23,6 +26,7 @@ export class PointOfSale {
         this.RUT = '';
         this.idGroup = 0;
         this.idViewing = 0;
+        this.type = CustomerType.PointOfSale;
     }
 
     public setId(id: number): void {

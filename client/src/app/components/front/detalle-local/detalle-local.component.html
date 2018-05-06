@@ -1,11 +1,11 @@
-<div class="detalle-local border" *ngIf="!!pointOfSale">
+<div class="detalle-local border" *ngIf="!!customer">
     <div class="detalle-local-header flex flex-wrap d-flex justify-content-around content-center content-between">
-        <div style="width:100%; text-align: center;">{{pointOfSale.name}}</div>
+        <div style="width:100%; text-align: center;">{{customer.name}}</div>
         <div style="clear: both;"></div>
         <div class="head-image">
-            <img *ngIf="pointOfSale && pointOfSale.image !== '' && pointOfSale.image !== null" src="images/locales/{{pointOfSale.image}}"
+            <img *ngIf="customer && customer.image !== '' && customer.image !== null" src="images/locales/{{customer.image}}"
             />
-            <i *ngIf="pointOfSale && (pointOfSale.image === '' || pointOfSale.image === null)" class="fa fa-home" style="font-size: 3.0em;"></i>
+            <i *ngIf="customer && (customer.image === '' || customer.image === null)" class="fa fa-home" style="font-size: 3.0em;"></i>
         </div>
     </div>
     <div class="detalle-local-info" *ngIf="!submittedSuccessfully && !wasVisited">
@@ -26,9 +26,8 @@
                     </div>
                 </div>
                 <div class="col">
-                    <input type="number" style="margin:auto;" class="detalle-input form-control" 
-                    [(ngModel)]="product.typeTransaction.delivery" (ngModelChange)="saveData()"
-                    />
+                    <input type="number" style="margin:auto;" class="detalle-input form-control" [(ngModel)]="product.typeTransaction.delivery"
+                        (ngModelChange)="saveData()" />
                 </div>
                 <div class="col">
                     <input type="number" style="margin:auto;" class="detalle-input form-control" [(ngModel)]="product.typeTransaction.return"
@@ -49,61 +48,65 @@
                 <textarea class="form-control" [(ngModel)]="annotation" id="annotation"></textarea>
             </div>
             <div>
-                <br/>
-                <b>Detalle de la empresa</b>
-
-                <div class="container">
-                    <div class="row">
-                        <div class="col">Contacto</div>
-                        <div class="col">{{pointOfSale.contactName}}</div>
-                    </div>
-                    <div class="row">
-                        <div class="col">RUT</div>
-                        <div class="col">{{pointOfSale.RUT}}</div>
-                    </div>
-                    <div class="row">
-                        <div class="col">Razón Social</div>
-                        <div class="col">{{pointOfSale.businessName}}</div>
-                    </div>
-                    <div class="row">
-                        <div class="col">Dirección</div>
-                        <div class="col">{{pointOfSale.address}}</div>
+                <div *ngIf="pointOfSale">
+                    <br/>
+                    <b>Detalle de la empresa</b>
+                    <br/>
+                    <div class="container">
+                        <div class="row">
+                            <div class="col">Contacto</div>
+                            <div class="col">{{pointOfSale.contactName}}</div>
+                        </div>
+                        <div class="row">
+                            <div class="col">RUT</div>
+                            <div class="col">{{pointOfSale.RUT}}</div>
+                        </div>
+                        <div class="row">
+                            <div class="col">Razón Social</div>
+                            <div class="col">{{pointOfSale.businessName}}</div>
+                        </div>
+                        <div class="row">
+                            <div class="col">Dirección</div>
+                            <div class="col">{{pointOfSale.address}}</div>
+                        </div>
                     </div>
                 </div>
-                <br/>
-                <b>Detalle a facturar</b>
-                <br/>
-                <div class="container">
-                    <div class="row">
-                        <div class="col">Precio unitario</div>
-                        <div class="input-group col">
+                <div>
+                    <br/>
+                    <b>Detalle a facturar</b>
+                    <br/>
+                    <div class="container">
+                        <div class="row">
+                            <div class="col">Precio unitario</div>
+                            <div class="input-group col">
 
-                            <div class="input-group-prepend">
-                                <span class="input-group-text">$</span>
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">$</span>
+                                </div>
+                                <input type="number" class="form-control" [(ngModel)]="unitePrice" style="width: 70px;">
+
                             </div>
-                            <input type="number" class="form-control" [(ngModel)]="unitePrice" style="width: 70px;">
-
                         </div>
-                    </div>
-                    <div *ngFor="let p of products" class="row">
-                        <div class="col">
-                            {{p.name}} ({{getProductQuantityById(p.id)}})
+                        <div *ngFor="let p of products" class="row">
+                            <div class="col">
+                                {{p.name}} ({{getProductQuantityById(p.id)}})
+                            </div>
+                            <div class="col">
+                                ${{getProductQuantityById(p.id) * unitePrice}}
+                            </div>
                         </div>
-                        <div class="col">
-                           ${{getProductQuantityById(p.id) *  unitePrice}}                    
+                        <div class="row" style="background-color: #cccccc;">
+                            <div class="col">Sub-Total</div>
+                            <div class="col">${{ (quantity("delivery") - quantity("return")) * unitePrice }}</div>
                         </div>
-                    </div>
-                    <div class="row" style="background-color: #cccccc;">
-                        <div class="col">Sub-Total</div>
-                        <div class="col">${{ (quantity("delivery") - quantity("return")) * unitePrice }}</div>
-                    </div>
-                    <div class="row" style="background-color: #cccccc;">
-                        <div class="col">IVA</div>
-                        <div class="col">${{ (quantity("delivery") - quantity("return")) * unitePrice * 0.22 }}</div>
-                    </div>
-                    <div class="row" style="background-color: #cccccc;">
-                        <div class="col">Total</div>
-                        <div class="col">${{ (quantity("delivery") - quantity("return")) * unitePrice * 1.22 }}</div>
+                        <div class="row" style="background-color: #cccccc;">
+                            <div class="col">IVA</div>
+                            <div class="col">${{ (quantity("delivery") - quantity("return")) * unitePrice * 0.22 }}</div>
+                        </div>
+                        <div class="row" style="background-color: #cccccc;">
+                            <div class="col">Total</div>
+                            <div class="col">${{ (quantity("delivery") - quantity("return")) * unitePrice * 1.22 }}</div>
+                        </div>
                     </div>
                 </div>
             </div>

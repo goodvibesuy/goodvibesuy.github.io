@@ -34,7 +34,9 @@
 
         "bd/*.js": true,
         
-        // routes/client.ts
-        "routes/clients.js": true
+        // routes
+        "routes/clients.js": true,
+        "routes/customers.js": true,
+        "routes/supplies.js": true
     }
 }

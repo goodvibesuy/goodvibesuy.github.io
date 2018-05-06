@@ -55,6 +55,7 @@ import { KpiService } from './services/kpi.service';
 import { TemplatesRoutesService } from './services/templates-routes.service';
 import { ProvidersService } from './services/providers.service';
 import { UnitsConversorService } from './services/units-conversor.service';
+import { CustomerService } from './services/customer.service';
 import { ClientService } from './services/client.service';
 import { GroupPosService } from './services/group-pos.service';
 
@@ -159,6 +160,7 @@ import { PurchaseOfSuppliesComponent } from './components/front/purchase-of-supp
         
         AuthenticateService,
         PointOfSaleService,
+        CustomerService,
         GroupPosService,
         ViewingService,
         HeaderService,
