@@ -423,12 +423,21 @@ export class ViewingsModel extends MainModel {
     };
 
 
+    //TODO Sacar harcode de type
     public addViewingProducts(index: number, indexTransaction: number, typeTransaction: string[], idviewing: number, idRoute: number,
         data: any[], con: any, callBack: (r: Result) => void): void {
         var mainThis = this;
+        var viewingProductTypes:Map<string,number> = new Map<string,number>();
+        viewingProductTypes.set("delivery",1);
+        viewingProductTypes.set("return",2);
+        viewingProductTypes.set("empty",3);
+        
+        var viewingProductType = typeTransaction[indexTransaction];
+        console.log(viewingProductTypes.get(viewingProductType));
         con.query(
-            "INSERT INTO viewing_product(idviewing,idproduct,quantity,type) VALUES(?,?,?,?)",
-            [idviewing, data[index].id, data[index].typeTransaction[typeTransaction[indexTransaction]], typeTransaction[indexTransaction]],
+            "INSERT INTO viewing_product(idviewing,idproduct,quantity,type,iDviewingProductType) VALUES(?,?,?,?,?)",
+            [idviewing, data[index].id, data[index].typeTransaction[typeTransaction[indexTransaction]],
+                viewingProductType, viewingProductTypes.get(viewingProductType)],
             function (err: any, resultClient: any) {
                 if (err) {
                     //if (err.code === "ER_DUP_ENTRY") {
