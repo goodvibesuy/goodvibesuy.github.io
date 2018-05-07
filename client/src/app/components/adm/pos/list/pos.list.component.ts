@@ -80,20 +80,17 @@ export class PosListComponent implements OnInit {
     }
 
     locationEdit() {
-        var mapEdit = this.mapEdit;
-        var address = this.POSEditAddress;
-        var thisPrincipal = this;
-        this.geocoder.geocode({ address: address },  (results, status) =>  {
+        this.geocoder.geocode({ address: this.POSEditAddress }, (results, status) => {
             if (status.toString() === 'OK') {
-                mapEdit.setCenter(results[0].geometry.location);
-                if (thisPrincipal.POSEditMarker === null || thisPrincipal.POSEditMarker === undefined) {
-                    thisPrincipal.POSEditMarker = new google.maps.Marker({
-                        map: mapEdit,
+                this.mapEdit.setCenter(results[0].geometry.location);
+                if (!this.POSEditMarker) {
+                    this.POSEditMarker = new google.maps.Marker({
+                        map: this.mapEdit,
                         draggable: true,
                         position: results[0].geometry.location
                     });
                 } else {
-                    thisPrincipal.POSEditMarker.setPosition(results[0].geometry.location);
+                    this.POSEditMarker.setPosition(results[0].geometry.location);
                 }
             } else {
                 console.warn('Geocode was not successful for the following reason: ' + status);
@@ -103,15 +100,13 @@ export class PosListComponent implements OnInit {
     }
 
     geocodeAddress(geocoder, resultsMap) {
-        var address = this.POSAddress;
-        var thisPrincipal = this;
-        geocoder.geocode({ address: address },  (results, status) => {
+        geocoder.geocode({ address: this.POSAddress }, (results, status) => {
             if (status === 'OK') {
-                if (thisPrincipal.POSMarker !== undefined) {
-                    thisPrincipal.POSMarker.setMap(null);
+                if (this.POSMarker !== undefined) {
+                    this.POSMarker.setMap(null);
                 }
                 resultsMap.setCenter(results[0].geometry.location);
-                thisPrincipal.POSMarker = new google.maps.Marker({
+                this.POSMarker = new google.maps.Marker({
                     map: resultsMap,
                     draggable: true,
                     position: results[0].geometry.location

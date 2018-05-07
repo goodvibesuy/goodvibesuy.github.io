@@ -63,6 +63,7 @@ export class ClientFormComponent extends ValidableForm implements OnInit {
                                 this.alertService.error('Error obteniendo datos del servidor. ' + result.message);
                             } else {
                                 super.setModel(result.data);
+                                this.initMap(result.data.coord);
                             }
                         },
                         error => {
@@ -90,7 +91,6 @@ export class ClientFormComponent extends ValidableForm implements OnInit {
                 this.alertService.error('Error obteniendo datos del servidor.');
             }
         );
-        this.initMap({ x: -34.909664, y: -56.163319 });
     }
 
     addOrUpdate() {
@@ -124,20 +124,17 @@ export class ClientFormComponent extends ValidableForm implements OnInit {
     findLocation() {
         var cli = super.getModel<Client>();
 
-        var mapEdit = this.map;
-        var address = cli.address;
-        var thisPrincipal = this;
-        this.geocoder.geocode({ address: address },  (results, status) => {
+        this.geocoder.geocode({ address: cli.address }, (results, status) => {
             if (status.toString() === 'OK') {
-                mapEdit.setCenter(results[0].geometry.location);
-                if (thisPrincipal.marker === null || thisPrincipal.marker === undefined) {
-                    thisPrincipal.marker = new google.maps.Marker({
-                        map: mapEdit,
+                this.map.setCenter(results[0].geometry.location);
+                if (!this.marker) {
+                    this.marker = new google.maps.Marker({
+                        map: this.map,
                         draggable: true,
                         position: results[0].geometry.location
                     });
                 } else {
-                    thisPrincipal.marker.setPosition(results[0].geometry.location);
+                    this.marker.setPosition(results[0].geometry.location);
                 }
             } else {
                 console.warn('Geocode was not successful for the following reason: ' + status);

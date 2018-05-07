@@ -108,20 +108,18 @@ export class PosEditComponent extends ValidableForm implements OnInit, OnDestroy
 
     findLocation() {
         var pos = super.getModel<PointOfSale>();
-        var mapEdit = this.map;
-        var address = pos.address;
-        var thisPrincipal = this;
-        this.geocoder.geocode({ address: address },  (results, status) => {
+
+        this.geocoder.geocode({ address: pos.address }, (results, status) => {
             if (status.toString() === 'OK') {
-                mapEdit.setCenter(results[0].geometry.location);
-                if (thisPrincipal.marker === null || thisPrincipal.marker === undefined) {
-                    thisPrincipal.marker = new google.maps.Marker({
-                        map: mapEdit,
+                this.map.setCenter(results[0].geometry.location);
+                if (!this.marker) {
+                    this.marker = new google.maps.Marker({
+                        map: this.map,
                         draggable: true,
                         position: results[0].geometry.location
                     });
                 } else {
-                    thisPrincipal.marker.setPosition(results[0].geometry.location);
+                    this.marker.setPosition(results[0].geometry.location);
                 }
             } else {
                 this.alertService.warn('El servicio de localización de google no pudo encontrar la dirección ingresada.');
