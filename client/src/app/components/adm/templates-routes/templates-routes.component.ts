@@ -65,7 +65,7 @@ export class TemplatesRoutesComponent implements OnInit {
                 console.error(error);
                 this.alertService.error('Error obteniendo datos del servidor.');
             }
-        )
+        );
     }
 
     delete(id: number): void {
@@ -75,6 +75,7 @@ export class TemplatesRoutesComponent implements OnInit {
                     console.error(response.message);
                     this.alertService.error(response.message);
                 } else {
+                    this.alertService.success('Plantilla de recorrido eliminada correctamente!');
                     this.getTemplates();
                 }
             },
@@ -82,7 +83,7 @@ export class TemplatesRoutesComponent implements OnInit {
                 console.error(error);
                 this.alertService.error('Error eliminando el template de recorrido.');
             }
-        )
+        );
     }
 
     addForm(): void {
@@ -136,7 +137,7 @@ export class TemplatesRoutesComponent implements OnInit {
                 error => {
                     console.error(error);
                 }
-            );
+        );
     }
 
     remove(idPointOfSale) {
@@ -167,7 +168,7 @@ export class TemplatesRoutesComponent implements OnInit {
                     this.alertService.error(response.message);
                 } else {
                     const keepAfterRouteChange = true;
-                    this.alertService.success('Template de recorrido actualizado correctamente!');
+                    this.alertService.success('Plantilla de recorrido actualizado correctamente!');
                     this.typeOfView = 1;
                 }
             },
