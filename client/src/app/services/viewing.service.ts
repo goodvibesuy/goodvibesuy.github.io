@@ -14,15 +14,20 @@ export class ViewingService {
 		return this.http.post(this.viewingsURL, { idPointOfSale: idPointOfSale, data: data,annotation ,idPOS,idRoute});
     }
 
+    getViewingProductTypes():Observable<any>{
+        return this.http.get(this.viewingsURL + "/viewingProductTypes");
+    }
     
     
     getViewing(idViewing: Number): Observable<any> {
-		return this.http.get(this.viewingsURL + "/" +  idViewing );
+		return this.http.get(this.viewingsURL + "/getViewingbyId/" +  idViewing );
     }
 
     lastViewings(cantViews: Number): Observable<any> {
 		return this.http.get(this.viewingsURL + "/last/" +  cantViews );
     }
+
+
 
     viewingsBetween(sourceDate:NgbDateStruct,lastDate:NgbDateStruct,idPos:number,idProduct:number):Observable<any>{
         let stringSource:string;

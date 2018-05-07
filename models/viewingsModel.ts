@@ -69,24 +69,24 @@ export class ViewingsModel extends MainModel {
             } else {
                 let queryParameters: any[] = new Array();
                 let filters = "";
-                let haveDate:boolean = (Number(sourceYear) !== 0 && Number(sourceMonth) !== 0 && Number(sourceDay) !== 0);
+                let haveDate: boolean = (Number(sourceYear) !== 0 && Number(sourceMonth) !== 0 && Number(sourceDay) !== 0);
 
-                if(haveDate){
+                if (haveDate) {
                     filters += "v.date > ? AND v.date < ?";
                     queryParameters.push(sourceYear + "-" + sourceMonth + "-" + sourceDay);
                     queryParameters.push(lastYear + "-" + lastMonth + "-" + lastDay + " 23:59");
                 }
 
                 if (idPos !== 0) {
-                    if(haveDate){
+                    if (haveDate) {
                         filters += "AND pos.id = ?";
-                    }else{
+                    } else {
                         filters += " pos.id = ?";
-                    }                    
+                    }
                     queryParameters.push(idPos);
                 }
 
-                if(queryParameters.length > 0){
+                if (queryParameters.length > 0) {
                     filters = " WHERE " + filters;
                 }
 
@@ -171,38 +171,71 @@ export class ViewingsModel extends MainModel {
     */
 
 
-   public viewingsByRoute(idRoute: number, dbName: string,
-    callBack: (r: ResultWithData<any[]>) => void): void {
-    var mainThis = this;
-    var pool = this.controllerConnections.getUserConnection(dbName);
-    pool.getConnection(function (err: any, con: any) {
-        if (err) {
-            console.error(err);
-            con.release();
-        } else {
-            con.query(
-                "SELECT * FROM route_customer rc INNER JOIN viewing v ON rc.idViewing = v.idviewing WHERE idRoute = ? ",
-                [idRoute],
-                function (err: any, result: any) {
-                    con.release();
-                    if (err) {                        
-                        callBack({
-                            result: ResultCode.Error,
-                            message: err.code,
-                            data: result
-                        });
-                    } else {                        
-                        callBack({
-                            result: ResultCode.OK,
-                            message: 'OK',
-                            data: result
-                        });
+    public viewingsByRoute(idRoute: number, dbName: string,
+        callBack: (r: ResultWithData<any[]>) => void): void {
+        var mainThis = this;
+        var pool = this.controllerConnections.getUserConnection(dbName);
+        pool.getConnection(function (err: any, con: any) {
+            if (err) {
+                console.error(err);
+                con.release();
+            } else {
+                con.query(
+                    "SELECT * FROM route_customer rc INNER JOIN viewing v ON rc.idViewing = v.idviewing WHERE idRoute = ? ",
+                    [idRoute],
+                    function (err: any, result: any) {
+                        con.release();
+                        if (err) {
+                            callBack({
+                                result: ResultCode.Error,
+                                message: err.code,
+                                data: result
+                            });
+                        } else {
+                            callBack({
+                                result: ResultCode.OK,
+                                message: 'OK',
+                                data: result
+                            });
+                        }
                     }
-                }
-            );
-        }
-    });
-};
+                );
+            }
+        });
+    };
+   
+
+    public viewingProductTypes(dbName: string, callBack: (r: ResultWithData<any[]>) => void): void {
+        var mainThis = this;
+        var pool = this.controllerConnections.getUserConnection(dbName);
+        pool.getConnection(function (err: any, con: any) {
+            if (err) {
+                console.error(err);
+                con.release();
+            } else {
+                con.query(
+                    "SELECT * FROM viewing_product_type",                    
+                    function (err: any, result: any) {
+                        if (err) {
+                            con.release();
+                            callBack({
+                                result: ResultCode.Error,
+                                message: err.code,
+                                data: result
+                            });
+                        } else {
+                            con.release();
+                            callBack({
+                                result: ResultCode.OK,
+                                message: 'OK',
+                                data: result
+                            });
+                        }
+                    }
+                );
+            }
+        });
+    };
 
 
     public viewingByRouteAndPOS(idRoute: number, idPointofsale: number, dbName: string,
@@ -336,7 +369,7 @@ export class ViewingsModel extends MainModel {
     };
 
 
-    public updateVisit(userName: string,idViewing:number, idpointofsail: number, data: any[], annotation: string, idPOS: number, idRoute: number,
+    public updateVisit(userName: string, idViewing: number, idpointofsail: number, data: any[], annotation: string, idPOS: number, idRoute: number,
         dbName: string, callBack: (r: Result) => void): void {
         var mainThis = this;
         this.userModel.userByUserName(userName, dbName, function (result: ResultWithData<any[]>) {

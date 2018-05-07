@@ -66,10 +66,17 @@ var ViewingsController = /** @class */ (function (_super) {
                 });
             });
         };
+        _this.viewingProductTypes = function (req, res) {
+            _this.verifyAccess(req, res, "viewing", function (dbName) {
+                _this.viewingsModel.viewingProductTypes(dbName, function (result) {
+                    res.send(result);
+                });
+            });
+        };
         _this.viewingsModel = new viewingsModel_1.ViewingsModel();
         return _this;
     }
     return ViewingsController;
 }(mainController_1.MainController));
-module.exports = new ViewingsController();
+exports.ViewingsController = ViewingsController;
 //# sourceMappingURL=viewingsController.js.map

@@ -57,7 +57,7 @@ app.use('/api/pointOfSail', pointOfSail);
 app.use('/api/units', units);
 app.use('/api/supplies', supplies.routes());
 app.use('/api/products', products);
-app.use('/api/viewings', viewings);
+app.use('/api/viewings', viewings.routes());
 app.use('/api/kpis', kpis);
 app.use('/api/route', route);
 app.use('/api/templateRoute', templateRoute);

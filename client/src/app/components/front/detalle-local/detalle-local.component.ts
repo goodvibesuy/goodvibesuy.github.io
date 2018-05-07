@@ -34,6 +34,8 @@ export class DetalleLocalComponent implements OnInit {
     private wasVisited: boolean = false;
     private currentRoute: number = -1;
     private viewingVisited: ViewingView;
+    private viewingProductTypes: any[];
+
 
     constructor(
         private route: ActivatedRoute,
@@ -50,59 +52,92 @@ export class DetalleLocalComponent implements OnInit {
 
     ngOnInit(): void {
 
-        console.log(JSON.parse(localStorage.getItem("productsToSend")));
-
-        this.viewingVisited = new ViewingView();
-        this.loadCustomer(Number(this.route.snapshot.paramMap.get('id')));
-
-        /////////////
-        //
-        // TODO: OJO !! CON EL 2 
-        //
-        ////////////
-        const DOS: number = 2;
-        this.productService.getPriceByProductByPOS(DOS, Number(this.route.snapshot.paramMap.get('id'))).subscribe(
+        this.viewingService.getViewingProductTypes().subscribe(
             response => {
-                console.log(response);
                 if (response.result > 0) {
-                    this.unitePrice = response.data[0].amount;
-                }
-            },
-            error => {
-                console.error(error);
-                this.alertService.error('Error cargando datos del servidor.');
-            }
-        );
+                    this.viewingProductTypes = response.data;
+                    console.log(JSON.parse(localStorage.getItem("productsToSend")));
+                    this.viewingVisited = new ViewingView();
+                    this.loadCustomer(Number(this.route.snapshot.paramMap.get('id')));
 
-        this.currentRoute = Number(this.route.snapshot.paramMap.get('idRoute'));
-        this.getProducts();
-
-        this.viewingService.wasVisited(this.currentRoute, Number(this.route.snapshot.paramMap.get('id'))).subscribe(
-            response => {
-                if (response.result === 1) {
-                    this.wasVisited = !!response.data && response.data.length > 0 &&
-                        response.data[0].idViewing !== null;
-                }
-
-                if (this.wasVisited) {
-                    this.viewingService.getViewing(response.data[0].idViewing).subscribe(
+                    /////////////
+                    //
+                    // TODO: OJO !! CON EL 2 
+                    //
+                    ////////////
+                    const DOS: number = 2;
+                    this.productService.getPriceByProductByPOS(DOS, Number(this.route.snapshot.paramMap.get('id'))).subscribe(
                         response => {
-                            this.viewingVisited.setDate(response.data[0].date);
-                            let line: LineViewingView = new LineViewingView(response.data[0].date, null, 0);
-                            line.setProducts(response.data[0].products);
-                            line.setPointOfSale(response.data[0].pos);
-                            this.viewingVisited.addLine(line);
-                            console.log(this.viewingVisited);
+                            console.log(response);
+                            if (response.result > 0) {
+                                this.unitePrice = response.data[0].amount;
+                            }
+                        },
+                        error => {
+                            console.error(error);
+                            this.alertService.error('Error cargando datos del servidor.');
+                        }
+                    );
+
+                    this.currentRoute = Number(this.route.snapshot.paramMap.get('idRoute'));
+                    this.getProducts();
+
+                    this.viewingService.wasVisited(this.currentRoute, Number(this.route.snapshot.paramMap.get('id'))).subscribe(
+                        response => {
+                            if (response.result === 1) {
+                                this.wasVisited = !!response.data && response.data.length > 0 &&
+                                    response.data[0].idViewing !== null;
+                            }
+
+                            if (this.wasVisited) {
+                                this.viewingService.getViewing(response.data[0].idViewing).subscribe(
+                                    response => {
+                                        this.viewingVisited.setDate(response.data[0].date);
+                                        let line: LineViewingView = new LineViewingView(response.data[0].date, null, 0);
+                                        line.setProducts(response.data[0].products);
+                                        line.setPointOfSale(response.data[0].pos);
+                                        this.viewingVisited.addLine(line);
+                                        console.log(this.viewingVisited);
+                                    }
+                                )
+                            }
+                        },
+                        error => {
+                            console.error(error);
+                            this.alertService.error('Error cargando datos del servidor.');
                         }
                     )
                 }
-            },
-            error => {
-                console.error(error);
-                this.alertService.error('Error cargando datos del servidor.');
             }
         )
     }
+
+    subtotal():number{
+        let subTotalInvoice = 0;
+        for(let i = 0 ; i < this.viewingProductTypes.length; i++ ){
+            subTotalInvoice += this.quantity(this.viewingProductTypes[i].name) * this.viewingProductTypes[i].score;
+        }
+        return subTotalInvoice * this.unitePrice;
+    }
+    
+    iva():number{
+        let IVA = 0.22;
+        let ivaInvoice = 0;
+        for(let i = 0 ; i < this.viewingProductTypes.length; i++ ){
+            ivaInvoice += this.quantity(this.viewingProductTypes[i].name) * this.viewingProductTypes[i].score;
+        }
+        return ivaInvoice * this.unitePrice * IVA;
+    }
+
+    total():number{
+        let IVA = 1.22;
+        let totalInvoice = 0;
+        for(let i = 0 ; i < this.viewingProductTypes.length; i++ ){
+            totalInvoice += this.quantity(this.viewingProductTypes[i].name) * this.viewingProductTypes[i].score;
+        }
+        return totalInvoice * this.unitePrice * IVA;
+    }
+
 
     quantity(typeTransaction: string): number {
         let sum = 0;
