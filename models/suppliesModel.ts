@@ -183,29 +183,41 @@ export class SuppliesModel extends MainModel {
 
     deleteSupply(id: Number, dbName: string, callBack: (r: ResultWithData<any[]>) => void): void {
         var pool = this.controllerConnections.getUserConnection(dbName);
-        pool.getConnection(function (err: any, con: any) {
+        pool.getConnection((err: any, con: any) => {
             if (err) {
                 con.release();
                 console.error(err);
             } else {
-                con.query('DELETE FROM supply WHERE id = ? ', [id], function (err: any, resultClient: any) {
-                    // siempre (debería) tengo que liberar la conexión sino el cliente web queda esperando
-                    // con.release();
-                    if (err) {
-                        con.release();
-                        if (err.code === 'ER_DUP_ENTRY') {
-                            callBack({ result: -1, message: 'Error: ER_DUP_ENTRY' });
-                        } else if (err.code == 'ER_ROW_IS_REFERENCED_2') {
-                            callBack({ result: -1, message: 'Error: ER_ROW_IS_REFERENCED_2' });
-                        } else {
-                            callBack({ result: -1, message: 'Error: generic' });
-                        }
+                con.query('DELETE FROM supply WHERE id = ? ', [id], (err: any, resultClient: any) => {
+                    con.release();
+                    if (!!err) {
+                        callBack(SuppliesModel.formatError(err));
                     } else {
-                        con.release();
-                        callBack({ result: 1, message: 'OK' });
+                        callBack({
+                            result: ResultCode.OK,
+                            message: 'OK'
+                        });
                     }
                 });
             }
         });
+    }
+
+    private static formatError(err: { code: string }) {
+        var errorFormatted: { result: number, message: string };
+        if (err.code == 'ER_ROW_IS_REFERENCED_2') {
+            errorFormatted = {
+                result: ResultCode.Error,
+                message: err.code == "ER_ROW_IS_REFERENCED_2" ?
+                    "No se puede borrar el insumo, porque es utilizado en otra parte del sistema" :
+                    "Error interno. No se pudo borrar el insumo."
+            };
+        } else {
+            errorFormatted = {
+                result: ResultCode.Error,
+                message: 'Error: generic'
+            };
+        }
+        return errorFormatted;
     }
 }
