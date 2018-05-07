@@ -102,7 +102,7 @@ export class TemplatesRoutesComponent implements OnInit {
     nuevoTemplate(): void {
         this.templateRouteService.add(this.routeTemplateName).subscribe(
             data => {
-                console.log(data);
+                this.routeTemplateName = '';
                 this.getTemplates();
                 this.typeOfView = 1;
             },
