@@ -1,0 +1,3 @@
+[submodule "zenouraLib"]
+	path = zenouraLib
+	url = https://github.com/FernandoArbelo/ZenouraLib.git
