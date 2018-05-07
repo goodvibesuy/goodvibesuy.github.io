@@ -43,7 +43,7 @@
                         </td>
                         <td>{{i.name}}</td>
                         <td>
-                            <a (click)="remove(i.id)">
+                            <a (click)="remove(i.id)" [ngClass]="{'disabled': deletingPos}">
                                 <i class="fa fa-trash-o" style="font-size: 1.7em;"></i>
                             </a>
                         </td>

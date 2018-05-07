@@ -13,6 +13,7 @@ import { ResultCode } from '../../../../../../datatypes/result';
     styleUrls: ['./templates-routes.component.scss']
 })
 export class TemplatesRoutesComponent implements OnInit {
+    private deletingPos: boolean;
     private templateRoute: TemplateRoute;
     private POS: PointOfSale;
     private routeTemplateName: string;
@@ -24,7 +25,9 @@ export class TemplatesRoutesComponent implements OnInit {
         private templateRouteService: TemplatesRoutesService,
         private routeService: RouteService,
         private alertService: AlertService
-    ) { }
+    ) {
+        this.deletingPos = false;
+    }
 
     ngOnInit() {
         this.getTemplates();
@@ -137,13 +140,23 @@ export class TemplatesRoutesComponent implements OnInit {
     }
 
     remove(idPointOfSale) {
+        this.deletingPos = true;
         this.templateRouteService.remove(this.templateRoute.id, idPointOfSale).subscribe(
-            data => {
-                this.getPointOfSalesRoute();
+            response => {
+                if (response.result == ResultCode.Error) {
+                    this.deletingPos = false;
+                    console.error(response.message);
+                    this.alertService.error(response.message);
+                } else {
+                    this.deletingPos = false;
+                    this.getPointOfSalesRoute();
+                }
             },
             error => {
+                this.deletingPos = false;
                 console.error(error);
-            });
+            }
+        );
     }
 
     actualizar() {
