@@ -35,11 +35,12 @@ export class ProductsListComponent implements OnInit {
         event.preventDefault();
         this.productsService.delete(id).subscribe(
             res => {
-                if (res.result == ResultCode.OK) {
-                    this.loadProducts();
-                } else {
+                if (res.result == ResultCode.Error) {
                     console.error(res);
                     this.alertService.error(res.message);
+                } else {
+                    this.alertService.success('Producto eliminado correctamente!');
+                    this.loadProducts();
                 }
             },
             err => {

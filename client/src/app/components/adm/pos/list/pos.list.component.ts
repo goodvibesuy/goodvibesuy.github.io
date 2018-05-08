@@ -7,6 +7,7 @@ import { GVFile } from '../../../../models/gvfile.model';
 import { ImagesService } from '../../../../services/images.service';
 import { PointOfSale } from '../../../../../../../datatypes/pointOfSale';
 import { AlertService } from '../../../../modules/alert/alert.service';
+import { ResultCode } from '../../../../../../../datatypes/result';
 
 @Component({
     templateUrl: './pos.list.component.html',
@@ -145,11 +146,12 @@ export class PosListComponent implements OnInit {
     delete(idPOS): void {
         this.pointOFSaleService.deletePointOfSale(idPOS).subscribe(
             response => {
-                if (response.result === -1) {
+                if (response.result == ResultCode.Error) {
                     console.error(response.message);
                     this.alertService.error(response.message);
                 } else {
                     this.loadPointsOfSale();
+                    this.alertService.success('Punto de venta eliminado correctamente.');
                 }
             },
             error => {

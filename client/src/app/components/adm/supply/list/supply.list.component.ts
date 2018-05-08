@@ -38,6 +38,7 @@ export class SupplyListComponent implements OnInit {
                     console.error(res);
                     this.alertService.error(res.message);
                 } else {
+                    this.alertService.success('Insumo eliminado correctamente!');
                     this.loadSupplies();
                 }
             },

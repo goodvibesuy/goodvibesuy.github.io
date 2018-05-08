@@ -19,13 +19,18 @@ export class ClientListComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.getAlls();
+        this.loadClients();
     }
 
-    getAlls(): void {
+    loadClients(): void {
         this.clientService.getAlls().subscribe(
             response => {
-                this.clients = response.data;
+                if (response.result == ResultCode.Error) {
+                    console.error(response.message);
+                    this.alertService.error('Error cargando los clientes del servidor. ' + response.message);
+                } else {
+                    this.clients = response.data;
+                }
             },
             error => {
                 console.error(error);
@@ -41,7 +46,8 @@ export class ClientListComponent implements OnInit {
                     console.error(response.message);
                     this.alertService.error('Error eliminando el cliente. ' + response.message);
                 } else {
-                    this.getAlls();
+                    this.loadClients();
+                    this.alertService.success('Cliente eliminado correctamente.');
                 }
             },
             error => {
