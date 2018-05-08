@@ -1,34 +1,54 @@
-var providersModel = require('../models/providersModel');
-import {MainController} from './mainController';
+import { ProvidersModel } from '../models/providersModel';
+import { MainController } from './mainController';
 
-class ProvidersController extends MainController{
+export class ProvidersController extends MainController {
 
-    private resource:string;
-    constructor(){        
+    private static readonly resource: string = "providers";
+
+    private providersModel: ProvidersModel;
+
+    constructor() {
         super();
-        this.resource = "providers";
+        this.providersModel = new ProvidersModel();
     }
 
-    public getAll = (req:any,res:any): void => { 
-        this.verifyAccess(req,res,this.resource,
-            (dbName:string) =>{
-                providersModel.getAll(dbName,function(result:any) {
-                    res.send(result);
-                });
-            }             
-        )
+    public getAll = (req: any, res: any): void => {
+        this.verifyAccess(req, res, ProvidersController.resource, (dbName: string) => {
+            this.providersModel.getAll(dbName, (result: any) => {
+                res.send(result);
+            });
+        });
     }
 
-    public add = (req:any,res:any): void => { 
-        this.verifyAccess(req,res,this.resource,
-            (dbName:string) =>{
-                providersModel.add(req.body.name,dbName,function(result:any) {
-                    res.send(result);
-                });
-            }             
-        )
+    public get = (req: any, res: any): void => {
+        this.verifyAccess(req, res, ProvidersController.resource, (dbName: string) => {
+            this.providersModel.get(req.params.id, dbName, (result: any) => {
+                res.send(result);
+            });
+        });
     }
 
+    public add = (req: any, res: any): void => {
+        this.verifyAccess(req, res, ProvidersController.resource, (dbName: string) => {
+            this.providersModel.add(req.body, dbName, (result: any) => {
+                res.send(result);
+            });
+        });
+    }
+
+    public update = (req: any, res: any): void => {
+        this.verifyAccess(req, res, ProvidersController.resource, (dbName: string) => {
+            this.providersModel.update(req.params.id, req.body, dbName, (result: any) => {
+                res.send(result);
+            });
+        });
+    };
+
+    public delete = (req: any, res: any): void => {
+        this.verifyAccess(req, res, ProvidersController.resource, (dbName: string) => {
+            this.providersModel.delete(req.params.id, dbName, (result: any) => {
+                res.send(result);
+            });
+        });
+    };
 }
-
-module.exports = new ProvidersController();

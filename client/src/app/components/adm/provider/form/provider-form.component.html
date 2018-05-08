@@ -1,0 +1,32 @@
+<table class="table">
+    <tr>
+        <td>
+            <div class="card" style="margin:15px;">
+
+                <div class="card-header">
+                    <b>{{isAdding?'Agregar':'Actualizar'}} proveedor</b>
+                </div>
+                <div class="card-body">
+                    <form [formGroup]="form">
+                        <div class="form-group">
+
+                            <div class="form-row">
+                                <span class="input-group-addon">Nombre:</span>
+                                <input type="text" class="form-control" [cenInputValidation]="getFormField('name')" formControlName="name">
+                                <div class="invalid-feedback" *ngIf="isFormFieldInvalid('name')">Ingrese un valor válido.</div>
+                            </div>
+                            <div class="form-row">
+                                <div class="d-flex justify-content-around">
+                                    <div class="p-2">
+                                        <button type="button" class="btn btn-primary" (click)="addOrUpdate()">{{isAdding?'Agregar':'Actualizar'}}</button>
+                                        <button type="button" class="btn btn-light" routerLink="/admin/proveedores">Cancelar</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </td>
+    </tr>
+</table>

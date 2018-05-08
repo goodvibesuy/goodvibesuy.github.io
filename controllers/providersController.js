@@ -10,30 +10,52 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var providersModel = require('../models/providersModel');
+var providersModel_1 = require("../models/providersModel");
 var mainController_1 = require("./mainController");
 var ProvidersController = /** @class */ (function (_super) {
     __extends(ProvidersController, _super);
     function ProvidersController() {
         var _this = _super.call(this) || this;
         _this.getAll = function (req, res) {
-            _this.verifyAccess(req, res, _this.resource, function (dbName) {
-                providersModel.getAll(dbName, function (result) {
+            _this.verifyAccess(req, res, ProvidersController.resource, function (dbName) {
+                _this.providersModel.getAll(dbName, function (result) {
+                    res.send(result);
+                });
+            });
+        };
+        _this.get = function (req, res) {
+            _this.verifyAccess(req, res, ProvidersController.resource, function (dbName) {
+                _this.providersModel.get(req.params.id, dbName, function (result) {
                     res.send(result);
                 });
             });
         };
         _this.add = function (req, res) {
-            _this.verifyAccess(req, res, _this.resource, function (dbName) {
-                providersModel.add(req.body.name, dbName, function (result) {
+            _this.verifyAccess(req, res, ProvidersController.resource, function (dbName) {
+                _this.providersModel.add(req.body, dbName, function (result) {
                     res.send(result);
                 });
             });
         };
-        _this.resource = "providers";
+        _this.update = function (req, res) {
+            _this.verifyAccess(req, res, ProvidersController.resource, function (dbName) {
+                _this.providersModel.update(req.params.id, req.body, dbName, function (result) {
+                    res.send(result);
+                });
+            });
+        };
+        _this.delete = function (req, res) {
+            _this.verifyAccess(req, res, ProvidersController.resource, function (dbName) {
+                _this.providersModel.delete(req.params.id, dbName, function (result) {
+                    res.send(result);
+                });
+            });
+        };
+        _this.providersModel = new providersModel_1.ProvidersModel();
         return _this;
     }
+    ProvidersController.resource = "providers";
     return ProvidersController;
 }(mainController_1.MainController));
-module.exports = new ProvidersController();
+exports.ProvidersController = ProvidersController;
 //# sourceMappingURL=providersController.js.map

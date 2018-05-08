@@ -84,6 +84,8 @@ import { ClientComponent } from './components/adm/client/client.component';
 import { ClientFormComponent } from './components/forms/client-form/client-form.component';
 import { ClientListComponent } from './components/adm/client/list/client.list.component';
 import { ProviderComponent } from './components/adm/provider/provider.component';
+import { ProviderFormComponent } from './components/adm/provider/form/provider-form.component';
+import { ProviderListComponent } from './components/adm/provider/list/provider-list.component';
 import { PieChartComponent } from './components/charts/pie-chart/pie-chart.component';
 import { KpiSalesPosComponent } from './components/front/reporte-viewing/kpi-sales-pos/kpi-sales-pos.component';
 import { KpiSaleReturnsGroupPosComponent } from './components/front/reporte-viewing/kpi-sale-returns-group-pos/kpi-sale-returns-group-pos.component';
@@ -125,6 +127,8 @@ import { PurchaseOfSuppliesComponent } from './components/front/purchase-of-supp
         ClientListComponent,
         ClientFormComponent,
         ProviderComponent,
+        ProviderFormComponent,
+        ProviderListComponent,
         PieChartComponent,
         KpiSalesPosComponent,
         KpiSaleReturnsGroupPosComponent,

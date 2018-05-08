@@ -62,7 +62,7 @@ app.use('/api/kpis', kpis);
 app.use('/api/route', route);
 app.use('/api/templateRoute', templateRoute);
 app.use('/api/images', images);
-app.use('/api/providers', providers);
+app.use('/api/providers', providers.routes());
 app.use('/api/groupPos', groupPos);
 app.use('/api/clients', clients.routes());
 app.use('/api/customers', customers.routes());

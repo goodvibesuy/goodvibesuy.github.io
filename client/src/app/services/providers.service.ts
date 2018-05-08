@@ -10,17 +10,29 @@ import { Result, ResultWithData, ResultCode } from '../../../../datatypes/result
 
 @Injectable()
 export class ProvidersService {
-	PROVIDERS_URL: string = '/api/providers';
+    PROVIDERS_URL: string = '/api/providers';
 
-	constructor(private http: HttpClient) {}
+    constructor(private http: HttpClient) { }
 
-	getAll(): Observable<ResultWithData<Provider[]>> {
-		return this.http.get<ResultWithData<Provider[]>>(this.PROVIDERS_URL + '/getAll');
-	}
+    get(idProvider: number): Observable<ResultWithData<Provider>> {
+        return this.http.get<ResultWithData<Provider>>(this.PROVIDERS_URL + "/" + idProvider);
+    }
 
-    add(name:string): Observable<ResultWithData<Provider[]>> {
-		return this.http.post<ResultWithData<Provider[]>>(this.PROVIDERS_URL ,{name});
-	}
+    getAll(): Observable<ResultWithData<Provider[]>> {
+        return this.http.get<ResultWithData<Provider[]>>(this.PROVIDERS_URL);
+    }
+
+    add(p: Provider): Observable<Result> {
+        return this.http.post<ResultWithData<Provider[]>>(this.PROVIDERS_URL, p);
+    }
+
+    update(p: Provider): Observable<Result> {
+        return this.http.put<Result>(this.PROVIDERS_URL + "/" + p.id, p);
+    }
+
+    delete(id: number): Observable<Result> {
+        return this.http.delete<Result>(this.PROVIDERS_URL + "/" + id);
+    }
 
 	/**
 	 * Handle Http operation that failed.
@@ -28,22 +40,22 @@ export class ProvidersService {
 	 * @param operation - name of the operation that failed
 	 * @param result - optional value to return as the observable result
 	 */
-	private handleError<T>(operation = 'operation', result?: T) {
-		return (error: any): Observable<T> => {
-			// TODO: send the error to remote logging infrastructure
-			console.error(error); // log to console instead
+    private handleError<T>(operation = 'operation', result?: T) {
+        return (error: any): Observable<T> => {
+            // TODO: send the error to remote logging infrastructure
+            console.error(error); // log to console instead
 
-			// TODO: better job of transforming error for user consumption
-			this.log(`${operation} failed: ${error.message}`);
+            // TODO: better job of transforming error for user consumption
+            this.log(`${operation} failed: ${error.message}`);
 
-			// Let the app keep running by returning an empty result.
-			return of(result as T);
-		};
-	}
+            // Let the app keep running by returning an empty result.
+            return of(result as T);
+        };
+    }
 
-	/** Log a HeroService message with the MessageService */
-	private log(message: string) {
-		//this.messageService.add('HeroService: ' + message);
-		console.log('log: ' + message);
-	}
+    /** Log a HeroService message with the MessageService */
+    private log(message: string) {
+        //this.messageService.add('HeroService: ' + message);
+        console.log('log: ' + message);
+    }
 }

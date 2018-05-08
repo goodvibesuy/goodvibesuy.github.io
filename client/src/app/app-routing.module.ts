@@ -31,6 +31,8 @@ import { ClientComponent } from './components/adm/client/client.component';
 import { ClientListComponent } from './components/adm/client/list/client.list.component';
 import { ClientFormComponent } from './components/forms/client-form/client-form.component';
 import { ProviderComponent } from './components/adm/provider/provider.component';
+import { ProviderListComponent } from './components/adm/provider/list/provider-list.component';
+import { ProviderFormComponent } from './components/adm/provider/form/provider-form.component';
 import { PurchaseOfSuppliesComponent } from './components/front/purchase-of-supplies/purchase-of-supplies.component';
 // #endregion end imports
 
@@ -88,8 +90,13 @@ const routes: Routes = [
 		component: LocalesComponent
     },
     {
-		path: 'proveedores',
-		component: ProviderComponent
+		path: 'admin/proveedores',
+		component: ProviderComponent,
+		children: [
+			{ path: '', component: ProviderListComponent },
+			{ path: 'editar/:id', component: ProviderFormComponent },
+			{ path: 'agregar', component: ProviderFormComponent }
+		]
 	},
 	{
 		path: 'reportes',

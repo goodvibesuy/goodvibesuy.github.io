@@ -1,0 +1,28 @@
+<div style="float: right;">
+    <button class="btn btn-circle add fa fa-plus" routerLink="agregar"></button>
+</div>
+
+<table class="table table-striped">
+    <thead class="thead-dark">
+        <tr>
+            <th>Nombre</th>
+            <th>Editar</th>
+            <th>Eliminar</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let p of providers">
+            <td>{{p.name}}</td>
+            <td>
+                <a [routerLink]="['editar', p.id]">
+                    <i class="fa fa-edit" style="font-size: 1.7em;"></i>
+                </a>
+            </td>
+            <td>
+                <a (click)="delete(p.id)">
+                    <i class="fa fa-trash-o" style="font-size: 1.7em;"></i>
+                </a>
+            </td>
+        </tr>
+    </tbody>
+</table>

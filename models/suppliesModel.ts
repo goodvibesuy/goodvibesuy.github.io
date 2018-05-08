@@ -191,7 +191,7 @@ export class SuppliesModel extends MainModel {
                 con.query('DELETE FROM supply WHERE id = ? ', [id], (err: any, resultClient: any) => {
                     con.release();
                     if (!!err) {
-                        callBack(SuppliesModel.formatError(err));
+                        callBack(super.formatError(err));
                     } else {
                         callBack({
                             result: ResultCode.OK,
@@ -201,23 +201,5 @@ export class SuppliesModel extends MainModel {
                 });
             }
         });
-    }
-
-    private static formatError(err: { code: string }) {
-        var errorFormatted: { result: number, message: string };
-        if (err.code == 'ER_ROW_IS_REFERENCED_2') {
-            errorFormatted = {
-                result: ResultCode.Error,
-                message: err.code == "ER_ROW_IS_REFERENCED_2" ?
-                    "No se puede borrar el insumo, porque es utilizado en otra parte del sistema" :
-                    "Error interno. No se pudo borrar el insumo."
-            };
-        } else {
-            errorFormatted = {
-                result: ResultCode.Error,
-                message: 'Error: generic'
-            };
-        }
-        return errorFormatted;
     }
 }
