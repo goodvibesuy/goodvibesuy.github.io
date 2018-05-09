@@ -5,9 +5,11 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var mysql = require('mysql');
+var compression = require('compression');
+var cors = require('cors');
+
 var routes = require('./routes/index');
 var authenticate = require('./routes/authenticate');
-
 var users = require('./routes/users');
 var pointOfSail = require('./routes/pointOfSail');
 var units = require('./routes/units');
@@ -28,9 +30,9 @@ var masterDBController = require('./bd/masterConnectionsBD');
 
 NewACL.setUp(masterDBController.getController().getMasterConnection().getConnection());
 
-
 var app = express();
-var cors = require('cors');
+
+app.use(compression());
 app.use(cors());
 
 // view engine setup
