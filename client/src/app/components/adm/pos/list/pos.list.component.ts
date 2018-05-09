@@ -15,31 +15,30 @@ import { ResultCode } from '../../../../../../../datatypes/result';
 })
 export class PosListComponent implements OnInit {
 
-    private imageFile: GVFile;
-    private imagePath: string;
-    private filter: string;
+    public imageFile: GVFile;
+    public imagePath: string;
+    public filter: string;
 
-    private pointsOfSale: PointOfSale[];
-    private POSEdit: PointOfSale;
-    private POSEditName: string;
-    private POSGroup: number = 1;
-    private POSEditAddress: string;
-    private POSEditTel: string;
-    private POSEditCoord: google.maps.LatLng;
-    private POSEditContactName: string;
-    private POSEditRUT: string;
-    private POSEditBusinessName: string;
+    public pointsOfSale: PointOfSale[];
+    public POSEdit: PointOfSale;
+    public POSEditName: string;
+    public POSGroup: number = 1;
+    public POSEditAddress: string;
+    public POSEditTel: string;
+    public POSEditCoord: google.maps.LatLng;
+    public POSEditContactName: string;
+    public POSEditRUT: string;
+    public POSEditBusinessName: string;
 
-    private POSName: string;
-    private POSAddress: string;
-    private POSTel: string;
+    public POSName: string;
+    public POSAddress: string;
+    public POSTel: string;
     //TODO cambiar por un enum
-    private typeOfView: Number;
-    private POSMarker: google.maps.Marker;
-    private POSEditMarker: google.maps.Marker;
-    private POSContactName: string;
-    private POSRUT: string;
-    private POSBusinessName: string;
+    public POSMarker: google.maps.Marker;
+    public POSEditMarker: google.maps.Marker;
+    public POSContactName: string;
+    public POSRUT: string;
+    public POSBusinessName: string;
 
     @ViewChild('gmap') gmapElement: any;
     @ViewChild('gmapEdit') gmapEditElement: any;
@@ -61,7 +60,6 @@ export class PosListComponent implements OnInit {
             this.POSMarker.setMap(null);
         }
         this.loadPointsOfSale();
-        this.typeOfView = 1;
         var mapProp = {
             center: new google.maps.LatLng(-34.909664, -56.163319),
             zoom: 14,
@@ -122,7 +120,6 @@ export class PosListComponent implements OnInit {
     loadPointsOfSale(): void {
         this.pointOFSaleService.get().subscribe(
             response => {
-                this.typeOfView = 1;
                 if (response.result === -1) {
                     this.router.navigate(['']);
                 } else {

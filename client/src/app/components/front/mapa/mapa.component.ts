@@ -18,7 +18,7 @@ export class MapaComponent implements OnInit {
     private viewings: any[];
     private pointsOfSale: PointOfSale[];
     private finishedViewing: PointOfSale[];
-    private currentRoute: number;
+    public currentRoute: number;
     public stock: { product: Product, quantity: number }[];
 
     constructor(

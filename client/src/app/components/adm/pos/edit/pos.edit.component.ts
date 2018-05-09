@@ -20,7 +20,7 @@ import { AlertService } from '../../../../modules/alert/alert.service';
 })
 export class PosEditComponent extends ValidableForm implements OnInit, OnDestroy {
 
-    private groupPos: GroupPos[];
+    public groupPos: GroupPos[];
     private imageFile: GVFile;
     private imagePath: string;
     private paramsSub: Subscription;

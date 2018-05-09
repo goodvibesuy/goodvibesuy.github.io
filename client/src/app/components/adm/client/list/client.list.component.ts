@@ -10,7 +10,7 @@ import { AlertService } from '../../../../modules/alert/alert.service';
     styleUrls: ['./client.list.component.scss']
 })
 export class ClientListComponent implements OnInit {
-    private clients: Array<Client>;
+    public clients: Array<Client>;
 
     constructor(private router: Router,
         private clientService: ClientService,

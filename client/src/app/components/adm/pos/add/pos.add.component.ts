@@ -23,7 +23,7 @@ import { GVFile } from '../../../../models/gvfile.model';
 })
 export class PosAddComponent extends ValidableForm implements OnInit {
 
-    private groupPos: GroupPos[];
+    public groupPos: GroupPos[];
     private imageFile: GVFile;
     private imagePath: string;
 

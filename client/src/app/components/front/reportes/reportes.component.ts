@@ -17,7 +17,7 @@ export class ReportesComponent implements OnInit {
     private supplies: SupplyTable[];
     private chart: AmChart;
     private suppliesById: Map<number, any>;
-    private error:boolean;
+    public error:boolean;
     private errorMessage:string;
 
     constructor(private router: Router,

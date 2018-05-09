@@ -15,7 +15,7 @@ import { ValidableForm } from '../../../../shared/ValidableForms';
 export class ProviderFormComponent extends ValidableForm implements OnInit {
 
     private provider: Provider;
-    private isAdding: boolean;
+    public isAdding: boolean;
 
     private paramsSub: Subscription;
 

@@ -1,7 +1,7 @@
 import { FormGroup, FormBuilder } from '@angular/forms';
 
 export class ValidableForm {
-    private form: FormGroup;
+    public form: FormGroup;
     private values: any;
 
     constructor(private fb: FormBuilder) {
@@ -62,11 +62,11 @@ export class ValidableForm {
         this.form.setValue(formValues);
     }
 
-    protected getFormField(f: string): any {
+    public getFormField(f: string): any {
         return this.form.get(f);
     }
 
-    protected isFormFieldInvalid(s: string): boolean {
+    public isFormFieldInvalid(s: string): boolean {
         return this.form.get(s).invalid;
     }
 }

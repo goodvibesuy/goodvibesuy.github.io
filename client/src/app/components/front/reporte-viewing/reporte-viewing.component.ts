@@ -25,18 +25,18 @@ export class ReporteViewingComponent implements OnInit {
     focus$ = new Subject<string>();
     click$ = new Subject<string>();
 
-    private viewings: any[];
+    public viewings: any[];
     private products: Product[];
-    private pointsOfSale: PointOfSale[];
-    private viewingView: ViewingView;
+    public pointsOfSale: PointOfSale[];
+    public viewingView: ViewingView;
     private sourceDate: NgbDateStruct;
     private lastDate: NgbDateStruct;
     private posId: number = 0;
     private idProduct: number = 0;
-    private useDates: boolean = true;
+    public useDates: boolean = true;
     private shareSales: any[];
-    private ocultarDetalles: boolean;
-    private groupPOS: any[];
+    public ocultarDetalles: boolean;
+    public groupPOS: any[];
 
     constructor(private viewingsService: ViewingService,
         private posService: PointOfSaleService,

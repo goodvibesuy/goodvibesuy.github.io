@@ -24,11 +24,11 @@ import { ResultCode } from '../../../../../../../datatypes/result';
 })
 export class SupplyAddComponent extends ValidableForm implements OnInit {
 
-    private providers: Provider[];
-    private units: Unit[];
+    public providers: Provider[];
+    public units: Unit[];
     private imageFile: GVFile;
     private category: string = 'insumos';
-    private convertibleUnits: UnitsConvertion[];
+    public convertibleUnits: UnitsConvertion[];
 
     constructor(
         fb: FormBuilder,

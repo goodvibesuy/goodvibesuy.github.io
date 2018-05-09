@@ -11,7 +11,7 @@ import { AlertService } from '../../../../modules/alert/alert.service';
 })
 export class ProviderListComponent implements OnInit {
 
-    private providers: Array<Provider>;
+    public providers: Array<Provider>;
 
     constructor(private router: Router,
         private providersService: ProvidersService,

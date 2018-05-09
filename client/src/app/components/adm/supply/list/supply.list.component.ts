@@ -16,7 +16,7 @@ import { AlertService } from '../../../../modules/alert/alert.service';
     styleUrls: ['./supply.list.component.scss']
 })
 export class SupplyListComponent implements OnInit {
-    protected supplies: Supply[];
+    public supplies: Supply[];
     protected units: Unit[];
     private category: string = 'insumos';
 

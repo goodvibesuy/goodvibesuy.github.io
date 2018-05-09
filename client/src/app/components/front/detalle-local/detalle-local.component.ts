@@ -25,7 +25,7 @@ export class DetalleLocalComponent implements OnInit {
     private params: any;
     private id: number;
     private pointOfSale: PointOfSale;
-    private customer: Customer;
+    public customer: Customer;
     private products: Product[];
     private productsToSend: any[];
     private annotation: string = '';

@@ -15,9 +15,6 @@
                         <span class="input-group-addon">Imagen:</span>
                         <img [src]="getImage()" *ngIf="product" class="small_image" />
                         <file-picker text="Cambiar" (selected)="handleSelected($event)"></file-picker>
-                        <div *ngIf="filestring">
-                            {{filestring}}
-                        </div>
                     </div>
                     
 					<button type="button" (click)="agregar()" class="btn btn-primary">Agregar unidad</button>

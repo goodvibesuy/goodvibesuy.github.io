@@ -24,16 +24,16 @@ import { Customer } from '../../../../../../../datatypes/customer';
     styleUrls: ['./route.add.component.css']
 })
 export class RouteAdd implements OnInit {
-    private newRoute: Route;
+    public newRoute: Route;
     private route: RouteModel;
     private users: User[];
-    private templatesRoutes: TemplateRoute[];
+    public templatesRoutes: TemplateRoute[];
     private pointsOfSales: PointOfSale[];
     private clients: Client[];
     private products: Product[];
-    private templateSelected: TemplateRoute;
-    private POSSelected: PointOfSale;
-    private ClientSelected: Client;
+    public templateSelected: TemplateRoute;
+    public POSSelected: PointOfSale;
+    public ClientSelected: Client;
 
     constructor(
         private routeService: RouteService,

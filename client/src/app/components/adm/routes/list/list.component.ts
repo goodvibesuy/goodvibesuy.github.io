@@ -18,7 +18,7 @@ export class ListComponent implements OnInit {
     private userSaved: string;
     private accountId: Number;
 
-    private routes: RouteTable[];
+    public routes: RouteTable[];
 
     constructor(private router: Router,
         private routeServices: RouteService,

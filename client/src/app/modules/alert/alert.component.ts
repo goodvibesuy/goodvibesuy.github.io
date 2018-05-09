@@ -13,7 +13,7 @@ import { Timeouts } from 'selenium-webdriver';
 })
 export class AlertComponent {
     protected mostrarAlerta: boolean;
-    protected alert: Alert;
+    public alert: Alert;
 
     constructor(private router: Router, private alertService: AlertService) {
 

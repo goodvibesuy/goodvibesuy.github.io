@@ -5,6 +5,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve --proxy-config proxy.config.json --locale es-UY",
+    "start_prod": "ng serve --prod --proxy-config proxy.config.json --locale es-UY",
     "build": "ng build --locale es-UY &  cp -r images dist/images",
     "test": "ng test",
     "lint": "ng lint",

@@ -25,11 +25,11 @@ import { AlertService } from '../../../../modules/alert/alert.service';
 export class ProductEditComponent implements OnInit, OnDestroy {
     paramsSub: any;
 
-    private product: Product;
-    private units: Unit[];
-    private supplies: Supply[];
+    public product: Product;
+    public units: Unit[];
+    public supplies: Supply[];
     private imageFile: GVFile;
-    private groupsPos: GroupPos[];
+    public groupsPos: GroupPos[];
 
     constructor(
         private activatedRoute: ActivatedRoute,

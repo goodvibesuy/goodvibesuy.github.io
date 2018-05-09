@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "node": "node ./bin/www",
-    "start": "tsc --watch | node ./bin/www",
+    "start": "tsc --watch | node ./bin/www_dev",
     "tsc": "tsc"
   },
   "dependencies": {

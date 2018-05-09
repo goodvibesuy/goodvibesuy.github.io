@@ -11,7 +11,7 @@ import { TokenService } from '../../services/token.service';
 	styleUrls: ['./header.component.css']
 })
 export class HeaderComponent implements OnInit {
-	private visible: Boolean = false;
+	public visible: Boolean = false;
 	private token: string;
 	private userSaved: string;
 	private accountId: Number;

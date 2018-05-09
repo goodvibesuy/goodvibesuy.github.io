@@ -18,7 +18,7 @@ import { NgbDateFormatter } from '../../../shared/DateParserFormatter';
 })
 export class PurchaseOfSuppliesComponent extends ValidableForm implements OnInit {
 
-    private supplies: Supply[];
+    public supplies: Supply[];
     private units: Unit[];
     private providers: Provider[];
     private convertibleUnits: UnitsConvertion[];

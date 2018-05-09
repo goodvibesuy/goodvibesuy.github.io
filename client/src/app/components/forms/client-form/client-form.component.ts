@@ -24,7 +24,7 @@ export class ClientFormComponent extends ValidableForm implements OnInit {
     private geocoder = new google.maps.Geocoder();
 
     private client: Client;
-    private groupPos: GroupPos[];
+    public groupPos: GroupPos[];
     private isAdding: boolean;
 
     @Input() titleForm: string;

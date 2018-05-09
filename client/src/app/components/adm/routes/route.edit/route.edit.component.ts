@@ -32,7 +32,7 @@ import { Customer } from '../../../../../../../datatypes/customer';
     styleUrls: ['./route.edit.component.css']
 })
 export class RouteEdit extends ValidableForm implements OnInit {
-    private currentRoute: Route;
+    public currentRoute: Route;
     private id: number;
     paramsSub: any;
     //Puntos de venta para el combo
@@ -43,12 +43,12 @@ export class RouteEdit extends ValidableForm implements OnInit {
 
     //Puntos de venta de la ruta
     //private pointsOfSaleRoute: PointOfSale[];
-    private POSSelected: PointOfSale;
-    private ClientSelected: Client;
-    private templatesRoutes: TemplateRoute[];
+    public POSSelected: PointOfSale;
+    public ClientSelected: Client;
+    public templatesRoutes: TemplateRoute[];
     private products: Product[];
-    private templateSelected: TemplateRoute;
-    private errorNoPOS: boolean = false;
+    public templateSelected: TemplateRoute;
+    public errorNoPOS: boolean = false;
 
     constructor(
         fb: FormBuilder,

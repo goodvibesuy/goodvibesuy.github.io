@@ -12,9 +12,9 @@ import { TokenService } from '../../services/token.service';
 export class LoginComponent implements OnInit {
 	public loginform: FormGroup;
 
-	private username: FormControl;
-	private password: FormControl;
-	private errorForm: Boolean = false;
+	public username: FormControl;
+	public password: FormControl;
+	public errorForm: Boolean = false;
 
 	private token: string;
 	private userSaved: string;

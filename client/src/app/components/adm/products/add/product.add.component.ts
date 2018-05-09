@@ -16,8 +16,8 @@ import { ResultCode } from '../../../../../../../datatypes/result';
     styleUrls: ['./product.add.component.css']
 })
 export class ProductAddComponent {
-    private product: Product;
-    private imageFile: GVFile;
+    public product: Product;
+    public imageFile: GVFile;
 
     constructor(
         private router: Router,

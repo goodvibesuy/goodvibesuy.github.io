@@ -12,8 +12,8 @@ import { AuthenticateService } from '../../../services/authenticate.service';
 	styleUrls: ['./locales.component.css']
 })
 export class LocalesComponent implements OnInit {
-	private pointsOfSale: PointOfSale[];
-	private filter: string;
+	public pointsOfSale: PointOfSale[];
+	public filter: string;
 
 	constructor(
 		private router: Router,

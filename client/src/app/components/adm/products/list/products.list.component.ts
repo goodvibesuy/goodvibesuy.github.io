@@ -17,7 +17,7 @@ import { AlertService } from '../../../../modules/alert/alert.service';
     styleUrls: ['./products.list.component.scss']
 })
 export class ProductsListComponent implements OnInit {
-    private products: Product[];
+    public products: Product[];
 
     constructor(
         private productsService: ProductsService,

@@ -26,11 +26,11 @@ import { ResultCode } from '../../../../../../../datatypes/result';
 export class SupplyEditComponent extends ValidableForm implements OnInit, OnDestroy {
     private paramsSub: Subscription;
 
-    private providers: Provider[];
-    private units: Unit[];
+    public providers: Provider[];
+    public units: Unit[];
     private imageFile: GVFile;
     private category: string = 'insumos';
-    private convertibleUnits: UnitsConvertion[];
+    public convertibleUnits: UnitsConvertion[];
 
     constructor(
         fb: FormBuilder,
@@ -151,7 +151,7 @@ export class SupplyEditComponent extends ValidableForm implements OnInit, OnDest
         }
     }
 
-    protected existUnitsConversions(idUnit: number): boolean {
+    public existUnitsConversions(idUnit: number): boolean {
         let exists: boolean = false;
 
         var unitsLoaded = !!this.units && (!!this.units.find(u => u.id == idUnit) || !!this.convertibleUnits.find(cu => cu.idUnit == idUnit));
@@ -176,7 +176,7 @@ export class SupplyEditComponent extends ValidableForm implements OnInit, OnDest
         return conversions;
     }
 
-    protected getImage() {
+    public getImage() {
         var supply = super.getModel<Supply>({ 'price_date': NgbDateFormatter.unformatDate });
         return !!this.imageFile
             ? this.domSanitizer.bypassSecurityTrustUrl(
@@ -185,7 +185,7 @@ export class SupplyEditComponent extends ValidableForm implements OnInit, OnDest
             : 'images/' + this.category + '/' + this.imagesService.getSmallImage(supply.path_image);
     }
 
-    protected handleSelected(file: GVFile): void {
+    public handleSelected(file: GVFile): void {
         if (!!file) {
             this.imageFile = file;
         }

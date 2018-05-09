@@ -14,13 +14,14 @@ import { ResultCode } from '../../../../../../datatypes/result';
 })
 export class TemplatesRoutesComponent implements OnInit {
     private deletingPos: boolean;
-    private templateRoute: TemplateRoute;
+    public templateRoute: TemplateRoute;
     private POS: PointOfSale;
     private routeTemplateName: string;
     private pointsOfSaleRoute: PointOfSale[];
     private pointsOfSale: PointOfSale[];
     private templates: any[];
-    private typeOfView: number = 1;
+    public typeOfView: number = 1;
+
     constructor(
         private templateRouteService: TemplatesRoutesService,
         private routeService: RouteService,
