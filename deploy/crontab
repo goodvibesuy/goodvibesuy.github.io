@@ -1,1 +1,1 @@
-* */6 * * * /root/src/goodvibesuy.github.io/build/backup.sh > /root/db-backup/logs/backup.out 2> /root/db-backup/logs/backup.err
+* */6 * * * /root/src/goodvibesuy.github.io/deploy/backup.sh > /root/db-backup/logs/backup.out 2> /root/db-backup/logs/backup.err
