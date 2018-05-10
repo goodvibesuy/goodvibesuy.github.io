@@ -6,6 +6,7 @@ import { ProductsService } from '../../../services/products.service';
 import { Product } from '../../../../../../datatypes/product';
 import { AuthenticateService } from '../../../services/authenticate.service';
 import { ViewingService } from '../../../services/viewing.service';
+import { UsersService } from '../../../services/users.service';
 
 @Component({
     selector: 'app-mapa',
@@ -25,7 +26,8 @@ export class MapaComponent implements OnInit {
         private route: ActivatedRoute,
         private routeService: RouteService,
         private authenticateService: AuthenticateService,
-        private viewingService: ViewingService
+        private viewingService: ViewingService,
+        private userService:UsersService
     ) {
         this.stock = new Array<{ product: Product, quantity: number }>();
     }
@@ -38,13 +40,21 @@ export class MapaComponent implements OnInit {
                 } else {
                     this.pointsOfSale = new Array<PointOfSale>();
                     let userSaved = localStorage.getItem('user');
-                    this.routeService.getRoutesByUserId(5).subscribe(
-                        response => {
-                            this.routes = response;
-                            console.log(response);
+
+                    this.userService.getCurrentUser().subscribe(
+                        response =>
+                        {
+                            if (response.result > 0){
+                                let userId = response.data[0].id;
+                                this.routeService.getRoutesByUserId(userId).subscribe(
+                                    responseRoutes => {
+                                        this.routes = responseRoutes;
+                                    }
+                                );
+                                this.showRoute(Number(this.route.snapshot.paramMap.get('idRoute')));
+                            }                            
                         }
-                    );
-                    this.showRoute(Number(this.route.snapshot.paramMap.get('idRoute')));
+                    );                    
                 }
             });
     }

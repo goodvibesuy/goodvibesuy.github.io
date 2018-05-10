@@ -54,7 +54,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/api', routes);
 app.use('/api/authenticate',authenticate);
-app.use('/api/users', users);
+app.use('/api/users', users.routes());
 app.use('/api/pointOfSail', pointOfSail);
 app.use('/api/units', units);
 app.use('/api/supplies', supplies.routes());

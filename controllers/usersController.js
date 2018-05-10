@@ -19,7 +19,7 @@ var UserController = /** @class */ (function (_super) {
     function UserController() {
         var _this = _super.call(this) || this;
         _this.getAll = function (req, res) {
-            _this.verifyAccess(req, res, "users", function (dbName) {
+            _this.verifyAccess(req, res, _this.resource, function (dbName) {
                 _this.userModel.users(dbName, function (result) {
                     res.send(result);
                 });
@@ -30,10 +30,18 @@ var UserController = /** @class */ (function (_super) {
                 res.send(result);
             });
         };
+        _this.getUserByUserName = function (req, res) {
+            _this.verifyAccess(req, res, _this.resource, function (dbName) {
+                _this.userModel.userByUserName(req.headers['user'], dbName, function (result) {
+                    res.send(result);
+                });
+            });
+        };
         _this.userModel = new userModel_1.UserModel();
+        _this.resource = "users";
         return _this;
     }
     return UserController;
 }(mainController_1.MainController));
-module.exports = new UserController();
+exports.UserController = UserController;
 //# sourceMappingURL=usersController.js.map

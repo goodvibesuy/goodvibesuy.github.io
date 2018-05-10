@@ -11,6 +11,13 @@ export class UsersService {
 	constructor(private http: HttpClient) {}
 
 	get(): Observable<User[]> {
+        console.log((this.userUrl));
 		return this.http.get<User[]>(this.userUrl).pipe(map(r => (<any>r).data));
-	}
+    }
+    
+    getCurrentUser(): Observable<any> {
+        console.log(this.userUrl + "byUserName");
+		return this.http.get(this.userUrl + "byUserName");
+    }
+
 }

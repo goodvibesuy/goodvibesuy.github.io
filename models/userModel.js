@@ -40,7 +40,7 @@ var UserModel = /** @class */ (function () {
                 console.error(err);
             }
             else {
-                con.query("SELECT * FROM users WHERE user_name = ?", [username], function (err, result) {
+                con.query("SELECT id,user_name,firstname,lastname,rol_id FROM users WHERE user_name = ?", [username], function (err, result) {
                     if (err) {
                         con.release();
                         console.log(err);

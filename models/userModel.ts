@@ -39,7 +39,7 @@ export class UserModel {
                 con.release();
                 console.error(err);
             } else {
-                con.query("SELECT * FROM users WHERE user_name = ?", [username], function (err: any, result: any) {
+                con.query("SELECT id,user_name,firstname,lastname,rol_id FROM users WHERE user_name = ?", [username], function (err: any, result: any) {
                     if (err) {
                         con.release();
                         console.log(err);

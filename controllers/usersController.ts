@@ -3,15 +3,17 @@ var acl = require('../motionLibJS/serverSide/acl/motionACL');
 import { UserModel } from '../models/userModel';
 import { MainController } from './mainController';
 
-class UserController extends MainController {
+export class UserController extends MainController {
     private userModel: UserModel;
+    private resource: string;
     constructor() {
         super();
         this.userModel = new UserModel();
+        this.resource = "users";
     }
 
     public getAll = (req: any, res: any): void => {
-        this.verifyAccess(req, res, "users",
+        this.verifyAccess(req, res, this.resource,
             (dbName: string) => {
                 this.userModel.users(dbName, function (result: any) {
                     res.send(result);
@@ -26,6 +28,15 @@ class UserController extends MainController {
             res.send(result);
         });
     }
-}
 
-module.exports = new UserController();
+    public getUserByUserName = (req: any, res: any): void => {
+        this.verifyAccess(req, res, this.resource,
+            (dbName: string) => {
+                this.userModel.userByUserName(req.headers['user'],dbName,function(result:any){
+                    res.send(result);
+                });
+            }
+        )
+    }
+    
+}
