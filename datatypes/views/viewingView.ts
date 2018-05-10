@@ -6,9 +6,16 @@ export class ViewingView {
     private pos: PointOfSale;
     private lines: LineViewingView[];
 
+    
+    private results:any[];
+    
+
     constructor() {
+        
         this.lines = new Array<LineViewingView>();
+        this.results = new Array();
     }
+
 
     public setDate(date: Date): void {
         this.date = date;
@@ -35,13 +42,30 @@ export class ViewingView {
         return line;
     }
 
-    public getTotalTransactionByProductByType(idProduct: number, type: string): number {
+    public getTotalTransactionByProductByType(idProduct: number, type: string): number {        
         var quantity = 0;
-        for (let i = 0; i < this.lines.length; i++) {
-            if (this.lines[i].getTransactionByProductByType(idProduct, type)[0] !== undefined) {
-                quantity += this.lines[i].getTransactionByProductByType(idProduct, type)[0].quantity;
+        if(this.results[type] === undefined){
+            this.results[type] = new Array();
+            if(this.results[type][idProduct] === undefined){                
+                for (let i = 0; i < this.lines.length; i++) {
+                    if (this.lines[i].getTransactionByProductByType(idProduct, type)[0] !== undefined) {
+                        quantity += this.lines[i].getTransactionByProductByType(idProduct, type)[0].quantity;
+                    }
+                }                
+                this.results[type][idProduct] =  quantity;
             }
-        }
+        }else{
+            if(this.results[type][idProduct] === undefined){                
+                for (let i = 0; i < this.lines.length; i++) {
+                    if (this.lines[i].getTransactionByProductByType(idProduct, type)[0] !== undefined) {
+                        quantity += this.lines[i].getTransactionByProductByType(idProduct, type)[0].quantity;
+                    }
+                }                
+                this.results[type][idProduct] =  quantity;
+            }else{
+                quantity = this.results[type][idProduct];
+            }
+        }        
         return quantity;
     }
 

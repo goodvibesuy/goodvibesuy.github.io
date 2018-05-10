@@ -6,7 +6,7 @@
     "configurations": [
         {
 
-            "program": "${workspaceFolder}\/bin\/www",
+            "program": "${workspaceFolder}\/bin\/www_dev",
             "type": "node",
             "request": "launch",
             "preLaunchTask": "tsc_compiler",

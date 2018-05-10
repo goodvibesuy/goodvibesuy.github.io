@@ -38,12 +38,19 @@ export class ReporteViewingComponent implements OnInit {
     public ocultarDetalles: boolean;
     public groupPOS: any[];
 
+    currentView:number = 0
+
     constructor(private viewingsService: ViewingService,
         private posService: PointOfSaleService,
         private productsService: ProductsService,
         private groupPOSService: GroupPosService
     ) {
         this.ocultarDetalles = window.innerWidth < 400;
+    }
+
+    changeTab(index:number):void{
+        this.currentView = index;
+        console.log(index);
     }
 
     search() {
