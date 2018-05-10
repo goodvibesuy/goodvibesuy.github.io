@@ -49,6 +49,7 @@ export class ClientFormComponent extends ValidableForm implements OnInit {
     }
 
     ngOnInit() {
+
         this.isAdding = true;
         this.paramsSub = this.activatedRoute.params.subscribe(
             params => {
@@ -71,6 +72,10 @@ export class ClientFormComponent extends ValidableForm implements OnInit {
                             this.alertService.error('Error obteniendo datos del servidor.');
                         }
                     );
+                } else {
+                    const defaultLat: number = -34.909664;
+                    const defaultLong: number = -56.163319;
+                    this.initMap({x:defaultLat,y:defaultLong});
                 }
 
                 this.titleForm = !!id ? 'Actualizar ' : 'Agregar ';
@@ -144,6 +149,7 @@ export class ClientFormComponent extends ValidableForm implements OnInit {
     }
 
     private initMap(coord) {
+        console.log(coord);
         const defaultLat: number = -34.909664;
         const defaultLong: number = -56.163319;
 
