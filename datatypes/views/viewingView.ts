@@ -48,8 +48,9 @@ export class ViewingView {
             this.results[type] = new Array();
             if(this.results[type][idProduct] === undefined){                
                 for (let i = 0; i < this.lines.length; i++) {
-                    if (this.lines[i].getTransactionByProductByType(idProduct, type)[0] !== undefined) {
-                        quantity += this.lines[i].getTransactionByProductByType(idProduct, type)[0].quantity;
+                    let tpt = this.lines[i].getTransactionByProductByType(idProduct, type)[0];
+                    if ( tpt !== undefined) {
+                        quantity += tpt.quantity;
                     }
                 }                
                 this.results[type][idProduct] =  quantity;
@@ -57,8 +58,9 @@ export class ViewingView {
         }else{
             if(this.results[type][idProduct] === undefined){                
                 for (let i = 0; i < this.lines.length; i++) {
-                    if (this.lines[i].getTransactionByProductByType(idProduct, type)[0] !== undefined) {
-                        quantity += this.lines[i].getTransactionByProductByType(idProduct, type)[0].quantity;
+                    let tpt = this.lines[i].getTransactionByProductByType(idProduct, type)[0];
+                    if ( tpt !== undefined) {
+                        quantity += tpt.quantity;
                     }
                 }                
                 this.results[type][idProduct] =  quantity;
