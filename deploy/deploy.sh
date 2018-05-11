@@ -47,8 +47,8 @@ echo "current dir: $(pwd)"
 echo ""
 
 echo "***************************"
-echo "Paso 6/9 Compilando angular: ng build"
-ng build --locale es-UY 
+echo "Paso 6/9 Compilando angular: ng build --prod"
+ng build --prod --locale es-UY 
 echo "current dir: $(pwd)"
 echo ""
 
