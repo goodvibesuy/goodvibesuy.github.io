@@ -1,6 +1,6 @@
-import { CustomerType } from "./customer";
+import { Customer, CustomerType } from "./customer";
 
-export class PointOfSale {
+export class PointOfSale  {
     id: number;
     name: string;
     address: string;

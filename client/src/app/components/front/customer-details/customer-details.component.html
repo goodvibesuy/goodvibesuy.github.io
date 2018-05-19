@@ -1,0 +1,33 @@
+<div>
+    <div>
+        <br/>
+        <b><label>Detalle {{ IsClientCustomer ? ' del cliente' : ' de la empresa'}}</label></b>
+        <br/>
+        <div class="container">
+            <div class="row" *ngIf="client">
+                <div class="col">Nombre</div>
+                <div class="col">{{client.name}} {{client.lastName}}</div>
+            </div>
+            <div class="row" *ngIf="pointOfSale">
+                <div class="col">Contacto</div>
+                <div class="col">{{pointOfSale.contactName}}</div>
+            </div>
+            <div class="row" *ngIf="pointOfSale">
+                <div class="col">RUT</div>
+                <div class="col">{{pointOfSale.RUT}}</div>
+            </div>
+            <div class="row" *ngIf="pointOfSale">
+                <div class="col">Razón Social</div>
+                <div class="col">{{pointOfSale.businessName}}</div>
+            </div>
+            <div class="row">
+                <div class="col">Dirección</div>
+                <div class="col">{{customer.address}}</div>
+            </div>
+            <div class="row">
+                <div class="col">Teléfono</div>
+                <div class="col">{{customer.tel}}</div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,38 @@
+<div style="margin:20px;" *ngIf="wasVisited">
+    <div class="alert alert-success">
+        <strong>La visita ya fue registrada</strong> {{viewingVisited.date | date:'dd/MM/yyyy HH:mm'}}Hs
+    </div>
+
+    <div *ngIf="viewingVisited.getLines()[0] !== undefined" class="row" style="margin-left: 10px;margin-right: 10px;">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col"></div>
+                <div class="col" *ngFor="let vpt of viewingProductTypes">{{vpt.label}}</div>
+            </div>
+            <div class="row align-items-center" *ngFor="let product of productsToSend">
+                <div class="col productos-info">
+                    <div class="productos-image">
+                        <img src="images/productos/{{product.path_image}}">
+                    </div>
+                    <div class="productos-title">
+                        <label>{{product.name}}</label>
+                    </div>
+                </div>
+                <ng-container *ngFor="let vpt of viewingProductTypes">
+                    <div class="col" *ngIf="viewingVisited.getLines()[0].getTransactionByProductByType(product.id,vpt.name)[0] !== undefined">
+                        <span>{{viewingVisited.getLines()[0].getTransactionByProductByType(product.id,vpt.name)[0].quantity}}</span>
+                    </div>
+                </ng-container>
+            </div>
+        </div>
+    </div>
+
+    <a routerLink="/mapa/{{currentRoute}}">Volver al recorrido</a>
+</div>
+
+<div style="margin:20px;" *ngIf="submittedSuccessfully">
+    <div class="alert alert-success">
+        <strong>La visita se registro correctamente</strong>
+    </div>
+    <a routerLink="/mapa/{{currentRoute}}">Volver al recorrido</a>
+</div>

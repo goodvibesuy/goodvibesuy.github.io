@@ -35,30 +35,20 @@
             <div>
                 <textarea class="form-control" [(ngModel)]="annotation" id="annotation"></textarea>
             </div>
+
+            
+
+            <!-- <delivery-billing-details customer="customer" delivery="delivery" /> -->
+            
+            <!-- REEMPLAZAR CODIGO COMENTADO CON:
+                        
+                                a su vez ese component podría tener
+                                    <customer-details customer="customer" />
+                                    <delivery-details delivery="delivery" />
+            -->
+
             <div>
-                <div *ngIf="pointOfSale">
-                    <br/>
-                    <b>Detalle de la empresa</b>
-                    <br/>
-                    <div class="container">
-                        <div class="row">
-                            <div class="col">Contacto</div>
-                            <div class="col">{{pointOfSale.contactName}}</div>
-                        </div>
-                        <div class="row">
-                            <div class="col">RUT</div>
-                            <div class="col">{{pointOfSale.RUT}}</div>
-                        </div>
-                        <div class="row">
-                            <div class="col">Razón Social</div>
-                            <div class="col">{{pointOfSale.businessName}}</div>
-                        </div>
-                        <div class="row">
-                            <div class="col">Dirección</div>
-                            <div class="col">{{pointOfSale.address}}</div>
-                        </div>
-                    </div>
-                </div>
+                <customer-details [customer]="customer"></customer-details>
                 <div>
                     <br/>
                     <b>Detalle a facturar</b>
@@ -96,6 +86,8 @@
                     </div>
                 </div>
             </div>
+
+
         </div>
         <div class="filters flex d-flex justify-content-around content-center content-between">
             <button type="button" class="btn btn-secondary btn-lg" routerLink="/mapa/{{currentRoute}}">Cancelar</button>
@@ -103,6 +95,12 @@
         </div>
     </div>
 
+     <!--<delivered-products-form delivered-products="deliveredProducts" />
+   
+        REEMPLAZAR CODIGO COMENTADO POR: verificar si esto podría ser así (recordar que a visita se puede editar)
+            <delivered-products-form delivered-products="delivered-products" />
+
+        TODO: agregar un boton: volver al recorrido
     <div style="margin:20px;" *ngIf="wasVisited">
         <div class="alert alert-success">
             <strong>La visita ya fue registrada</strong> {{viewingVisited.date | date:'dd/MM/yyyy HH:mm'}}Hs
@@ -134,7 +132,7 @@
 
         <a routerLink="/mapa/{{currentRoute}}">Volver al recorrido</a>
     </div>
-
+    -->
     <div style="margin:20px;" *ngIf="submittedSuccessfully">
         <div class="alert alert-success">
             <strong>La visita se registro correctamente</strong>

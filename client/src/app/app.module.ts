@@ -25,8 +25,10 @@ import { ProductEditComponent } from './components/adm/products/edit/product.edi
 import { ProductAddComponent } from './components/adm/products/add/product.add.component';
 // Mapa
 import { MapaComponent } from './components/front/mapa/mapa.component';
-// Detalle local
-import { DetalleLocalComponent } from './components/front/detalle-local/detalle-local.component';
+// Customer details
+import { CustomerDetailsComponent } from './components/front/customer-details/customer-details.component';
+// ProductsDeliveryForm
+import { ProductsDeliveryFormComponent } from './components/front/products-delivery/products-delivery-form.component';
 // Configs
 import { ConfigsComponent } from './components/configs/configs.component';
 // Routes
@@ -108,7 +110,7 @@ import { PurchaseOfSuppliesComponent } from './components/front/purchase-of-supp
         SupplyEditComponent,
         SupplyAddComponent,
         MapaComponent,
-        DetalleLocalComponent,
+        ProductsDeliveryFormComponent,
         ConfigsComponent,
         RoutesComponent,
         ListComponent,
@@ -132,7 +134,8 @@ import { PurchaseOfSuppliesComponent } from './components/front/purchase-of-supp
         PieChartComponent,
         KpiSalesPosComponent,
         KpiSaleReturnsGroupPosComponent,
-        PurchaseOfSuppliesComponent
+        PurchaseOfSuppliesComponent,
+        CustomerDetailsComponent
     ],
     imports: [
         BrowserModule,

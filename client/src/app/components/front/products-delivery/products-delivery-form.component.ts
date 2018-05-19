@@ -17,25 +17,24 @@ import { AlertService } from '../../../modules/alert/alert.service';
 
 
 @Component({
-    selector: 'app-detalle-local',
-    templateUrl: './detalle-local.component.html',
-    styleUrls: ['./detalle-local.component.css']
+    templateUrl: './products-delivery-form.component.html',
+    styleUrls: ['./products-delivery-form.component.css']
 })
-export class DetalleLocalComponent implements OnInit {
+export class ProductsDeliveryFormComponent implements OnInit {
+    
     private params: any;
     private id: number;
     private pointOfSale: PointOfSale;
     public customer: Customer;
-    private products: Product[];
-    private productsToSend: any[];
-    private annotation: string = '';
-    private unitePrice: number = 64;
-    private submittedSuccessfully: boolean = false;
+    public products: Product[];
+    public productsToSend: any[];
+    public annotation: string = '';
+    public unitePrice: number = 64;
+    public submittedSuccessfully: boolean = false;
     private wasVisited: boolean = false;
-    private currentRoute: number = -1;
+    public currentRoute: number = -1;
     private viewingVisited: ViewingView;
-    private viewingProductTypes: any[];
-
+    public viewingProductTypes: any[];
 
     constructor(
         private route: ActivatedRoute,
@@ -112,6 +111,21 @@ export class DetalleLocalComponent implements OnInit {
         )
     }
 
+    quantity(typeTransaction: string): number {
+        let sum = 0;
+        if (this.productsToSend !== undefined) {
+            for (let i = 0; i < this.productsToSend.length; i++) {
+                sum += this.productsToSend[i].typeTransaction[typeTransaction]
+            }
+        }
+        return sum;
+    }
+
+    getProductQuantityById(idProduct: number): any {
+        let p = this.productsToSend.filter(input => input.id === idProduct)[0];
+        return p.typeTransaction.delivery - p.typeTransaction.return;
+    }
+    
     subtotal():number{
         let subTotalInvoice = 0;
         for(let i = 0 ; i < this.viewingProductTypes.length; i++ ){
@@ -138,43 +152,14 @@ export class DetalleLocalComponent implements OnInit {
         return totalInvoice * this.unitePrice * IVA;
     }
 
-
-    quantity(typeTransaction: string): number {
-        let sum = 0;
-        if (this.productsToSend !== undefined) {
-            for (let i = 0; i < this.productsToSend.length; i++) {
-                sum += this.productsToSend[i].typeTransaction[typeTransaction]
-            }
-        }
-        return sum;
-    }
-
-    getProductQuantityById(idProduct: number): any {
-        let p = this.productsToSend.filter(input => input.id === idProduct)[0];
-        return p.typeTransaction.delivery - p.typeTransaction.return;
-    }
-
     loadCustomer(id: number): void {
         var c: Customer;
         this.customerService.get(id).subscribe(
             result => {
                 this.customer = result.data;
-                if (this.customer.type == CustomerType.PointOfSale) {
-                    this.loadPointOfSale(id);
-                }
-            },
-            error => {
-                console.error(error);
-                this.alertService.error('Error cargando datos del servidor.');
-            }
-        );
-    }
-
-    loadPointOfSale(id: Number): void {
-        var pos: PointOfSale;
-        this.pointOfSaleService.getPointOfSale(id).subscribe(
-            result => {
-                this.pointOfSale = result.data;
+                // if (this.customer.type == CustomerType.PointOfSale) {
+                //     this.loadPointOfSale(id);
+                // }
             },
             error => {
                 console.error(error);
