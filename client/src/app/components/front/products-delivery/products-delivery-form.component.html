@@ -4,7 +4,11 @@
         <div style="clear: both;"></div>
         <div class="head-image">
             <img *ngIf="customer && customer.image !== '' && customer.image !== null" src="images/locales/{{customer.image}}" />
-            <i *ngIf="customer && (customer.image === '' || customer.image === null)" class="fa fa-home" style="font-size: 3.0em;"></i>
+            
+            <div *ngIf="customer && (customer.image === '' || customer.image === null)">
+                <i *ngIf="customer.type==1" class="fa fa-home" style="font-size: 3.0em;"></i>
+                <i *ngIf="customer.type==2" class="fa fa-smile-o" style="font-size: 3.0em;"></i>
+            </div>
         </div>
     </div>
 

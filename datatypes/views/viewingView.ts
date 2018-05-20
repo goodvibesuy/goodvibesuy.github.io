@@ -2,7 +2,7 @@ import { PointOfSale } from '../pointOfSale';
 import { LineViewingView } from "./lineViewingView";
 
 export class ViewingView {
-    private date: Date;
+    public date: Date;
     private pos: PointOfSale;
     private lines: LineViewingView[];
 
