@@ -31,9 +31,9 @@ export class ProductsDeliveryFormComponent implements OnInit {
     public annotation: string = '';
     public unitePrice: number = 64;
     public submittedSuccessfully: boolean = false;
-    private wasVisited: boolean = false;
+    public wasVisited: boolean = false;
     public currentRoute: number = -1;
-    private viewingVisited: ViewingView;
+    public viewingVisited: ViewingView;
     public viewingProductTypes: any[];
 
     constructor(

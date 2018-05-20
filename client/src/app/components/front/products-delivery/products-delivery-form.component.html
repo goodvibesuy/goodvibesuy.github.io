@@ -36,8 +36,6 @@
                 <textarea class="form-control" [(ngModel)]="annotation" id="annotation"></textarea>
             </div>
 
-            
-
             <!-- <delivery-billing-details customer="customer" delivery="delivery" /> -->
             
             <!-- REEMPLAZAR CODIGO COMENTADO CON:
@@ -101,6 +99,7 @@
             <delivered-products-form delivered-products="delivered-products" />
 
         TODO: agregar un boton: volver al recorrido
+     -->
     <div style="margin:20px;" *ngIf="wasVisited">
         <div class="alert alert-success">
             <strong>La visita ya fue registrada</strong> {{viewingVisited.date | date:'dd/MM/yyyy HH:mm'}}Hs
@@ -132,7 +131,7 @@
 
         <a routerLink="/mapa/{{currentRoute}}">Volver al recorrido</a>
     </div>
-    -->
+    <!---->
     <div style="margin:20px;" *ngIf="submittedSuccessfully">
         <div class="alert alert-success">
             <strong>La visita se registro correctamente</strong>
