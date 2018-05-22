@@ -40,8 +40,8 @@ export class TravelModel extends MainModel {
                 con.beginTransaction(function (err: any) {
                     //year: 2018, month: 4, day: 1
                     var d = <any>route.date;
-                    var dateRoute = d.year + "-" + (d.month + 1) + "-" + d.day;
-                    con.query("INSERT INTO route (name,date) VALUES (?,?)", [route.name, dateRoute], function (err: any, result: any) {
+                    var dateRoute = d.year + "-" + d.month + "-" + d.day;
+                    con.query("INSERT INTO route (name, date) VALUES (?,?)", [route.name, dateRoute], function (err: any, result: any) {
                         if (err) {
                             con.rollback(function () {
                                 console.log(err);
