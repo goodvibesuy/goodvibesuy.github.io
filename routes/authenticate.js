@@ -2,7 +2,9 @@ var express = require('express');
 var router = express.Router();
 
 var MasterConnectionsBD = require('../bd/masterConnectionsBD');
-var usersController = require('../controllers/usersController');
+var userControllerFactory = require('../controllers/usersController');
+
+var userController = new userControllerFactory.UserController();
 
 var masterDBController = MasterConnectionsBD.getController();
 
@@ -17,7 +19,7 @@ router.post('/login', function (req, res, next) {
                 masterDBController.verifySession(loginresponse.user.userName, loginresponse.tokenId,
                     loginresponse.accounts[0].id, function (err, authError, response, dbName) {
 
-                        usersController.getUserByIdMaster(loginresponse.user.id,loginresponse.tokenId,loginresponse.user.userName,
+                        userController.getUserByIdMaster(loginresponse.user.id,loginresponse.tokenId,loginresponse.user.userName,
                                                             loginresponse.user.rolId,loginresponse.accounts[0].id,dbName,req,res);
                         /*
                         var con = clientDBController.getUserConnection(dbName);
