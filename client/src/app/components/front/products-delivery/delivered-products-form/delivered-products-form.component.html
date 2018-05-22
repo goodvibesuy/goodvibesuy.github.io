@@ -2,6 +2,7 @@
     <div class="alert alert-success">
         <strong>La visita ya fue registrada</strong> {{viewingVisited.date | date:'dd/MM/yyyy HH:mm'}}Hs
     </div>
+    <a routerLink="/mapa/{{currentRoute}}">Volver al recorrido</a>
 
     <div *ngIf="viewingVisited.getLines()[0] !== undefined" class="row" style="margin-left: 10px;margin-right: 10px;">
         <div class="container">
