@@ -20,7 +20,7 @@ echo "***************************"
 echo "Paso 2/3 Copiar de respaldo del código: cp github github_backup"
 echo ""
 cd ..
-cp -rf goodvibesuy.github.io/ goodvibesuy.github.io_backup_$(date +%Y-%m-%d-%H.%M.%S)
+cp -rf goodvibesuy.github.io/ goodvibesuy_backups/goodvibesuy.github.io_backup_$(date +%Y-%m-%d-%H.%M.%S)
 ls
 echo "current dir: $(pwd)"
 echo ""

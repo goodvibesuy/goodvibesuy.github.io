@@ -26,10 +26,10 @@ import { Customer } from '../../../../../../../datatypes/customer';
 export class RouteAdd implements OnInit {
     public newRoute: Route;
     private route: RouteModel;
-    private users: User[];
+    public users: User[];
     public templatesRoutes: TemplateRoute[];
-    private pointsOfSales: PointOfSale[];
-    private clients: Client[];
+    public pointsOfSales: PointOfSale[];
+    public clients: Client[];
     private products: Product[];
     public templateSelected: TemplateRoute;
     public POSSelected: PointOfSale;

@@ -6,6 +6,7 @@ export interface Client {
     lastName: string;
     address: string;    
     tel: string;
+    image: string;
     idGroup: number;
     coord?: { lat(): number; lng(): number; };
     type: CustomerType;
