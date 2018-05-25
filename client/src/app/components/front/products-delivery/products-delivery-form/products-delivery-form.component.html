@@ -1,0 +1,40 @@
+<div class="detalle-local-info">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col"></div>
+            <div class="col" *ngFor="let vpt of viewingProductTypes">{{vpt.label}}</div>
+        </div>
+        <div class="row align-items-center" *ngFor="let product of productsToSend">
+            <div class="col productos-info">
+                <div class="productos-image">
+                    <img src="images/productos/{{product.path_image}}">
+                </div>
+                <div class="productos-title">
+                    <label>{{product.name}}</label>
+                </div>
+            </div>
+            <div class="col" *ngFor="let vpt of viewingProductTypes">
+                <input type="number" style="margin:auto;" class="detalle-input form-control" [(ngModel)]="product.typeTransaction[vpt.name]"
+                     (ngModelChange)="saveProductData()">
+            </div>
+        </div>
+        <div class="row align-items-center">
+            <div class="col"></div>
+            <div class="col" *ngFor="let vpt of viewingProductTypes">{{quantity(vpt.name)}}</div>
+        </div>
+        <div>
+            <textarea class="form-control" [(ngModel)]="annotation" id="annotation"></textarea>
+        </div>
+
+        <div>
+            <customer-details [customer]="customer"></customer-details>
+            <billing-details [viewing-product-types]="viewingProductTypes" [products]="products" [products-to-send]="productsToSend"
+                [unite-price]="unitePrice"></billing-details>
+        </div>
+    </div>
+
+    <div class="filters flex d-flex justify-content-around content-center content-between">
+        <button type="button" class="btn btn-secondary btn-lg" routerLink="/mapa/{{currentRoute}}">Cancelar</button>
+        <button type="button" (click)="actualizar()" class="btn btn-success btn-lg">Agregar Visita</button>
+    </div>
+</div>

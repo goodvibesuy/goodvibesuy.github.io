@@ -1,0 +1,29 @@
+<div class="detalle-local border" *ngIf="!!customer">
+    <div class="detalle-local-header flex flex-wrap d-flex justify-content-around content-center content-between">
+        <div style="width:100%; text-align: center;">{{customer.name}}</div>
+        <div style="clear: both;"></div>
+        <div class="head-image">
+            <img *ngIf="customer && customer.image !== '' && customer.image !== null" src="images/locales/{{customer.image}}" />
+
+            <div *ngIf="customer && (customer.image === '' || customer.image === null)">
+                <i *ngIf="customer.type==1" class="fa fa-home" style="font-size: 3.0em;"></i>
+                <i *ngIf="customer.type==2" class="fa fa-user-o" style="font-size: 3.0em;"></i>
+            </div>
+        </div>
+    </div>
+
+    <products-delivery-form *ngIf="!submittedSuccessfully && !wasVisited" [customer]="customer" [viewing-product-types]="viewingProductTypes"
+        [products]="products" [products-to-send]="productsToSend" [unite-price]="unitePrice" [id-route]="currentRoute" [(annotation)]="annotation"
+        (agregar)="agregar()" (saveData)="saveData()">
+    </products-delivery-form>
+
+    <delivered-products [id-viewing]="idViewing" [id-route]="currentRoute" *ngIf="wasVisited" [viewing-product-types]="viewingProductTypes"
+        [products-to-send]="productsToSend"></delivered-products>
+
+    <div style="margin:20px;" *ngIf="submittedSuccessfully">
+        <div class="alert alert-success">
+            <strong>La visita se registro correctamente</strong>
+        </div>
+        <a routerLink="/mapa/{{currentRoute}}">Volver al recorrido</a>
+    </div>
+</div>

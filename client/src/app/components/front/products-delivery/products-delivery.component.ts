@@ -11,17 +11,14 @@ import { ViewingService } from '../../../services/viewing.service';
 import { Product } from '../../../../../../datatypes/product';
 import { PointOfSale } from '../../../../../../datatypes/pointOfSale';
 import { ViewingView } from '../../../../../../datatypes/views/viewingView';
-import { LineViewingView } from '../../../../../../datatypes/views/lineViewingView';
 import { Customer, CustomerType } from '../../../../../../datatypes/customer';
 import { AlertService } from '../../../modules/alert/alert.service';
 
-
 @Component({
-    templateUrl: './products-delivery-form.component.html',
-    styleUrls: ['./products-delivery-form.component.css']
+    templateUrl: './products-delivery.component.html'
 })
-export class ProductsDeliveryFormComponent implements OnInit {
-    
+export class ProductsDeliveryComponent implements OnInit {
+
     private params: any;
     private id: number;
     private pointOfSale: PointOfSale;
@@ -33,8 +30,8 @@ export class ProductsDeliveryFormComponent implements OnInit {
     public submittedSuccessfully: boolean = false;
     public wasVisited: boolean = false;
     public currentRoute: number = -1;
-    public viewingVisited: ViewingView;
     public viewingProductTypes: any[];
+    public idViewing: number;
 
     constructor(
         private route: ActivatedRoute,
@@ -51,54 +48,30 @@ export class ProductsDeliveryFormComponent implements OnInit {
 
     ngOnInit(): void {
 
+        var idCustomer: number = parseInt(this.route.snapshot.paramMap.get('id'));
+        var idRoute: number = parseInt(this.route.snapshot.paramMap.get('idRoute'));
+
+        this.currentRoute = idRoute;
+
         this.viewingService.getViewingProductTypes().subscribe(
             response => {
                 if (response.result > 0) {
                     this.viewingProductTypes = response.data;
-                    console.log(JSON.parse(localStorage.getItem("productsToSend")));
-                    this.viewingVisited = new ViewingView();
-                    this.loadCustomer(Number(this.route.snapshot.paramMap.get('id')));
 
-                    /////////////
-                    //
-                    // TODO: OJO !! CON EL 2 
-                    //
-                    ////////////
-                    const DOS: number = 2;
-                    this.productService.getPriceByProductByPOS(DOS, Number(this.route.snapshot.paramMap.get('id'))).subscribe(
-                        response => {
-                            console.log(response);
-                            if (response.result > 0) {
-                                this.unitePrice = response.data[0].amount;
-                            }
-                        },
-                        error => {
-                            console.error(error);
-                            this.alertService.error('Error cargando datos del servidor.');
-                        }
-                    );
 
-                    this.currentRoute = Number(this.route.snapshot.paramMap.get('idRoute'));
+                    this.loadCustomer(idCustomer);
+                    this.loadUnitPrice(idCustomer);
+
                     this.getProducts();
 
-                    this.viewingService.wasVisited(this.currentRoute, Number(this.route.snapshot.paramMap.get('id'))).subscribe(
+                    this.viewingService.wasVisited(this.currentRoute, idCustomer).subscribe(
                         response => {
                             if (response.result === 1) {
                                 this.wasVisited = !!response.data && response.data.length > 0 &&
-                                    response.data[0].idViewing !== null;
-                            }
-
-                            if (this.wasVisited) {
-                                this.viewingService.getViewing(response.data[0].idViewing).subscribe(
-                                    response => {
-                                        this.viewingVisited.setDate(response.data[0].date);
-                                        let line: LineViewingView = new LineViewingView(response.data[0].date, null, 0);
-                                        line.setProducts(response.data[0].products);
-                                        line.setPointOfSale(response.data[0].pos);
-                                        this.viewingVisited.addLine(line);
-                                        console.log(this.viewingVisited);
-                                    }
-                                )
+                                                response.data[0].idViewing !== null;
+                                if (this.wasVisited) {
+                                    this.idViewing = response.data[0].idViewing;
+                                }
                             }
                         },
                         error => {
@@ -111,7 +84,7 @@ export class ProductsDeliveryFormComponent implements OnInit {
         )
     }
 
-    quantity(typeTransaction: string): number {
+    private quantity(typeTransaction: string): number {
         let sum = 0;
         if (this.productsToSend !== undefined) {
             for (let i = 0; i < this.productsToSend.length; i++) {
@@ -121,45 +94,11 @@ export class ProductsDeliveryFormComponent implements OnInit {
         return sum;
     }
 
-    getProductQuantityById(idProduct: number): any {
-        let p = this.productsToSend.filter(input => input.id === idProduct)[0];
-        return p.typeTransaction.delivery - p.typeTransaction.return;
-    }
-    
-    subtotal():number{
-        let subTotalInvoice = 0;
-        for(let i = 0 ; i < this.viewingProductTypes.length; i++ ){
-            subTotalInvoice += this.quantity(this.viewingProductTypes[i].name) * this.viewingProductTypes[i].score;
-        }
-        return subTotalInvoice * this.unitePrice;
-    }
-    
-    iva():number{
-        let IVA = 0.22;
-        let ivaInvoice = 0;
-        for(let i = 0 ; i < this.viewingProductTypes.length; i++ ){
-            ivaInvoice += this.quantity(this.viewingProductTypes[i].name) * this.viewingProductTypes[i].score;
-        }
-        return ivaInvoice * this.unitePrice * IVA;
-    }
-
-    total():number{
-        let IVA = 1.22;
-        let totalInvoice = 0;
-        for(let i = 0 ; i < this.viewingProductTypes.length; i++ ){
-            totalInvoice += this.quantity(this.viewingProductTypes[i].name) * this.viewingProductTypes[i].score;
-        }
-        return totalInvoice * this.unitePrice * IVA;
-    }
-
-    loadCustomer(id: number): void {
+    private loadCustomer(id: number): void {
         var c: Customer;
         this.customerService.get(id).subscribe(
             result => {
                 this.customer = result.data;
-                // if (this.customer.type == CustomerType.PointOfSale) {
-                //     this.loadPointOfSale(id);
-                // }
             },
             error => {
                 console.error(error);
@@ -168,7 +107,25 @@ export class ProductsDeliveryFormComponent implements OnInit {
         );
     }
 
-    getProducts(): void {
+    private loadUnitPrice(idCustomer: number) {
+        /////////////
+        //
+        // TODO: OJO !! CON EL 2 
+        //
+        ////////////
+        const DOS: number = 2;
+        this.productService.getPriceByProductByPOS(DOS, idCustomer).subscribe(response => {
+            console.log(response);
+            if (response.result > 0) {
+                this.unitePrice = response.data[0].amount;
+            }
+        }, error => {
+            console.error(error);
+            this.alertService.error('Error cargando datos del servidor.');
+        });
+    }
+
+    private getProducts(): void {
         this.productService.getAll().subscribe(
             response => {
                 this.products = response.data;
@@ -206,7 +163,7 @@ export class ProductsDeliveryFormComponent implements OnInit {
         );
     }
 
-    agregar(): void {
+    private agregar(): void {
         this.viewingService.addViewing(this.customer.id, this.productsToSend, this.annotation, this.customer.id, this.currentRoute).subscribe(
             response => {
                 if (response.result > 0) {

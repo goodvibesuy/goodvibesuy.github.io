@@ -1,8 +1,8 @@
-<div style="margin:20px;" *ngIf="wasVisited">
+<div style="margin:20px;">
     <div class="alert alert-success">
         <strong>La visita ya fue registrada</strong> {{viewingVisited.date | date:'dd/MM/yyyy HH:mm'}}Hs
     </div>
-    <a routerLink="/mapa/{{currentRoute}}">Volver al recorrido</a>
+    <a routerLink="/mapa/{{idRoute}}">Volver al recorrido</a>
 
     <div *ngIf="viewingVisited.getLines()[0] !== undefined" class="row" style="margin-left: 10px;margin-right: 10px;">
         <div class="container">
@@ -28,12 +28,5 @@
         </div>
     </div>
 
-    <a routerLink="/mapa/{{currentRoute}}">Volver al recorrido</a>
-</div>
-
-<div style="margin:20px;" *ngIf="submittedSuccessfully">
-    <div class="alert alert-success">
-        <strong>La visita se registro correctamente</strong>
-    </div>
-    <a routerLink="/mapa/{{currentRoute}}">Volver al recorrido</a>
+    <a routerLink="/mapa/{{idRoute}}">Volver al recorrido</a>
 </div>

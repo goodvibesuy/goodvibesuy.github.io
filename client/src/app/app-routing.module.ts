@@ -14,7 +14,7 @@ import { RouteAdd } from './components/adm/routes/route.add/route.add.component'
 import { RouteEdit } from './components/adm/routes/route.edit/route.edit.component';
 import { SupplyAddComponent } from './components/adm/supply/add/supply.add.component';
 import { MapaComponent } from './components/front/mapa/mapa.component';
-import { ProductsDeliveryFormComponent } from './components/front/products-delivery/products-delivery-form.component';
+import { ProductsDeliveryComponent } from './components/front/products-delivery/products-delivery.component';
 import { ConfigsComponent } from './components/configs/configs.component';
 import { ProductsComponent } from './components/adm/products/products.component';
 import { ProductsListComponent } from './components/adm/products/list/products.list.component';
@@ -35,7 +35,7 @@ import { ProviderListComponent } from './components/adm/provider/list/provider-l
 import { ProviderFormComponent } from './components/adm/provider/form/provider-form.component';
 import { PurchaseOfSuppliesComponent } from './components/front/purchase-of-supplies/purchase-of-supplies.component';
 // #endregion end imports
-
+ 
 const routes: Routes = [
     {
 		path: '',
@@ -129,11 +129,11 @@ const routes: Routes = [
 	},
 	{
 		path: 'detalle-local/:id/:idRoute',
-		component: ProductsDeliveryFormComponent
+		component: ProductsDeliveryComponent
     },    
 	{
 		path: 'detalle-local/:id',
-		component: ProductsDeliveryFormComponent
+		component: ProductsDeliveryComponent
 	},
 	{
 		path: 'configs',

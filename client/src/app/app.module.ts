@@ -25,10 +25,11 @@ import { ProductEditComponent } from './components/adm/products/edit/product.edi
 import { ProductAddComponent } from './components/adm/products/add/product.add.component';
 // Mapa
 import { MapaComponent } from './components/front/mapa/mapa.component';
-// Customer details
 import { CustomerDetailsComponent } from './components/front/customer-details/customer-details.component';
-// ProductsDeliveryForm
-import { ProductsDeliveryFormComponent } from './components/front/products-delivery/products-delivery-form.component';
+import { BillingDetailsComponent } from './components/front/billing-details/billing-details.component';
+import { ProductsDeliveryComponent } from './components/front/products-delivery/products-delivery.component';
+import { ProductsDeliveryFormComponent } from './components/front/products-delivery/products-delivery-form/products-delivery-form.component';
+import { DeliveredProductsFormComponent } from './components/front/products-delivery/delivered-products-form/delivered-products-form.component';
 // Configs
 import { ConfigsComponent } from './components/configs/configs.component';
 // Routes
@@ -110,7 +111,6 @@ import { PurchaseOfSuppliesComponent } from './components/front/purchase-of-supp
         SupplyEditComponent,
         SupplyAddComponent,
         MapaComponent,
-        ProductsDeliveryFormComponent,
         ConfigsComponent,
         RoutesComponent,
         ListComponent,
@@ -135,7 +135,11 @@ import { PurchaseOfSuppliesComponent } from './components/front/purchase-of-supp
         KpiSalesPosComponent,
         KpiSaleReturnsGroupPosComponent,
         PurchaseOfSuppliesComponent,
-        CustomerDetailsComponent
+        CustomerDetailsComponent,
+        BillingDetailsComponent,
+        DeliveredProductsFormComponent,
+        ProductsDeliveryComponent,
+        ProductsDeliveryFormComponent
     ],
     imports: [
         BrowserModule,
@@ -158,13 +162,7 @@ import { PurchaseOfSuppliesComponent } from './components/front/purchase-of-supp
         TemplatesRoutesService,
         UsersService,
         ImagesService,
-
-
-        DragulaService,
-
-
-
-        
+        DragulaService,        
         AuthenticateService,
         PointOfSaleService,
         CustomerService,
