@@ -1,4 +1,3 @@
-//var masterDBController = require('../bd/masterConnectionsBD');
 var MasterConnectionsBD = require('../bd/masterConnectionsBD');
 var acl = require('../motionLibJS/serverSide/acl/newACL');
 
@@ -6,7 +5,6 @@ export class MainController {
     private masterDBController: any;
 
     constructor() {
-        //var masterConnection = MasterConnectionsBD;
         this.masterDBController = MasterConnectionsBD.getController();
     }
 
@@ -23,5 +21,4 @@ export class MainController {
                 })
             });
     }
-
 }

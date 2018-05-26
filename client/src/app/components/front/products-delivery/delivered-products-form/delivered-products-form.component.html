@@ -1,7 +1,17 @@
 <div style="margin:20px;">
-    <div class="alert alert-success">
-        <strong>La visita ya fue registrada</strong> {{viewingVisited.date | date:'dd/MM/yyyy HH:mm'}}Hs
+
+    <div class="row">
+        <div class="col text-left">
+            <div class="alert alert-success">
+                <strong>La visita ya fue registrada</strong><span> {{viewingVisited.date | date:'dd/MM/yyyy HH:mm'}}Hs</span>
+            </div>
+        </div>
+        <div class="col-2 text-right">
+            <button class="btn btn-danger" (click)="eliminar()">Eliminar visita</button>
+        </div>
+        <div class="col-1"></div>
     </div>
+
     <a routerLink="/mapa/{{idRoute}}">Volver al recorrido</a>
 
     <div *ngIf="viewingVisited.getLines()[0] !== undefined" class="row" style="margin-left: 10px;margin-right: 10px;">

@@ -15,7 +15,7 @@ import { UsersService } from '../../../services/users.service';
 })
 export class MapaComponent implements OnInit {
 
-    private routes: any[];
+    public routes: any[];
     private viewings: any[];
     private pointsOfSale: PointOfSale[];
     private finishedViewing: PointOfSale[];

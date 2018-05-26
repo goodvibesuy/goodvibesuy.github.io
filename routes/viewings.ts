@@ -20,7 +20,9 @@ class Viewings {
 
         router.get('/wasVisited/:idRoute/:idPointOfSale', viewingsController.viewingByRouteAndPOS);
 
-        router.get('/viewingProductTypes', viewingsController.viewingProductTypes);        
+        router.get('/viewingProductTypes', viewingsController.viewingProductTypes);
+        
+        router.delete('/:id', viewingsController.delete);
 
         return router;
     }

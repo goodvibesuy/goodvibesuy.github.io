@@ -53,10 +53,11 @@ export class ProductsDeliveryFormComponent {
         return sum;
     }
 
-    private saveProductData(){
+    public saveProductData(){
         this.saveData.emit();
     }
-    private actualizar(): void {
+    
+    public actualizar(): void {
         this.annotationChange.emit(this.annotation);
         this.agregar.emit();
     }

@@ -12,3 +12,4 @@ routes/customers.js
 datatypes/pointOfSale.js
 datatypes/customer.js
 routes/supplies.js
+controllers/viewingsController.js

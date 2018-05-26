@@ -17,8 +17,8 @@
         (agregar)="agregar()" (saveData)="saveData()">
     </products-delivery-form>
 
-    <delivered-products [id-viewing]="idViewing" [id-route]="currentRoute" *ngIf="wasVisited" [viewing-product-types]="viewingProductTypes"
-        [products-to-send]="productsToSend"></delivered-products>
+    <delivered-products-form [id-viewing]="idViewing" [id-route]="currentRoute" *ngIf="wasVisited" [viewing-product-types]="viewingProductTypes"
+        [products-to-send]="productsToSend"></delivered-products-form>
 
     <div style="margin:20px;" *ngIf="submittedSuccessfully">
         <div class="alert alert-success">

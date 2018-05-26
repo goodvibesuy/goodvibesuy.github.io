@@ -38,6 +38,8 @@
         "routes/clients.js": true,
         "routes/customers.js": true,
         "routes/supplies.js": true,
-        "routes/providers.js": true
+        "routes/providers.js": true,
+        "routes/viewings.js": true,
+        "routes/users.js": true
     }
 }

@@ -1,17 +1,18 @@
 // angular core
 import 'rxjs/add/operator/switchMap';
 import { Component, OnInit, Input } from '@angular/core';
-import { ActivatedRoute, ParamMap } from '@angular/router';
+import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 // service
 import { ViewingService } from '../../../../services/viewing.service';
 // datatypes;
 import { ViewingView } from '../../../../../../../datatypes/views/viewingView';
 import { LineViewingView } from '../../../../../../../datatypes/views/lineViewingView';
 import { AlertService } from '../../../../modules/alert/alert.service';
+import { ResultCode } from '../../../../../../../datatypes/result';
 
 
 @Component({
-    selector: 'delivered-products',
+    selector: 'delivered-products-form', 
     templateUrl: './delivered-products-form.component.html'
 })
 export class DeliveredProductsFormComponent implements OnInit {
@@ -25,8 +26,9 @@ export class DeliveredProductsFormComponent implements OnInit {
 
     constructor(
         private viewingService: ViewingService,
+        private router: Router,
         private alertService: AlertService
-    ) { }
+    ) { } 
 
     ngOnInit(): void {
         this.viewingVisited = new ViewingView();
@@ -42,6 +44,25 @@ export class DeliveredProductsFormComponent implements OnInit {
             error => {
                 console.error(error);
                 this.alertService.error('Error cargando datos del servidor.');
+            }
+        );
+    }
+
+    public eliminar(): void {        
+        this.viewingService.delete(this.idViewing).subscribe(
+            response => {
+                if (response.result == ResultCode.OK) {                    
+                    const keepAfterRouteChange: boolean = true;
+                    this.alertService.success('Visita eliminada correctamente.', keepAfterRouteChange);
+                    this.router.navigateByUrl('/mapa/' + this.idRoute);
+                } else {
+                    console.error(response.message);
+                    this.alertService.error(response.message);
+                }
+            },
+            err => {
+                console.error(err);
+                this.alertService.error('Error eliminando el producto.');
             }
         );
     }

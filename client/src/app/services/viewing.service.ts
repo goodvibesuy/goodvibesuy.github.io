@@ -4,30 +4,29 @@ import { HttpHeaders, HttpClient } from '@angular/common/http';
 import {URLSearchParams} from '@angular/http';
 import { LineViewingView } from '../../../../datatypes/views/lineViewingView';
 import { NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
+import { Result } from '../../../../datatypes/result';
 
 @Injectable()
 export class ViewingService {
-	private viewingsURL: string = '/api/viewings';
+	private VIEWINGS_URL: string = '/api/viewings';
 	constructor(private http: HttpClient) {}
 
 	addViewing(idPointOfSale: Number, data: any,annotation:string,idPOS:number,idRoute): Observable<any> {
-		return this.http.post(this.viewingsURL, { idPointOfSale: idPointOfSale, data: data,annotation ,idPOS,idRoute});
+		return this.http.post(this.VIEWINGS_URL, { idPointOfSale: idPointOfSale, data: data,annotation ,idPOS,idRoute});
     }
 
     getViewingProductTypes():Observable<any>{
-        return this.http.get(this.viewingsURL + "/viewingProductTypes");
+        return this.http.get(this.VIEWINGS_URL + "/viewingProductTypes");
     }
     
     
     getViewing(idViewing: Number): Observable<any> {
-		return this.http.get(this.viewingsURL + "/getViewingbyId/" +  idViewing );
+		return this.http.get(this.VIEWINGS_URL + "/getViewingbyId/" +  idViewing );
     }
 
     lastViewings(cantViews: Number): Observable<any> {
-		return this.http.get(this.viewingsURL + "/last/" +  cantViews );
+		return this.http.get(this.VIEWINGS_URL + "/last/" +  cantViews );
     }
-
-
 
     viewingsBetween(sourceDate:NgbDateStruct,lastDate:NgbDateStruct,idPos:number,idProduct:number):Observable<any>{
         let stringSource:string;
@@ -42,20 +41,18 @@ export class ViewingService {
         }else{
             stringLast = lastDate.year + "/" + lastDate.month + "/" + lastDate.day;
         }        
-        return this.http.get(this.viewingsURL + "/viewingsBetween/"+ stringSource + "/" + stringLast + "/" + idPos + "/" + idProduct );
+        return this.http.get(this.VIEWINGS_URL + "/viewingsBetween/"+ stringSource + "/" + stringLast + "/" + idPos + "/" + idProduct );
     }
 
     getViewingsByRoute(idRoute: Number): Observable<any> {
-		return this.http.get(this.viewingsURL + "/viewingsByRoute/" +  idRoute );
+		return this.http.get(this.VIEWINGS_URL + "/viewingsByRoute/" +  idRoute );
     }
 
     wasVisited(idRoute: number,idPointOfSale:number): Observable<any> {
-		return this.http.get(this.viewingsURL + "/wasVisited/" +  idRoute + "/" +idPointOfSale );
-    }    
-
-    /*
-    lastViewings(cantViews: Number): Observable<LineViewingView[]> {
-		return this.http.get<LineViewingView[]>(this.viewingsURL + "/last/" +  cantViews );
+		return this.http.get(this.VIEWINGS_URL + "/wasVisited/" +  idRoute + "/" +idPointOfSale );
     }
-    */
+
+    delete(idViewing: number): Observable<Result> {
+        return this.http.delete<Result>(this.VIEWINGS_URL + '/' + idViewing);
+    }
 }
