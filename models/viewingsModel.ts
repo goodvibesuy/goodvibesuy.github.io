@@ -433,7 +433,7 @@ export class ViewingsModel extends MainModel {
         var viewingProductType = typeTransaction[indexTransaction];
         console.log(viewingProductTypes.get(viewingProductType));
         con.query(
-            "INSERT INTO viewing_product(idviewing,idproduct,quantity,type,iDviewingProductType) VALUES(?,?,?,?,?)",
+            "INSERT INTO viewing_product(idviewing,idproduct,quantity,type,idviewingProductType) VALUES(?,?,?,?,?)",
             [idviewing, data[index].id, data[index].typeTransaction[typeTransaction[indexTransaction]],
                 viewingProductType, viewingProductTypes.get(viewingProductType)],
             function (err: any, resultClient: any) {
@@ -522,19 +522,23 @@ export class ViewingsModel extends MainModel {
                 con.beginTransaction(function (err: any) {
 
                     // obtener id de ruta
-                    con.query("SELECT id, name, score FROM viewing_product_type", [], (err: any, viewingTypes: [{id :number, name: string, score: number}]) => {
+                    con.query("SELECT id, name, score FROM viewing_product_type", [], (err: any, viewingTypes: [{ id: number, name: string, score: number }]) => {
                         if (!!err) {
-                            console.log(err);
-                            con.release();
-                            callBack({ result: -1, message: "Error del sistema al obtener viewing_product_type." });
+                            con.rollback(function () {
+                                console.log(err);
+                                con.release();
+                                callBack({ result: -1, message: "Error del sistema al obtener viewing_product_type." });
+                            });
                         } else {
-                            
+
                             // obtener id de ruta
                             con.query("SELECT idRoute FROM route_customer WHERE idViewing = ?", [idViewing], (err: any, resultRouteCustomer: any) => {
                                 if (!!err) {
-                                    console.log(err);
-                                    con.release();
-                                    callBack({ result: -1, message: "Error del sistema al eliminar visita del recorrido." });
+                                    con.rollback(function () {
+                                        console.log(err);
+                                        con.release();
+                                        callBack({ result: -1, message: "Error del sistema al eliminar visita del recorrido." });
+                                    });
                                 } else {
                                     // TODO: validar que hay al menos un elemento en el resultado
                                     var idRoute: number = resultRouteCustomer[0].idRoute;
@@ -542,51 +546,59 @@ export class ViewingsModel extends MainModel {
                                     // incrementar stock del recorrido segun viewing_product
                                     con.query("SELECT idviewing, idproduct, quantity, idviewingProductType FROM viewing_product WHERE idviewing = ?", [idViewing], (err: any, result: any) => {
                                         if (!!err) {
-                                            console.log(err);
-                                            con.release();
-                                            callBack({ result: -1, message: "Error del sistema al eliminar productos de la visita." });
-                                        } else {
-
-                                                                    // filtrar solo aquellas entregas que fueron positivas (quantity > 0 y score > 0)
-                                            var querysFn = _.map(_.filter(result, r=>r.quantity > 0 && viewingTypes.find(t=> t.id == r.idviewingProductType)!.score > 0),
-                                                (viewingProduct: any): ((callback: any) => void) => {
-                                                return (callback) => {                                                 
-                                                    const QRY_ROUTE_STOCK = "UPDATE route_stock SET quantity = quantity + ? WHERE idRoute = ? AND idProduct = ?";
-                                                    con.query(QRY_ROUTE_STOCK, [viewingProduct.quantity, idRoute, viewingProduct.idproduct], (err: any, result: any) => {
-                                                        if (!!err) {
-                                                            console.log(err);
-                                                            con.release();
-                                                            callback({ result: -1, message: "Error del sistema al eliminar productos de la visita." }, null);
-                                                        } else {
-                                                            callback(null, { result: 1, message: "OK" });
-                                                        }
-                                                    });
-                                                }
+                                            con.rollback(function () {
+                                                console.log(err);
+                                                con.release();
+                                                callBack({ result: -1, message: "Error del sistema al eliminar productos de la visita." });
                                             });
+                                        } else {
+                                            // filtrar solo aquellas entregas que fueron positivas (quantity > 0 y score > 0)
+                                            var querysFn = _.map(_.filter(result, r => r.quantity > 0 && viewingTypes.find(t => t.id == r.idviewingProductType)!.score > 0),
+                                                (viewingProduct: any): ((callback: any) => void) => {
+                                                    return (callback) => {
+                                                        const QRY_ROUTE_STOCK = "UPDATE route_stock SET quantity = quantity + ? WHERE idRoute = ? AND idProduct = ?";
+                                                        con.query(QRY_ROUTE_STOCK, [viewingProduct.quantity, idRoute, viewingProduct.idproduct], (err: any, result: any) => {
+                                                            if (!!err) {
+                                                                console.log(err);
+                                                                con.release();
+                                                                callback({ result: -1, message: "Error del sistema al eliminar productos de la visita." }, null);
+                                                            } else {
+                                                                callback(null, { result: 1, message: "OK" });
+                                                            }
+                                                        });
+                                                    }
+                                                }
+                                            );
 
-                                            parallel(querysFn, (error: any, success: any) => {
+                                            parallel(querysFn, (err: any, success: any) => {
                                                 // eliminar productos de la visita: viewing_product
                                                 con.query("DELETE FROM viewing_product WHERE idviewing = ?", [idViewing], (err: any, result: any) => {
                                                     if (!!err) {
-                                                        console.log(err);
-                                                        con.release();
-                                                        callBack({ result: -1, message: "Error del sistema al eliminar productos de la visita." });
+                                                        con.rollback(function () {
+                                                            console.log(err);
+                                                            con.release();
+                                                            callBack({ result: -1, message: "Error del sistema al eliminar productos de la visita." });
+                                                        });
                                                     } else {
 
                                                         // eliminar visita del recorrido: route_customer
                                                         con.query("UPDATE route_customer  SET idViewing = NULL WHERE idViewing = ?", [idViewing], (err: any, result: any) => {
                                                             if (!!err) {
-                                                                console.log(err);
-                                                                con.release();
-                                                                callBack({ result: -1, message: "Error del sistema al eliminar visita del recorrido." });
+                                                                con.rollback(function () {
+                                                                    console.log(err);
+                                                                    con.release();
+                                                                    callBack({ result: -1, message: "Error del sistema al eliminar visita del recorrido." });
+                                                                });
                                                             } else {
 
                                                                 // eliminar visita: viewing
                                                                 con.query("DELETE FROM viewing WHERE idViewing = ?", [idViewing], (err: any, result: any) => {
                                                                     if (!!err) {
-                                                                        console.log(err);
-                                                                        con.release();
-                                                                        callBack({ result: -1, message: "Error del sistema al eliminar visita." });
+                                                                        con.rollback(function () {
+                                                                            console.log(err);
+                                                                            con.release();
+                                                                            callBack({ result: -1, message: "Error del sistema al eliminar visita." });
+                                                                        });
                                                                     } else {
 
                                                                         con.commit(function (err: any) {
@@ -618,29 +630,4 @@ export class ViewingsModel extends MainModel {
             }
         });
     };
-
-    // private deleteViewingRow(idViewing: number, connection: any, onComplete:( (r: Result) => void)): void{
-    //     // eliminar visita: viewing
-    //     connection.query("DELETE FROM viewing WHERE idViewing = ?", [idViewing], (err: any, result: any) => {
-    //         if (!!err) {
-    //             console.log(err);
-    //             connection.release();
-    //             onComplete({ result: -1, message: "Error del sistema al eliminar visita." });
-    //         } else {
-
-    //             connection.commit(function (err: any) {
-    //                 if (!!err) {
-    //                     connection.rollback(function () {
-    //                         console.log(err);
-    //                         connection.release();
-    //                         onComplete({ result: -1, message: "Error interno. No se pudo confirmar la eliminación de la visita" });
-    //                     });
-    //                 } else {
-    //                     connection.release();
-    //                     onComplete({ result: 1, message: "OK" });
-    //                 }
-    //             });
-    //         }
-    //     });
-    // }
 }
