@@ -13,3 +13,7 @@ datatypes/pointOfSale.js
 datatypes/customer.js
 routes/supplies.js
 controllers/viewingsController.js
+bd/clientConnectionsBD.js
+bd/masterConnectionsBD.js
+controllers/routesController.js
+datatypes/role.js
