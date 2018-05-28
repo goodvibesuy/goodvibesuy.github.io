@@ -1,11 +1,13 @@
-var MasterConnectionsBD = require('../bd/masterConnectionsBD');
+import { ControllerDBMaster } from '../motionLibJS/serverSide/masterClientDBFramework/controllers/controllerDBMaster';
+import { MasterConnectionsBD } from '../bd/masterConnectionsBD';
 var acl = require('../motionLibJS/serverSide/acl/newACL');
 
 export class MainController {
-    private masterDBController: any;
+    private masterDBController: ControllerDBMaster;
 
     constructor() {
-        this.masterDBController = MasterConnectionsBD.getController();
+        var masterDBConnections  = new MasterConnectionsBD();
+        this.masterDBController = masterDBConnections.getController();
     }
 
     protected verifyAccess(req: any, res: any, resource: string, callBack: (dbName: string) => void): void {

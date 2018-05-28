@@ -1,21 +1,28 @@
-import {ControllerDBClientsConnections} from '../motionLibJS/serverSide/masterClientDBFramework/controllers/controllerDBClient';
+import { ControllerDBClientsConnections } from '../motionLibJS/serverSide/masterClientDBFramework/controllers/controllerDBClient';
+var config = require('config');
 
-export class ClientConnectionsBD{
-    private host:string = "127.0.0.1";
-    private port:number = 3306;
-    private user:string = "root";
-    private psw:string = "";
-    private controller:ControllerDBClientsConnections;
+export class ClientConnectionsBD {
+
+    private host: string;
+    private port: number;
+    private user: string;
+    private pwd: string;
+
+    private controller: ControllerDBClientsConnections;
 
     constructor() {
-        this.controller = new ControllerDBClientsConnections(this.host,this.port,this.user,this.psw);
+        this.host = config.get("db.good.host");
+        this.port = config.get("db.good.port");
+        this.user = config.get("db.good.user");
+        this.pwd = config.get("db.good.pwd");
+
+        this.controller = new ControllerDBClientsConnections(this.host, this.port, this.user, this.pwd);
     }
 
-    public getController():ControllerDBClientsConnections{
+    public getController(): ControllerDBClientsConnections {
         return this.controller;
     }
-    
-    public getUserConnection(databaseName:any) {
-        
+
+    public getUserConnection(databaseName: any) {
     };
 }

@@ -1,12 +1,12 @@
 var express = require('express');
 var router = express.Router();
 
-var MasterConnectionsBD = require('../bd/masterConnectionsBD');
+var MasterConnectionsBDFactory = require('../bd/masterConnectionsBD');
 var userControllerFactory = require('../controllers/usersController');
 
 var userController = new userControllerFactory.UserController();
 
-var masterDBController = MasterConnectionsBD.getController();
+var masterDBController = new MasterConnectionsBDFactory.MasterConnectionsBD().getController();
 
 router.post('/login', function (req, res, next) {
     masterDBController.login(req.body.user, req.body.pass, function (err, loginresponse) {

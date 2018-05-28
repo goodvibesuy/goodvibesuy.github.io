@@ -1,21 +1,26 @@
-import {ControllerDBMaster} from '../motionLibJS/serverSide/masterClientDBFramework/controllers/controllerDBMaster';
+import { ControllerDBMaster } from '../motionLibJS/serverSide/masterClientDBFramework/controllers/controllerDBMaster';
+var config = require('config');
 
-class MasterConnectionsBD{
+export class MasterConnectionsBD {
 
-    private host:string = "127.0.0.1";
-    private port:number = 3306;
-    private databaseName:string = "master";
-    private user:string = "root";
-    private psw:string = "";
-    private controller:ControllerDBMaster;
+    private host: string;
+    private port: number
+    private user: string;
+    private pwd: string;
+    private databaseName: string;
+    private controller: ControllerDBMaster;
 
     constructor() {
-        this.controller = new ControllerDBMaster(this.host,this.port,this.databaseName,this.user,this.psw,{});
+        this.host = config.get("db.master.host");
+        this.port = config.get("db.master.port");
+        this.user = config.get("db.master.user");
+        this.pwd = config.get("db.master.pwd");
+        this.databaseName = config.get("db.master.databaseName");
+
+        this.controller = new ControllerDBMaster(this.host, this.port, this.databaseName, this.user, this.pwd, {});
     }
 
-    public getController():ControllerDBMaster{
+    public getController(): ControllerDBMaster {
         return this.controller;
     }
 }
-
-module.exports = new MasterConnectionsBD();

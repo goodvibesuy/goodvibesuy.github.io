@@ -40,6 +40,8 @@
         "routes/supplies.js": true,
         "routes/providers.js": true,
         "routes/viewings.js": true,
-        "routes/users.js": true
+        "routes/users.js": true,
+
+        "datatypes/views/lineViewingView.js": true
     }
 }

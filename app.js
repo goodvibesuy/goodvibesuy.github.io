@@ -26,9 +26,9 @@ var clients = require('./routes/clients');
 var customers = require('./routes/customers');
 
 var NewACL = require('./motionLibJS/serverSide/acl/newACL');
-var masterDBController = require('./bd/masterConnectionsBD');
+var MasterConnectionsBDFacory = require('./bd/masterConnectionsBD');
 
-NewACL.setUp(masterDBController.getController().getMasterConnection().getConnection());
+NewACL.setUp(new MasterConnectionsBDFacory.MasterConnectionsBD().getController().getMasterConnection().getConnection());
 
 var app = express();
 

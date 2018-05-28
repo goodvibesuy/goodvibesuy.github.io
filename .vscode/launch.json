@@ -13,7 +13,10 @@
             "name": "Iniciar cosaboa",
             "outFiles": [
                 "${workspaceFolder}/**/*.js"
-            ]
+            ],
+            "env": {
+                "NODE_ENV" : "test"
+            }
         }
     ]
 }

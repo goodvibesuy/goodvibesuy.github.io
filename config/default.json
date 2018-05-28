@@ -1,0 +1,17 @@
+{
+    "db": {
+        "good": {
+            "host": "",
+            "port": 0,
+            "user": "",
+            "pwd": ""
+        },
+        "master":{
+            "host": "",
+            "port": 0,
+            "user": "",
+            "pwd": "",
+            "databaseName": ""
+        }
+    }
+}
