@@ -3,9 +3,8 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start_prod": "NODE_ENV=prod& node ./bin/www_prod",
-    "start_test": "SET NODE_ENV=test& node ./bin/www_dev",
-    "nodemon_test": "nodemon node ./bin/www_dev",
+    "start": "SET NODE_ENV=test& node ./bin/www_dev",
+    "nodemon": "nodemon node ./bin/www_dev",
     "tsc": "tsc --watch"
   },
   "dependencies": {

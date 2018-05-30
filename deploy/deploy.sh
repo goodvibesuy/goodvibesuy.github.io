@@ -63,7 +63,7 @@ echo "Paso 8/9 Ejecutando el forever"
 forever stopall
 # el forever necesita iniciarse desde el directorio root
 cd /root/src/goodvibesuy.github.io
-forever start bin/www_prod
+export NODE_ENV=prod& forever start bin/www_prod
 echo "current dir: $(pwd)"
 echo ""
 
