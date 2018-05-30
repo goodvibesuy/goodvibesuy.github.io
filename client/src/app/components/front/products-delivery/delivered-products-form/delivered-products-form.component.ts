@@ -48,22 +48,24 @@ export class DeliveredProductsFormComponent implements OnInit {
         );
     }
 
-    public eliminar(): void {        
-        this.viewingService.delete(this.idViewing).subscribe(
-            response => {
-                if (response.result == ResultCode.OK) {                    
-                    const keepAfterRouteChange: boolean = true;
-                    this.alertService.success('Visita eliminada correctamente.', keepAfterRouteChange);
-                    this.router.navigateByUrl('/mapa/' + this.idRoute);
-                } else {
-                    console.error(response.message);
-                    this.alertService.error(response.message);
+    public eliminar(): void {
+        if (confirm("¿Realmente desea eliminar la visita?")) {
+            this.viewingService.delete(this.idViewing).subscribe(
+                response => {
+                    if (response.result == ResultCode.OK) {                    
+                        const keepAfterRouteChange: boolean = true;
+                        this.alertService.success('Visita eliminada correctamente.', keepAfterRouteChange);
+                        this.router.navigateByUrl('/mapa/' + this.idRoute);
+                    } else {
+                        console.error(response.message);
+                        this.alertService.error(response.message);
+                    }
+                },
+                err => {
+                    console.error(err);
+                    this.alertService.error('Error eliminando el producto.');
                 }
-            },
-            err => {
-                console.error(err);
-                this.alertService.error('Error eliminando el producto.');
-            }
-        );
+            );
+        }
     }
 }
