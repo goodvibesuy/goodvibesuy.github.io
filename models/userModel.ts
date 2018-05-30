@@ -3,7 +3,7 @@ import { ControllerDBClientsConnections } from '../motionLibJS/serverSide/master
 //var MasterDBController = require('../bd/masterConnectionsBD');
 // import { MasterConnectionDB } from '../bd/masterConnectionsBD';
 import { ClientConnectionsBD } from '../bd/clientConnectionsBD';
-import { Role } from '../datatypes/role';
+// import { Role } from '../datatypes/role';
 import { Result, ResultWithData, ResultCode } from '../datatypes/result';
 
 export class UserModel {
