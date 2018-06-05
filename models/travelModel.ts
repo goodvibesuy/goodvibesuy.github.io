@@ -14,9 +14,9 @@ export class TravelModel extends MainModel {
     getAll(dbName: string, callBack: (r: ResultWithData<any[]>) => void): void {
         var pool = this.controllerConnections.getUserConnection(dbName);
         pool.getConnection(function (err: any, con: any) {
-            if (err) {
-                con.release();
+            if (err) {                
                 console.error(err);
+                callBack({ result: -1, message: "Error", data: err });
             } else {
                 con.query("SELECT * FROM route ORDER BY date DESC", function (err: any, result: any) {
                     con.release();

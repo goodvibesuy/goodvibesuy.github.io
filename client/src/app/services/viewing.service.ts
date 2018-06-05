@@ -48,6 +48,10 @@ export class ViewingService {
 		return this.http.get(this.VIEWINGS_URL + "/viewingsByRoute/" +  idRoute );
     }
 
+    getRouteDelivery(idRoute: Number): Observable<any> {
+		return this.http.get(this.VIEWINGS_URL + "/getRouteDelivery/" +  idRoute );
+    }
+
     wasVisited(idRoute: number,idPointOfSale:number): Observable<any> {
 		return this.http.get(this.VIEWINGS_URL + "/wasVisited/" +  idRoute + "/" +idPointOfSale );
     }

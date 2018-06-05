@@ -52,6 +52,8 @@ class KpisModel extends MainModel{
                 console.error(err);
             } else {
                 var sumaEntregas = 0;
+
+                //TODO revisar harcodeo
                 con.query("SELECT SUM(quantity) as quantity FROM viewing_product WHERE type = 'delivery' AND idproduct= 1", function (err: any, result: any) {
                     if (err) throw err;
                     sumaEntregas = result[0].quantity;

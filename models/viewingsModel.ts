@@ -16,6 +16,52 @@ export class ViewingsModel extends MainModel {
         this.userModel = new UserModel();
     }
 
+
+    public getRouteDelivery(idRoute: number, dbName: string,
+        callBack: (r: ResultWithData<any[]>) => void): void {
+        var mainThis = this;
+        var pool = this.controllerConnections.getUserConnection(dbName);
+        pool.getConnection(function (err: any, con: any) {
+            if (err) {
+                console.error(err);
+                con.release();
+            } else {
+                var query = "SELECT idproduct, SUM(quantity) AS quantity, p.displayOrder, p.name, p.path_image FROM `viewing_product` INNER JOIN product as p ON p.id = idProduct";
+                query += " WHERE `idviewingProductType` = 1 AND ";
+                query += "idViewing IN (SELECT idViewing FROM `route_customer` WHERE `idRoute`= ?) GROUP BY idproduct ORDER BY displayOrder ASC";
+                
+
+                con.query(query, [idRoute],
+                    function (err: any, result: any) {
+                        if (err) {
+                            console.error(err);
+                            callBack({
+                                result: ResultCode.Error,
+                                message: err.code,
+                                data: result
+                            });
+                        } else {
+                            con.release();
+                            if (err) {
+                                callBack({
+                                    result: ResultCode.Error,
+                                    message: err.code,
+                                    data: result
+                                });
+                            } else {
+                                callBack({
+                                    result: ResultCode.OK,
+                                    message: 'OK',
+                                    data: result
+                                });
+                            }
+                        }
+                    }
+                );
+            }
+        });
+    }
+
     public getViewingById(viewingId: number, dbName: string,
         callBack: (r: ResultWithData<any[]>) => void): void {
         console.warn("Revisar porque esta puesto idProducto en 0 siempre");
@@ -447,6 +493,7 @@ export class ViewingsModel extends MainModel {
                     //}
                 }
                 else {
+/*
                     if (typeTransaction[indexTransaction] === "delivery") {
                         con.query(
                             "UPDATE route_stock  SET quantity = quantity - ? WHERE idProduct = ?  AND idRoute = ?",
@@ -485,6 +532,7 @@ export class ViewingsModel extends MainModel {
                         );
 
                     } else {
+*/
                         if (indexTransaction + 1 < typeTransaction.length) {
                             mainThis.addViewingProducts(index, indexTransaction + 1, typeTransaction, idviewing, idRoute, data, con, callBack);
                         } else {
@@ -505,7 +553,9 @@ export class ViewingsModel extends MainModel {
                                 });
                             }
                         }
+/*
                     }
+                    */
                 }
             });
         //}
@@ -553,6 +603,7 @@ export class ViewingsModel extends MainModel {
                                             });
                                         } else {
                                             // filtrar solo aquellas entregas que fueron positivas (quantity > 0 y score > 0)
+                                            
                                             var querysFn = _.map(_.filter(result, r => r.quantity > 0 && viewingTypes.find(t => t.id == r.idviewingProductType)!.score > 0),
                                                 (viewingProduct: any): ((callback: any) => void) => {
                                                     return (callback) => {
@@ -569,6 +620,7 @@ export class ViewingsModel extends MainModel {
                                                     }
                                                 }
                                             );
+                                            
 
                                             parallel(querysFn, (err: any, success: any) => {
                                                 // eliminar productos de la visita: viewing_product

@@ -14,6 +14,8 @@ class Viewings {
 
         router.get('/viewingsByRoute/:idRoute', viewingsController.viewingsByRoute);
 
+        router.get('/getRouteDelivery/:idRoute', viewingsController.getRouteDelivery);        
+
         router.get('/getViewingbyId/:idViewing', viewingsController.getViewingById);
 
         router.post('/', viewingsController.add);

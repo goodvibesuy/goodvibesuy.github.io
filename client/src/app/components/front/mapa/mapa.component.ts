@@ -17,8 +17,9 @@ export class MapaComponent implements OnInit {
 
     public routes: any[];
     private viewings: any[];
-    private pointsOfSale: PointOfSale[];
-    private finishedViewing: PointOfSale[];
+    pointsOfSale: PointOfSale[];
+    finishedViewing: PointOfSale[];
+    productsDelivery: {idproduct: number, quantity: number, displayOrder: number, name: string, path_image: string}[];
     public currentRoute: number;
     public stock: { product: Product, quantity: number }[];
 
@@ -110,6 +111,16 @@ export class MapaComponent implements OnInit {
                             this.finishedViewing = this.getFinishedViewing();
                             this.pointsOfSale = this.getUnFinishedViewing();
                             console.log(response);
+
+                            this.viewingService.getRouteDelivery(idRoute).subscribe(
+                                responseDelivery => {
+                                    console.log(responseDelivery);
+                                    if(responseDelivery.result > 0){
+                                        this.productsDelivery = responseDelivery.data;
+                                    }
+                                }
+                            )
+
                             this.routeService.getStockRoute(idRoute).subscribe(
                                 responseStock => {
                                     this.stock = responseStock;

@@ -61,6 +61,7 @@ var KpisModel = /** @class */ (function (_super) {
             }
             else {
                 var sumaEntregas = 0;
+                //TODO revisar harcodeo
                 con.query("SELECT SUM(quantity) as quantity FROM viewing_product WHERE type = 'delivery' AND idproduct= 1", function (err, result) {
                     if (err)
                         throw err;

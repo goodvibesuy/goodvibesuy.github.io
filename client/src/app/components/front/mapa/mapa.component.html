@@ -27,18 +27,43 @@
     </nav>
     <div class="tab-content" id="nav-tabContent">
         <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
-
         -->
     <div class="flex flex-wrap d-flex justify-content-around content-center content-between boxs-container">
         <div class="container">
             <div class="row">
                 <div class="col">
                     <span>
-                        Stock del recorrido.
+                        Productos entregados.
                     </span>
                     <div class="row">
-                        <div *ngFor="let s of stock" class="col">
-                            {{s.quantity}}
+                        <div *ngFor="let p of productsDelivery" class="col">
+                            {{p.quantity}}
+                            <img src="images/productos/{{p.path_image}}" width="15px" height="40px" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                    <div class="col">
+                        <span>
+                            Stock inicial.
+                        </span>
+                        <div class="row">
+                            <div *ngFor="let s of stock" class="col">
+                                {{s.quantity}}
+                                <img src="images/productos/{{s.product.path_image}}" width="15px" height="40px" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <div class="row">
+                <div class="col">
+                    <span>
+                        Stock del recorrido.
+                    </span>
+                    <div class="row">                            
+                        <div *ngFor="let s of stock; let i = index" class="col">
+                            {{ (s.quantity) - (productsDelivery[i].quantity)}}
                             <img src="images/productos/{{s.product.path_image}}" width="15px" height="40px" />
                         </div>
                     </div>

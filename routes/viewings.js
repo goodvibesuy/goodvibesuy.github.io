@@ -17,6 +17,7 @@ var Viewings = /** @class */ (function () {
         var viewingsController = new viewingsController_1.ViewingsController();
         router.get('/viewingsBetween/:sourceYear/:sourceMonth/:sourceDay/:lastYear/:lastMonth/:lastDay/:idPos/:idProduct', viewingsController.viewingsBetween);
         router.get('/viewingsByRoute/:idRoute', viewingsController.viewingsByRoute);
+        router.get('/getRouteDelivery/:idRoute', viewingsController.getRouteDelivery);
         router.get('/getViewingbyId/:idViewing', viewingsController.getViewingById);
         router.post('/', viewingsController.add);
         router.get('/wasVisited/:idRoute/:idPointOfSale', viewingsController.viewingByRouteAndPOS);
