@@ -54,9 +54,6 @@
                             <img src="images/productos/{{s.product.path_image}}" width="15px" height="40px" />
                         </div>
                     </div>
-                    <span *ngIf="finishedViewing !== undefined && pointsOfSale.length !== undefined && pointsOfSale.length!== 0">
-                        Porcentajer realizado {{ (finishedViewing.length / (pointsOfSale.length + finishedViewing.length) * 100 ).toFixed(1) }}%
-                    </span>
                 </div>
             </div>
             <div class="row">
@@ -70,6 +67,11 @@
                             <img src="images/productos/{{p.path_image}}" width="15px" height="40px" />
                         </div>
                     </div>
+                </div>
+            </div>
+            <div class="row" *ngIf="finishedViewing !== undefined && pointsOfSale.length !== undefined && pointsOfSale.length!== 0">
+                <div class="col">
+                    Porcentajer realizado {{ (finishedViewing.length / (pointsOfSale.length + finishedViewing.length) * 100 ).toFixed(1) }}%
                 </div>
             </div>
             <div class="row">
