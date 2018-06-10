@@ -12,6 +12,7 @@ import { Observable } from 'rxjs/Observable';
 import { GroupPosService } from '../../../services/group-pos.service';
 import { KpiSalesPosComponent } from './kpi-sales-pos/kpi-sales-pos.component';
 import { KpiSaleReturnsGroupPosComponent } from './kpi-sale-returns-group-pos/kpi-sale-returns-group-pos.component';
+import { debounceTime, distinctUntilChanged, merge, map, filter } from 'rxjs/operators';
 
 @Component({
     selector: 'app-reporte-viewing',
@@ -20,19 +21,20 @@ import { KpiSaleReturnsGroupPosComponent } from './kpi-sale-returns-group-pos/kp
 })
 export class ReporteViewingComponent implements OnInit {
     @ViewChild('instancePOS') instancePOS: NgbTypeahead;
-    @ViewChild(KpiSalesPosComponent) kpiSalesPOS: KpiSalesPosComponent;
-    @ViewChild(KpiSaleReturnsGroupPosComponent) kpiSalesReturnGroupPOS: KpiSaleReturnsGroupPosComponent;
     focus$ = new Subject<string>();
     click$ = new Subject<string>();
+    @ViewChild(KpiSalesPosComponent) kpiSalesPOS: KpiSalesPosComponent;
+    @ViewChild(KpiSaleReturnsGroupPosComponent) kpiSalesReturnGroupPOS: KpiSaleReturnsGroupPosComponent;
+    
 
     public viewings: any[];
     private products: Product[];
     public pointsOfSale: PointOfSale[];
     public viewingView: ViewingView;
-    private sourceDate: NgbDateStruct;
-    private lastDate: NgbDateStruct;
-    private posId: number = 0;
-    private idProduct: number = 0;
+    sourceDate: NgbDateStruct;
+    lastDate: NgbDateStruct;
+    posId: number = 0;    
+    idProduct: number = 0;
     public useDates: boolean = true;
     private shareSales: any[];
     public ocultarDetalles: boolean;
@@ -47,6 +49,33 @@ export class ReporteViewingComponent implements OnInit {
     ) {
         this.ocultarDetalles = window.innerWidth < 400;
     }
+
+    searchPOS = (text$: Observable<string>) =>
+    text$.pipe(
+      debounceTime(200),
+      distinctUntilChanged(),
+      merge(this.focus$),
+      merge(this.click$.pipe(filter(() => !this.instancePOS.isPopupOpen()))),
+      map(term => (term === '' ? this.pointsOfSale
+        : this.pointsOfSale.filter(v => v.name.toLowerCase().indexOf(term.toLowerCase()) > -1)).slice(0, 10))
+    );
+
+    formatter = (x: PointOfSale) => x.name;
+    
+    selectedPOS(x):void{      
+        this.posId = x.item.id;
+    }
+
+    /*
+    searchPOS = (text$: Observable<string>) => {
+        text$
+            .debounceTime(200)
+            .distinctUntilChanged()
+            .map(term => term.length < 2 ? []
+                : this.pointsOfSale.filter(v => v.name.toLowerCase().indexOf(term.toLowerCase()) > -1).slice(0, 10));
+    }
+    */
+
 
     changeTab(index:number):void{
         this.currentView = index;
@@ -137,12 +166,6 @@ export class ReporteViewingComponent implements OnInit {
         return total;
     }
 
-    searchPOS = (text$: Observable<string>) => {
-        text$
-            .debounceTime(200)
-            .distinctUntilChanged()
-            .map(term => term.length < 2 ? []
-                : this.pointsOfSale.filter(v => v.name.toLowerCase().indexOf(term.toLowerCase()) > -1).slice(0, 10));
-    }
+    
 
 }

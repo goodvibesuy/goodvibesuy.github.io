@@ -32,9 +32,24 @@
         <span class="input-group-addon">Punto de venta:</span>
         <div class="form-group">
             <div class="input-group">
+            <!--
                 <select class="form-control" *ngIf="pointsOfSale" [(ngModel)]="posId">
                     <option *ngFor="let u of pointsOfSale" [ngValue]="u.id">{{u.name}}</option>
                 </select>
+            -->
+
+                <input id="typeahead-focus" type="text" class="form-control"                     
+                    (selectItem) = "selectedPOS($event)"
+                    [ngbTypeahead]="searchPOS" 
+                    (focus)="focus$.next($event.target.value)"
+                    (click)="click$.next($event.target.value)"
+                    [inputFormatter] = "formatter"
+                    [resultFormatter] = "formatter"
+                    #instancePOS="ngbTypeahead" />
+
+
+
+
             </div>
         </div>
     </div>
@@ -236,12 +251,10 @@
         </div>
     </div>
     <div class="tab-pane fade" id="nav-pos" role="tabpanel" aria-labelledby="nav-pos-tab">
-        
-        <kpi-sales-pos [pointsOfSale]="pointsOfSale" [viewingView]="viewingView" 
-                    [totalSales]="totalSales()" [totalReturns]="totalReturns()"></kpi-sales-pos>
+
+        <kpi-sales-pos [pointsOfSale]="pointsOfSale" [viewingView]="viewingView" [totalSales]="totalSales()" [totalReturns]="totalReturns()"></kpi-sales-pos>
 
     </div>
     <div class="tab-pane fade" id="nav-groupPos" role="Tabpanel" aria-labelledby="nav-pos-groupPos">
-        <kpi-sale-returns-group-pos [groupPOS]="groupPOS" [viewingView]="viewingView" 
-        [totalSales]="totalSales()" [totalReturns]="totalReturns()"></kpi-sale-returns-group-pos>
+        <kpi-sale-returns-group-pos [groupPOS]="groupPOS" [viewingView]="viewingView" [totalSales]="totalSales()" [totalReturns]="totalReturns()"></kpi-sale-returns-group-pos>
     </div>

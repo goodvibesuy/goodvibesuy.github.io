@@ -13,12 +13,12 @@ import { SupplyTable } from '../../../../../../datatypes/supplyTable';
 })
 export class ReportesComponent implements OnInit {
     private suppliesPrice: Supply[];
-    private suppliesPriceTable: Supply[];
-    private supplies: SupplyTable[];
+    suppliesPriceTable: Supply[];
+    supplies: SupplyTable[];
     private chart: AmChart;
     private suppliesById: Map<number, any>;
     public error:boolean;
-    private errorMessage:string;
+    errorMessage:string;
 
     constructor(private router: Router,
         private kpiService: KpiService,
