@@ -16,10 +16,6 @@ export class LoginComponent implements OnInit {
 	public password: FormControl;
 	public errorForm: Boolean = false;
 
-	private token: string;
-	private userSaved: string;
-	private accountId: Number;
-
 	constructor(
 		private router: Router,
 		private authenticateService: AuthenticateService,

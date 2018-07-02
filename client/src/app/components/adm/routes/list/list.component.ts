@@ -14,10 +14,6 @@ import { ResultCode } from '../../../../../../../datatypes/result';
     styleUrls: ['./list.component.css']
 })
 export class ListComponent implements OnInit {
-    private token: string;
-    private userSaved: string;
-    private accountId: Number;
-
     public routes: RouteTable[];
 
     constructor(private router: Router,

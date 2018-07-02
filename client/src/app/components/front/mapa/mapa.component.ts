@@ -40,8 +40,6 @@ export class MapaComponent implements OnInit {
                     alert("Su sesion ha expirado o no tiene privilegios para esta operacion.");
                 } else {
                     this.pointsOfSale = new Array<PointOfSale>();
-                    let userSaved = localStorage.getItem('user');
-
                     this.userService.getCurrentUser().subscribe(
                         response =>
                         {

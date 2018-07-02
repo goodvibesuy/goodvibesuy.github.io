@@ -37,7 +37,6 @@
                     <option *ngFor="let u of pointsOfSale" [ngValue]="u.id">{{u.name}}</option>
                 </select>
             -->
-
                 <input id="typeahead-focus" type="text" class="form-control"                     
                     (selectItem) = "selectedPOS($event)"
                     [ngbTypeahead]="searchPOS" 
@@ -46,10 +45,6 @@
                     [inputFormatter] = "formatter"
                     [resultFormatter] = "formatter"
                     #instancePOS="ngbTypeahead" />
-
-
-
-
             </div>
         </div>
     </div>

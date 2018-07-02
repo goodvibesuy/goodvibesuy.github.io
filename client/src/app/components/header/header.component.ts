@@ -12,9 +12,7 @@ import { TokenService } from '../../services/token.service';
 })
 export class HeaderComponent implements OnInit {
 	public visible: Boolean = false;
-	private token: string;
-	private userSaved: string;
-	private accountId: Number;
+    userSaved:string = "repartidor@goodvibes.uy";
 
 	constructor(
 		private router: Router,
@@ -25,6 +23,9 @@ export class HeaderComponent implements OnInit {
 	) {}
 
 	ngOnInit() {
+
+        this.userSaved = localStorage.getItem('user');
+
 		this.headerService.currentVisibility.subscribe(visibility => (this.visible = visibility));
 
 		this.authenticateService.verifyToken().subscribe(data => {

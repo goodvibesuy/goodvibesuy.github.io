@@ -9,7 +9,7 @@
         </a>
     </div>
   </div>
-  <div class="boxs-home border border-danger">
+  <div class="boxs-home border border-danger" *ngIf="userSaved !== 'repartidor@goodvibes.uy'">
     <div class="label">
       <span>Productos</span>
     </div>
@@ -19,7 +19,7 @@
         </a>
     </div>
   </div>
-  <div class="boxs-home border border-success">
+  <div class="boxs-home border border-success" *ngIf="userSaved !== 'repartidor@goodvibes.uy'">
     <div class="label">
       <span>Reportes</span>
     </div>

@@ -13,6 +13,7 @@ import { GroupPosService } from '../../../services/group-pos.service';
 import { KpiSalesPosComponent } from './kpi-sales-pos/kpi-sales-pos.component';
 import { KpiSaleReturnsGroupPosComponent } from './kpi-sale-returns-group-pos/kpi-sale-returns-group-pos.component';
 import { debounceTime, distinctUntilChanged, merge, map, filter } from 'rxjs/operators';
+import { AlertService } from '../../../modules/alert/alert.service';
 
 @Component({
     selector: 'app-reporte-viewing',
@@ -45,7 +46,8 @@ export class ReporteViewingComponent implements OnInit {
     constructor(private viewingsService: ViewingService,
         private posService: PointOfSaleService,
         private productsService: ProductsService,
-        private groupPOSService: GroupPosService
+        private groupPOSService: GroupPosService,
+        private alertSevice:AlertService
     ) {
         this.ocultarDetalles = window.innerWidth < 400;
     }
@@ -129,9 +131,18 @@ export class ReporteViewingComponent implements OnInit {
         this.sourceDate = { year: now.getFullYear(), month: now.getMonth() + 1, day: now.getDate() };
         this.lastDate = { year: now.getFullYear(), month: now.getMonth() + 1, day: now.getDate() + 1 };
 
+
         this.posService.get().subscribe(
             response => {
-                this.pointsOfSale = response.data;
+                if(response.result > 0){
+                    this.pointsOfSale = response.data;
+                }else{
+                    this.alertSevice.error('Error cargando los puntos de ventas');
+                }                
+            },
+            error => {
+                console.error(error);
+                this.alertSevice.error('Error cargando los insumos.');
             }
         );
 
@@ -139,6 +150,10 @@ export class ReporteViewingComponent implements OnInit {
             responseProducts => {
                 this.products = responseProducts.data;
                 this.search();
+            },
+            error => {
+                console.error(error);
+                this.alertSevice.error('Error cargando los insumos.');
             }
         );
     }

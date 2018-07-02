@@ -9,10 +9,7 @@ import { HeaderService } from '../../../services/header.service';
 	styleUrls: ['./dashboard.component.css']
 })
 export class DashboardComponent implements OnInit {
-	private token: string;
-	private userSaved: string;
-	private accountId: Number;
-
+    userSaved:string = "repartidor@goodvibes.uy";
 	constructor(
 		private router: Router,
 		private authenticateService: AuthenticateService,
@@ -20,8 +17,8 @@ export class DashboardComponent implements OnInit {
 	) {}
 
 	ngOnInit() {
-		this.authenticateService.verifyToken().subscribe(data => {
-			console.log('lplplp');
+        this.userSaved = localStorage.getItem('user');
+		this.authenticateService.verifyToken().subscribe(data => {			
 			this.headerService.setVisibility(true);
 			if (!data.result) {
 				this.router.navigate(['']);

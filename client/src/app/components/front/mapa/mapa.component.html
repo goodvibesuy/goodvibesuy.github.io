@@ -48,8 +48,8 @@
                     <span>
                         Stock del recorrido.
                     </span>
-                    <div class="row">
-                        <div *ngFor="let s of stock; let i = index" class="col">
+                    <div class="row" *ngIf="stock">
+                        <div  *ngFor="let s of stock; let i = index" class="col">
                             {{ (s.quantity) - (productsDelivery[i].quantity)}}
                             <img src="images/productos/{{s.product.path_image}}" width="15px" height="40px" />
                         </div>

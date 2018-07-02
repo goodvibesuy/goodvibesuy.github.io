@@ -7,8 +7,6 @@ import { MainModel } from './mainModel';
 import { parallel } from 'async';
 import *  as _ from 'lodash';
 
-var masterDBController = require('../bd/masterConnectionsBD');
-
 export class ViewingsModel extends MainModel {
     private userModel: UserModel;
     constructor() {
