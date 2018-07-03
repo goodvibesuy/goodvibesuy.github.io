@@ -18,7 +18,7 @@ export class MapaComponent implements OnInit {
     public routes: any[];
     private viewings: any[];
     pointsOfSale: PointOfSale[];
-    finishedViewing: PointOfSale[];
+    finishedViewing: any[];
     productsDelivery: { idproduct: number, quantity: number, displayOrder: number, name: string, path_image: string }[];
     public currentRoute: number;
     public stock: { product: Product, quantity: number }[];
