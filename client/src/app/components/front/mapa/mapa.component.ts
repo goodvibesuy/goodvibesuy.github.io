@@ -144,6 +144,10 @@ export class MapaComponent implements OnInit {
                             console.log(response);
                             //this.pointsOfSale.sort(this.compareViewing);
                             this.finishedViewing = this.getFinishedViewing();
+
+                            console.log(this.finishedViewing,"+++");
+
+
                             this.pointsOfSale = this.getUnFinishedViewing();
                             console.log(response);
 
@@ -152,6 +156,7 @@ export class MapaComponent implements OnInit {
                                     console.log(responseDelivery);
                                     if (responseDelivery.result > 0) {
                                         this.productsDelivery = responseDelivery.data;
+                                        console.log("K",this.productsDelivery);
                                     }
                                 }
                             )

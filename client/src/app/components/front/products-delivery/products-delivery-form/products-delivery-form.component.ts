@@ -1,6 +1,6 @@
 // angular core
 import 'rxjs/add/operator/switchMap';
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, SimpleChanges, OnChanges, SimpleChange } from '@angular/core';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 // service
 import { PointOfSaleService } from '../../../../services/point-of-sale.service';
@@ -18,10 +18,10 @@ import { AlertService } from '../../../../modules/alert/alert.service';
     selector: 'products-delivery-form',
     templateUrl: './products-delivery-form.component.html'
 })
-export class ProductsDeliveryFormComponent {
+export class ProductsDeliveryFormComponent  implements OnInit, OnChanges {
 
     @Input() customer: Customer
-    @Input('viewing-product-types') viewingProductTypes;
+    @Input('viewingProductTypes') viewingProductTypes;
     @Input() products;
     @Input('products-to-send') productsToSend;
     @Input('unite-price') unitePrice;
@@ -42,6 +42,16 @@ export class ProductsDeliveryFormComponent {
         private viewingService: ViewingService,
         private alertService: AlertService
     ) { }
+
+    ngOnInit(): void {
+    
+    }
+
+    ngOnChanges(changes: SimpleChanges) {
+        const productsToSend: SimpleChange = changes.productsToSend;
+        this.productsToSend = productsToSend;
+        console.log(this.productsToSend);        
+      }
 
     private quantity(typeTransaction: string): number {
         let sum = 0;

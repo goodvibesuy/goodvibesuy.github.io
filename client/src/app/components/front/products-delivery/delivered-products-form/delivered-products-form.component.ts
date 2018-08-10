@@ -17,7 +17,7 @@ import { ResultCode } from '../../../../../../../datatypes/result';
 })
 export class DeliveredProductsFormComponent implements OnInit {
         
-    @Input('viewing-product-types') viewingProductTypes;
+    @Input('viewingProductTypes') viewingProductTypes;
     @Input('products-to-send') productsToSend;
     @Input('id-route') idRoute: number;
     @Input('id-viewing') idViewing: number;

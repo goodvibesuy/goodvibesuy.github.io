@@ -1,16 +1,16 @@
 {
     "db": {
         "good": {
-            "host": "127.0.0.1",
+            "host": "localhost",
             "port": 3306,
             "user": "root",
-            "pwd": "espanhaRoletti30!"
+            "pwd": ""
         },
         "master":{
-            "host": "127.0.0.1",
+            "host": "localhost",
             "port": 3306,
             "user": "root",
-            "pwd": "espanhaRoletti30!",
+            "pwd": "",
             "databaseName": "master"
         }
     }

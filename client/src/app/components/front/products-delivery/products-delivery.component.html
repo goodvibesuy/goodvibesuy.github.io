@@ -12,12 +12,12 @@
         </div>
     </div>
 
-    <products-delivery-form *ngIf="!submittedSuccessfully && !wasVisited" [customer]="customer" [viewing-product-types]="viewingProductTypes"
+    <products-delivery-form *ngIf="!submittedSuccessfully && !wasVisited" [customer]="customer" [viewingProductTypes]="viewingProductTypes"
         [products]="products" [products-to-send]="productsToSend" [unite-price]="unitePrice" [id-route]="currentRoute" [(annotation)]="annotation"
         (agregar)="agregar()" (saveData)="saveData()">
     </products-delivery-form>
 
-    <delivered-products-form [id-viewing]="idViewing" [id-route]="currentRoute" *ngIf="wasVisited" [viewing-product-types]="viewingProductTypes"
+    <delivered-products-form [id-viewing]="idViewing" [id-route]="currentRoute" *ngIf="wasVisited" [viewingProductTypes]="viewingProductTypes"
         [products-to-send]="productsToSend"></delivered-products-form>
 
     <div style="margin:20px;" *ngIf="submittedSuccessfully">
