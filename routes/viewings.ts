@@ -20,6 +20,8 @@ class Viewings {
 
         router.post('/', viewingsController.add);
 
+        router.post('/countDeliveryProductsInViewings', viewingsController.countDeliveryProductsInViewings);        
+
         router.get('/wasVisited/:idRoute/:idPointOfSale', viewingsController.viewingByRouteAndPOS);
 
         router.get('/viewingProductTypes', viewingsController.viewingProductTypes);

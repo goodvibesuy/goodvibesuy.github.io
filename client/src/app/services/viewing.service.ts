@@ -1,10 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { HttpHeaders, HttpClient } from '@angular/common/http';
-import {URLSearchParams} from '@angular/http';
-import { LineViewingView } from '../../../../datatypes/views/lineViewingView';
 import { NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
-import { Result } from '../../../../datatypes/result';
+import { Result, ResultWithData } from '../../../../datatypes/result';
 
 @Injectable()
 export class ViewingService {
@@ -15,8 +13,12 @@ export class ViewingService {
 		return this.http.post(this.VIEWINGS_URL, { idPointOfSale: idPointOfSale, data: data,annotation ,idPOS,idRoute});
     }
 
-    getViewingProductTypes():Observable<any>{
-        return this.http.get(this.VIEWINGS_URL + "/viewingProductTypes");
+    countDeliveryProductsInViewings(idsViewings:number[]):Observable<ResultWithData<any[]>>{
+        return this.http.post<ResultWithData<any[]>>(this.VIEWINGS_URL + "/countDeliveryProductsInViewings",{idsViewings});
+    }
+
+    getViewingProductTypes():Observable<ResultWithData<any[]>>{
+        return this.http.get<ResultWithData<any[]>>(this.VIEWINGS_URL + "/viewingProductTypes");
     }
     
     

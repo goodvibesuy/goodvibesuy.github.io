@@ -1,5 +1,4 @@
 import { Result, ResultWithData, ResultCode } from '../datatypes/result';
-import { Product } from '../datatypes/product';
 import { UserModel } from './userModel';
 import { LineViewingView } from '../datatypes/views/lineViewingView';
 import { PointOfSale } from '../datatypes/pointOfSale';
@@ -14,6 +13,27 @@ export class ViewingsModel extends MainModel {
         this.userModel = new UserModel();
     }
 
+    public countDeliveryProductsInViewings(idsViewings: number[], con: any, callBack: (r: ResultWithData<any[]>) => void): void {
+        var query = "SELECT DISTINCT(idviewing),SUM(quantity) as quantity FROM `viewing_product` ";
+        query += " WHERE `idviewing` IN (?) && type = 'delivery' GROUP BY idviewing";        
+
+        con.query(query, [idsViewings],
+            function (err: any, result: any) {
+                if (err) {
+                    console.error(err);
+                    callBack({ result: ResultCode.Error, message: err.code, data: result });
+                } else {
+                    if (err) {
+                        callBack({ result: ResultCode.Error, message: err.code, data: result });
+                    } else {
+                        callBack({ result: ResultCode.OK, message: 'OK', data: result });
+                    }
+                }
+            }
+        );
+    }
+
+
 
     public getRouteDelivery(idRoute: number, dbName: string,
         callBack: (r: ResultWithData<any[]>) => void): void {
@@ -27,7 +47,7 @@ export class ViewingsModel extends MainModel {
                 var query = "SELECT idproduct, SUM(quantity) AS quantity, p.displayOrder, p.name, p.path_image FROM `viewing_product` INNER JOIN product as p ON p.id = idProduct";
                 query += " WHERE `idviewingProductType` = 1 AND ";
                 query += "idViewing IN (SELECT idViewing FROM `route_customer` WHERE `idRoute`= ?) GROUP BY idproduct ORDER BY displayOrder ASC";
-                
+
 
                 con.query(query, [idRoute],
                     function (err: any, result: any) {
@@ -491,69 +511,69 @@ export class ViewingsModel extends MainModel {
                     //}
                 }
                 else {
-/*
-                    if (typeTransaction[indexTransaction] === "delivery") {
-                        con.query(
-                            "UPDATE route_stock  SET quantity = quantity - ? WHERE idProduct = ?  AND idRoute = ?",
-                            [data[index].typeTransaction.delivery, data[index].id, idRoute],
-                            function (err: any, result: any) {
+                    /*
+                                        if (typeTransaction[indexTransaction] === "delivery") {
+                                            con.query(
+                                                "UPDATE route_stock  SET quantity = quantity - ? WHERE idProduct = ?  AND idRoute = ?",
+                                                [data[index].typeTransaction.delivery, data[index].id, idRoute],
+                                                function (err: any, result: any) {
+                                                    if (err) {
+                                                        con.rollback(function () {
+                                                            console.log(err);
+                                                            con.release();
+                                                            callBack({ result: -1, message: "Error interno." });
+                                                        });
+                                                    } else {
+                                                        if (indexTransaction + 1 < typeTransaction.length) {
+                                                            mainThis.addViewingProducts(index, indexTransaction + 1, typeTransaction, idviewing, idRoute, data, con, callBack);
+                                                        } else {
+                                                            if (index + 1 < data.length) {
+                                                                mainThis.addViewingProducts(index + 1, 0, typeTransaction, idviewing, idRoute, data, con, callBack);
+                                                            } else {
+                                                                con.commit(function (err: any) {
+                                                                    if (err) {
+                                                                        con.rollback(function () {
+                                                                            console.log(err);
+                                                                            con.release();
+                                                                            callBack({ result: -1, message: "Error interno. No se pudo agregar el producto de visita" });
+                                                                        });
+                                                                    } else {
+                                                                        callBack({ result: 1, message: "OK" });
+                                                                        con.release();
+                                                                    }
+                                                                });
+                                                            }
+                    
+                                                        }
+                                                    }
+                                                }
+                                            );
+                    
+                                        } else {
+                    */
+                    if (indexTransaction + 1 < typeTransaction.length) {
+                        mainThis.addViewingProducts(index, indexTransaction + 1, typeTransaction, idviewing, idRoute, data, con, callBack);
+                    } else {
+                        if (index + 1 < data.length) {
+                            mainThis.addViewingProducts(index + 1, 0, typeTransaction, idviewing, idRoute, data, con, callBack);
+                        } else {
+                            con.commit(function (err: any) {
                                 if (err) {
                                     con.rollback(function () {
                                         console.log(err);
                                         con.release();
-                                        callBack({ result: -1, message: "Error interno." });
+                                        callBack({ result: -1, message: "Error interno. No se pudo agregar el producto de visita" });
                                     });
                                 } else {
-                                    if (indexTransaction + 1 < typeTransaction.length) {
-                                        mainThis.addViewingProducts(index, indexTransaction + 1, typeTransaction, idviewing, idRoute, data, con, callBack);
-                                    } else {
-                                        if (index + 1 < data.length) {
-                                            mainThis.addViewingProducts(index + 1, 0, typeTransaction, idviewing, idRoute, data, con, callBack);
-                                        } else {
-                                            con.commit(function (err: any) {
-                                                if (err) {
-                                                    con.rollback(function () {
-                                                        console.log(err);
-                                                        con.release();
-                                                        callBack({ result: -1, message: "Error interno. No se pudo agregar el producto de visita" });
-                                                    });
-                                                } else {
-                                                    callBack({ result: 1, message: "OK" });
-                                                    con.release();
-                                                }
-                                            });
-                                        }
-
-                                    }
+                                    callBack({ result: 1, message: "OK" });
+                                    con.release();
                                 }
-                            }
-                        );
-
-                    } else {
-*/
-                        if (indexTransaction + 1 < typeTransaction.length) {
-                            mainThis.addViewingProducts(index, indexTransaction + 1, typeTransaction, idviewing, idRoute, data, con, callBack);
-                        } else {
-                            if (index + 1 < data.length) {
-                                mainThis.addViewingProducts(index + 1, 0, typeTransaction, idviewing, idRoute, data, con, callBack);
-                            } else {
-                                con.commit(function (err: any) {
-                                    if (err) {
-                                        con.rollback(function () {
-                                            console.log(err);
-                                            con.release();
-                                            callBack({ result: -1, message: "Error interno. No se pudo agregar el producto de visita" });
-                                        });
-                                    } else {
-                                        callBack({ result: 1, message: "OK" });
-                                        con.release();
-                                    }
-                                });
-                            }
+                            });
                         }
-/*
                     }
-                    */
+                    /*
+                                        }
+                                        */
                 }
             });
         //}
@@ -601,7 +621,7 @@ export class ViewingsModel extends MainModel {
                                             });
                                         } else {
                                             // filtrar solo aquellas entregas que fueron positivas (quantity > 0 y score > 0)
-                                            
+
                                             var querysFn = _.map(_.filter(result, r => r.quantity > 0 && viewingTypes.find(t => t.id == r.idviewingProductType)!.score > 0),
                                                 (viewingProduct: any): ((callback: any) => void) => {
                                                     return (callback) => {
@@ -618,7 +638,7 @@ export class ViewingsModel extends MainModel {
                                                     }
                                                 }
                                             );
-                                            
+
 
                                             parallel(querysFn, (err: any, success: any) => {
                                                 // eliminar productos de la visita: viewing_product

@@ -46,13 +46,13 @@
                     </div>
                 </div>
             </div>
-            <div class="row">
+            <div class="row" *ngIf="stock && productsDelivery && productsDelivery.length > 0">
                 <div class="col">
                     <span>
                         Stock del recorrido.
                     </span>
-                    <div class="row" *ngIf="stock">
-                        <div  *ngFor="let s of stock; let i = index" class="col">
+                    <div class="row">
+                        <div  *ngFor="let s of stock; let i = index" class="col">                            
                             {{ (s.quantity) - (productsDelivery[i].quantity)}}
                             <img src="images/productos/{{s.product.path_image}}" width="15px" height="40px" />
                         </div>
@@ -109,10 +109,15 @@
                     <b>
                         Puntos de venta visitados.
                     </b>
-                    <div class="boxs-productos border" style="padding: 10px" *ngFor="let fv of finishedViewing">
+                    <div class="boxs-productos border" 
+                        *ngFor="let fv of finishedViewing" [ngClass]="{
+                            'visitPOS':getCountProductsDeliveryByViewing(fv.pos.idViewing) > 0,
+                            'visitPOSWithCeroProduct':getCountProductsDeliveryByViewing(fv.pos.idViewing) === 0
+                          }">
                         <div class="container">
                             <div class="row">
                                 <div class="col">
+                                    {{getCountProductsDeliveryByViewing(fv.pos.idViewing)}}                                
                                     {{fv.date | date:'dd/MM/yyyy HH:mm'}}Hs
                                 </div>
                             </div>
@@ -125,7 +130,7 @@
                                     <i *ngIf="fv.pos.image === '' || fv.pos.image === null" class="fa fa-home" style="font-size: 2.0em;"></i>
                                 </div>
                                 <div class="col">
-                                    <div class="productos-title">
+                                    <div>
                                         <label>{{fv.pos.name}}</label>
                                     </div>
                                     <!--

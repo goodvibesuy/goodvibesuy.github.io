@@ -4,7 +4,6 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-var mysql = require('mysql');
 var compression = require('compression');
 var cors = require('cors');
 
@@ -26,8 +25,10 @@ var clients = require('./routes/clients');
 var customers = require('./routes/customers');
 
 var NewACL = require('./motionLibJS/serverSide/acl/newACL');
-var MasterConnectionsBDFacory = require('./bd/masterConnectionsBD');
+//import { NewACL } from './motionLibJS/serverSide/acl/newACL';
 
+var MasterConnectionsBDFacory = require('./bd/masterConnectionsBD');
+//let acl = new NewACL();
 NewACL.setUp(new MasterConnectionsBDFacory.MasterConnectionsBD().getController().getMasterConnection().getConnection());
 
 var app = express();

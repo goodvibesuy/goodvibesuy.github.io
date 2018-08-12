@@ -15,6 +15,18 @@ export class ViewingsController extends MainController {
         this.viewingsModel = new ViewingsModel();
     }
 
+
+    public countDeliveryProductsInViewings = (req: any, res: any): void => {
+        this.verifyAccess(req, res, this.resource, (dbName: string) => {
+            this.getConnection(dbName,res,(con:any) =>{
+                this.viewingsModel.countDeliveryProductsInViewings(req.body.idsViewings,con,(result:any)=> {
+                    res.send(result);
+                })
+            });
+        });
+        //public countDeliveryProductsInViewings(idsViewings: number[], con: any, callBack: (r: ResultWithData<any[]>) => void): void {
+    }
+
     public add = (req: any, res: any): void => {
         this.verifyAccess(req, res, this.resource, (dbName: string) => {
                 var data = req.body.data;

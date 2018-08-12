@@ -8,9 +8,6 @@ import { CustomerService } from '../../../../services/customer.service';
 import { ProductsService } from '../../../../services/products.service';
 import { ViewingService } from '../../../../services/viewing.service';
 // datatypes
-import { Product } from '../../../../../../../datatypes/product';
-import { PointOfSale } from '../../../../../../../datatypes/pointOfSale';
-import { ViewingView } from '../../../../../../../datatypes/views/viewingView';
 import { Customer, CustomerType } from '../../../../../../../datatypes/customer';
 import { AlertService } from '../../../../modules/alert/alert.service';
 
@@ -18,7 +15,7 @@ import { AlertService } from '../../../../modules/alert/alert.service';
     selector: 'products-delivery-form',
     templateUrl: './products-delivery-form.component.html'
 })
-export class ProductsDeliveryFormComponent  implements OnInit, OnChanges {
+export class ProductsDeliveryFormComponent implements OnInit, OnChanges {
 
     @Input() customer: Customer
     @Input('viewingProductTypes') viewingProductTypes;
@@ -44,14 +41,19 @@ export class ProductsDeliveryFormComponent  implements OnInit, OnChanges {
     ) { }
 
     ngOnInit(): void {
-    
+
+    }
+
+    isArray(viewingProductTypes): boolean {
+        return Array.isArray(viewingProductTypes)
     }
 
     ngOnChanges(changes: SimpleChanges) {
         const productsToSend: SimpleChange = changes.productsToSend;
-        this.productsToSend = productsToSend;
-        console.log(this.productsToSend);        
-      }
+        if(productsToSend){
+            this.productsToSend = productsToSend.currentValue;
+        }
+    }
 
     private quantity(typeTransaction: string): number {
         let sum = 0;
@@ -63,10 +65,10 @@ export class ProductsDeliveryFormComponent  implements OnInit, OnChanges {
         return sum;
     }
 
-    public saveProductData(){
+    public saveProductData() {
         this.saveData.emit();
     }
-    
+
     public actualizar(): void {
         this.annotationChange.emit(this.annotation);
         this.agregar.emit();

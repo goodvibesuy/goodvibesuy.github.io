@@ -18,7 +18,8 @@ export class MapaComponent implements OnInit {
     public routes: any[];
     private viewings: any[];
     pointsOfSale: PointOfSale[];
-    finishedViewing: any[];
+    finishedViewing: Array<{ date: Date, pos: PointOfSale }>;
+    countProductsDeliveryByViewings: { idviewing: number, quantity: number }[];
     productsDelivery: { idproduct: number, quantity: number, displayOrder: number, name: string, path_image: string }[];
     public currentRoute: number;
     public stock: { product: Product, quantity: number }[];
@@ -95,7 +96,7 @@ export class MapaComponent implements OnInit {
         new Angular2Csv(data, 'Puntos de ventas pendientes', options);
     }
 
-    public getFinishedViewing(): any {
+    public getFinishedViewing(): Array<{ date: Date, pos: PointOfSale }> {
         let finished = this.pointsOfSale.filter(input => input.idViewing !== null);
         let viewingPOS: Array<{ date: Date, pos: PointOfSale }>;
         viewingPOS = new Array<{ date: Date, pos: PointOfSale }>();
@@ -104,7 +105,6 @@ export class MapaComponent implements OnInit {
             console.log(viewing, this.viewings);
             viewingPOS.push({ date: viewing.date, pos: finished[i] });
         }
-
         return viewingPOS.sort(function (a, b) {
             if (a.date > b.date) {
                 return -1;
@@ -115,6 +115,30 @@ export class MapaComponent implements OnInit {
             return 0;
         });
 
+        //this.viewingService.countDeliveryProductsInViewings()
+    }
+
+    public getCountProductsDeliveryByViewings(viewingsPOS: Array<{ date: Date, pos: PointOfSale }>): void {
+        let idsViewings = Array.from(viewingsPOS, (d) => d.pos.idViewing);
+        this.viewingService.countDeliveryProductsInViewings(idsViewings).subscribe(
+            response => {
+                this.countProductsDeliveryByViewings = response.data;
+                console.log(response);
+            }
+        );
+    }
+
+    public getCountProductsDeliveryByViewing(idViewing: number): number {
+        if (this.countProductsDeliveryByViewings) {
+            let viewing: { idviewing: number, quantity: number } = this.countProductsDeliveryByViewings.filter(c => c.idviewing === idViewing)[0];
+            if (viewing) {
+                return viewing.quantity;
+            } else {
+                return 0;
+            }
+        } else {
+            return 0;
+        }
     }
 
     public getUnFinishedViewing(): any {
@@ -141,25 +165,21 @@ export class MapaComponent implements OnInit {
                         if (responseViewing.result > 0) {
                             this.viewings = responseViewing.data;
                             this.pointsOfSale = response;
-                            console.log(response);
                             //this.pointsOfSale.sort(this.compareViewing);
                             this.finishedViewing = this.getFinishedViewing();
-
-                            console.log(this.finishedViewing,"+++");
-
-
                             this.pointsOfSale = this.getUnFinishedViewing();
-                            console.log(response);
-
                             this.viewingService.getRouteDelivery(idRoute).subscribe(
                                 responseDelivery => {
                                     console.log(responseDelivery);
                                     if (responseDelivery.result > 0) {
                                         this.productsDelivery = responseDelivery.data;
-                                        console.log("K",this.productsDelivery);
                                     }
                                 }
-                            )
+                            );
+
+                            if (this.finishedViewing.length > 0) {
+                                this.getCountProductsDeliveryByViewings(this.finishedViewing);
+                            }
 
                             this.routeService.getStockRoute(idRoute).subscribe(
                                 responseStock => {

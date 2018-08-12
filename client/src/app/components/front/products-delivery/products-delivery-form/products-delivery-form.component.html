@@ -1,16 +1,16 @@
 <div class="detalle-local-info">
     <div class="container">
-        <div class="row align-items-center">
+        <div class="row align-items-center" *ngIf="viewingProductTypes && isArray(viewingProductTypes)">
             <div class="col"></div>
             <div class="col" *ngFor="let vpt of viewingProductTypes">{{vpt.label}}</div>
         </div>
-        <div class="row align-items-center" *ngFor="let product of productsToSend">
+        <div class="row align-items-center" *ngFor="let product of productsToSend">            
             <div class="col productos-info">
                 <div class="productos-image">
                     <img src="images/productos/{{product.path_image}}">
                 </div>
                 <div class="productos-title">
-                    <label>{{product.name}}====</label>
+                    <label>{{product.name}}</label>
                 </div>
             </div>
             <div class="col" *ngFor="let vpt of viewingProductTypes">

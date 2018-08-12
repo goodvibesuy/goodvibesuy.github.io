@@ -10,7 +10,6 @@ import { ViewingService } from '../../../services/viewing.service';
 // datatypes
 import { Product } from '../../../../../../datatypes/product';
 import { PointOfSale } from '../../../../../../datatypes/pointOfSale';
-import { ViewingView } from '../../../../../../datatypes/views/viewingView';
 import { Customer, CustomerType } from '../../../../../../datatypes/customer';
 import { AlertService } from '../../../modules/alert/alert.service';
 
@@ -55,21 +54,18 @@ export class ProductsDeliveryComponent implements OnInit {
 
         this.viewingService.getViewingProductTypes().subscribe(
             response => {
-                if (response.result > 0) {
+                if (response.result > 0) {                    
                     this.viewingProductTypes = response.data;
-
-
                     this.loadCustomer(idCustomer);
                     this.loadUnitPrice(idCustomer);
-
                     this.getProducts();
-
                     this.viewingService.wasVisited(this.currentRoute, idCustomer).subscribe(
                         response => {
                             if (response.result === 1) {
                                 this.wasVisited = !!response.data && response.data.length > 0 &&
                                                 response.data[0].idViewing !== null;
                                 if (this.wasVisited) {
+                                    console.warn(response.data);
                                     this.idViewing = response.data[0].idViewing;
                                 }
                             }
@@ -78,7 +74,7 @@ export class ProductsDeliveryComponent implements OnInit {
                             console.error(error);
                             this.alertService.error('Error cargando datos del servidor.');
                         }
-                    )
+                    );
                 }
             }
         )

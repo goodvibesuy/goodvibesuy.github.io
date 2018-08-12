@@ -20,6 +20,7 @@ var Viewings = /** @class */ (function () {
         router.get('/getRouteDelivery/:idRoute', viewingsController.getRouteDelivery);
         router.get('/getViewingbyId/:idViewing', viewingsController.getViewingById);
         router.post('/', viewingsController.add);
+        router.post('/countDeliveryProductsInViewings', viewingsController.countDeliveryProductsInViewings);
         router.get('/wasVisited/:idRoute/:idPointOfSale', viewingsController.viewingByRouteAndPOS);
         router.get('/viewingProductTypes', viewingsController.viewingProductTypes);
         router.delete('/:id', viewingsController.delete);
