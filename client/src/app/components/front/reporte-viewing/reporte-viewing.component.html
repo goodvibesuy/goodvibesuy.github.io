@@ -6,7 +6,8 @@
         <span class="input-group-addon">Desde:</span>
         <div class="form-group">
             <div class="input-group">
-                <input class="form-control" placeholder="dd/mm/yyyy" name="dp1" [(ngModel)]="sourceDate" ngbDatepicker #d="ngbDatepicker">
+                <input class="form-control" placeholder="dd/mm/yyyy" name="dp1" [(ngModel)]="sourceDate" ngbDatepicker
+                    #d="ngbDatepicker">
                 <div class="input-group-append">
                     <button class="btn btn-outline-secondary" (click)="d.toggle()" type="button">
                         <img src="images/calendar-icon.svg" style="width: 1.2rem; height: 1rem; cursor: pointer;" />
@@ -19,7 +20,8 @@
         <span class="input-group-addon">Hasta:</span>
         <div class="form-group">
             <div class="input-group">
-                <input class="form-control" placeholder="dd/mm/yyyy" name="dp2" [(ngModel)]="lastDate" ngbDatepicker #d2="ngbDatepicker">
+                <input class="form-control" placeholder="dd/mm/yyyy" name="dp2" [(ngModel)]="lastDate" ngbDatepicker
+                    #d2="ngbDatepicker">
                 <div class="input-group-append">
                     <button class="btn btn-outline-secondary" (click)="d2.toggle()" type="button">
                         <img src="images/calendar-icon.svg" style="width: 1.2rem; height: 1rem; cursor: pointer;" />
@@ -32,19 +34,14 @@
         <span class="input-group-addon">Punto de venta:</span>
         <div class="form-group">
             <div class="input-group">
-            <!--
+                <!--
                 <select class="form-control" *ngIf="pointsOfSale" [(ngModel)]="posId">
                     <option *ngFor="let u of pointsOfSale" [ngValue]="u.id">{{u.name}}</option>
                 </select>
             -->
-                <input id="typeahead-focus" type="text" class="form-control"                     
-                    (selectItem) = "selectedPOS($event)"
-                    [ngbTypeahead]="searchPOS" 
-                    (focus)="focus$.next($event.target.value)"
-                    (click)="click$.next($event.target.value)"
-                    [inputFormatter] = "formatter"
-                    [resultFormatter] = "formatter"
-                    #instancePOS="ngbTypeahead" />
+                <input id="typeahead-focus" type="text" class="form-control" (selectItem)="selectedPOS($event)"
+                    [ngbTypeahead]="searchPOS" (focus)="focus$.next($event.target.value)" (click)="click$.next($event.target.value)"
+                    [inputFormatter]="formatter" [resultFormatter]="formatter" #instancePOS="ngbTypeahead" />
             </div>
         </div>
     </div>
@@ -67,14 +64,15 @@
 
 <nav>
     <div class="nav nav-tabs" id="nav-tab" role="tablist">
-        <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home"
-            aria-selected="true">Listado</a>
-        <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile"
-            aria-selected="false">Productos</a>
-        <a class="nav-item nav-link" id="nav-pos-tab" data-toggle="tab" href="#nav-pos" role="tab" aria-controls="nav-pos" aria-selected="false">
-            Locales</a>
-        <a class="nav-item nav-link" id="nav-groupPos-tab" data-toggle="tab" href="#nav-groupPos" role="tab" aria-controls="nav-groupPos"
+        <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab"
+            aria-controls="nav-home" aria-selected="true">Listado</a>
+        <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab"
+            aria-controls="nav-profile" aria-selected="false">Productos</a>
+        <a class="nav-item nav-link" id="nav-pos-tab" data-toggle="tab" href="#nav-pos" role="tab" aria-controls="nav-pos"
             aria-selected="false">
+            Locales</a>
+        <a class="nav-item nav-link" id="nav-groupPos-tab" data-toggle="tab" href="#nav-groupPos" role="tab"
+            aria-controls="nav-groupPos" aria-selected="false">
             Grupo de puntos de venta</a>
     </div>
 </nav>
@@ -174,20 +172,32 @@
                                             </td>
                                             <td>{{viewingView.getTotalTransactionByProductByType(p.id,"delivery")}}</td>
                                             <td>{{viewingView.getTotalTransactionByProductByType(p.id,"return")}}</td>
-                                            <td>{{viewingView.getTotalTransactionByProductByType(p.id,"delivery") - viewingView.getTotalTransactionByProductByType(p.id,"return")}}</td>
+                                            <td>{{viewingView.getTotalTransactionByProductByType(p.id,"delivery") -
+                                                viewingView.getTotalTransactionByProductByType(p.id,"return")}}</td>
                                             <td>
                                                 <span *ngIf="viewingView !== undefined && viewingView.getTotalTransactionByProductByType(p.id,'delivery') !== 0">
-                                                    {{((viewingView.getTotalTransactionByProductByType(p.id,"delivery") - viewingView.getTotalTransactionByProductByType(p.id,"return"))
-                                                    / viewingView.getTotalTransactionByProductByType(p.id,"delivery") * 100
+                                                    {{((viewingView.getTotalTransactionByProductByType(p.id,"delivery")
+                                                    - viewingView.getTotalTransactionByProductByType(p.id,"return"))
+                                                    / viewingView.getTotalTransactionByProductByType(p.id,"delivery") *
+                                                    100
                                                     ).toFixed(2) }} %
                                                 </span>
                                             </td>
                                             <td>
                                                 <span *ngIf="viewingView !== undefined && viewingView.getTotalTransactionByProductByType(p.id,'delivery') !== 0">
-                                                    {{((viewingView.getTotalTransactionByProductByType(p.id,"delivery") - viewingView.getTotalTransactionByProductByType(p.id,"return"))
+                                                    {{((viewingView.getTotalTransactionByProductByType(p.id,"delivery")
+                                                    - viewingView.getTotalTransactionByProductByType(p.id,"return"))
                                                     / totalSales() * 100).toFixed(2) }} %
                                                 </span>
                                             </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Total</td>
+                                            <td>{{viewingView.getTotalTransactionByType("delivery")}}</td>
+                                            <td>{{viewingView.getTotalTransactionByType("return")}}</td>
+                                            <td>{{viewingView.getTotalTransactionByType("delivery") - viewingView.getTotalTransactionByType("return")}}</td>
+                                            <td></td>
+                                            <td></td>
                                         </tr>
                                     </table>
                                 </div>
@@ -225,13 +235,15 @@
                             <td>{{viewingView.getTotalTransactionByProductByType(p.id,"return")}}</td>
                             <td>
                                 <span *ngIf="viewingView.getTotalTransactionByProductByType(p.id,'delivery') !== 0">
-                                    {{(viewingView.getTotalTransactionByProductByType(p.id,"return") / viewingView.getTotalTransactionByProductByType(p.id,"delivery")
+                                    {{(viewingView.getTotalTransactionByProductByType(p.id,"return") /
+                                    viewingView.getTotalTransactionByProductByType(p.id,"delivery")
                                     * 100).toFixed(2) }} %
                                 </span>
                             </td>
                             <td>
                                 <span *ngIf="viewingView.getTotalTransactionByProductByType(p.id,'delivery') !== 0">
-                                    {{(viewingView.getTotalTransactionByProductByType(p.id,"return") / totalReturns() * 100).toFixed(2) }} %
+                                    {{(viewingView.getTotalTransactionByProductByType(p.id,"return") / totalReturns() *
+                                    100).toFixed(2) }} %
                                 </span>
                             </td>
                         </tr>
@@ -247,9 +259,11 @@
     </div>
     <div class="tab-pane fade" id="nav-pos" role="tabpanel" aria-labelledby="nav-pos-tab">
 
-        <kpi-sales-pos [pointsOfSale]="pointsOfSale" [viewingView]="viewingView" [totalSales]="totalSales()" [totalReturns]="totalReturns()"></kpi-sales-pos>
+        <kpi-sales-pos [pointsOfSale]="pointsOfSale" [viewingView]="viewingView" [totalSales]="totalSales()"
+            [totalReturns]="totalReturns()"></kpi-sales-pos>
 
     </div>
     <div class="tab-pane fade" id="nav-groupPos" role="Tabpanel" aria-labelledby="nav-pos-groupPos">
-        <kpi-sale-returns-group-pos [groupPOS]="groupPOS" [viewingView]="viewingView" [totalSales]="totalSales()" [totalReturns]="totalReturns()"></kpi-sale-returns-group-pos>
+        <kpi-sale-returns-group-pos [groupPOS]="groupPOS" [viewingView]="viewingView" [totalSales]="totalSales()"
+            [totalReturns]="totalReturns()"></kpi-sale-returns-group-pos>
     </div>

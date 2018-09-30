@@ -81,6 +81,19 @@ export class ViewingView {
         return quantity;
     }
 
+    /**
+     * 
+     * @param type - Tipo de transaccion : entrega, devolucion, etc
+     */
+    public getTotalTransactionByType(type: string): number {
+        var quantity = 0;
+        let lines = this.getLines();        
+        for (let i = 0; i < lines.length; i++) {
+            quantity += lines[i].getQuantityTransactionType(type);
+        }
+        return quantity;
+    }
+
     public getTotalTransactionByGroupPOSByType(idGroupPOS:number, type: string): number {
         var quantity = 0;
         let lines = this.getLinesByGroupPOS(idGroupPOS);
