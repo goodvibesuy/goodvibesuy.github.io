@@ -225,3 +225,15 @@ CREATE TABLE `route_stock` (
     FOREIGN KEY (`idRoute`) REFERENCES `route` (`id`),
     FOREIGN KEY (idProduct) REFERENCES product(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+CREATE TABLE `product_stock` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `idProduct` INT NULL,
+  `amount` INT NULL,
+  `lastChange` DATETIME NULL,
+  PRIMARY KEY (`id`),
+  CONSTRAINT `idProduct`
+    FOREIGN KEY (`idProduct`)
+    REFERENCES `product` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION);

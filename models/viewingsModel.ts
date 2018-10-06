@@ -302,6 +302,8 @@ export class ViewingsModel extends MainModel {
         });
     };
 
+    
+
     public viewingByRouteAndPOS(idRoute: number, idPointofsale: number, dbName: string,
         callBack: (r: ResultWithData<any[]>) => void): void {
         var mainThis = this;
@@ -378,7 +380,9 @@ export class ViewingsModel extends MainModel {
         }
     }
 
-    public addVisit(userName: string, idpointofsail: Number, data: any[], annotation: string, idPOS: number, idRoute: number,
+    public addVisit(userName: string, idpointofsail: Number, data: any[], 
+                    annotation: string, idPOS: number, idRoute: number,
+                    typeTransaction: {id:number,name:string}[],
         dbName: string, callBack: (r: Result) => void): void {
         var mainThis = this;
         this.userModel.userByUserName(userName, dbName, function (result: ResultWithData<any[]>) {
@@ -415,7 +419,9 @@ export class ViewingsModel extends MainModel {
                                                     con.release();
                                                     callBack({ result: -1, message: "Error interno." });
                                                 } else {
-                                                    mainThis.addViewingProducts(0, 0, ["delivery", "return", "empty"], idviewing, idRoute, data, con, callBack);
+                                                    mainThis.addViewingProducts(0, 0, typeTransaction, idviewing, idRoute, data, con, callBack);
+                                                    //TODO GENERALIZAR
+                                                    //mainThis.addViewingProducts(0, 0, ["delivery", "return", "empty"], idviewing, idRoute, data, con, callBack);
                                                 }
                                             }
                                         );
@@ -433,6 +439,7 @@ export class ViewingsModel extends MainModel {
 
 
     public updateVisit(userName: string, idViewing: number, idpointofsail: number, data: any[], annotation: string, idPOS: number, idRoute: number,
+        typeTransaction: {id:number,name:string}[],
         dbName: string, callBack: (r: Result) => void): void {
         var mainThis = this;
         this.userModel.userByUserName(userName, dbName, function (result: ResultWithData<any[]>) {
@@ -469,7 +476,9 @@ export class ViewingsModel extends MainModel {
                                                     con.release();
                                                     callBack({ result: -1, message: "Error interno." });
                                                 } else {
-                                                    mainThis.addViewingProducts(0, 0, ["delivery", "return", "empty"], idviewing, idRoute, data, con, callBack);
+                                                    mainThis.addViewingProducts(0, 0, typeTransaction, idviewing, idRoute, data, con, callBack);
+                                                    //TODO GENERALIZAR
+                                                    //mainThis.addViewingProducts(0, 0, ["delivery", "return", "empty"], idviewing, idRoute, data, con, callBack);
                                                 }
                                             }
                                         );
@@ -486,20 +495,28 @@ export class ViewingsModel extends MainModel {
     };
 
     //TODO Sacar harcode de type
-    public addViewingProducts(index: number, indexTransaction: number, typeTransaction: string[], idviewing: number, idRoute: number,
+    public addViewingProducts(index: number, indexTransaction: number, typeTransaction: {id:number,name:string}[], idviewing: number, idRoute: number,
         data: any[], con: any, callBack: (r: Result) => void): void {
         var mainThis = this;
-        var viewingProductTypes: Map<string, number> = new Map<string, number>();
-        viewingProductTypes.set("delivery", 1);
-        viewingProductTypes.set("return", 2);
-        viewingProductTypes.set("empty", 3);
+        //var viewingProductTypes: Map<string, number> = new Map<string, number>();
+        //viewingProductTypes.set("delivery", 1);
+        //viewingProductTypes.set("return", 2);
+        //TODO GENERALIZAR
+        //viewingProductTypes.set("empty", 3);
 
-        var viewingProductType = typeTransaction[indexTransaction];
-        console.log(viewingProductTypes.get(viewingProductType));
+        var viewingProductType = typeTransaction[indexTransaction].name;
+        //console.log(viewingProductTypes.get(viewingProductType));
+
+        /*
+        "INSERT INTO viewing_product(idviewing,idproduct,quantity,type,idviewingProductType) VALUES(?,?,?,?,?)",
+        [idviewing, data[index].id, data[index].typeTransaction[typeTransaction[indexTransaction]],
+            viewingProductType, viewingProductTypes.get(viewingProductType)]
+            */
+
         con.query(
             "INSERT INTO viewing_product(idviewing,idproduct,quantity,type,idviewingProductType) VALUES(?,?,?,?,?)",
-            [idviewing, data[index].id, data[index].typeTransaction[typeTransaction[indexTransaction]],
-                viewingProductType, viewingProductTypes.get(viewingProductType)],
+            [idviewing, data[index].id, data[index].typeTransaction[typeTransaction[indexTransaction].name],
+                viewingProductType,typeTransaction[indexTransaction].id],
             function (err: any, resultClient: any) {
                 if (err) {
                     //if (err.code === "ER_DUP_ENTRY") {
@@ -565,8 +582,8 @@ export class ViewingsModel extends MainModel {
                                         callBack({ result: -1, message: "Error interno. No se pudo agregar el producto de visita" });
                                     });
                                 } else {
-                                    callBack({ result: 1, message: "OK" });
                                     con.release();
+                                    callBack({ result: 1, message: "OK" });                                    
                                 }
                             });
                         }

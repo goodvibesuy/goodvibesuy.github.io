@@ -40,6 +40,7 @@ export class BillingDetailsComponent {
 
     getProductQuantityById(idProduct: number): any {
         let p = this.productsToSend.filter(input => input.id === idProduct)[0];
+        console.log("p",idProduct,p);
         return p.typeTransaction.delivery - p.typeTransaction.return;
     }
     
