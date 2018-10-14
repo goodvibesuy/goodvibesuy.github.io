@@ -43,6 +43,44 @@ export class SuppliesController extends MainController {
 		});
 	};
 
+    public getLastPurchases = (req: any, res: any): void => {
+		this.verifyAccess(req, res, this.resource, (dbName: string) => {
+			this.suppliesModel.getSupliesPurchases(dbName,
+				function(result: any) {
+					res.send(result);
+				}
+			);
+		});
+    }; 
+    
+    public getLastPurchasesBySupply = (req: any, res: any): void => {
+		this.verifyAccess(req, res, this.resource, (dbName: string) => {
+			this.suppliesModel.getLastPurchasesBySupply(req.params.id ,dbName,
+				function(result: any) {
+					res.send(result);
+				}
+			);
+		});
+    };
+    
+
+    public addSupplyPurchase = (req: any, res: any): void => {
+		this.verifyAccess(req, res, this.resource, (dbName: string) => {
+			this.suppliesModel.addSupplyPurchase(
+				req.body.idSupply,
+				req.body.idProvider,
+				req.body.purchaseAmount,
+				req.body.supplyUnit,
+				req.body.numberOfUnits,
+				req.body.purchaseDate,
+				dbName,
+				function(result: any) {
+					res.send(result);
+				}
+			);
+		});
+	};
+
 	public suppliesByProduct = (req: any, res: any): void => {
 		this.verifyAccess(req, res, this.resource, (dbName: string) => {
 			this.suppliesModel.suppliesByProduct(req.body.idProduct, dbName, function(result: any) {

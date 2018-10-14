@@ -26,8 +26,8 @@
                 </thead>
                 <tbody>
                     <tr *ngFor="let s of suppliesPriceTable">
-                        <td>{{s.price_date | date:'dd/MM/yyyy'}}</td>                        
-                        <td>{{s.amount}}</td>
+                        <td>{{s.purchaseDate | date:'dd/MM/yyyy'}}</td>                        
+                        <td>{{s.purchaseAmount}}</td>
                     </tr>
                 </tbody>
             </table>

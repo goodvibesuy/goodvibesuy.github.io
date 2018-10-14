@@ -1,10 +1,15 @@
 export interface Supply {
-    id: number;
-    name: string;
-    unit: number;
-    date: Date;
+    id:number;
+    idSupply: number;
     idProvider: number;
-    path_image: string;
-    price_date: Date;
     amount: number;
+    purchaseAmount: number;
+    supplyUnit: number;
+    unit: number;
+    name: string;    
+    date: Date;
+    numberOfUnit:number;    
+    path_image: string;
+    purchaseDate: Date;    
+    numberOfUnits: number;
 }

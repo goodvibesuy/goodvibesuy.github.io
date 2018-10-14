@@ -1,4 +1,50 @@
-<div>
+<div style="padding: 20px;">
+
+    <div class="card" style="width: 18rem;margin:auto;">
+        <div class="card-body">
+            <h5 class="card-title">Agregar insumo</h5>
+            <select class="form-control" [(ngModel)]="newSupply.idSupply">
+                <option *ngFor="let s of supplies" [ngValue]="s.id">{{s.name}}</option>
+            </select>
+            Importe
+            <input type="text" class="form-control" [(ngModel)]="newSupply.purchaseAmount" />
+
+
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="amount">Cantidad</label>
+                    <input type="number" class="form-control" id="amount" [(ngModel)] = "newSupply.numberOfUnits" >
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="unity">Unidad</label>
+                    <select class="form-control" id="unity" [(ngModel)] = "newSupply.supplyUnit">
+                        <option *ngFor="let unit of units" [ngValue]="unit.id">{{unit.name}}</option>
+                        <hr>
+                        <option *ngFor="let cUnit of convertibleUnits" [ngValue]="cUnit.idUnit">{{cUnit.name}}
+                            ({{cUnit.value}} Kg)</option>
+                    </select>
+                </div>
+            </div>
+
+            Fecha
+            <div class="input-group">
+                <input class="form-control" placeholder="dd/mm/yyyy" ngbDatepicker #d="ngbDatepicker" [(ngModel)]="supplies_price" >
+                <div class="input-group-btn">
+                    <button class="btn btn-outline-secondary" (click)="d.toggle()" type="button">
+                        <img src="img/calendar-icon.svg" style="width: 1.2rem; height: 1rem; cursor: pointer;" />
+                    </button>
+                </div>
+            </div>
+            Proveedor
+            <select class="form-control" [(ngModel)] = "newSupply.idProvider">
+                <option *ngFor="let p of providers" [ngValue]="p.id">{{p.name}}</option>
+            </select>
+
+            <button class="btn btn-success" (click)="send()">Enviar</button>
+        </div>
+    </div>
+
+<!--    
     <table class="table table-striped">
         <thead class="thead-dark">
             <tr>
@@ -17,15 +63,17 @@
                     <input type="text" [(ngModel)]="s.amount" class="form-control" value="{{s.amount}}" />
                 </td>
                 <td>
-                    <select class="form-control" [(ngModel)]="s.unit" >
+                    <select class="form-control" [(ngModel)]="s.unit">
                         <option *ngFor="let unit of units" [ngValue]="unit.id">{{unit.name}}</option>
                         <hr>
-                        <option *ngFor="let cUnit of convertibleUnits" [ngValue]="cUnit.idUnit">{{cUnit.name}} ({{cUnit.value}} Kg)</option>
+                        <option *ngFor="let cUnit of convertibleUnits" [ngValue]="cUnit.idUnit">{{cUnit.name}}
+                            ({{cUnit.value}} Kg)</option>
                     </select>
                 </td>
                 <td>
                     <div class="input-group">
-                        <input class="form-control" placeholder="dd/mm/yyyy" [(ngModel)]="supplies_prices[s.id]" ngbDatepicker #d="ngbDatepicker">
+                        <input class="form-control" placeholder="dd/mm/yyyy" [(ngModel)]="supplies_prices[s.id]"
+                            ngbDatepicker #d="ngbDatepicker">
                         <div class="input-group-btn">
                             <button class="btn btn-outline-secondary" (click)="d.toggle()" type="button">
                                 <img src="img/calendar-icon.svg" style="width: 1.2rem; height: 1rem; cursor: pointer;" />
@@ -44,4 +92,6 @@
             </tr>
         </tbody>
     </table>
+
+-->
 </div>

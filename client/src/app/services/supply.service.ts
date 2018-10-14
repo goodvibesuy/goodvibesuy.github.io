@@ -83,6 +83,18 @@ export class SupplyService {
         return this.http.put<Supply[]>(this.suppliesUrl + '/' + supply.id, supply);
     }
 
+    addSupplyPurchase(supply: Supply): Observable<any> {
+        return this.http.post<Supply[]>(this.suppliesUrl + '/addSupplyPurchase' , supply);
+    }
+
+    getLastPrices(): Observable<any> {
+        return this.http.get<Supply[]>(this.suppliesUrl + '/getLastPrices');
+    }
+
+    getLastPricesBySupply(id:number): Observable<any> {
+        return this.http.get<Supply[]>(this.suppliesUrl + '/getLastPricesBySupply/' + id);
+    }
+
     delete(id: number): Observable<any> {
         return this.http.delete(this.suppliesUrl + '/' + id);
     }

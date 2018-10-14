@@ -69,6 +69,10 @@ export class ProductsDeliveryFormComponent implements OnInit, OnChanges {
         this.saveData.emit();
     }
 
+    public pauseView(){
+        
+    }
+
     public actualizar(): void {
         this.annotationChange.emit(this.annotation);
         this.agregar.emit();

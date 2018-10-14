@@ -19,11 +19,12 @@ import { NgbDateFormatter } from '../../../shared/DateParserFormatter';
 export class PurchaseOfSuppliesComponent extends ValidableForm implements OnInit {
 
     public supplies: Supply[];
-    private units: Unit[];
-    private providers: Provider[];
-    private convertibleUnits: UnitsConvertion[];
+    public newSupply: Supply;
+    public units: Unit[];
+    public providers: Provider[];
+    public convertibleUnits: UnitsConvertion[];
     private a:number=0;
-    private supplies_prices:{ year: number, month: number, day: number }[] = new Array<{ year: number, month: number, day: number }>();
+    public supplies_price:{ year: number, month: number, day: number } = <{ year: number, month: number, day: number }>{};
     constructor(
         fb: FormBuilder,
         private supplyService: SupplyService,
@@ -32,6 +33,7 @@ export class PurchaseOfSuppliesComponent extends ValidableForm implements OnInit
         private unitsConversorService: UnitsConversorService
     ) {
         super(fb);
+        this.newSupply = <Supply> {};
         super.initForm({
             price_date: [null, Validators.required]
         });
@@ -43,6 +45,27 @@ export class PurchaseOfSuppliesComponent extends ValidableForm implements OnInit
         this.getAllProviders();
     }
 
+    send(){        
+        this.newSupply.purchaseDate = NgbDateFormatter.unformatDate(this.supplies_price);
+        var promise = this.supplyService.addSupplyPurchase(this.newSupply);
+        promise.subscribe(
+            response => {
+                if (response.result == ResultCode.Error) {
+                    console.error(response.message);
+                    this.alertService.error('Error actualizando el insumo. ' + response.message);
+                } else {
+                    const keepAfterRouteChange = true;
+                    this.alertService.success('Insumo actualizado correctamente!', keepAfterRouteChange);
+                }
+            },
+            error => {
+                console.error(error);
+                this.alertService.error('Error obteniendo datos del servidor.');
+            }
+        );
+    }
+
+    /*
     send(idSupply: number) {
         var supply = this.supplies.filter(sup => sup.id == idSupply)[0];
         supply.price_date = NgbDateFormatter.unformatDate(this.supplies_prices[idSupply]);
@@ -70,24 +93,27 @@ export class PurchaseOfSuppliesComponent extends ValidableForm implements OnInit
             }
         );
     }
+    */
 
     getUnit(unitId: number): string {
         return !!this.units ? this.units.find(u => u.id == unitId).name : null;
     }
 
     private loadSupplies(): void {
+        
         this.supplyService.getLatestPrices().subscribe(
             data => { 
                 this.supplies = data; 
-                for(let i = 0 ; i < this.supplies.length ; i++){
-                    this.supplies_prices[this.supplies[i].id] = NgbDateFormatter.formatDate(this.supplies[i].price_date);
-                }
+                //for(let i = 0 ; i < this.supplies.length ; i++){
+                //    this.supplies_prices[this.supplies[i].id] = NgbDateFormatter.formatDate(this.supplies[i].price_date);
+                //}
             },
             error => {
                 console.error(error);
                 this.alertService.error('Error cargando los insumos');
             }
         );
+        
 
         this.supplyService.getUnits().subscribe(
             data => (this.units = data),

@@ -122,6 +122,91 @@ export class SuppliesModel extends MainModel {
         });
     }
 
+    getSupliesPurchases(dbName: string, callBack: (r: ResultWithData<any[]>) => void): void {
+        var pool = this.controllerConnections.getUserConnection(dbName);
+        pool.getConnection(function (err: any, con: any) {
+            if (err) {
+                con.release();
+                console.error(err);
+            } else {
+                con.query(
+                    'SELECT * FROM supply_purchase',                    
+                    function (err: any, resultPurchases: any) {
+                        if (err) {
+                            con.release();
+                            if (err.code === 'ER_DUP_ENTRY') {
+                                callBack({ result: -1, message: 'Error: ER_DUP_ENTRY' });
+                            } else {
+                                callBack({ result: -1, message: 'Error: generic' });
+                            }
+                        } else {
+                            callBack({ result: 1, message: 'OK', data:resultPurchases });
+                        }
+                    }
+                )
+            }
+        });
+    }
+
+    getLastPurchasesBySupply(id:number,dbName: string, callBack: (r: ResultWithData<any[]>) => void): void {
+        var pool = this.controllerConnections.getUserConnection(dbName);
+        pool.getConnection(function (err: any, con: any) {
+            if (err) {
+                con.release();
+                console.error(err);
+            } else {
+                con.query(
+                    'SELECT * FROM supply_purchase WHERE idSupply = ?',[id],                    
+                    function (err: any, resultPurchases: any) {
+                        if (err) {
+                            con.release();
+                            if (err.code === 'ER_DUP_ENTRY') {
+                                callBack({ result: -1, message: 'Error: ER_DUP_ENTRY' });
+                            } else {
+                                callBack({ result: -1, message: 'Error: generic' });
+                            }
+                        } else {
+                            callBack({ result: 1, message: 'OK', data:resultPurchases });
+                        }
+                    }
+                )
+            }
+        });
+    }
+
+    addSupplyPurchase(idSupply: number, idProvider: number, purchaseAmount: number,
+        supplyUnit: number, numberOfUnit: number, purchaseDate: Date,
+        dbName: string, callBack: (r: ResultWithData<any[]>) => void): void {
+
+        var pool = this.controllerConnections.getUserConnection(dbName);
+        pool.getConnection(function (err: any, con: any) {
+            if (err) {
+                con.release();
+                console.error(err);
+            } else {
+                con.query(
+                    'INSERT INTO supply_purchase  (idSupply, idProvider, purchaseAmount,supplyUnit, numberOfUnit, purchaseDate, date) VALUES(?,?,?,?,?,?,NOW())',
+                    [idSupply,idProvider, purchaseAmount,supplyUnit,numberOfUnit, purchaseDate],
+                    function (err: any, resultClient: any) {
+                        if (err) {
+                            con.release();
+                            // sea cual sea el tipo de error => siempre tengo que liberar la conexión
+                            // sino el cliente web queda esperando
+                            // con.release();
+                            if (err.code === 'ER_DUP_ENTRY') {
+                                callBack({ result: -1, message: 'Error: ER_DUP_ENTRY' });
+                            } else {
+                                callBack({ result: -1, message: 'Error: generic' });
+                            }
+                        } else {
+                            callBack({ result: 1, message: 'OK' });
+                        }
+                    }
+                )
+            }
+        });
+    }
+
     updateSupply(
         id: Number,
         name: Number,

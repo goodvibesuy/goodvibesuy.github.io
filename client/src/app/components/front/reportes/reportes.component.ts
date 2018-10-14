@@ -28,10 +28,10 @@ export class ReportesComponent implements OnInit {
     }
 
     compareDate(a, b) {
-        if (a.price_date > b.price_date) {
+        if (a.purchaseDate > b.purchaseDate) {
             return -1;
         }
-        if (a.price_date < b.price_date) {
+        if (a.purchaseDate < b.purchaseDate) {
             return 1;
         }
         return 0;
@@ -39,6 +39,67 @@ export class ReportesComponent implements OnInit {
 
 
     suppliesPrices(id: number): void {
+        
+
+        this.supplyService.getLastPricesBySupply(id).subscribe(
+            responseSupply => {
+                if (responseSupply.result < 0) {
+                    this.error = true;
+                    this.errorMessage = responseSupply.message;                    
+                } else {
+                    console.log(responseSupply);
+                    this.error = false;
+                    this.suppliesPrice = responseSupply.data;
+                    this.suppliesPriceTable = Object.assign([], this.suppliesPrice);
+                    this.suppliesPriceTable.sort(this.compareDate);
+
+                    var chartData = [];
+
+                    for (var i = 0; i < this.suppliesPrice.length; i++) {
+                        var newDate = new Date(this.suppliesPrice[i].purchaseDate);
+                        chartData.push({
+                            date: newDate,
+                            visits: this.suppliesPrice[i].purchaseAmount
+                        });
+                    }
+
+                    this.chart = this.AmCharts.makeChart("chartdiv", {
+                        "theme": "light",
+                        "type": "serial",
+                        "dataProvider": chartData,
+                        "valueAxes": [{
+                            "inside": true,
+                            "axisAlpha": 0
+                        }],
+                        "graphs": [{
+                            "id": "g1",
+                            "balloonText": "<div style='margin:5px; font-size:19px;'><span style='font-size:13px;'>[[category]]</span><br>[[value]]</div>",
+                            "bullet": "round",
+                            "bulletBorderAlpha": 1,
+                            "bulletBorderColor": "#FFFFFF",
+                            "hideBulletsCount": 50,
+                            "lineThickness": 2,
+                            "lineColor": "#fdd400",
+                            "negativeLineColor": "#67b7dc",
+                            "valueField": "visits"
+                        }],
+                        "chartScrollbar": {
+                        },
+                        "chartCursor": {},
+                        "categoryField": "date",
+                        "categoryAxis": {
+                            "parseDates": true,
+                            "axisAlpha": 0,
+                            "minHorizontalGap": 55
+                        }
+                    });
+
+                }                
+            }
+        );
+        
+
+        /*
         this.kpiService.get(id).subscribe(
             response => {
                 if (response.result < 0) {
@@ -50,12 +111,11 @@ export class ReportesComponent implements OnInit {
                     this.suppliesPrice = response.data;
                     this.suppliesPriceTable = Object.assign([], this.suppliesPrice);
                     this.suppliesPriceTable.sort(this.compareDate);
-                    
 
                     var chartData = [];
 
                     for (var i = 0; i < this.suppliesPrice.length; i++) {
-                        var newDate = new Date(this.suppliesPrice[i].price_date);
+                        var newDate = new Date(this.suppliesPrice[i].purchaseDate);
                         chartData.push({
                             date: newDate,
                             visits: this.suppliesPrice[i].amount
@@ -95,7 +155,7 @@ export class ReportesComponent implements OnInit {
                 }
             }
         );
-
+        */
     }
 
     supplyHistory(id: number): void {
@@ -122,6 +182,12 @@ export class ReportesComponent implements OnInit {
 
 
     ngOnInit() {
+        this.supplyService.getLastPrices().subscribe(
+            prices => {
+                console.log(prices);
+            }
+        );
+
         /*
         
                 var chart = AmCharts.makeChart("chartdiv",

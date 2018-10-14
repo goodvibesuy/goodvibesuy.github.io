@@ -11,13 +11,20 @@ class SuppliesRoute {
         router.get('/', suppliesController.get);
 
         router.get('/getAll', suppliesController.getAll);
+
+        router.get('/getLastPrices', suppliesController.getLastPurchases);
+
+        router.get('/getLastPricesBySupply/:id', suppliesController.getLastPurchasesBySupply);        
         
         router.post('/', suppliesController.addSupply);
         
         //cambiar por get
         router.post('/suppliesbyproduct', suppliesController.suppliesByProduct);
+
+        router.post('/addSupplyPurchase', suppliesController.addSupplyPurchase);
         
         router.put('/:id', suppliesController.updateSupply);
+
         
         router.delete('/:id', suppliesController.deleteSupply);
 

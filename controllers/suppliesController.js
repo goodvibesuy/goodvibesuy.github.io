@@ -37,6 +37,27 @@ var SuppliesController = /** @class */ (function (_super) {
                 });
             });
         };
+        _this.getLastPurchases = function (req, res) {
+            _this.verifyAccess(req, res, _this.resource, function (dbName) {
+                _this.suppliesModel.getSupliesPurchases(dbName, function (result) {
+                    res.send(result);
+                });
+            });
+        };
+        _this.getLastPurchasesBySupply = function (req, res) {
+            _this.verifyAccess(req, res, _this.resource, function (dbName) {
+                _this.suppliesModel.getLastPurchasesBySupply(req.params.id, dbName, function (result) {
+                    res.send(result);
+                });
+            });
+        };
+        _this.addSupplyPurchase = function (req, res) {
+            _this.verifyAccess(req, res, _this.resource, function (dbName) {
+                _this.suppliesModel.addSupplyPurchase(req.body.idSupply, req.body.idProvider, req.body.purchaseAmount, req.body.supplyUnit, req.body.numberOfUnits, req.body.purchaseDate, dbName, function (result) {
+                    res.send(result);
+                });
+            });
+        };
         _this.suppliesByProduct = function (req, res) {
             _this.verifyAccess(req, res, _this.resource, function (dbName) {
                 _this.suppliesModel.suppliesByProduct(req.body.idProduct, dbName, function (result) {
