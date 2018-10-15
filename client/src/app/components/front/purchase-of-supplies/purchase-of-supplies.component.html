@@ -3,10 +3,11 @@
     <div class="card" style="width: 18rem;margin:auto;">
         <div class="card-body">
             <h5 class="card-title">Agregar insumo</h5>
+            Insumo
             <select class="form-control" [(ngModel)]="newSupply.idSupply">
                 <option *ngFor="let s of supplies" [ngValue]="s.id">{{s.name}}</option>
             </select>
-            Importe
+            Importe de la compra
             <input type="text" class="form-control" [(ngModel)]="newSupply.purchaseAmount" />
 
 

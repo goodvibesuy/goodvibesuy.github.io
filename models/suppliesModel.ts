@@ -132,8 +132,8 @@ export class SuppliesModel extends MainModel {
                 con.query(
                     'SELECT * FROM supply_purchase',                    
                     function (err: any, resultPurchases: any) {
-                        if (err) {
-                            con.release();
+                        con.release();
+                        if (err) {                            
                             if (err.code === 'ER_DUP_ENTRY') {
                                 callBack({ result: -1, message: 'Error: ER_DUP_ENTRY' });
                             } else {
@@ -158,8 +158,8 @@ export class SuppliesModel extends MainModel {
                 con.query(
                     'SELECT * FROM supply_purchase WHERE idSupply = ?',[id],                    
                     function (err: any, resultPurchases: any) {
-                        if (err) {
-                            con.release();
+                        con.release();
+                        if (err) {                            
                             if (err.code === 'ER_DUP_ENTRY') {
                                 callBack({ result: -1, message: 'Error: ER_DUP_ENTRY' });
                             } else {
@@ -188,8 +188,8 @@ export class SuppliesModel extends MainModel {
                     'INSERT INTO supply_purchase  (idSupply, idProvider, purchaseAmount,supplyUnit, numberOfUnit, purchaseDate, date) VALUES(?,?,?,?,?,?,NOW())',
                     [idSupply,idProvider, purchaseAmount,supplyUnit,numberOfUnit, purchaseDate],
                     function (err: any, resultClient: any) {
-                        if (err) {
-                            con.release();
+                        con.release();
+                        if (err) {                            
                             // sea cual sea el tipo de error => siempre tengo que liberar la conexión
                             // sino el cliente web queda esperando
                             // con.release();

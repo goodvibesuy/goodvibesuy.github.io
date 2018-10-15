@@ -18,6 +18,28 @@ export class UnitsConversorService {
         ];
     }
 
+    /**
+     * 
+     * @param idUnit unidad base
+     * @param amount cantidad en la unidad base
+     */
+    convertToKG(idUnit: number, amount: number) {
+        // obtener unidad actual
+        let currentConversion = this.unitsConversions.find(uc => uc.idUnit == idUnit);
+        return amount * currentConversion.value;
+    }
+
+    /**
+     * 
+     * @param idUnit unidad base
+     * @param amount precio unidad base
+     */
+    pricePerKG(idUnit: number, amount: number) {
+        // obtener unidad actual
+        let currentConversion = this.unitsConversions.find(uc => uc.idUnit == idUnit);
+        return amount / currentConversion.value;
+    }
+
     // Convierte de una unidad de id 'idUnit' a todas las restantes
     calculateUnitsConversions(idUnit: number, value: number): UnitsConvertion[] {
         // obtener unidad actual
@@ -36,7 +58,7 @@ export class UnitsConversorService {
 
         if (idUnitSource != idUnitDest) {
             var conversion = this.calculateUnitsConversions(idUnitSource, valueSource)
-                                 .find(uc => uc.idUnit == idUnitDest);
+                .find(uc => uc.idUnit == idUnitDest);
             valueDest = !!conversion ? conversion.value : null;
         } else {
             valueDest = valueSource;

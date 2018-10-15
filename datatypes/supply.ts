@@ -12,4 +12,6 @@ export interface Supply {
     path_image: string;
     purchaseDate: Date;    
     numberOfUnits: number;
+    amountInKG:number;
+    pricePerKG:number;
 }

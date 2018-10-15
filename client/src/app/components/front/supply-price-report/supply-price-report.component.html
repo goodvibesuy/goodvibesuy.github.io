@@ -1,5 +1,4 @@
 <br/>
-
 <div class="alert alert-danger alert-dismissible" *ngIf="error">
     <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
     <strong>{{errorMessage}}</strong>
@@ -21,15 +20,15 @@
                 <thead class="thead-dark">
                     <tr>
                         <th scope="col">Fecha</th>                        
-                        <th scope="col">Cantidad (KG)</th>
+                        <th scope="col">Precio / KG </th>
                         <th scope="col">Valor de la compra</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr *ngFor="let s of suppliesPriceTable">
-                        <td>{{s.purchaseDate | date:'dd/MM/yyyy'}}</td>                        
-                        <td>{{s.amountInKG}}</td>
-                        <td>{{s.purchaseAmount}}</td>
+                        <td>{{s.purchaseDate | date:'dd/MM/yyyy'}}</td>
+                        <td>{{s.pricePerKG}}</td>
+                        <td>{{s.purchaseAmount}}</td>                        
                     </tr>
                 </tbody>
             </table>

@@ -5,6 +5,7 @@ import { SupplyService } from '../../../services/supply.service';
 import { Supply } from '../../../../../../datatypes/supply';
 import { AmChartsService, AmChart } from "@amcharts/amcharts3-angular";
 import { SupplyTable } from '../../../../../../datatypes/supplyTable';
+import { UnitsConversorService } from '../../../services/units-conversor.service';
 
 @Component({
     selector: 'app-reportes',
@@ -19,11 +20,13 @@ export class ReportesComponent implements OnInit {
     private suppliesById: Map<number, any>;
     public error:boolean;
     errorMessage:string;
+    
 
     constructor(private router: Router,
         private kpiService: KpiService,
         private supplyService: SupplyService,
-        private AmCharts: AmChartsService
+        private AmCharts: AmChartsService,
+        private unitsConversorService: UnitsConversorService
     ) {
     }
 
@@ -57,9 +60,11 @@ export class ReportesComponent implements OnInit {
 
                     for (var i = 0; i < this.suppliesPrice.length; i++) {
                         var newDate = new Date(this.suppliesPrice[i].purchaseDate);
+                        this.suppliesPrice[i].amountInKG = 
+                                this.unitsConversorService.convertToKG(this.suppliesPrice[i].supplyUnit,this.suppliesPrice[i].numberOfUnit);
                         chartData.push({
                             date: newDate,
-                            visits: this.suppliesPrice[i].purchaseAmount
+                            visits: this.suppliesPrice[i].amountInKG
                         });
                     }
 

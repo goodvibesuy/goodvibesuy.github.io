@@ -13,6 +13,7 @@ export class UnitsModel extends MainModel{
             if (err) {
                 con.release();
                 console.error(err);
+                callBack({ result: -1, message: "Error al crear la conexion" });
             } else {
                 con.query("SELECT * FROM unit", function (err: any, result: any) {
                     if (err) {

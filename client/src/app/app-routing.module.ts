@@ -34,6 +34,7 @@ import { ProviderComponent } from './components/adm/provider/provider.component'
 import { ProviderListComponent } from './components/adm/provider/list/provider-list.component';
 import { ProviderFormComponent } from './components/adm/provider/form/provider-form.component';
 import { PurchaseOfSuppliesComponent } from './components/front/purchase-of-supplies/purchase-of-supplies.component';
+import { SupplyPriceReportComponent } from './components/front/supply-price-report/supply-price-report.component';
 // #endregion end imports
  
 const routes: Routes = [
@@ -80,6 +81,10 @@ const routes: Routes = [
     {
 		path: 'dashboard',
 		component: DashboardComponent
+    },
+    {
+		path: 'supply-price-report',
+		component: SupplyPriceReportComponent
     },
     {
 		path: 'compraInsumos',
